@@ -438,3 +438,10 @@ gdk_event_configure_height (GdkEvent *event)
       return 0;
     }
 }
+
+guint32
+gdk_window_xid (GdkWindow *win)
+{
+    GdkWindowPrivate *pri = (GdkWindowPrivate *)win;
+    return pri->xwindow;
+}

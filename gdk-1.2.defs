@@ -421,6 +421,10 @@
    (int width)
    (int height)))
 
+(define-func gdk_window_xid
+  uint
+  ((GdkWindow window)))
+
 (define-func gdk_pixmap_new
   GdkWindow
   ((GdkWindow window (null-ok))
