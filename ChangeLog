@@ -1,3 +1,19 @@
+2000-04-14  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk-1.2.defs (GtkAccelGroup): new boxed type
+	(gtk_widget_add_accelerator, gtk_widget_remove_accelerator,
+	gtk_widget_remove_accelerators, gtk_widget_accelerator_signal,
+	gtk_widget_add_events, gtk_label_set_pattern,
+	gtk_label_parse_uline, gtk_menu_shell_select_item,
+	gtk_menu_shell_deselect, gtk_menu_shell_activate_item,
+	gtk_menu_set_accel_group, gtk_menu_get_uline_accel_group,
+	gtk_menu_ensure_uline_accel_group, gtk_menu_get_attach_widget,
+	gtk_menu_set_tearoff_state, gtk_menu_set_title,
+	gtk_menu_reorder_child): wrap these functions
+
+	[ partly from a patch by Richard Kilgore
+	<rkilgore@kilgoresolutions.com> ]
+
 2000-04-09  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c, libglade-support.c, gnomeui-support.c,
