@@ -1,3 +1,13 @@
+1999-12-31  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk-1.2.defs (gtk_paned_set_position): new function
+	(GtkCList): added fields `rows' and `cols'
+
+1999-12-26  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (sgtk_rep_to_flags): be more defensive in what we
+	accept
+
 1999-12-18  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-ui.glade, rep-ui: example of using libglade with rep--a
