@@ -1,6 +1,6 @@
 
-%define ver	0.4
-%define rel	2
+%define ver	0.4.1
+%define rel	1
 
 Summary: GTK+ binding for librep Lisp environment
 Name: rep-gtk
@@ -29,7 +29,7 @@ make CFLAGS="$RPM_OPT_FLAGS"
 %install
 rm -rf $RPM_BUILD_ROOT
 make install \
-    repexecdir=$RPM_BUILD_ROOT/%{_prefix}/libexec/rep/%{_host}
+    installdir=$RPM_BUILD_ROOT%{_prefix}/libexec/rep/%{_host}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -41,7 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Fri Sep 17 1999 John Harper <john@dcs.warwick.ac.uk>
-- specify repexecdir when installing (removes need to patch Makefile.in)
+- specify installdir when installing
 
 * Tue Sep 14 1999 Aron Griffis <agriffis@bigfoot.com>
 - 0.4 spec file update: added buildroot
