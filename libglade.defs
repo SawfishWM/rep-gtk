@@ -36,7 +36,7 @@
   none
   ((GladeXML self)
    (string handler_name)
-   (SCM func (null-ok)))
+   (SCM func))
   (scm-name "glade-xml-signal-connect"))
 
 (define-func sgtk_glade_xml_signal_autoconnect

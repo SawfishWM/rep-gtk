@@ -1,3 +1,11 @@
+1999-12-17  John Harper  <john@dcs.warwick.ac.uk>
+
+	* Makefile.in: add "rep_requires='gtk'" to the libglade .la
+	file to cause gtk to automagically get loaded first
+
+	* rep-gtk.c, libglade-support.c: don't use rep_dl_feature
+	anymore, it breaks when any libraries are opened RTLD_GLOBAL
+
 1999-12-16  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.spec.in: added new package, rep-gtk-libglade
