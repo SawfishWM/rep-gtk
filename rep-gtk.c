@@ -484,12 +484,17 @@ gtkobj_print (repv stream, repv obj)
     char buf[32];
   sgtk_object_proxy *proxy = GTKOBJ_PROXY (obj);
   GtkType tid = GTK_OBJECT_TYPE (proxy->obj);
-
+  char *type = gtk_type_name (tid);
   rep_stream_puts (stream, "#<", -1, rep_FALSE);
-  rep_stream_puts (stream, gtk_type_name (tid), -1, rep_FALSE);
+  rep_stream_puts (stream, type ? type : "Gtk???", -1, rep_FALSE);
   rep_stream_puts (stream, " ", -1, rep_FALSE);
-  sprintf (buf, "%lx", (long)proxy->obj);
-  rep_stream_puts (stream, buf, -1, rep_FALSE);
+  if (GTK_OBJECT_DESTROYED (proxy->obj))
+      rep_stream_puts (stream, "destroyed", -1, rep_FALSE);
+  else
+  {
+      sprintf (buf, "%lx", (long)proxy->obj);
+      rep_stream_puts (stream, buf, -1, rep_FALSE);
+  }
   rep_stream_putc (stream, '>');
 }
 
@@ -611,6 +616,8 @@ make_gtkobj (GtkObject *obj)
 {
   sgtk_object_proxy *proxy;
 
+  g_assert (obj->ref_count > 0);
+
   proxy = (sgtk_object_proxy *)rep_ALLOC_CELL (sizeof(sgtk_object_proxy));
   gtk_object_ref (obj);
   gtk_object_sink (obj);
@@ -650,8 +657,13 @@ sgtk_wrap_gtkobj (GtkObject *obj)
 int
 sgtk_is_a_gtkobj (guint type, repv obj)
 {
-  if (!(GTKOBJP (obj)))
-    return 0;
+  if (!GTKOBJP (obj)
+      || !GTK_IS_OBJECT (GTKOBJ_PROXY(obj)->obj)
+      || GTK_OBJECT_DESTROYED (GTKOBJ_PROXY(obj)->obj))
+    {
+      return 0;
+    }
+
   return gtk_type_is_a (GTK_OBJECT_TYPE(GTKOBJ_PROXY(obj)->obj), type);
 }
 
