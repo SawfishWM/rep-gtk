@@ -1764,7 +1764,8 @@ sgtk_find_object_info (const char *name)
 	      return NULL;
 
 	    info = (sgtk_object_info *)*ip;
-	    info->header.type = info->init_func ();
+	    info->header.type = (info->init_func
+				 ? info->init_func () : G_TYPE_OBJECT);
 	    enter_type_info ((sgtk_type_info*)info);
 	    goto query_args;
 	  }
@@ -2461,11 +2462,7 @@ extern void sgtk_init_gtk_gtk_glue (void);
 repv
 rep_dl_init (void)
 {
-  repv tem = rep_push_structure ("gui.gtk.gtk");
-  /* ::alias:gui.gtk gui.gtk.gtk::
-     ::alias:gtk gui.gtk.gtk:: */
-  rep_alias_structure ("gui.gtk");
-  rep_alias_structure ("gtk");
+  repv tem = rep_push_structure ("gui.gtk-2.gtk");
   sgtk_init_gtk_gtk_glue ();
   return rep_pop_structure (tem);
 }

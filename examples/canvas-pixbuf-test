@@ -2,10 +2,9 @@
 exec rep "$0" "$@"
 !#
 
-(require 'gtk)
-(require 'gnome-canvas)
-(require 'gdk-pixbuf)
-(require 'gnome-canvas-pixbuf)
+(require 'gui.gtk-2.gtk)
+(require 'gui.gtk-2.gnome-canvas)
+(require 'gui.gtk-2.gdk-pixbuf)
 
 (define window (gtk-window-new 'toplevel))
 (define canvas (gnome-canvas-new))

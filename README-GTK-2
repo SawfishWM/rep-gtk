@@ -1,7 +1,10 @@
 
 rep-gtk HEAD now requires glib-2, gtk-2, etc..
 
-It's currently in an extremely pre-alpha state
+It's currently in a pre-alpha state
 
 Checkout the gtk-1-branch to get the gtk-1 version
+
+All the modules have been moved into the gui.gtk-2 hierarchy, so
+programs wanting to move from gtk-1 to gtk-2 will need to change
 

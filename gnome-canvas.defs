@@ -28,6 +28,8 @@
 
 (define-object GnomeCanvasWidget (GnomeCanvasItem))
 
+(define-object GnomeCanvasPixbuf (GnomeCanvasItem))
+
 (define-boxed GnomeCanvasPoints
   (copy gnome_canvas_points_ref)
   (free gnome_canvas_points_unref)

@@ -1,3 +1,28 @@
+2002-01-29  John Harper  <jsh@unfactored.org>
+
+	* rep-types.c, rep-gtk.spec.in, rep-gtk.h, rep-gtk.c,
+	libglade-support.c, gnomeui-support.c, gnomelib.defs,
+	gnomelib-support.c, gnome-canvas.defs, gnome-canvas-support.c,
+	gnome-canvas-pixbuf.defs, glib.defs, gdk-pixbuf.defs,
+	configure.in, README-GTK-2, README, Makefile.in, HACKING,
+	AUTHORS, .cvsignore: 
+
+	* examples/test-libglade, examples/rep-ui, examples/hello.jl,
+	examples/gtk-dialog.jl, examples/gnome-test, examples/clist.jl,
+	examples/canvas-test, examples/canvas-pixbuf-test: 
+
+	Lots of minor changes. Changed module hierarchy so that all
+	modules are installed under the gui.gtk-2 prefix. This will
+	allow both versions of rep-gtk to be installed concurrently
+
+	I remove some of Sander's fixes to enable me to tackle the task
+	of porting the GNOME2 library descriptions (probably need to
+	add support for GError first, which may be ugly since
+	build-gtk.jl doesn't allow "invisible" arguments which would be
+	the best way of converting between GError and lisp exceptions)
+
+	Still need to update the gtk.defs file, ugh..
+
 2002-01-17 Sander Vesik <sander.vesik@sun.com>
 
 	* configure.in: disable libgnome binding for the moment

@@ -13,5 +13,4 @@ aclocal.m4
 *.la
 *.jlc
 rep-gtk.spec
-gnome
-gtk
+gtk-2

@@ -4,7 +4,7 @@ exec rep --batch "$0" "$@"
 
 ;;;; rep-gtk hello world program 
 
-(require 'gtk)
+(require 'gui.gtk-2.gtk)
 
 (let
     ((window (gtk-window-new 'toplevel))

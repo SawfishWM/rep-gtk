@@ -26,17 +26,6 @@
 #include "rep-libglade.h"
 #include <string.h>
 
-#ifdef GLADE_GNOME
-# define GLADE_INIT_FUNC glade_gnome_init
-# define GLADE_MODULE "gui.gnome.libglade"
-# define GLADE_ALIAS "libglade-gnome"
-# define GLADE_EXTRA_ALIAS "libglade"
-#else
-# define GLADE_INIT_FUNC glade_init
-# define GLADE_MODULE "gui.gtk.libglade"
-# define GLADE_ALIAS "libglade"
-#endif
-
 typedef struct {
     repv func;
 } conn_data;
@@ -108,16 +97,9 @@ rep_dl_init (void)
     repv s;
     char *tem = getenv ("REP_GTK_DONT_INITIALIZE");
     if (tem == 0 || atoi (tem) == 0)
-	GLADE_INIT_FUNC ();
+	glade_init ();
 
-    s = rep_push_structure (GLADE_MODULE);
-
-    /* ::alias:libglade gui.gtk.libglade::
-       ::alias:libglade-gnome gui.gnome.libglade:: */
-    rep_alias_structure (GLADE_ALIAS);
-#ifdef GLADE_EXTRA_ALIAS
-    rep_alias_structure (GLADE_EXTRA_ALIAS);
-#endif
+    s = rep_push_structure ("gui.gtk-2.libglade");
 
     sgtk_init_gtk_libglade_glue ();
     return rep_pop_structure (s);

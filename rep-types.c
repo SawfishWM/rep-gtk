@@ -587,8 +587,6 @@ sgtk_cvec_to_rep (sgtk_cvec *cvec, repv (*toscm)(void *), size_t sz)
 repv
 rep_dl_init (void)
 {
-    repv tem = rep_push_structure ("gui.gtk.types");
-    /* ::alias:sgtk-types gui.gtk.types:: */
-    rep_alias_structure ("sgtk-types");
+    repv tem = rep_push_structure ("gui.gtk-2.types");
     return rep_pop_structure (tem);
 }

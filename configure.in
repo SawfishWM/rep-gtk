@@ -24,9 +24,9 @@ AC_INIT(rep-gtk.h)
 AC_CONFIG_HEADER(config.h)
 
 dnl Release versioning info
-version="0.15"
+version="0.15-gnome2-1"
 
-OUT="gtk/types.la gtk/gtk.la"
+OUT="gtk-2/types.la gtk-2/gtk.la"
 AC_SUBST(OUT)
 
 dnl Find the system type; this isn't crucial
@@ -57,30 +57,36 @@ dnl Check for GTK
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 1.3,,AC_ERROR(need at least Gtk+ version 1.3))
 
 dnl Check for libgnome
-#AC_MSG_CHECKING([for GNOME libs])
-#AC_ARG_WITH(gnome,
-# [  --with-gnome            Build GNOME wrappers
-#  --without-gnome         Don't wrap GNOME], [], [with_gnome=maybe])
-#if test "$with_gnome" != "no"; then
-#  GNOME_VERSION="`gnome-config --version`"
-#  if test $? -eq 0; then
-#    dnl XXX FIXME properly
-#    GNOME_LIBS="`pkg-config --libs libgnome-2.0`"
-#    GNOMEUI_LIBS="`pkg-config --libs libgnomeui-2.0`"
-#    GNOME_CFLAGS="`pkg-config --cflags libgnomeui-2.0`"
-#    AC_MSG_RESULT([$GNOME_VERSION])
-#    OUT="$OUT gnome/lib.la gnome/ui.la gnome/canvas.la"
-#    with_gnome=yes
-#  elif test "$with_gnome" = "yes"; then
-#    AC_MSG_ERROR([can't run gnome-config]);
-#  else
+AC_MSG_CHECKING([for GNOME libs])
+AC_ARG_WITH(gnome,
+ [  --with-gnome            Build GNOME wrappers
+  --without-gnome         Don't wrap GNOME], [], [with_gnome=no])
+if test "$with_gnome" != "no"; then
+  GNOME_VERSION="`gnome-config --version`"
+  if test $? -eq 0; then
+    dnl XXX FIXME properly
+    GNOME_LIBS="`pkg-config --libs libgnome-2.0`"
+    GNOME_CFLAGS="`pkg-config --cflags libgnome-2.0`"
+    GNOMEUI_LIBS="`pkg-config --libs libgnomeui-2.0`"
+    GNOMEUI_CFLAGS="`pkg-config --cflags libgnomeui-2.0`"
+    GNOME_CANVAS_LIBS=`pkg-config --libs libgnomecanvas-2.0`"
+    GNOME_CANVAS_CFLAGS=`pkg-config --cflags libgnomecanvas-2.0`"
+    AC_MSG_RESULT([$GNOME_VERSION])
+    OUT="$OUT gtk-2/gnome-lib.la gtk-2/gnome-ui.la gtk-2/gnome-canvas.la"
+    with_gnome=yes
+  elif test "$with_gnome" = "yes"; then
+    AC_MSG_ERROR([can't run gnome-config]);
+  else
     with_gnome=no
-#  fi
-#fi
+  fi
+fi
 AC_SUBST(GNOME_VERSION)
 AC_SUBST(GNOME_LIBS)
-AC_SUBST(GNOMEUI_LIBS)
 AC_SUBST(GNOME_CFLAGS)
+AC_SUBST(GNOMEUI_LIBS)
+AC_SUBST(GNOMEUI_CFLAGS)
+AC_SUBST(GNOME_CANVAS_LIBS)
+AC_SUBST(GNOME_CANVAS_CFLAGS)
 
 dnl Check for libglade
 AC_ARG_WITH(libglade,
@@ -88,7 +94,7 @@ AC_ARG_WITH(libglade,
   --without-libglade      Don't wrap libglade], [], [with_libglade=yes])
 if test "$with_libglade" = "yes"; then
   PKG_CHECK_MODULES(LIBGLADE, libglade-2.0 >= 1.99,
-		    [OUT="$OUT gtk/libglade.la"])
+		    [OUT="$OUT gtk-2/libglade.la"])
 fi
 
 AC_ARG_WITH(gdk-pixbuf,
@@ -96,31 +102,9 @@ AC_ARG_WITH(gdk-pixbuf,
  [], [with_gdk_pixbuf=maybe])
 if test "$with_gdk_pixbuf" != "no"; then
   PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= 1.3.11,
-    [with_gdk_pixbuf="yes"; OUT="$OUT gtk/gdk-pixbuf.la"],
+    [with_gdk_pixbuf="yes"; OUT="$OUT gtk-2/gdk-pixbuf.la"],
     [with_gdk_pixbuf=no])
 fi
-
-#if test "$with_gdk_pixbuf" = "yes" -a "$with_gnome" = "yes"; then
-#  AC_MSG_CHECKING([for GNOME canvas pixbuf support])
-#  AC_ARG_WITH(gnome-canvas-pixbuf,
-#   [  --with-gnome-canvas-pixbuf
-#  --without-gnome-canvas-pixbuf],
-#   [], [with_gnome_canvas_pixbuf=maybe])
-#  if test "$with_gnome_canvas_pixbuf" != "no"; then
-#    GNOME_CANVAS_PIXBUF_VERSION="`gnome-config --modversion gnomecanvaspixbuf`"
-#    if test $? -eq 0; then
-#      GNOME_CANVAS_PIXBUF_LIBS="`gnome-config --libs gnomecanvaspixbuf`"
-#      GNOME_CANVAS_PIXBUF_CFLAGS="`gnome-config --cflags gnomecanvaspixbuf`"
-#      AC_MSG_RESULT([$GNOME_CANVAS_PIXBUF_VERSION])
-#      OUT="$OUT gnome/canvas-pixbuf.la"
-#    elif test "$with_gnome_canvas_pixbuf" = "yes"; then
-#      AC_MSG_ERROR([can't run gnome-config]);
-#    fi
-#  fi
-#fi
-AC_SUBST(GNOME_CANVAS_PIXBUF_VERSION)
-AC_SUBST(GNOME_CANVAS_PIXBUF_LIBS)
-AC_SUBST(GNOME_CANVAS_PIXBUF_CFLAGS)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

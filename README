@@ -25,9 +25,9 @@ Currently it only works with GTK 1.2.
 Usage
 =====
 
-Do `(require 'gui.gtk.gtk)' to load the library, then call functions as
-in guile-gtk. The only difference is that Lisp conventions are used for
-booleans, i.e. nil for #f, and non-nil for #t.
+Do `(require 'gui.gtk-2.gtk)' to load the library, then call functions
+as in guile-gtk. The only difference is that Lisp conventions are used
+for booleans, i.e. nil for #f, and non-nil for #t.
 
 I changed the names of three functions:
 
@@ -51,7 +51,7 @@ From the libglade README file:
 So you can now use GLADE with rep! Here's an example from the
 examples/test-libglade script:
 
-    (require 'gui.gtk.libglade)
+    (require 'gui.gtk-2.libglade)
 
     (let ((xml (or (glade-xml-new (car command-line-args))
 		   (error "something bad happened"))))
@@ -71,36 +71,32 @@ GNOME
 There's also now reasonably complete bindings of gnome and gnomeui.
 These extra modules will get built and installed:
 
-	gui.gnome.lib		Non-UI GNOME functions, doesn't require GTK
-	gui.gnome.ui		GNOME UI widgets and utilities
-	gui.gnome.canvas	GNOME Canvas widgets and utilities
-	gui.gtk.gdk-pixbuf	Image loading and rendering
-	gui.gnome.canvas-pixbuf	CanvasItem for displaying GdkPixbuf's
+	gui.gtk-2.gnome-lib	Non-UI GNOME functions, doesn't require GTK
+	gui.gtk-2.gnome-ui	GNOME UI widgets and utilities
+	gui.gtk-2.gnome-canvas	GNOME Canvas widgets and utilities
+	gui.gtk-2.gdk-pixbuf	Image loading and rendering
 
 see the .defs files for the gruesome details about what goes in what.
 The dependence tree is something like:
 
-			   gdk-pixbuf
-			 /
+			  gdk-pixbuf
+			/
 	types -+- gtk -+- libglade
-		     \	 \
-		      \	   ui -+- canvas
-		       \	\
-			 lib	  canvas-pixbuf
+		     \  \
+		      \   gnome-ui -+- gnome-canvas
+		       \
+			 gnome-lib
 
-gui.gtk.types provides conversions for the basic C types (and GLIB's
+gui.gtk-2.types provides conversions for the basic C types (and GLIB's
 GList and GSList types).
 
-When `gui.gnome.ui' is loaded the gnome-init function is called
+When `gui.gtk-2.gnome-ui' is loaded the gnome-init function is called
 automatically. If the special variables `*gnome-app-id*' and
 `*gnome-app-version*' are bound to strings, then these values will be
 used, otherwise something will be fabricated.
 
-However, if using `gui.gnome.lib' without `gui.gnome.ui', you should
-call `gnomelib-init' manually.
-
-To use libglade with the GNOME widgets, load the `gui.gnome.libglade'
-module instead of `gui.gtk.libglade'
+However, if using `gui.gtk-2.gnome-lib' without `gui.gtk-2.gnome-ui',
+you should call `gnomelib-init' manually.
 
 
 Caveats

@@ -83,9 +83,7 @@ sgtk_gnome_metadata_type_add (const char *regex, const char *key, repv data)
 repv
 rep_dl_init (void)
 {
-    repv s = rep_push_structure ("gui.gnome.lib");
-    /* ::alias:gnomelib gui.gnome.lib:: */
-    rep_alias_structure ("gnomelib");
+    repv s = rep_push_structure ("gui.gtk-2.gnome-lib");
     sgtk_gnome_init_gnome_glue ();
     return rep_pop_structure (s);
 }

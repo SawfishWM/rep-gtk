@@ -182,6 +182,11 @@ sgtk_protshell *sgtk_protect (repv protector, repv obj);
 void sgtk_unprotect (sgtk_protshell *);
 repv sgtk_get_protect (sgtk_protshell *prot);
 
+void sgtk_set_gclosure (repv protector, GClosure *closure);
+repv sgtk_get_gclosure (GClosure *closure);
+GClosure *sgtk_new_gclosure (repv obj);
+GClosure *sgtk_gclosure (repv protector, repv obj);
+
 void sgtk_gclosure_callback_marshal (GClosure *closure,
 				     GValue *return_value,
 				     guint n_param_values,

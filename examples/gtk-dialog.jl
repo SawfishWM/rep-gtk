@@ -1,6 +1,6 @@
 ;;;; gtk-dialog.jl
 
-(require 'gtk)
+(require 'gui.gtk-2.gtk)
 
 ;; Each BUTTON is (TEXT . RETURNED-VALUE)
 (defun gtk-dialog (message &rest buttons)

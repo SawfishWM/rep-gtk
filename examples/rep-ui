@@ -2,8 +2,8 @@
 exec rep "$0" "$@"
 !#
 
-(require 'gtk)
-(require 'libglade)
+(require 'gui.gtk-2.gtk)
+(require 'gui.gtk-2.libglade)
 
 (defvar xml nil)
 

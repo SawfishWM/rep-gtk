@@ -2,7 +2,7 @@
 exec rep --batch "$0" "$@"
 !#
 
-(require 'gtk)
+(require 'gui.gtk-2.gtk)
 
 (let*
     ((titles ["name" "uid" "gid" "passwd" "gecos" "home" "shell"])
@@ -39,7 +39,7 @@ exec rep --batch "$0" "$@"
       (gtk-clist-set-column-auto-resize clist i t)
       (setq i (1+ i))))
 
-  (gtk-signal-connect clist "select_row" #'(lambda (&rest args)
+  (gtk-signal-connect clist "select_row" #'(lambda args
 					     (format standard-error
 						     "select: %S\n" args)))
 

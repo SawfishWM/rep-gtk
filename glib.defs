@@ -4,6 +4,19 @@
 
 ;(define-object GObject ())
 
+;(define-func sgtk_g_object_set_property
+;  none
+;  ((GObject object)
+;   (string property_name)
+;   (SCM value))
+;  (scm-name "g-object-set-property"))
+
+;(define-func sgtk_g_object_get_property
+;  SCM
+;  ((GObject object)
+;   (string property_name))
+;  (scm-name "g-object-get-property"))
+
 ;; Options
 
 (options
