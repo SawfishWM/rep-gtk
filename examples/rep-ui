@@ -1,0 +1,58 @@
+#!/bin/sh
+exec rep "$0" "$@"
+!#
+
+(require 'libglade)
+
+(defvar xml nil)
+
+(defun output (data)
+  (let
+      ((text-widget (glade-xml-get-widget xml "text1")))
+    (when (integerp data)
+      (setq data (make-string 1 data)))
+    (gtk-text-insert text-widget nil nil nil data (length data))))
+
+(defun entry-key-press (widget event)
+  (when (string= (gdk-event-string event) "\r")
+    ;; RET
+    (let
+	((input (gtk-entry-get-text widget))
+	 error result string)
+      (output (format nil "\n%s\n" input))
+      (setq result (condition-case data
+		       (let
+			   ((standard-output output))
+			 (eval (read-from-string input)))
+		     (error
+		      (setq error t)
+		      data)))
+      (let
+	  ((print-escape t))
+	(setq string (format nil "%s %S\n"
+			     (if error "error-->" "  =>") result)))
+      (output string)
+      (gtk-entry-set-text widget ""))))
+
+(defun window-closed (widget)
+  (gtk-main-quit))
+
+(setq xml (or (glade-xml-new
+	       (local-file-name
+		(expand-file-name "./rep-ui.glade"
+				  (file-name-directory load-filename))))
+	      (error "something bad happened")))
+
+;; focus the entry
+(let
+    ((entry (glade-xml-get-widget xml "entry1")))
+  (gtk-widget-grab-focus entry));
+
+(output (format nil "[ rep %s -- %s ]\n\n" rep-version rep-build-id))
+
+(glade-xml-signal-autoconnect xml)
+(gtk-main)
+
+;; Local variables:
+;; major-mode: lisp-mode
+;; End:
