@@ -303,7 +303,7 @@ typedef struct _type_infos {
 
 static type_infos *all_type_infos;
 
-/* Finds types that are mentioned in our *.defs files but are not
+/* Find types that are mentioned in our *.defs files but are not
    provided by the Gtk run-time system.  This is only used
    occasionally to update the table in sgtk_try_missing_type.  */
 #ifdef NEED_UNUSED_CODE
@@ -336,6 +336,15 @@ sgtk_register_type_infos (sgtk_type_info **infos)
 #if 0
   sgtk_find_missing_types (t);
 #endif
+}
+
+void
+sgtk_register_type_infos_gtk (GtkTypeInfo **infos)
+{
+  GtkTypeInfo **t;
+
+  for (t = infos; t && *t; t++)
+    gtk_type_unique (GTK_TYPE_BOXED, *t);
 }
 
 /* When INFO refers to one of the known `missing' types, we initialize
@@ -496,6 +505,37 @@ sgtk_find_type_info (GtkType type)
 
   */
 
+struct sgtk_protshell {
+  repv object;
+  struct sgtk_protshell *next;
+  struct sgtk_protshell **prevp;
+};
+
+static GMemChunk *sgtk_protshell_chunk;
+
+/* Analogous to the PROTECTS list of a proxy but for SCM values that
+   are not associated with a particular GtkObject. */
+
+static struct sgtk_protshell *global_protects;
+
+void
+sgtk_unprotect (sgtk_protshell *prot)
+{
+  if ((*prot->prevp = prot->next) != 0)
+    prot->next->prevp = prot->prevp;
+  g_chunk_free (prot, sgtk_protshell_chunk);
+}
+
+static void
+sgtk_mark_protects (sgtk_protshell *prots)
+{
+  while (prots)
+    {
+      rep_MARKVAL (prots->object);
+      prots = prots->next;
+    }
+}
+
 /* The CDR of a GtkObject smob points to one of these.  PROTECTS is a
    Scheme list of all SCM values that need to be protected from the GC
    because they are in use by OBJ.  PROTECTS includes the smob cell
@@ -506,19 +546,38 @@ sgtk_find_type_info (GtkType type)
 typedef struct _sgtk_object_proxy {
   repv car;
   GtkObject *obj;
-  repv protects;
+  struct sgtk_protshell *protects;
   int traced_refs;
   struct _sgtk_object_proxy *next;
+  struct _sgtk_object_proxy **prevp;
 } sgtk_object_proxy;
 
 /* The list of all existing proxies. */
 
 static sgtk_object_proxy *all_proxies = NULL;
 
-/* Analogous to the PROTECTS list of a proxy but for SCM values that
-   are not associated with a particular GtkObject. */
+/* Insert the list of protshells starting at PROTS into the global
+   protects list.  This is used when a proxy is freed so that we don't
+   forget about its protects. */
 
-static repv global_protects;
+static void
+sgtk_move_prots_to_global (sgtk_protshell *prots)
+{
+  if (prots)
+    {
+      sgtk_protshell *g = global_protects;
+      global_protects = prots;
+      global_protects->prevp = &global_protects;
+      if (g)
+	{
+	  sgtk_protshell *p;
+	  for (p = prots; p->next; p = p->next)
+	    ;
+	  p->next = g;
+	  g->prevp = &p->next;
+	}
+    }
+}
 
 /* The smob for GtkObjects.  */
 
@@ -526,6 +585,27 @@ static long tc16_gtkobj;
 
 #define GTKOBJP(x)       (rep_CELL16_TYPEP(x, tc16_gtkobj))
 #define GTKOBJ_PROXY(x)  ((sgtk_object_proxy *)rep_PTR(x))
+
+sgtk_protshell *
+sgtk_protect (repv protector, repv obj)
+{
+  sgtk_protshell *prot = g_chunk_new (sgtk_protshell, sgtk_protshell_chunk);
+  sgtk_protshell **prevp;
+
+  prot->object = obj;
+
+  if (GTKOBJP (protector))
+    prevp = &(GTKOBJ_PROXY(protector)->protects);
+  else
+    prevp = &global_protects;
+  
+  if ((prot->next = *prevp) != 0)
+	prot->next->prevp = &prot->next;
+  *prevp = prot;
+  prot->prevp = prevp;
+
+  return prot;
+}
 
 static void
 mark_traced_ref (GtkWidget *obj, void *data)
@@ -538,7 +618,7 @@ mark_traced_ref (GtkWidget *obj, void *data)
       fprintf (stderr, "marking trace %p %s\n",
 	       proxy->obj, gtk_type_name (GTK_OBJECT_TYPE (proxy->obj)));
 #endif
-      rep_MARKVAL (proxy->protects);
+      sgtk_mark_protects (proxy->protects);
     }
 }
 
@@ -554,7 +634,7 @@ gtkobj_mark (repv obj)
 
   if (GTK_IS_CONTAINER (proxy->obj))
     gtk_container_foreach (GTK_CONTAINER(proxy->obj), mark_traced_ref, NULL);
-  rep_MARKVAL(proxy->protects);
+  sgtk_mark_protects (proxy->protects);
 }
 
 static void
@@ -584,6 +664,9 @@ gtkobj_free (repv obj)
 
   forget_proxy (proxy->obj);
   gtk_object_unref (proxy->obj);
+  if ((*proxy->prevp = proxy->next) != 0)
+    proxy->next->prevp = proxy->prevp;
+  sgtk_move_prots_to_global (proxy->protects);
   rep_FREE_CELL ((char *)proxy);
 }
 
@@ -605,53 +688,6 @@ gtkobj_sweep (void)
       }
       proxy = next;
   }
-}
-
-/* Protect OBJ from being collected.  When PROTECTOR is a GtkObject
-   proxy, OBJ is only protected as long as GtkObject is live. */
-
-repv
-sgtk_protect (repv protector, repv obj)
-{
-  if (GTKOBJP (protector))
-    {
-      sgtk_object_proxy *proxy = GTKOBJ_PROXY(protector);
-      proxy->protects = Fcons (obj, proxy->protects);
-    }
-  else
-    global_protects = Fcons (obj, global_protects);
-  return obj;
-}
-
-static void
-sgtk_unprotect_1 (repv *prev, repv obj)
-{
-  repv walk;
-
-  for (walk = *prev; rep_CONSP (walk);
-       walk = rep_CDR (walk))
-    {
-      if (rep_CAR (walk) == obj)
-	{
-	  *prev = rep_CDR (walk);
-	  break;
-	}
-      else
-	prev = rep_CDRLOC (walk);
-    }
-}
-
-/* XXX - performance improvement by searching only a single
-   proxy->protects.  */
-
-void
-sgtk_unprotect (repv obj)
-{
-  sgtk_object_proxy *proxy;
-
-  for (proxy = all_proxies; proxy; proxy = proxy->next)
-    sgtk_unprotect_1 (&proxy->protects, obj);
-  sgtk_unprotect_1 (&global_protects, obj);
 }
 
 /* Treating GtkObject proxies right during GC.  We need to run custom
@@ -718,11 +754,11 @@ gtkobj_marker_hook (void)
 	  fprintf (stderr, "hooking %p %s\n",
 		   proxy->obj, gtk_type_name (GTK_OBJECT_TYPE (proxy->obj)));
 #endif
-	  rep_MARKVAL (proxy->protects);
+	  sgtk_mark_protects (proxy->protects);
 	}
       proxy->traced_refs = 0;
     }
-  rep_MARKVAL (global_protects);
+  sgtk_mark_protects (global_protects);
 }
 
 /* Create a proxy for OBJ. */
@@ -740,7 +776,7 @@ make_gtkobj (GtkObject *obj)
 	   gtk_type_name (GTK_OBJECT_TYPE (obj)));
 #endif
   proxy->obj = obj;
-  proxy->protects = Qnil;
+  proxy->protects = NULL;
   proxy->traced_refs = 0;
   proxy->next = all_proxies;
   all_proxies = proxy;
@@ -748,7 +784,9 @@ make_gtkobj (GtkObject *obj)
   proxy->car = tc16_gtkobj;
   enter_proxy (obj, rep_VAL(proxy));
 
-  sgtk_protect (rep_VAL(proxy), rep_VAL(proxy));
+  sgtk_protect (rep_VAL(proxy),
+		rep_VAL(proxy));	/* this one is never removed */
+
   return rep_VAL(proxy);
 }
 
@@ -1140,6 +1178,34 @@ sgtk_point_to_rep (GdkPoint p)
 		sgtk_int_to_rep (p.y));
 }
 
+int
+sgtk_valid_rect (repv obj)
+{
+  return rep_CONSP (obj)
+    && sgtk_valid_point (rep_CAR (obj))
+    && sgtk_valid_point (rep_CDR (obj));
+}
+
+GdkRectangle
+sgtk_rep_to_rect (repv obj)
+{
+  GdkRectangle res;
+  res.x = rep_INT (rep_CAAR (obj));
+  res.y = rep_INT (rep_CDAR (obj));
+  res.width = rep_INT (rep_CADR (obj));
+  res.height = rep_INT (rep_CDDR (obj));
+  return res;
+}
+
+repv
+sgtk_rect_to_rep (GdkRectangle r)
+{
+  return Fcons (Fcons (rep_MAKE_INT (r.x),
+		       rep_MAKE_INT (r.y)),
+		Fcons (rep_MAKE_INT (r.width),
+		       rep_MAKE_INT (r.height)));
+}
+
 
 
 /* GtkType objects
@@ -1281,6 +1347,8 @@ sgtk_rep_to_slist (repv obj, void (*fromscm)(repv, void*))
 	  *tail = g_slist_alloc ();
 	  if (fromscm)
 	    fromscm (rep_CAR (obj), &(*tail)->data);
+	  else
+	    (*tail)->data = NULL;
 	  obj = rep_CDR(obj);
 	  tail = &(*tail)->next;
 	}
@@ -1294,6 +1362,8 @@ sgtk_rep_to_slist (repv obj, void (*fromscm)(repv, void*))
 	  *tail = g_slist_alloc ();
 	  if (fromscm)
 	    fromscm (elts[i], &(*tail)->data);
+	  else
+	    (*tail)->data = NULL;
 	  tail = &(*tail)->next;
 	}
     }
@@ -1363,6 +1433,8 @@ sgtk_rep_to_list (repv obj, void (*fromscm)(repv, void*))
 	  }
 	if (fromscm)
 	  fromscm (rep_CAR (obj), &(n->data));
+	else
+	  n->data = NULL;
 	obj = rep_CDR(obj);
       }
     }
@@ -1382,6 +1454,8 @@ sgtk_rep_to_list (repv obj, void (*fromscm)(repv, void*))
 	    }
 	  if (fromscm)
 	    fromscm (elts[i], &(n->data));
+	  else
+	    n->data = NULL;
 	}
     }
   return res;
@@ -1435,6 +1509,8 @@ sgtk_rep_to_cvec (repv obj, void (*fromscm)(repv, void*), size_t sz)
 	      obj = rep_CDR(obj);
 	    }
 	}
+      else
+	memset (res.vec, 0, res.count * sz);
     }
   else if (rep_VECTORP(obj))
     {
@@ -1446,6 +1522,8 @@ sgtk_rep_to_cvec (repv obj, void (*fromscm)(repv, void*), size_t sz)
 	  for (i = 0, ptr = res.vec; i < res.count; i++, ptr += sz)
 	    fromscm (elts[i], ptr);
 	}
+      else
+	memset (res.vec, 0, res.count * sz);
     }
 
   return res;
@@ -1480,6 +1558,21 @@ sgtk_cvec_finish (sgtk_cvec *cvec, repv obj, repv (*toscm)(void *), size_t sz)
     }
 
   rep_free (cvec->vec);
+}
+
+repv
+sgtk_cvec2scm (sgtk_cvec *cvec, repv (*toscm)(void *), size_t sz)
+{
+    int len = cvec->count, i;
+    repv obj = Fmake_vector (rep_MAKE_INT(len), Qnil);
+    repv *elts = rep_VECT (obj)->array;
+    char *ptr;
+
+    for (i = 0, ptr = cvec->vec; i < len; i++, ptr += sz)
+	elts[i] = toscm (ptr);
+
+    g_free (cvec->vec);
+    return obj;
 }
 
 
@@ -1737,7 +1830,7 @@ sgtk_callback_marshal (GtkObject *obj,
 		       guint n_args,
 		       GtkArg *args)
 {
-  repv real_args = Qnil, ans;
+  repv fun = ((sgtk_protshell *)data)->object, real_args = Qnil, ans;
   int i;
 
   if (rep_GC_P)
@@ -1754,10 +1847,10 @@ sgtk_callback_marshal (GtkObject *obj,
   real_args = Fcons (sgtk_wrap_gtkobj (obj), real_args);
 
   if (rep_CAR(callback_trampoline) == Qnil)
-    ans = rep_funcall ((repv)data, real_args, rep_FALSE);
+    ans = rep_funcall (fun, real_args, rep_FALSE);
   else
     ans = rep_funcall (rep_CAR(callback_trampoline),
-		       Fcons ((repv)data, Fcons (real_args, Qnil)), rep_FALSE);
+		       Fcons (fun, Fcons (real_args, Qnil)), rep_FALSE);
 
   sgtk_callback_postfix ();
 
@@ -1768,7 +1861,7 @@ sgtk_callback_marshal (GtkObject *obj,
 void
 sgtk_callback_destroy (gpointer data)
 {
-  sgtk_unprotect ((repv)data);
+  sgtk_unprotect ((sgtk_protshell *)data);
 }
 
 
@@ -2040,8 +2133,8 @@ sgtk_build_args (sgtk_object_info *info, int *n_argsp, repv scm_args,
   return args;
 }
 
-repv
-sgtk_gtk_object_new (repv type_obj, repv scm_args)
+DEFUN("gtk-object-new", Fgtk_object_new, Sgtk_object_new,
+      (repv type_obj, repv scm_args), rep_Subr2)
 {
   int n_args;
   sgtk_object_info *info;
@@ -2067,8 +2160,8 @@ sgtk_gtk_object_new (repv type_obj, repv scm_args)
   return scm_obj;
 }
 
-repv
-sgtk_gtk_object_set (repv scm_obj, repv scm_args)
+DEFUN("gtk-object-set", Fgtk_object_set, Sgtk_object_set,
+      (repv scm_obj, repv scm_args), rep_Subr2)
 {
   int n_args;
   sgtk_object_info *info;
@@ -2092,8 +2185,8 @@ sgtk_gtk_object_set (repv scm_obj, repv scm_args)
   return Qnil;
 }
 
-repv
-sgtk_gtk_object_get (repv scm_obj, repv argsym)
+DEFUN ("gtk-object-get", Fgtk_object_get, Sgtk_object_get,
+       (repv scm_obj, repv argsym), rep_Subr2)
 {
   GtkObject *obj;
   sgtk_object_info *info;
@@ -2393,7 +2486,9 @@ sgtk_init_substrate (void)
 				      boxed_sweep, 0, 0,
 				      0, 0, 0, 0, 0, 0);
 
-  global_protects = Qnil;
+  global_protects = NULL;
+  sgtk_protshell_chunk = g_mem_chunk_create (sgtk_protshell, 128,
+					     G_ALLOC_AND_FREE);
   
   callback_trampoline = Fcons (Qnil, Qnil);
   rep_mark_static (&callback_trampoline);
@@ -2410,6 +2505,9 @@ sgtk_init_substrate (void)
 
   rep_ADD_SUBR (Sgtk_callback_trampoline);
   rep_ADD_SUBR (Sgtk_standalone_p);
+  rep_ADD_SUBR (Sgtk_object_new);
+  rep_ADD_SUBR (Sgtk_object_set);
+  rep_ADD_SUBR (Sgtk_object_get);
   rep_INTERN (gtk_major_version);
   rep_INTERN (gtk_minor_version);
   rep_INTERN (gtk_micro_version);
