@@ -1952,7 +1952,7 @@ unset_timeout (void)
 static void
 set_timeout (void)
 {
-    if (context != 0)
+    if (context != 0 && !context->timed_out)
     {
 	u_long max_sleep = rep_max_sleep_for ();
 	context->this_timeout_msecs = rep_input_timeout_secs * 1000;
@@ -1961,7 +1961,6 @@ set_timeout (void)
 	context->gtk_tag = gtk_timeout_add (context->actual_timeout_msecs,
 					    timeout_callback,
 					    (gpointer) context);
-	context->timed_out = 0;
     }
 }
 
@@ -1974,9 +1973,12 @@ sgtk_callback_postfix (void)
 	gtk_main_quit ();
     else if (rep_redisplay_fun != 0)
 	(*rep_redisplay_fun)();
-    set_timeout ();
     if (context != 0)
+    {
+	context->timed_out = 0;
+	set_timeout ();
 	context->idle_counter = 0;
+    }
 }
 
 /* This function replaces the standard rep event loop. */
@@ -2005,6 +2007,7 @@ sgtk_event_loop (void)
 	}
 	else
 	{
+	    data.timed_out = 0;
 	    set_timeout ();
 	    gtk_main ();
 	    unset_timeout ();
