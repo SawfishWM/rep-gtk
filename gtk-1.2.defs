@@ -2120,7 +2120,7 @@
 
 (define-object GtkCheckMenuItem (GtkMenuItem)
   (fields
-   (uint active)))
+   (bool active)))
 
 (define-func gtk_check_menu_item_new
   GtkWidget
