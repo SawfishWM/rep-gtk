@@ -1,0 +1,30 @@
+#!/bin/sh
+exec rep "$0" "$@"
+!#
+
+(require 'gnome-canvas)
+(require 'gdk-pixbuf)
+(require 'gnome-canvas-pixbuf)
+
+(define window (gtk-window-new 'toplevel))
+(define canvas (gnome-canvas-new))
+(define pixbuf (gdk-pixbuf-new-from-file
+		(or (car command-line-args)
+		    "/usr/share/pixmaps/gnome-logo-icon-transparent.png")))
+
+(gtk-widget-set-usize canvas 400 400)
+(gnome-canvas-set-scroll-region canvas 0 0 400 400)
+
+(gnome-canvas-item-new (gnome-canvas-root canvas)
+		       'GnomeCanvasPixbuf
+		       (list 'pixbuf (gdk-pixbuf-scale-simple
+				      pixbuf 300 300 'bilinear)
+			     'x 10 'y 10))
+
+(gtk-container-add window canvas)
+(gtk-widget-show-all window)
+
+(gtk-signal-connect window "delete_event" (lambda () (throw 'quit 0)))
+
+(setq interrupt-mode 'exit)
+(recursive-edit)
