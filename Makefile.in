@@ -44,10 +44,10 @@ VPATH=@top_srcdir@:.
 
 all : $(OUT)
 
-libgtk.la : $(OBJS)
+gtk.la : $(OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GTK_LIBS)
 
-liblibglade.la : $(GLADE_OBJS)
+libglade.la : $(GLADE_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GLADE_LIBS)
 
 %-glue.c : %-1.2.defs.jl $(RDEFS) build-gtk.jlc
@@ -63,11 +63,11 @@ build-gtk.jlc : build-gtk.jl
 	rep --batch -l compiler -f compile-batch $<
 
 install : all installdirs
-	for f in $(OUT); do \
+	set -e; for f in $(OUT); do \
 	  $(rep_DL_INSTALL) $$f $(DESTDIR)$(installdir); \
 	done
-	printf "\nrep_open_globally=yes\n" >>$(DESTDIR)$(installdir)/libgtk.la
-	printf "\nrep_requires='gtk'\n" >>$(DESTDIR)$(installdir)/liblibglade.la
+	printf "\nrep_open_globally=yes\n" >>$(DESTDIR)$(installdir)/gtk.la
+	printf "\nrep_requires='gtk'\n" >>$(DESTDIR)$(installdir)/libglade.la
 
 installdirs : $(top_srcdir)/mkinstalldirs
 	$(SHELL) $(top_srcdir)/mkinstalldirs $(DESTDIR)$(installdir)

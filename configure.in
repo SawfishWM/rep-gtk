@@ -26,7 +26,7 @@ AC_CONFIG_HEADER(config.h)
 dnl Release versioning info
 version="0.8"
 
-OUT=libgtk.la
+OUT=gtk.la
 AC_SUBST(OUT)
 
 dnl Find the system type; this isn't crucial
@@ -58,7 +58,7 @@ AC_ARG_WITH(libglade,
  [  --with-libglade         Build libglade wrappers (dynamic GUI builder)
   --without-libglade      Don't wrap libglade], [], [with_libglade=yes])
 if test "$with_libglade" = "yes"; then
-  AM_PATH_LIBGLADE([OUT="$OUT liblibglade.la"])
+  AM_PATH_LIBGLADE([OUT="$OUT libglade.la"])
 fi
 
 dnl Checks for typedefs, structures, and compiler characteristics.
