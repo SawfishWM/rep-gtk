@@ -34,7 +34,7 @@ DEFSYM(sgtk_types, "sgtk-types");
 static inline int
 valid_int_type (repv obj)
 {
-    return rep_INTP (obj) || rep_LONG_INTP (obj);
+    return rep_INTEGERP (obj) || rep_LONG_INTP (obj);
 }
 
 int
@@ -70,73 +70,49 @@ sgtk_valid_char (repv obj)
 repv
 sgtk_uint_to_rep (u_long x)
 {
-    if (x <= rep_LISP_MAX_INT)
-	return rep_MAKE_INT (x);
-    else
-	return rep_MAKE_LONG_INT (x);
+    return rep_make_long_uint (x);
 }
 
 repv
 sgtk_int_to_rep (long x)
 {
-    if (x <= rep_LISP_MAX_INT && x >= rep_LISP_MIN_INT)
-	return rep_MAKE_INT (x);
-    else
-	return rep_MAKE_LONG_INT (x);
+    return rep_make_long_int (x);
 }
 
 repv
 sgtk_long_to_rep (long x)
 {
-    if (x <= rep_LISP_MAX_INT && x >= rep_LISP_MIN_INT)
-	return rep_MAKE_INT (x);
-    else
-	return rep_MAKE_LONG_INT (x);
+    return rep_make_long_int (x);
 }
 
 repv
 sgtk_ulong_to_rep (u_long x)
 {
-    if (x <= rep_LISP_MAX_INT && x >= rep_LISP_MIN_INT)
-	return rep_MAKE_INT (x);
-    else
-	return rep_MAKE_LONG_INT (x);
+    return rep_make_long_uint (x);
 }
 
 guint
 sgtk_rep_to_uint (repv obj)
 {
-    if (rep_INTP (obj))
-	return rep_INT (obj);
-    else
-	return rep_LONG_INT (obj);
+    return rep_get_long_uint (obj);
 }
 
 gint
 sgtk_rep_to_int (repv obj)
 {
-    if (rep_INTP (obj))
-	return rep_INT (obj);
-    else
-	return rep_LONG_INT (obj);
+    return rep_get_long_int (obj);
 }
 
 gulong
 sgtk_rep_to_ulong (repv obj)
 {
-    if (rep_INTP (obj))
-	return rep_INT (obj);
-    else
-	return rep_LONG_INT (obj);
+    return rep_get_long_uint (obj);
 }
 
 glong
 sgtk_rep_to_long (repv obj)
 {
-    if (rep_INTP (obj))
-	return rep_INT (obj);
-    else
-	return rep_LONG_INT (obj);
+    return rep_get_long_int (obj);
 }
 
 gchar
@@ -220,7 +196,7 @@ sgtk_fd_to_rep (int fd)
 int
 sgtk_valid_pointer (repv obj)
 {
-    return obj == Qnil || rep_INTP (obj) || rep_LONG_INTP (obj);
+    return obj == Qnil || rep_INTEGERP (obj) || rep_LONG_INTP (obj);
 }
 
 void *
@@ -228,10 +204,8 @@ sgtk_rep_to_pointer (repv obj)
 {
     if (obj == Qnil)
 	return NULL;
-    else if (rep_INTP (obj))
-	return (void *) rep_INT (obj);
     else
-	return (void *) rep_LONG_INT (obj);
+	return (void *) rep_get_long_uint (obj);
 }
 
 repv
@@ -241,9 +215,10 @@ sgtk_pointer_to_rep (void *ptr)
     if (data == 0)
 	return Qnil;
     else if (data > rep_LISP_MAX_INT)
-	return rep_MAKE_INT (data);
-    else
+	/* could use a bignum, but cons is more efficient */
 	return rep_MAKE_LONG_INT (data);
+    else
+	return rep_MAKE_INT (data);
 }
 
 static int
@@ -254,46 +229,42 @@ list_length (repv list)
 }
 
 
-/* Floats.
-
-   Only here to set things straight.
-
-   Of course, rep currently only has integer. Kludge this. --jsh */
+/* Floats. */
 
 int
 sgtk_valid_float (repv obj)
 {
-  return rep_INTP (obj);
+  return rep_NUMERICP (obj);
 }
 
 gfloat
 sgtk_rep_to_float (repv obj)
 {
-  return rep_INTP (obj) ? rep_INT (obj) : 0.0;
+  return rep_get_float (obj);
 }
 
 repv
 sgtk_float_to_rep (gfloat f)
 {
-  return rep_MAKE_INT ((long int)f);
+  return rep_make_float (f, rep_FALSE);
 }
 
 int
 sgtk_valid_double (repv obj)
 {
-  return rep_INTP (obj);
+  return rep_NUMERICP (obj);
 }
 
 double
 sgtk_rep_to_double (repv obj)
 {
-  return rep_INTP (obj) ? rep_INT (obj) : 0.0;
+  return rep_get_float (obj);
 }
 
 repv
 sgtk_double_to_rep (double f)
 {
-  return rep_MAKE_INT ((long int)f);
+  return rep_make_float (f, rep_FALSE);
 }
 
 

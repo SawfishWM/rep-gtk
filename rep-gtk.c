@@ -1138,16 +1138,17 @@ sgtk_valid_arg (GtkArg *a, repv obj)
     case GTK_TYPE_NONE:
       return TRUE;
     case GTK_TYPE_CHAR:
-      return rep_INTP(obj);
+      return sgtk_valid_char(obj);
     case GTK_TYPE_BOOL:
       return TRUE;
     case GTK_TYPE_INT:
     case GTK_TYPE_UINT:
     case GTK_TYPE_LONG:
     case GTK_TYPE_ULONG:
+      return sgtk_valid_int (obj);
     case GTK_TYPE_FLOAT:
     case GTK_TYPE_DOUBLE:
-      return rep_INTP (obj);		/* XXX to be fixed.. --jsh */
+      return sgtk_valid_float (obj);
     case GTK_TYPE_STRING:
       return rep_STRINGP (obj);
     case GTK_TYPE_ENUM:
@@ -1161,7 +1162,7 @@ sgtk_valid_arg (GtkArg *a, repv obj)
 				     sgtk_find_type_info (a->type)));
       break;
     case GTK_TYPE_CALLBACK:
-      return Ffunctionp (obj);
+      return sgtk_valid_function (obj);
     case GTK_TYPE_OBJECT:
       return sgtk_is_a_gtkobj (a->type, obj);
     default:
@@ -1184,16 +1185,16 @@ sgtk_rep_to_arg (GtkArg *a, repv obj, repv protector)
       GTK_VALUE_BOOL(*a) = obj != Qnil;
       break;
     case GTK_TYPE_INT:
-      GTK_VALUE_INT(*a) = rep_INT (obj);
+      GTK_VALUE_INT(*a) = sgtk_rep_to_int (obj);
       break;
     case GTK_TYPE_UINT:
-      GTK_VALUE_UINT(*a) = rep_INT (obj);
+      GTK_VALUE_UINT(*a) = sgtk_rep_to_uint (obj);
       break;
     case GTK_TYPE_LONG:
-      GTK_VALUE_LONG(*a) = rep_INT (obj);
+      GTK_VALUE_LONG(*a) = sgtk_rep_to_long (obj);
       break;
     case GTK_TYPE_ULONG:
-      GTK_VALUE_ULONG(*a) = rep_INT (obj);
+      GTK_VALUE_ULONG(*a) = sgtk_rep_to_ulong (obj);
       break;
     case GTK_TYPE_FLOAT:
       GTK_VALUE_FLOAT(*a) = sgtk_rep_to_float (obj);
@@ -1202,7 +1203,7 @@ sgtk_rep_to_arg (GtkArg *a, repv obj, repv protector)
       GTK_VALUE_DOUBLE(*a) = sgtk_rep_to_double (obj);
       break;
     case GTK_TYPE_STRING:
-      GTK_VALUE_STRING(*a) = rep_STR (obj);
+      GTK_VALUE_STRING(*a) = sgtk_rep_to_string (obj);
       break;
     case GTK_TYPE_ENUM:
       GTK_VALUE_ENUM(*a) =
@@ -1244,16 +1245,16 @@ sgtk_rep_to_ret (GtkArg *a, repv obj)
       *GTK_RETLOC_BOOL(*a) = (obj != Qnil);
       break;
     case GTK_TYPE_INT:
-      *GTK_RETLOC_INT(*a) = rep_INT (obj);
+      *GTK_RETLOC_INT(*a) = sgtk_rep_to_int (obj);
       break;
     case GTK_TYPE_UINT:
-      *GTK_RETLOC_UINT(*a) = rep_INT (obj);
+      *GTK_RETLOC_UINT(*a) = sgtk_rep_to_uint (obj);
       break;
     case GTK_TYPE_LONG:
-      *GTK_RETLOC_LONG(*a) = rep_INT (obj);
+      *GTK_RETLOC_LONG(*a) = sgtk_rep_to_long (obj);
       break;
     case GTK_TYPE_ULONG:
-      *GTK_RETLOC_ULONG(*a) = rep_INT (obj);
+      *GTK_RETLOC_ULONG(*a) = sgtk_rep_to_ulong (obj);
       break;
     case GTK_TYPE_FLOAT:
       *GTK_RETLOC_FLOAT(*a) = sgtk_rep_to_float (obj);
