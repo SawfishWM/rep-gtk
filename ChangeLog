@@ -1,3 +1,8 @@
+2004-03-30  John Harper  <jsh@unfactored.org>
+
+	* rep-gtk.h, gtk-compat.c: changed `label' arg of two functions
+	to be `const gchar *', not `gchar *'
+
 2004-01-11  John Harper  <jsh@unfactored.org>
 
 	* gnomeui.defs, gnome-canvas.defs: deleted some functions that

@@ -291,10 +291,10 @@ void gtk_menu_popup_interp (GtkMenu *menu,
 
 GtkWidget*
 gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
-						gchar            *label);
+						const gchar      *label);
 GtkWidget*
 gtk_radio_menu_item_new_with_mnemonic_from_widget (GtkRadioMenuItem *group,
-						   gchar            *label);
+						   const gchar      *label);
 GtkWidget* gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group);
 GtkWidget* gtk_pixmap_new_interp (char *file, GtkWidget *intended_parent);
 
