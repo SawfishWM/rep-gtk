@@ -1378,12 +1378,8 @@ sgtk_callback_marshal (GtkObject *obj,
   info.n_args = n_args;
   info.args = args;
 
-#if rep_INTERFACE >= 8
   rep_call_with_barrier (inner_callback_marshal,
 			 rep_VAL(&info), rep_TRUE, 0, 0, 0);
-#else
-  inner_callback_marshal (rep_VAL(&info));
-#endif
 
   sgtk_callback_postfix ();
 }
@@ -1857,6 +1853,17 @@ struct input_callback_data {
     int fd;
 };
 
+struct timeout_data {
+    struct timeout_data *next;
+    int timed_out;
+    int idle_counter;
+    u_long this_timeout_msecs;
+    u_long actual_timeout_msecs;
+    int gtk_tag;
+};
+
+static struct timeout_data *context;
+
 static repv
 inner_input_callback (repv data_)
 {
@@ -1874,12 +1881,8 @@ sgtk_input_callback (gpointer data, gint fd, GdkInputCondition cond)
     d.fd = fd;
     if (d.func != 0)
     {
-#if rep_INTERFACE >= 8
 	rep_call_with_barrier (inner_input_callback, rep_VAL(&d),
 			       rep_TRUE, 0, 0, 0);
-#else
-	inner_input_callback (rep_VAL(&d));
-#endif
     }
     sgtk_callback_postfix ();
 }
@@ -1917,6 +1920,41 @@ sgtk_deregister_input_fd (int fd)
     }
 }
 
+static gboolean
+timeout_callback (gpointer data)
+{
+    context->timed_out = 1;
+    context->gtk_tag = 0;
+    gtk_main_quit ();
+    return FALSE;
+}
+
+static void
+unset_timeout (void)
+{
+    if (context != 0)
+    {
+	if (context->gtk_tag != 0)
+	    gtk_timeout_remove (context->gtk_tag);
+	context->gtk_tag = 0;
+    }
+}
+
+static void
+set_timeout (void)
+{
+    if (context != 0)
+    {
+	u_long max_sleep = rep_max_sleep_for ();
+	unset_timeout ();
+	context->this_timeout_msecs = rep_input_timeout_secs * 1000;
+	context->actual_timeout_msecs = MIN (context->this_timeout_msecs,
+					     max_sleep);
+	context->gtk_tag = gtk_timeout_add (context->actual_timeout_msecs,
+					    timeout_callback, (gpointer) 0);
+    }
+}
+
 /* Call this after executing any callbacks that could invoke Lisp code */
 void
 sgtk_callback_postfix (void)
@@ -1925,34 +1963,29 @@ sgtk_callback_postfix (void)
 	gtk_main_quit ();
     else if (rep_redisplay_fun != 0)
 	(*rep_redisplay_fun)();
-}
-
-static gboolean
-timeout_callback (gpointer data)
-{
-    int *timed_out = data;
-    *timed_out = 1;
-    gtk_main_quit ();
-    return FALSE;
+    set_timeout ();
+    if (context != 0)
+	context->idle_counter = 0;
 }
 
 /* This function replaces the standard rep event loop. */
 static repv
 sgtk_event_loop (void)
 {
-    int idle_counter = 0;
+    struct timeout_data data;
+
+    data.idle_counter = 0;
+    data.gtk_tag = 0;
+    data.next = context;
+    context = &data;
+
     while (1)
     {
-	u_long max_sleep;
-#if rep_INTERFACE >= 8
-	max_sleep = rep_max_sleep_for ();
-#else
-	max_sleep = ULONG_MAX;
-#endif
+	u_long max_sleep = rep_max_sleep_for ();
+
 	if (rep_redisplay_fun != 0)
 	    (*rep_redisplay_fun)();
 
-#if rep_INTERFACE >= 8
 	if (max_sleep == 0)
 	{
 	    while (gtk_events_pending ())
@@ -1960,31 +1993,21 @@ sgtk_event_loop (void)
 	    Fthread_yield ();
 	}
 	else
-#endif
 	{
-	    int timed_out = 0;
-	    u_long this_timeout_msecs = rep_input_timeout_secs * 1000;
-	    u_long actual_timeout_msecs = MIN (this_timeout_msecs, max_sleep);
-	    int timeout_tag = gtk_timeout_add (actual_timeout_msecs,
-					       timeout_callback,
-					       (gpointer) &timed_out);
+	    data.timed_out = 0;
+	    set_timeout ();
 	    gtk_main ();
-	    gtk_timeout_remove (timeout_tag);
-	    if (timed_out)
+	    unset_timeout ();
+	    if (data.timed_out)
 	    {
-#if rep_INTERFACE >= 8
-		if (actual_timeout_msecs < this_timeout_msecs)
+		if (data.actual_timeout_msecs < data.this_timeout_msecs)
 		{
-		    Fthread_suspend (Qnil,
-				     rep_MAKE_INT (this_timeout_msecs
-						   - actual_timeout_msecs));
+		    Fthread_suspend (Qnil, rep_MAKE_INT (data.this_timeout_msecs
+							 - data.actual_timeout_msecs));
 		}
 		else
-#endif
-		    rep_on_idle (idle_counter++);
+		    rep_on_idle (data.idle_counter++);
 	    }
-	    else
-		idle_counter = 0;
 	}
 
 	rep_proc_periodically ();
@@ -1994,7 +2017,10 @@ sgtk_event_loop (void)
 	{
 	    repv result;
 	    if(rep_handle_input_exception (&result))
+	    {
+		context = data.next;
 		return result;
+	    }
 	}
 
 #ifdef C_ALLOCA
