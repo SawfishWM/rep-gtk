@@ -1,0 +1,6 @@
+1999-03-18  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (sgtk_object_proxy): removed the `prevp' field,
+	just use a next field, then regenerate the entire list when
+	sweeping
+

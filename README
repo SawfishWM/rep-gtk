@@ -49,3 +49,4 @@ too big or small will trigger a run-time assertion.
 There's currently no way to wrap more than a single set of functions,
 thus the gtk.defs and gdk.defs are both parsed in one go.
 
+It's a bit flaky..
