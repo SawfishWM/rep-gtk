@@ -1,9 +1,10 @@
 
+%define nam	rep-gtk
 %define ver	@version@
 %define rel	1
 
 Summary: GTK+ binding for librep Lisp environment
-Name: rep-gtk
+Name: %{nam}
 Version: %{ver}
 Release: %{rel}
 Requires: librep >= 0.10, gtk+ >= 1.2
@@ -22,7 +23,7 @@ to 0.17), with a new glue-code generator.
 %package libglade
 Summary: librep binding for the libglade library for loading user interfaces.
 Group: Development/Languages
-Requires: %{nam} libglade
+Requires: %{nam}, libglade
 
 %description libglade
 This is a binding of libglade for the librep Lisp interpreter. libglade
@@ -52,8 +53,8 @@ rm -rf $RPM_BUILD_ROOT
 %files libglade
 %doc libglade.defs examples/test-libglade examples/simple.glade
 %doc examples/rep-ui examples/rep-ui.glade
-%{_prefix}/libexec/rep/%{_host}/libglade.so*
-%{_prefix}/libexec/rep/%{_host}/libglade.la
+%{_prefix}/libexec/rep/%{_host}/liblibglade.so*
+%{_prefix}/libexec/rep/%{_host}/liblibglade.la
 
 %changelog
 * Fri Sep 17 1999 John Harper <john@dcs.warwick.ac.uk>

@@ -1,3 +1,7 @@
+2000-01-09  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.8
+
 1999-12-31  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gtk-1.2.defs (gtk_paned_set_position): new function
