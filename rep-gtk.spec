@@ -1,6 +1,6 @@
 
 %define ver	0.4
-%define rel	1
+%define rel	2
 
 Summary: GTK+ binding for librep Lisp environment
 Name: rep-gtk
