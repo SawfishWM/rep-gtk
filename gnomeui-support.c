@@ -7,8 +7,7 @@
 #include "rep-gtk.h"
 #include "rep-gnome.h"
 #include <string.h>
-
-DEFSYM(gnomeui, "gnomeui");
+#include <signal.h>
 
 DEFSYM(_gnome_app_id_, "*gnome-app-id*");
 DEFSYM(_gnome_app_version_, "*gnome-app-version*");
@@ -29,7 +28,8 @@ gnome_app_bar_get_type (void)
 void
 sgtk_gnome_string_callback (gchar *string, gpointer data)
 {
-    rep_call_lisp1 (sgtk_get_protect (data), rep_string_dup (string));
+    rep_call_lisp1 (sgtk_get_protect (data),
+		    string != 0 ? rep_string_dup (string) : Qnil);
 }
 
 void
@@ -197,6 +197,7 @@ sgtk_gnome_init (const char *app_id, const char *app_version)
   int argc;
   char **argv, *tem;
   repv head, *last;
+  void (*fatal_signal_handler)();
 
   if (sgtk_gnomeui_inited)
     return 0;
@@ -213,7 +214,32 @@ sgtk_gnome_init (const char *app_id, const char *app_version)
   make_argv (Fcons (Fsymbol_value (Qprogram_name, Qt), Qnil), &argc, &argv);
 #endif
 
+  /* preserve rep's error handlers */
+  fatal_signal_handler = signal (SIGSEGV, SIG_DFL);
+
   gnome_init (app_id, app_version, argc, argv);
+
+  if (fatal_signal_handler != SIG_ERR && fatal_signal_handler != SIG_IGN)
+  {
+#ifdef SIGFPE
+      signal (SIGFPE, fatal_signal_handler);
+#endif
+#ifdef SIGILL
+      signal (SIGILL, fatal_signal_handler);
+#endif
+#ifdef SIGSEGV
+      signal (SIGSEGV, fatal_signal_handler);
+#endif
+#ifdef SIGBUS
+      signal (SIGBUS, fatal_signal_handler);
+#endif
+#ifdef SIGQUIT
+      signal (SIGQUIT, fatal_signal_handler);
+#endif
+#ifdef SIGABRT
+      signal (SIGABRT, fatal_signal_handler);
+#endif
+  }
 
 #if 0
   argc--; argv++;
@@ -239,9 +265,7 @@ sgtk_gnome_init (const char *app_id, const char *app_version)
 repv
 rep_dl_init (void)
 {
-#if rep_INTERFACE >= 9
     repv s = rep_push_structure ("gnomeui");
-#endif
     repv id, version;
 
     sgtk_gnome_init_gnomeui_glue ();
@@ -265,11 +289,5 @@ rep_dl_init (void)
 	sgtk_gnome_init ("rep", rep_STRINGP (version)
 			 ? (char *) rep_STR (version) : "0");
     }
-
-#if rep_INTERFACE >= 9
     return rep_pop_structure (s);
-#else
-    rep_INTERN(gnomeui);
-    return Qgnomeui;
-#endif
 }
