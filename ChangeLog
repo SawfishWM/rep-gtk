@@ -1,3 +1,7 @@
+2000-03-05  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.9
+
 2000-03-01  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (sgtk_event_loop): when exiting, only restart the
