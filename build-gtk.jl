@@ -723,11 +723,14 @@
 	  ((tem args)
 	   (i 1))
 	(while tem
-	  (@ "  if \(!rep_CONSP\(args\)\) return rep_signal_missing_arg \(%d\);\n" i)
+	  (@ "  if \(!rep_CONSP\(args\)\)\n")
+	  (@ "    p_%s = Qnil; \n" (gtk-arg-name (car tem)))
+	  (@ "  else {\n")
 	  (@ (if (and (null (cdr tem)) (gtk-get-option 'rest-arg options))
-		 "  p_%s = args; args = Qnil;\n"
-	       "  p_%s = rep_CAR(args); args = rep_CDR(args);\n")
+		 "    p_%s = args; args = Qnil;\n"
+	       "    p_%s = rep_CAR(args); args = rep_CDR(args);\n")
 	     (gtk-arg-name (car tem)))
+	  (@ "  }\n")
 	  (setq tem (cdr tem))
 	  (setq i (1+ i)))
 	(@ "\n")))
