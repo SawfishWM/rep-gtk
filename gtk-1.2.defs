@@ -2027,7 +2027,8 @@
    (GtkWidget parent_menu_shell (null-ok))
    (GtkWidget parent_menu_item (null-ok))
    (int button)
-   (uint activate_time)))
+   (uint activate_time)
+   (SCM position)))
 
 (define-func gtk_menu_popdown
   none

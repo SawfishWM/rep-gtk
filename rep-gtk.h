@@ -238,7 +238,8 @@ void gtk_menu_popup_interp (GtkMenu *menu,
 			    GtkWidget *parent_menu_shell,
 			    GtkWidget *parent_menu_item,
 			    gint button,
-			    guint32 activate_time);
+			    guint32 activate_time,
+			    repv position);
 
 GtkWidget*
 gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,

@@ -15,15 +15,37 @@ gtk_label_get_interp (GtkLabel *label)
 
 /* cheap cop-out. */
 
+static void
+menu_popup_position (GtkMenu *menu, gint *x, gint *y, gpointer data)
+{
+    gulong coded = (gulong) data;
+    *x = coded & 0xffff;
+    *y = coded >> 16;
+}
+
 void
 gtk_menu_popup_interp (GtkMenu *menu,
 		       GtkWidget *parent_menu_shell,
 		       GtkWidget *parent_menu_item,
 		       gint button,
-		       guint32 activate_time)
+		       guint32 activate_time,
+		       repv position)
 {
+  GtkMenuPositionFunc func = 0;
+  gpointer func_data = 0;
+
+  if (rep_CONSP (position)
+      && rep_INTP(rep_CAR(position)) && rep_INTP(rep_CDR(position)))
+  {
+      gulong coded = (rep_INT(rep_CAR(position))
+		      | (rep_INT(rep_CDR(position)) << 16));
+
+      func = menu_popup_position;
+      func_data = (void *) coded;
+  }
+
   gtk_menu_popup (menu, parent_menu_shell, parent_menu_item,
-		  NULL, NULL, button, activate_time);
+		  func, func_data, button, activate_time);
 }
 
 GtkWidget*
