@@ -183,6 +183,7 @@ sgtk_try_missing_type (char *name)
 {
   static sgtk_type_info missing[] = {
     { "GdkGC", GTK_TYPE_BOXED },
+    { "GdkPixbuf", GTK_TYPE_BOXED },	/* XXX okay? */
     { "GtkToolbarStyle", GTK_TYPE_ENUM },
     { "GtkToolbarChildType", GTK_TYPE_ENUM },
     { "GtkTreeViewMode", GTK_TYPE_ENUM },
@@ -221,6 +222,7 @@ sgtk_fillin_type_info (sgtk_type_info *info)
 	this_type = sgtk_try_missing_type (info->name);
       if (this_type == GTK_TYPE_INVALID)
 	{
+	  if (info->type == GTK_TYPE_BOXED)
 	  fprintf (stderr, "unknown type `%s'.\n", info->name);
 	  return 0;
 	}
@@ -841,14 +843,14 @@ char *
 sgtk_rep_to_senum (repv obj, sgtk_senum_info *info)
 {
   int i;
+  char *obj_name;
 
   if (rep_STRINGP (obj))
-    {
-      return rep_STR (obj);
-    }
+    return rep_STR (obj);
 
+  obj_name = rep_STR (rep_SYM (obj)->name);
   for (i = 0; i < info->n_literals; i++)
-    if (! strcmp (info->literals[i].name, rep_STR (obj)))
+    if (! strcmp (info->literals[i].name, obj_name))
       return info->literals[i].value;
   return NULL;
 }
@@ -874,7 +876,7 @@ static sgtk_boxed_proxy *all_boxed;
 
 static long tc16_boxed;
 
-#define BOXED_P(x)     (rep_CELL16_TYPEP(x, tc16_boxed))
+#define BOXED_P(x)     (rep_CELL16_TYPEP(x, tc16_boxed))
 #define BOXED_PROXY(x) ((sgtk_boxed_proxy *)rep_PTR(x))
 #define BOXED_SEQNO(x) (BOXED_PROXY(x)->seqno)
 #define BOXED_PTR(x)   (BOXED_PROXY(x)->ptr)
@@ -1120,6 +1122,8 @@ sgtk_arg_to_rep (GtkArg *a, int free_mem)
       return sgtk_boxed_to_rep (GTK_VALUE_BOXED(*a),
 				(sgtk_boxed_info *)sgtk_find_type_info (a->type),
 				TRUE);
+    case GTK_TYPE_POINTER:
+      return sgtk_pointer_to_rep (GTK_VALUE_POINTER(*a));
     case GTK_TYPE_OBJECT:
       return sgtk_wrap_gtkobj (GTK_VALUE_OBJECT(*a));
     default:
@@ -1159,6 +1163,9 @@ sgtk_valid_arg (GtkArg *a, repv obj)
     case GTK_TYPE_BOXED:
       return sgtk_valid_boxed (obj, ((sgtk_boxed_info *)
 				     sgtk_find_type_info (a->type)));
+      break;
+    case GTK_TYPE_POINTER:
+      return BOXED_P (obj) || GTKOBJP (obj) || sgtk_valid_pointer (obj);
       break;
     case GTK_TYPE_CALLBACK:
       return sgtk_valid_function (obj);
@@ -1214,6 +1221,14 @@ sgtk_rep_to_arg (GtkArg *a, repv obj, repv protector)
       break;
     case GTK_TYPE_BOXED:
       GTK_VALUE_BOXED(*a) = sgtk_rep_to_boxed (obj);
+      break;
+    case GTK_TYPE_POINTER:
+      if (BOXED_P (obj))
+	  GTK_VALUE_POINTER(*a) = BOXED_PTR (obj);
+      else if (GTKOBJP (obj))
+	  GTK_VALUE_POINTER(*a) = GTKOBJ_PROXY (obj)->obj;
+      else
+	  GTK_VALUE_POINTER(*a) = sgtk_rep_to_pointer (obj);
       break;
     case GTK_TYPE_CALLBACK:
       sgtk_protect (protector, obj);
