@@ -76,6 +76,21 @@ sgtk_glade_xml_signal_autoconnect (GladeXML *self)
     glade_xml_signal_autoconnect_full (self, connector, (gpointer) &data);
 }
 
+GladeXML *
+sgtk_glade_xml_new_from_string (repv text, const char *root,
+				const char *domain)
+{
+    if (!rep_STRINGP(text))
+    {
+	rep_signal_arg_error (text, 1);
+	return 0;
+    }
+
+    return glade_xml_new_from_memory (rep_STR(text),
+				      rep_STRING_LEN(text),
+				      root, domain);
+}
+
 
 /* dl hooks / init */
 
@@ -87,7 +102,10 @@ rep_dl_init (void)
     /* XXX it would be nice if we could pull in gtk automatically;
        XXX but we can't, since we depend on its symbols.. */
 
-    glade_init ();
+    char *tem = getenv ("REP_GTK_DONT_INITIALIZE");
+    if (tem == 0 || atoi (tem) == 0)
+	glade_init ();
+
     sgtk_init_gtk_libglade_glue ();
     rep_INTERN(libglade);
     rep_dl_feature = Qlibglade;
