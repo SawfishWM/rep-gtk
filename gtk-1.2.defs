@@ -1960,7 +1960,7 @@
    (float xalign)
    (float yalign)
    (float ratio)
-   (int obey_child)))
+   (bool obey_child)))
 
 (define-func gtk_aspect_frame_set
   none
@@ -1968,7 +1968,7 @@
    (float xalign)
    (float yalign)
    (float ratio)
-   (int obey_child)))
+   (bool obey_child)))
 
 ;; Progress
 
@@ -2499,9 +2499,19 @@
   ((GtkNotebook notebook)
    (int page_num)))
 
-(define-func gtk_notebook_current_page
+(define-func gtk_notebook_get_current_page
   int
   ((GtkNotebook notebook)))
+
+(define-func gtk_notebook_get_nth_page
+  GtkWidget
+  ((GtkNotebook notebook)
+   (int page_num)))
+
+(define-func gtk_notebook_page_num
+  int
+  ((GtkNotebook notebook)
+   (GtkWidget child)))
 
 (define-func gtk_notebook_set_page
   none
@@ -2516,11 +2526,6 @@
   none
   ((GtkNotebook notebook)))
 
-(define-func gtk_notebook_set_tab_pos
-  none
-  ((GtkNotebook notebook)
-   (GtkPositionType pos)))
-
 (define-func gtk_notebook_set_show_tabs
   none
   ((GtkNotebook notebook)
@@ -2531,15 +2536,35 @@
   ((GtkNotebook notebook)
    (bool show_border)))
 
-(define-func gtk_notebook_set_scrollable 
+(define-func gtk_notebook_set_tab_pos
   none
   ((GtkNotebook notebook)
-   (int              scrollable)))
+   (GtkPositionType pos)))
+
+(define-func gtk_notebook_set_homogeneous_tabs
+  none
+  ((GtkNotebook notebook)
+   (bool homogeneous)))
 
 (define-func gtk_notebook_set_tab_border 
   none
   ((GtkNotebook notebook)
    (int border_width)))
+
+(define-func gtk_notebook_set_tab_hborder 
+  none
+  ((GtkNotebook notebook)
+   (int tab_hborder)))
+
+(define-func gtk_notebook_set_tab_vborder 
+  none
+  ((GtkNotebook notebook)
+   (int tab_vborder)))
+
+(define-func gtk_notebook_set_scrollable 
+  none
+  ((GtkNotebook notebook)
+   (bool scrollable)))
 
 (define-func gtk_notebook_popup_enable 
   none
@@ -2549,17 +2574,68 @@
   none
   ((GtkNotebook notebook)))
 
+(define-func gtk_notebook_get_tab_label
+  GtkWidget
+  ((GtkNotebook notebook)
+   (GtkWidget child)))
+
+(define-func gtk_notebook_set_tab_label
+  none
+  ((GtkNotebook notebook)
+   (GtkWidget child)
+   (GtkWidget tab_label)))
+
+;; XXX others..
+
+(define-func gtk_notebook_reorder_child
+  none
+  ((GtkNotebook notebook)
+   (GtkWidget child)
+   (int position)))
+
 ;; Editable
 
 (define-object GtkEditable (GtkWidget))
 
-
-(define-func gtk_editable_get_chars
-  string
+(define-func gtk_editable_select_region
+  none
   ((GtkEditable editable)
    (int start)
    (int end)))
-   
+
+(define-func gtk_editable_insert_text
+  none
+  ((GtkEditable editable)
+   (string new_text)
+   (int new_text_length)
+   ((fvec int 1 inout) position)))
+
+(define-func gtk_editable_delete_text
+  none
+  ((GtkEditable editable)
+   (int start_pos)
+   (int end_pos)))
+
+(define-func gtk_editable_get_chars
+  none
+  ((GtkEditable editable)
+   (int start_pos)
+   (int end_pos)))
+
+(define-func gtk_editable_set_position
+  none
+  ((GtkEditable editable)
+   (int position)))
+
+(define-func gtk_editable_get_position
+  int
+  ((GtkEditable editable)))
+
+(define-func gtk_editable_set_editable
+  none
+  ((GtkEditable editable)
+   (bool is_editable)))
+
 ;; Entry
 
 (define-object GtkEntry (GtkEditable))
@@ -2676,12 +2752,12 @@
 (define-func gtk_text_set_word_wrap
   none
   ((GtkText text)
-   (int word_wrap)))
+   (bool word_wrap)))
 
 (define-func gtk_text_set_line_wrap
   none
   ((GtkText text)
-   (int line_wrap)))
+   (bool line_wrap)))
 
 (define-func gtk_text_set_adjustments
   none
@@ -2802,9 +2878,6 @@
 
 ;; Preview
 
-;; XXX lots missing
-
-
 (define-object GtkPreview (GtkWidget))
 
 (define-func gtk_preview_new 
@@ -2842,10 +2915,9 @@
   ((GtkPreview preview)
    (bool expand)))
 
-;; XXX - can't handle the double - would substituting float work?
-;;(define-func gtk_preview_set_gamma
-;;  none
-;;  ((double gamma)))
+(define-func gtk_preview_set_gamma
+  none
+  ((double gamma)))
 
 (define-func gtk_preview_set_color_cube 
   none
@@ -2853,7 +2925,6 @@
    (uint ngreen_shades)
    (uint nblue_shades)
    (uint ngray_shades)))
-
 
 (define-func gtk_preview_set_install_cmap
   none
@@ -2897,6 +2968,11 @@
 (define-func gtk_file_selection_get_filename
   static_string
   ((GtkFileSelection filesel)))
+
+(define-func gtk_file_selection_complete
+  none
+  ((GtkFileSelection filesel)
+   (string pattern)))
 
 (define-func gtk_file_selection_show_fileop_buttons
   none
