@@ -1,3 +1,9 @@
+2000-04-17  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gnomeui.defs (gnome_stock_pixmap_widget,
+	gnome_stock_pixmap_widget_at_size): made window argument
+	null-ok
+
 2000-04-16  John Harper  <john@dcs.warwick.ac.uk>
 
 	Added support for using libglade with GNOME widgets
