@@ -1,3 +1,9 @@
+1999-10-29  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk-1.2.defs (gtk_widget_lock_accelerators,
+	gtk_widget_unlock_accelerators,
+	gtk_widget_accelerators_locked): new function definitions
+
 1999-10-24  John Harper  <john@dcs.warwick.ac.uk>
 
 	* version 0.5
