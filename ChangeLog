@@ -1,3 +1,7 @@
+1999-08-16  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.2
+
 1999-08-15  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gtk-1.2.defs (gtk_clist_moveto): the row_align and
