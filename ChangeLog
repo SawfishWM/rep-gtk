@@ -1,3 +1,7 @@
+2000-12-04  John Harper  <jsh@eazel.com>
+
+	* configure.in: version 0.15
+
 2000-11-25  John Harper  <jsh@eazel.com>
 
 	* gtk.defs (gtk_window_set_transient_for): marked that PARENT
