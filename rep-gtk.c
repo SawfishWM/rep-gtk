@@ -1561,7 +1561,7 @@ sgtk_cvec_finish (sgtk_cvec *cvec, repv obj, repv (*toscm)(void *), size_t sz)
 }
 
 repv
-sgtk_cvec2scm (sgtk_cvec *cvec, repv (*toscm)(void *), size_t sz)
+sgtk_cvec_to_rep (sgtk_cvec *cvec, repv (*toscm)(void *), size_t sz)
 {
     int len = cvec->count, i;
     repv obj = Fmake_vector (rep_MAKE_INT(len), Qnil);
@@ -2456,7 +2456,7 @@ sgtk_set_standalone (int flag)
 }
 
 int
-sgtk_is_standalone ()
+sgtk_is_standalone (void)
 {
   return standalone_p;
 }
@@ -2590,7 +2590,7 @@ make_argv (repv list, int *argc, char ***argv)
 }
 
 void
-sgtk_init ()
+sgtk_init (void)
 {
   int argc;
   char **argv;
@@ -2619,6 +2619,8 @@ sgtk_init ()
 
 
 /* DL hooks */
+
+extern void sgtk_init_gtk_gtk_glue (void);
 
 repv
 rep_dl_init (void)

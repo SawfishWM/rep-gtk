@@ -2,7 +2,7 @@
 
 This is rep-gtk 0.0, a binding of GTK+ for my rep Lisp interpreter. It
 is based on Marius Vollmer's guile-gtk package (initially version
-0.15, updated to 0.16), with a new glue-code generator.
+0.15, updated to 0.17), with a new glue-code generator.
 
 For more details see:
 

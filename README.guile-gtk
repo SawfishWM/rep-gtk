@@ -1,32 +1,51 @@
-README for guile-gtk version 0.15
-*********************************
+README for guile-gtk preliminary version 0.17
+*********************************************
 
-This is some glue code to make Gtk accessible from Guile.  New
-versions of this package will be available from
+This is some glue code to make Gtk accessible from Guile so it provides
+a convenient interface for Scheme programmers to develop visual
+applications. It can optionally integrate with GNOME via the Gnome-guile
+module.
+
+Guile-gtk was started by Marius Vollmer <mvo@zagadka.ping.de> and is
+currently mantained by Ariel Rios<jarios@usa.net> and other intrepid Guile
+hackers around the world.
+
+Guile-gtk is free software licensed under the GPL.
+
+New versions of this package will be available from
 
     http://www.ping.de/sites/zagadka/guile-gtk/
+or in one of the mirrors:
+    http://erin.netpedia.net/guile-gtk/       		(USA)
+    http://erin.linuxbox.com/guile-gtk/       		(USA)
+    http://linux.cem.itesm.mx/~jarios/guile-gtk/        (MEXICO)
 
 You can also get at the most recent development sources thru the Gnome
 CVS repository.  Guile-gtk is contained in the gnome-guile module.
 See www.gnome.org for details.
 
-I tried hard to make this as generic as possible.  As a result, it
-should be easy to extend it to new widgets and other Gtk extensions.
+Guile-gtk was made with the idea of making it as generic as possible.
+As a result, it should be easy to extend it to new widgets and other Gtk
+extensions.
+
 It might even be possible to use some of this code for wrapping
-completely different C libraries, but that was not my goal.
+completely different C libraries, but that was not the goal.
 
 To somewhat unify the different high-level language bindings (such as
-the ones for Perl, Python, Objective C, maybe Java, etc.) I tried to
-collect the salient bits of the Gtk API into a formal description.
+the ones for Perl, Python, Objective C, maybe Java, etc.) Marius
+Vollmer tried to collect the salient bits of the Gtk API into a formal
+description.
+
 You should be able to generate large parts of the language specific
 glue code from it.  Unfortunately, this formal description hasn't
-stabilized yet and I'm currently more interested in completeness than
+stabilized yet and we are currently more interested in completeness than
 in generality.
 
    Table of Contents
 
    - Acknowledgements
    - Bugs
+   - Mailing List
    - Gtk versions
    - Related stuff
    - Package contents   
@@ -48,14 +67,22 @@ of them!  Please refer to the ChangeLog for details.
 Bugs
 ----
 
-My main aim still is robustness, with an eye towards completeness.  It
+The main aim still is robustness, with an eye towards completeness.  It
 should not be possible to crash your program from Scheme.  Guile-gtk
 has to cope with anything.  So if you find that your program crashes
 and you think it is due to a bug in your Scheme code, you have
 actually found a bug in guile-gtk or Gtk.
 
-Please report these bugs to me <mvo@zagadka.ping.de>.
+Please report these bugs to the current maintainer,Ariel Rios,
+<jarios@usa.net> or to the mailing list <guile-gtk@sourceware.cygnus.com>
 
+Mailing List
+------------
+To subscribe to the list send mail to:
+<guile-gtk-subscribe@sourceware.cygnus.com>
+
+To post messages please write to:
+<guile-gtk@sourceware.cygnus.com>
 
 Gtk Versions
 ------------
@@ -124,6 +151,8 @@ line programs with too many options a nice GUI.  Available here
 
      http://www.cs.purdue.edu/homes/lutterdc/software/wickel.html
 
+There is also a list of applications developed using guile-gtk in:
+     http://erin.netpedia.net/guile-gtk/apps.html
 
 Package Contents
 ----------------
@@ -355,12 +384,13 @@ and vice versa.
 Composite types have modes associated with them.  They can be `in',
 `out', or `inout'.  When a composite type is marked with a `in' mode,
 the Gtk+ side is not allowed to make changes to the contents of the
-composite.  When it is `out', it may change the contents but may not
-read it before it has been written to.  Consequently, mode `inout'
-indicates that the Gtk+ side may both read and write the composite
-freely.  On the Scheme side, mode `out' turns off type checking for
-the contents of composites and the initial values of the composite
-passed to Gtk+ will be undefined.
+composite.  When it is `out', it must initialize the contents before
+it returns and is not allowed to read it prior to initialization.
+Consequently, mode `inout' indicates that the Gtk+ side may both read
+and write the composite freely, and that the contents has been
+initialized by the caller.  On the Scheme side, mode `out' turns off
+type checking for the contents of composites and the initial values of
+the composite passed to Gtk+ will be undefined.
 
 The default mode is `in'.
 
@@ -501,3 +531,6 @@ it is currently the only place that documents most details.
 Gtk programming.  It is more an example about extensibility.
 
 Have fun!
+
+Marius Vollmer
+Ariel Rios

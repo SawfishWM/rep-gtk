@@ -74,6 +74,9 @@ typedef struct _sgtk_object_info {
 
 void sgtk_register_type_infos (sgtk_type_info **infos);
 sgtk_type_info *sgtk_get_type_info (guint type_seqno);
+void sgtk_register_type_infos_gtk (GtkTypeInfo **infos);
+sgtk_type_info* sgtk_maybe_find_type_info (GtkType type);
+sgtk_type_info *sgtk_find_type_info (GtkType type);
 
 int sgtk_valid_int (repv obj);
 int sgtk_valid_uint (repv obj);
@@ -133,6 +136,7 @@ int sgtk_valid_rect (repv obj);
 GdkRectangle sgtk_rep_to_rect (repv obj);
 repv sgtk_rect_to_rep (GdkRectangle p);
 
+GtkType sgtk_type_from_name (char *name);
 int sgtk_valid_type (repv obj);
 GtkType sgtk_rep_to_type (repv obj);
 repv sgtk_type_to_rep (GtkType t);
@@ -155,6 +159,7 @@ typedef struct {
 
 sgtk_cvec sgtk_rep_to_cvec (repv obj, void (*fromrep)(repv, void*), size_t sz);
 void sgtk_cvec_finish (sgtk_cvec *, repv obj, repv (*torep)(void*), size_t sz);
+repv sgtk_cvec_to_rep (sgtk_cvec *cvec, repv (*toscm)(void *), size_t sz);
 
 typedef struct sgtk_protshell sgtk_protshell;
 
@@ -183,10 +188,10 @@ repv sgtk_color_conversion (repv color);
 repv sgtk_font_conversion (repv color);
 
 void sgtk_set_standalone (int flag);
-int sgtk_is_standalone ();
-repv sgtk_standalone_p ();
+int sgtk_is_standalone (void);
+repv sgtk_standalone_p (void);
 
-void sgtk_init ();
+void sgtk_init (void);
 void sgtk_init_with_args (int *argcp, char ***argvp);
 
 /* Additional useful Gdk routines. */

@@ -14,3 +14,6 @@ TODO
 
  * [sup]port the GNOME bindings
 
+ * implement `output-cvec-to-rep' in build-gtk.jl, support is in
+   rep-gtk.c now
+

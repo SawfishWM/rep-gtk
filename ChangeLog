@@ -1,5 +1,12 @@
 1999-12-17  John Harper  <john@dcs.warwick.ac.uk>
 
+	* rep-gtk.c: merged diffs from guile-gtk 0.16->0.17; most
+	notably this maintains protection over data associated with
+	gc'd proxies. Also adds support for GdkRectangle types
+
+	* build-gtk.jl, libglade-support.c: c-type of `full-callback'
+	is now `sgtk_protshell*' not `repv'
+
 	* Makefile.in: add "rep_requires='gtk'" to the libglade .la
 	file to cause gtk to automagically get loaded first
 
