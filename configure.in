@@ -26,6 +26,9 @@ AC_CONFIG_HEADER(config.h)
 dnl Release versioning info
 version="0.7"
 
+OUT=libgtk.la
+AC_SUBST(OUT)
+
 dnl Find the system type; this isn't crucial
 AC_CANONICAL_HOST
 
@@ -49,6 +52,9 @@ AM_PATH_REP(0.8)
 
 dnl Check for GTK
 AM_PATH_GTK(1.2.0,,AC_ERROR(need at least Gtk+ version 1.2))
+
+dnl Check for libglade
+AM_PATH_LIBGLADE([OUT="$OUT liblibglade.la"])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

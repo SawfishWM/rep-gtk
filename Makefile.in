@@ -8,7 +8,10 @@ RDEFS= $(DEFS:.defs=.defs.jl)
 SRCS = rep-gtk.c gtk-support.c gtk-compat.c gdk-glue.c gtk-glue.c
 OBJS = $(SRCS:.c=.lo)
 
-OUT  = libgtk.la
+GLADE_SRCS = libglade-support.c libglade-glue.c
+GLADE_OBJS = $(GLADE_SRCS:.c=.lo)
+
+OUT = @OUT@
 
 version=@version@
 host_type=@host@
@@ -22,8 +25,9 @@ CPPFLAGS=@CPPFLAGS@
 CFLAGS=@CFLAGS@
 LDFLAGS=@LDFLAGS@
 override CPPFLAGS += -DHAVE_CONFIG_H -I.
-override CFLAGS += @GTK_CFLAGS@ @REP_CFLAGS@
-LIBS=@GTK_LIBS@ @REP_LIBS@ @LIBS@
+override CFLAGS += @GTK_CFLAGS@ @REP_CFLAGS@ @LIBGLADE_CFLAGS@
+REP_GTK_LIBS=@GTK_LIBS@ @REP_LIBS@ @LIBS@
+REP_GLADE_LIBS=@LIBGLADE_LIBS@ @REP_LIBS@ @LIBS@
 
 INSTALL=@INSTALL@
 INSTALL_DATA=@INSTALL_DATA@
@@ -40,10 +44,16 @@ VPATH=@top_srcdir@:.
 
 all : $(OUT)
 
-$(OUT) : $(OBJS)
-	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS)
+libgtk.la : $(OBJS)
+	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GTK_LIBS)
+
+liblibglade.la : $(GLADE_OBJS)
+	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GLADE_LIBS)
 
 %-glue.c : %-1.2.defs.jl $(RDEFS) build-gtk.jlc
+	rep --batch -l build-gtk -f build-gtk-batch $< $@
+
+%-glue.c : %.defs.jl $(RDEFS) build-gtk.jlc
 	rep --batch -l build-gtk -f build-gtk-batch $< $@
 
 %.defs.jl : %.defs
@@ -53,7 +63,10 @@ build-gtk.jlc : build-gtk.jl
 	rep --batch -l compiler -f compile-batch $<
 
 install : all installdirs
-	$(rep_DL_INSTALL) $(OUT) $(DESTDIR)$(installdir)
+	for f in $(OUT); do \
+	  $(rep_DL_INSTALL) $$f $(DESTDIR)$(installdir); \
+	done
+	printf "\n# use RTLD_GLOBAL?\nrep_open_globally=yes\n" >>$(DESTDIR)$(installdir)/libgtk.la
 
 installdirs : $(top_srcdir)/mkinstalldirs
 	$(SHELL) $(top_srcdir)/mkinstalldirs $(DESTDIR)$(installdir)
@@ -62,7 +75,7 @@ uninstall :
 	$(rep_DL_UNINSTALL) $(DESTDIR)$(installdir)/$(OUT)
 
 clean :
-	rm -f *.defs.jl gtk-glue.c *~ core *.jlc *.o *.lo *.la
+	rm -f *.defs.jl *-glue.c *~ core *.jlc *.o *.lo *.la
 	rm -rf .libs
 
 realclean : clean
