@@ -876,7 +876,7 @@ static sgtk_boxed_proxy *all_boxed;
 
 static long tc16_boxed;
 
-#define BOXED_P(x)     (rep_CELL16_TYPEP(x, tc16_boxed))
+#define BOXED_P(x)     (rep_CELL16_TYPEP(x, tc16_boxed))
 #define BOXED_PROXY(x) ((sgtk_boxed_proxy *)rep_PTR(x))
 #define BOXED_SEQNO(x) (BOXED_PROXY(x)->seqno)
 #define BOXED_PTR(x)   (BOXED_PROXY(x)->ptr)
