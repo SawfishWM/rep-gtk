@@ -435,6 +435,10 @@
   none
   ((GtkWidget widget)))
 
+(define-func gtk_widget_draw_interp
+  none
+  ((GtkWidget widget)))
+
 ;;(define-func gtk_widget_install_accelerator
 ;;  none
 ;;  ((GtkWidget widget)
@@ -2719,12 +2723,25 @@
    (int width)
    (int height)))
 
-;; XXX - needs GdkGC
-;; (define-func gtk_preview_put)
-;; (define-funct gtk_preview_put_row)
+(define-func gtk_preview_put
+  none
+  ((GtkPreview preview)
+   (GdkWindow window)
+   (GdkGC gc)
+   (int srcx)
+   (int srcy)
+   (int destx)
+   (int desty)
+   (int width)
+   (int height)))
 
-;; XXX - not sure what to do for the data
-;; (define-func gtk_preview_draw_row)
+(define-func gtk_preview_draw_row
+  none
+  ((GtkPreview preview)
+   (string data)
+   (int x)
+   (int y)
+   (int w)))
 
 (define-func gtk_preview_set_expand
   none
