@@ -2470,11 +2470,26 @@ sgtk_event_loop (void)
 {
     while (1)
     {
+#if rep_INTERFACE >= 8
+	rep_bool threaded = rep_INT (Fthread_queue_length (Qnil)) > 0;
+#endif
 	if (rep_redisplay_fun != 0)
 	    (*rep_redisplay_fun)();
 
 	reset_idle_timeout ();
+
+#if rep_INTERFACE >= 8
+	if (threaded)
+	{
+	    while (gtk_events_pending ())
+		gtk_main_iteration_do (FALSE);
+	    Fthread_yield ();
+	}
+	else
+	    gtk_main ();
+#else
 	gtk_main ();
+#endif
 
 	rep_proc_periodically ();
 
