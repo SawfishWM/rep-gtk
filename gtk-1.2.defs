@@ -973,8 +973,8 @@
   ((GtkCList clist)
    (int row)
    (int column)
-   (float row_align)
-   (float column_align)))
+   (float row_align (= "0.5"))
+   (float column_align (= "0.5"))))
 
 
 (define-func gtk_clist_row_is_visible
