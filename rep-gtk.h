@@ -161,6 +161,7 @@ void sgtk_callback_marshal (GtkObject *,
 			    GtkArg *args);
 void sgtk_callback_destroy (gpointer data);
 repv sgtk_callback_trampoline (repv new_trampoline);
+void sgtk_callback_postfix (void);
 
 int sgtk_valid_arg (GtkArg *, repv val);
 repv sgtk_arg_to_rep (GtkArg *a, int free_mem);

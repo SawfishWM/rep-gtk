@@ -1,3 +1,33 @@
+1999-03-23  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (sgtk_callback_marshal): pass the object invoking
+	the callback as the first argument to the function
+	(Fgtk_callback_trampoline): now a Lisp DEFUN
+	(sgtk_register_input_fd, sgtk_deregister_input_fd): hooks for
+	librep input handling
+	(sgtk_callback_postfix): should be called after any callback
+	that might invoke lisp code, handles catch/throw and redisplay
+	(sgtk_event_loop): handles the librep one-second idle timeouts,
+	and calls the rep_proc_periodically function to reap
+	subprocesses
+	(sgtk_sigchld_callback): new function, calls gtk_main_quit so
+	that the sgtk_event_loop is entered and the process can be
+	collected
+	(Fgtk_standalone_p): now a Lisp DEFUN
+	(sgtk_init_with_args): set standalone to false if gtk_init was
+	called before we tried to
+	(rep_dl_init): set rep_dl_feature to `gtk'
+
+	* build-gtk.jl: outputs field accessor functions, for TYPE and
+	FIELD, these will be called `TYPE-FIELD', and `TYPE-FIELD-set'
+	(if the field is settable), for example `gtk-widget-style'
+
+	* gtk-1.2.defs: added the `parent' field to GtkWidget
+
+	* configure.in: add some warning options if using GNU CC
+
+	* examples/hello.jl, examples/clist.jl: cleaned up
+
 1999-03-19  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c: hijack the rep event loop and input registering

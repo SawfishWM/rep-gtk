@@ -31,7 +31,9 @@ where each ATTR is one of:
       (size "C sizeof expression")
       (fields FIELD ...)
 
-      where each FIELD is (TYPE-SYM NAME-SYM)
+      where each FIELD is (TYPE-SYM NAME-SYM OPTIONS...)
+      each OPTION may be `(setter t)' denoting that the field
+      is settable
 
 
 
@@ -61,6 +63,7 @@ and each OPTION may be one of:
 and each ARG-OPTION may be one of:
 
   (= "default expression")
+  (null-ok)				; allow nil
 
 and each RET-OPTION may be one of:
 
