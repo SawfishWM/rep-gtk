@@ -1,3 +1,8 @@
+2002-02-13  Sander Vesik <Sander.Vesik@sun.com>
+
+	* gtk-compat.c: update menu_popup_position to reflect API
+	change in gtk+
+
 2002-02-12  John Harper  <jsh@unfactored.org>
 
 	Status: gtk mostly all ported except for Tree classes. Removed

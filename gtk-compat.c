@@ -16,7 +16,7 @@ gtk_label_get_interp (GtkLabel *label)
 /* cheap cop-out. */
 
 static void
-menu_popup_position (GtkMenu *menu, gint *xp, gint *yp, gpointer data)
+menu_popup_position (GtkMenu *menu, gint *xp, gint *yp, gboolean *p, gpointer data)
 {
     gulong coded = (gulong) data;
     gint x = coded & 0xffff;
