@@ -1,3 +1,8 @@
+1999-05-19  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c: should have solved the SIGCHLD problem under Linux
+	now (turned out to be a bug in gdm)
+
 1999-04-28  John Harper  <john@dcs.warwick.ac.uk>
 
 	* build-gtk.jl: some fixes, support null helper_valid functions
