@@ -1,16 +1,12 @@
 
-%define nam	rep-gtk
-%define ver	@version@
-%define rel	1
-
+Name: rep-gtk
+Version: @version@
+Release: 1
 Summary: GTK+ binding for librep Lisp environment
-Name: %{nam}
-Version: %{ver}
-Release: %{rel}
 Requires: librep >= 0.11, gtk+ >= 1.2
 Copyright: GPL
 Group: Development/Languages
-Source: ftp.dcs.warwick.ac.uk:/people/John.Harper/librep/rep-gtk-%{ver}.tar.gz
+Source: ftp.dcs.warwick.ac.uk:/people/John.Harper/librep/rep-gtk-%{version}.tar.gz
 URL: http://www.dcs.warwick.ac.uk/~john/sw/rep-gtk.html
 Packager: John Harper <john@dcs.warwick.ac.uk>
 Buildroot: /var/tmp/%{name}-root
@@ -24,7 +20,7 @@ to 0.17), with a new glue-code generator.
 %package libglade
 Summary: librep binding for the libglade library for loading user interfaces.
 Group: Development/Languages
-Requires: %{nam}, libglade
+Requires: %{name}, libglade
 
 %description libglade
 This is a binding of libglade for the librep Lisp interpreter. libglade
@@ -34,7 +30,7 @@ hierarchies. These hierarchies may be created by the GLADE GUI builder.
 %package gnome
 Summary: GNOME binding for librep
 Group: Development/Languages
-Requires: %{nam}, gnome-libs, libglade
+Requires: %{name}, gnome-libs, libglade
 
 %description gnome
 This is a binding of the various GNOME libraries for the librep Lisp
