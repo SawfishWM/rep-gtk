@@ -1,3 +1,8 @@
+2000-01-11  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (sgtk_init_with_args): call gtk_set_locale ()
+	before gtk_init ()
+
 2000-01-09  John Harper  <john@dcs.warwick.ac.uk>
 
 	* version 0.8
