@@ -1373,7 +1373,7 @@
 (define-func gtk_window_set_transient_for
   none
   ((GtkWindow window)
-   (GtkWindow parent)))
+   (GtkWindow parent (null-ok))))
 
 (define-func gtk_window_set_default_size
   none
