@@ -1,3 +1,8 @@
+2000-03-08  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (timeout_callback): set timed_out even if not going
+	to break out of gtk-main
+
 2000-03-06  John Harper  <john@dcs.warwick.ac.uk>
 
 	* version 0.9.1
