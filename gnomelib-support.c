@@ -8,7 +8,7 @@
 #include "rep-gnome.h"
 #include <string.h>
 
-DEFSYM(gnome, "gnome");
+DEFSYM(gnomelib, "gnomelib");
 
 
 /* metadata */
@@ -82,6 +82,6 @@ repv
 rep_dl_init (void)
 {
     sgtk_gnome_init_gnome_glue ();
-    rep_INTERN(gnome);
-    return Qgnome;
+    rep_INTERN(gnomelib);
+    return Qgnomelib;
 }
