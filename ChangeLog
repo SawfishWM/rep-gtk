@@ -1,3 +1,18 @@
+1999-12-18  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-ui.glade, rep-ui: example of using libglade with rep--a
+	simple lisp front end
+
+	* rep-gtk.c (make_gtkobj): don't add the proxy to its list of
+	protects, we'll mark it manually
+	(gtkobj_marker_hook): mark the proxy when it's referenced; mark
+	its protects _always_ (since they're added to the globally
+	protected data if the proxy is freed)
+
+	* rep-gtk.c (sgtk_proxy_object): remove the prevp field which I
+	had erroneously copied from the 0.17 diffs (I rejected it the
+	first time for a reason)
+
 1999-12-17  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c: merged diffs from guile-gtk 0.16->0.17; most

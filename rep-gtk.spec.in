@@ -51,6 +51,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libglade
 %doc libglade.defs examples/test-libglade examples/simple.glade
+%doc examples/rep-ui examples/rep-ui.glade
 %{_prefix}/libexec/rep/%{_host}/libglade.so*
 %{_prefix}/libexec/rep/%{_host}/libglade.la
 
