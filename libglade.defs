@@ -4,14 +4,15 @@
 
 (define-object GladeXML (GtkData)
   (fields
-   (string filename)
-   (string textdomain (getter sgtk_glade_xml_textdomain))))
+   (string filename)))
 
 (define-func glade_xml_new
   GladeXML
   ((string fname)
-   (string root (null-ok))))
+   (string root (null-ok))
+   (string domain (null-ok))))
 
+;; deprecated
 (define-func glade_xml_new_with_domain
   GladeXML
   ((string fname)
@@ -49,21 +50,12 @@
   ((GladeXML self)
    (string name)))
 
-(define-func glade_xml_get_widget_by_long_name
-  GtkWidget
-  ((GladeXML self)
-   (string longname)))
-
 (define-func glade_xml_relative_file
   string
   ((GladeXML self)
    (string filename)))
 
 (define-func glade_get_widget_name
-  static_string
-  ((GtkWidget widget)))
-
-(define-func glade_get_widget_long_name
   static_string
   ((GtkWidget widget)))
 

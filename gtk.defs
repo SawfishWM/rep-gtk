@@ -7,7 +7,9 @@
 
 (define-enum GtkWindowType
   (toplevel GTK_WINDOW_TOPLEVEL)
-  (popup GTK_WINDOW_POPUP))
+  (popup GTK_WINDOW_POPUP)
+  ;; compat with gtk 1..
+  (dialog GTK_WINDOW_POPUP))
 
 (define-enum GtkStateType
   (normal GTK_STATE_NORMAL)

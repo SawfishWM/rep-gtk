@@ -122,7 +122,7 @@ typedef struct _type_infos {
 static type_infos *all_type_infos;
 
 /* Find types that are mentioned in our *.defs files but are not
-   provided by the Gtk run-time system.  This is only used
+   provided by the GLib run-time system.  This is only used
    occasionally to update the table in sgtk_try_missing_type.  */
 #ifdef NEED_UNUSED_CODE
 static void
@@ -269,7 +269,7 @@ sgtk_find_type_info (GType type)
   if (info)
     return info;
 
-  fprintf (stderr, "unknown type `%s'.\n", gtk_type_name (type));
+  fprintf (stderr, "unknown type `%s'.\n", g_type_name (type));
   abort ();
 }
 
@@ -506,17 +506,12 @@ gobj_print (repv stream, repv obj)
     char buf[32];
   sgtk_object_proxy *proxy = GOBJ_PROXY (obj);
   GType tid = G_OBJECT_TYPE (proxy->obj);
-  const char *type = gtk_type_name (tid);
+  const char *type = g_type_name (tid);
   rep_stream_puts (stream, "#<", -1, rep_FALSE);
-  rep_stream_puts (stream, type ? (char *) type : "Gtk???", -1, rep_FALSE);
+  rep_stream_puts (stream, type ? (char *) type : "<unknown GObject>", -1, rep_FALSE);
   rep_stream_puts (stream, " ", -1, rep_FALSE);
-  if (GTK_IS_OBJECT (proxy->obj) && GTK_OBJECT_DESTROYED (proxy->obj))
-      rep_stream_puts (stream, "destroyed", -1, rep_FALSE);
-  else
-  {
-      sprintf (buf, "%lx", (long)proxy->obj);
-      rep_stream_puts (stream, buf, -1, rep_FALSE);
-  }
+  sprintf (buf, "%lx", (long)proxy->obj);
+  rep_stream_puts (stream, buf, -1, rep_FALSE);
   rep_stream_putc (stream, '>');
 }
 
@@ -572,7 +567,7 @@ count_traced_ref (GObject *obj, void *data)
       sgtk_object_proxy *proxy = GOBJ_PROXY (p);
 #ifdef DEBUG_PRINT
       fprintf (stderr, "counting %p %s\n",
-	       proxy->obj, gtk_type_name (GTK_OBJECT_TYPE (proxy->obj)));
+	       proxy->obj, g_type_name (G_OBJECT_TYPE (proxy->obj)));
 #endif
       proxy->traced_refs++;
     }
@@ -647,6 +642,9 @@ make_gobj (GObject *obj)
       gtk_object_ref (GTK_OBJECT (obj));
       gtk_object_sink (GTK_OBJECT (obj));
     }
+  else
+    g_object_ref (obj);			/* XXX ref may leak? */
+	  
 #ifdef DEBUG_PRINT
   fprintf (stderr, "New proxy %p for %p %s\n", proxy, obj,
 	   g_type_name (G_OBJECT_TYPE (obj)));
@@ -683,10 +681,7 @@ sgtk_wrap_gobj (GObject *obj)
 int
 sgtk_is_a_gobj (guint type, repv obj)
 {
-  if (!GOBJP (obj)
-      || !G_IS_OBJECT (GOBJ_PROXY(obj)->obj)
-      || (GTK_IS_OBJECT (GOBJ_PROXY(obj)->obj)
-	  && GTK_OBJECT_DESTROYED (GOBJ_PROXY(obj)->obj)))
+  if (!GOBJP (obj) || !G_IS_OBJECT (GOBJ_PROXY(obj)->obj))
     {
       return 0;
     }
@@ -901,7 +896,7 @@ sgtk_rep_to_senum (repv obj, sgtk_senum_info *info)
 
 /* Boxed Values.
 
-   I'm trying to use the same hash table approach as with the gtkobj's,
+   I'm trying to use the same hash table approach as with the gobj's,
    but without such complex gc tracing. I'm hoping that the `opaqueness'
    of the boxed types preclude any internal pointers..  --jsh
 
@@ -1265,8 +1260,7 @@ sgtk_gvalue_to_rep (const GValue *a)
     case G_TYPE_OBJECT:
       return sgtk_wrap_gtkobj (g_value_get_object (a));
     default:
-      fprintf (stderr, "illegal type %s in arg\n", 
-	       gtk_type_name (a->g_type));
+      fprintf (stderr, "illegal type %s in arg\n", g_type_name (a->g_type));
       return Qnil;
     }
 }
@@ -1308,7 +1302,7 @@ sgtk_valid_gvalue (const GValue *a, repv obj)
     case G_TYPE_OBJECT:
       return sgtk_is_a_gtkobj (a->g_type, obj);
     default:
-      fprintf (stderr, "unhandled arg type %s\n", gtk_type_name (a->g_type));
+      fprintf (stderr, "unhandled arg type %s\n", g_type_name (a->g_type));
       return FALSE;
     }
 }
@@ -1368,7 +1362,7 @@ sgtk_rep_to_gvalue (GValue *a, repv obj)
       g_value_set_object (a, sgtk_get_gobj (obj));
       break;
     default:
-      fprintf (stderr, "unhandled arg type %s\n", gtk_type_name (a->g_type));
+      fprintf (stderr, "unhandled arg type %s\n", g_type_name (a->g_type));
       break;
     }
 }

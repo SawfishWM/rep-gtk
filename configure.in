@@ -91,28 +91,6 @@ if test "$with_libglade" = "yes"; then
 		    [OUT="$OUT gtk/libglade.la"])
 fi
 
-#if test "$with_libglade" = "yes" -a "$with_gnome" = "yes"; then
-#  AC_MSG_CHECKING([for libglade GNOME support])
-#  if $LIBGLADE_CONFIG --check gnome; then
-#    AC_MSG_RESULT(yes)
-#    GNOME_LIBGLADE_CFLAGS=`$LIBGLADE_CONFIG --cflags gnome`
-#    GNOME_LIBGLADE_LIBS=`$LIBGLADE_CONFIG --libs gnome`
-#    AC_SUBST(GNOME_LIBGLADE_LIBS)
-#    AC_SUBST(GNOME_LIBGLADE_CFLAGS)
-#    AC_MSG_CHECKING([whether <glade/glade-xml.h> has "txtdomain" field])
-#    _cppflags=${CPPFLAGS}
-#    CPPFLAGS="${CPPFLAGS} ${LIBGLADE_CFLAGS}"
-#    AC_EGREP_HEADER([char \*txtdomain;], [glade/glade-xml.h],
-#		    [AC_MSG_RESULT(yes)
-#		     AC_DEFINE(LIBGLADE_XML_TXTDOMAIN,1)],
-#		    [AC_MSG_RESULT(no)])
-#    CPPFLAGS="${_cppflags}"
-#    OUT="$OUT gnome/libglade.la"
-#  else
-#    AC_MSG_ERROR([libglade wasn't compiled with GNOME support])
-#  fi
-#fi
-
 AC_ARG_WITH(gdk-pixbuf,
  [  --with-gdk-pixbuf	  Build gdk-pixbuf wrappers],
  [], [with_gdk_pixbuf=maybe])

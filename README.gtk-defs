@@ -69,7 +69,7 @@ and each ARG-OPTION may be one of:
 
 and each RET-OPTION may be one of:
 
-  (copy nil)
+  (copy nil)				; unimplemented?
 
 
 

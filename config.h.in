@@ -15,9 +15,6 @@
 /* Define if you have the m library (-lm).  */
 #undef HAVE_LIBM
 
-/* Define if <glade/glade-xml.h> has `txtdomain' not `textdomain' field */
-#undef LIBGLADE_XML_TXTDOMAIN
-
 #undef REP_GTK_VERSION
 
 /* Define if you have the <locale.h> header file.  */
