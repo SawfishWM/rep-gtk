@@ -1,3 +1,17 @@
+2001-11-17  John Harper  <jsh@unfactored.org>
+
+	* rep-gtk.h, rep-gtk.c, gtk.defs, glib.defs, gdk.defs,
+	build-gtk.jl, Makefile.in:
+
+	More porting. Use GType[Info] and GObject almost wholly instead
+	of GtkType[Info] and GtkObject now
+
+	Also reinstated the full-callback calling mechanism since lots
+	of Gtk functions use it and don't provide closured variants..
+
+	Biggest task left is to support the GParam stuff for
+	constructing and modifying GObjects.
+
 2001-11-16  John Harper  <jsh@unfactored.org>
 
 	* rep-gtk.h, rep-gtk.c, rep-gnome.h, gtk.defs, gtk-support.c,

@@ -78,9 +78,9 @@ typedef struct _sgtk_object_info {
 
 void sgtk_register_type_infos (sgtk_type_info **infos);
 sgtk_type_info *sgtk_get_type_info (guint type_seqno);
-void sgtk_register_type_infos_gtk (GtkTypeInfo **infos);
+void sgtk_register_type_infos_gtk (GTypeInfo **infos);
 sgtk_type_info* sgtk_maybe_find_type_info (GType type);
-sgtk_type_info *sgtk_find_type_info (GtkType type);
+sgtk_type_info *sgtk_find_type_info (GType type);
 
 int sgtk_valid_int (repv obj);
 int sgtk_valid_uint (repv obj);
@@ -186,11 +186,20 @@ sgtk_protshell *sgtk_protect (repv protector, repv obj);
 void sgtk_unprotect (sgtk_protshell *);
 repv sgtk_get_protect (sgtk_protshell *prot);
 
-void sgtk_callback_marshal (GClosure *closure,
-			    GValue *return_value,
-			    guint n_param_values, const GValue *param_values,
-			    gpointer invocation_hint, gpointer marshal_data);
-void sgtk_callback_destroy (gpointer data, GClosure *closure);
+void sgtk_gclosure_callback_marshal (GClosure *closure,
+				     GValue *return_value,
+				     guint n_param_values,
+				     const GValue *param_values,
+				     gpointer invocation_hint,
+				     gpointer marshal_data);
+void sgtk_gclosure_callback_destroy (gpointer data, GClosure *closure);
+
+void sgtk_callback_marshal (GtkObject *obj,
+			    gpointer data,
+			    guint n_args,
+			    GtkArg *args);
+void sgtk_callback_destroy (gpointer data);
+
 repv sgtk_callback_trampoline (repv new_trampoline);
 void sgtk_callback_postfix (void);
 

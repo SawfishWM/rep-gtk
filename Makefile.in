@@ -5,7 +5,7 @@
 SGTK_SRCS = rep-types.c
 SGTK_OBJS = $(SGTK_SRCS:.c=.lo)
 
-SRCS = rep-gtk.c gtk-support.c gtk-compat.c gdk-glue.c gtk-glue.c
+SRCS = rep-gtk.c gtk-support.c gtk-compat.c glib-glue.c gdk-glue.c gtk-glue.c
 OBJS = $(SRCS:.c=.lo)
 
 LIBGLADE_SRCS = libglade-support.c libglade-glue.c

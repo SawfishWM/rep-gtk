@@ -2,6 +2,7 @@
 
 ;;; Gtk enums
 
+(import "glib.defs")
 (import "gdk.defs")
 
 (define-enum GtkWindowType
@@ -372,7 +373,7 @@
 
 ;; GtkObject
 
-(define-object GtkObject ())
+(define-object GtkObject (GObject))
 
 (define-func gtk_object_destroy
   none
@@ -3528,4 +3529,5 @@
 (options
  (includes "#define GTK_ENABLE_BROKEN\n#include <gtk/gtk.h>")
  (init-func "sgtk_init_gtk_gtk_glue")
+ (other-inits "sgtk_init_gtk_glib_glue")
  (other-inits "sgtk_init_gtk_gdk_glue"))

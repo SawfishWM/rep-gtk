@@ -1,0 +1,15 @@
+;; -*- scheme -*-
+
+;;; GLib defs
+
+;(define-object GObject ())
+
+;; Options
+
+(options
+ (includes "#include <glib.h>")
+ (init-func "sgtk_init_gtk_glib_glue")
+ (other-inits "sgtk_init_gtk_gdk_glue")
+ (other-inits "sgtk_init_gtk_gtk_glue"))
+
+
