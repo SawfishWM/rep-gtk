@@ -26,6 +26,10 @@
 #include <string.h>
 #include <limits.h>
 
+#ifdef HAVE_LOCALE_H
+# include <locale.h>
+#endif
+
 /* Define this to enable some output during GC and other interesting
    actions. */
 #undef DEBUG_PRINT
@@ -2170,6 +2174,11 @@ sgtk_init_with_args (int *argcp, char ***argvp)
         {
 	  gtk_set_locale ();
 	  gtk_init (argcp, argvp);
+
+#ifdef HAVE_SETLOCALE
+	  /* XXX remove when no longer needed.. */
+	  setlocale (LC_NUMERIC, "C");
+#endif
         }
     }
 
