@@ -28,6 +28,10 @@
 
 DEFSYM(libglade, "libglade");
 
+#ifndef GLADE_INIT_FUNC
+# define GLADE_INIT_FUNC glade_init
+#endif
+
 typedef struct {
     repv func;
 } conn_data;
@@ -99,7 +103,7 @@ rep_dl_init (void)
     repv s;
     char *tem = getenv ("REP_GTK_DONT_INITIALIZE");
     if (tem == 0 || atoi (tem) == 0)
-	glade_init ();
+	GLADE_INIT_FUNC ();
 
 #if rep_INTERFACE >= 9
     s = rep_push_structure ("libglade");
