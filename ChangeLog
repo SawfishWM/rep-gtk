@@ -1,5 +1,7 @@
 1999-09-18  John Harper  <john@dcs.warwick.ac.uk>
 
+	* version 0.4.1
+
 	* Makefile.in: added $(installdir) to help rpm builds
 
 1999-09-12  John Harper  <john@dcs.warwick.ac.uk>
