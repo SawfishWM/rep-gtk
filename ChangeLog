@@ -1,3 +1,8 @@
+1999-08-29  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk-1.2.defs (GtkCheckMenuItem): changed type of `active'
+	field from uint to bool
+
 1999-08-26  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gtk-1.2.defs (GtkCheckMenuItem): define the `active' field
