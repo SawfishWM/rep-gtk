@@ -1,3 +1,8 @@
+1999-10-20  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c: accept long integers for all but character types,
+	create long integers when values are too large
+
 1999-10-03  John Harper  <john@dcs.warwick.ac.uk>
 
 	* version 0.4.2
