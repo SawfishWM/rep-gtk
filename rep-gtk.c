@@ -2283,7 +2283,6 @@ reset_idle_timeout (void)
 void
 sgtk_callback_postfix (void)
 {
-    rep_proc_periodically ();
     if (rep_INTERRUPTP)
 	gtk_main_quit ();
     else if (rep_redisplay_fun != 0)
@@ -2327,13 +2326,6 @@ static void
 sgtk_sigchld_callback (void)
 {
     /* XXX I'm hoping that this is safe to call from a signal handler... */
-
-    /* The other problem is that (as noted in unix_processes.c) SIGCHLD
-       seems to be somewhat unreliable under Linux. I'm probably fucking
-       something up but if the ppid of the parent is 1 (init), then
-       SIGCHLD doesn't arrive!? This is why both the callback_postfix
-       and the timeout_callback call proc_periodically--overkill, but it's
-       the only solution for now... */
 
     gtk_main_quit ();
 }
