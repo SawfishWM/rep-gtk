@@ -10,7 +10,7 @@ Source: http://download.sourceforge.net/rep-gtk/rep-gtk-%{version}.tar.gz
 URL: http://rep-gtk.sourceforge.net/
 Packager: John Harper <john@dcs.warwick.ac.uk>
 Buildroot: /var/tmp/%{name}-root
-BuildPrereq: libglade-devel gnome-libs-devel
+BuildPrereq: libglade-devel gnome-libs-devel gdk-pixbuf-devel
 
 %description
 This is a binding of GTK+ for the librep Lisp interpreter. It is based
@@ -76,6 +76,8 @@ make install \
 %{_libexecdir}/rep/%{_target_platform}/gnome*.la
 %{_libexecdir}/rep/%{_target_platform}/libglade-gnome.so*
 %{_libexecdir}/rep/%{_target_platform}/libglade-gnome.la
+%{_libexecdir}/rep/%{_target_platform}/gdk-pixbuf.so*
+%{_libexecdir}/rep/%{_target_platform}/gdk-pixbuf.la
 
 %changelog
 * Tue Jun 13 2000 John Harper <john@dcs.warwick.ac.uk>

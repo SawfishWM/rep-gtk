@@ -100,6 +100,7 @@ gint sgtk_rep_to_int (repv obj);
 gulong sgtk_rep_to_ulong (repv obj);
 glong sgtk_rep_to_long (repv obj);
 gchar sgtk_rep_to_char (repv obj);
+repv sgtk_char_to_rep (gchar c);
 char *sgtk_rep_to_string (repv obj);
 repv sgtk_string_to_rep (char *x);
 repv sgtk_static_string_to_rep (const char *x);

@@ -1,4 +1,41 @@
+2000-07-05  John Harper  <john@dcs.warwick.ac.uk>
+
+	* examples/canvas-test: connected `delete_event' signal
+
+	* gnomeui.defs (gnome_icon_entry_set_icon): added
+
+	* gnomeui-support.c (sgtk_gnome_init): #if 0 the code to pass
+	options to and from gnome_init (). It's so fucking braindead
+	that on seeing an option it doesn't understand, it terminates
+	the program
+
 2000-07-04  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c: some fixes for arg conversion from repv to
+	GTK_TYPE_POINTER. Kludged type support for GdkPixbuf. Fixed
+	some string-enum stuff
+
+	* build-gtk.jl: support `define-string-enum' form. Added extra
+	global option `(system-init-code STRING)' for code that should
+	only be run when REP_GTK_DONT_INITIALIZE isn't set
+
+	* gdk-pixbuf.defs, gnome-canvas-pixbuf.defs, configure.in,
+	Makefile.in: wrap these two libraries
+
+	* gdk-1.2.defs, gtk-1.2.defs: removed the `-1.2' from the file
+	names
+
+	* gtk.defs: merged a bunch of stuff from guile-gtk HEAD
+
+	* gnomeui.defs: unhid the GnomeStock definitions
+
+	* gnomeui-support.c: always call gnome_init (). Take the app id
+	and version from `*gnome-app-id*' and `*gnome-app-version*',
+	else make something up
+
+	* rep-types.c (sgtk_char_to_rep): new function
+
+	* examples/canvas-pixbuf-test: new test program
 
 	* gnomelib.defs (gnome_mime_nametemplate): deleted, this
 	function has been removed from recent gnome-libs?

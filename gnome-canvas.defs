@@ -1,7 +1,7 @@
 ;; gnome-canvas.defs -- GnomeCanvas API definitions -*- lisp -*-
 ;; $Id$
 
-(import "gtk-1.2.defs")
+(import "gtk.defs")
 
 
 ;; Types
@@ -475,7 +475,7 @@
 ;; gnome-canvas-util
 
 (define-func sgtk_gnome_canvas_points_new
-  (GnomeCanvasPoints (copy #f))
+  (GnomeCanvasPoints (copy nil))
   ((SCM points))
   (scm-name "gnome-canvas-points-new"))
 

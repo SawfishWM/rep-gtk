@@ -1,3 +1,0 @@
-s/#t/t/
-s/#f/nil/
-s/\.defs"/.defs.jl"/

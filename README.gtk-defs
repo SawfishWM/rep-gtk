@@ -56,10 +56,10 @@ and each OPTION may be one of:
 
   (scm-name ACTUAL-NAME-STRING)
   (protection ARG)			; gc protect callback for life of ARG
-  (protection #t)			; gc protect callback always
+  (protection t)			; gc protect callback always
   (protection *result*)			; gc protect for life of RETURN-VALUE
-  (undeferred #t)			; no scm interrupt protection?
-  (rest-arg #t)				; last arg is &rest
+  (undeferred t)			; no scm interrupt protection?
+  (rest-arg t)				; last arg is &rest
 
 and each ARG-OPTION may be one of:
 

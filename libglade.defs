@@ -1,6 +1,6 @@
 ;; -*-lisp-*-
 
-(import "gtk-1.2.defs")
+(import "gtk.defs")
 
 (define-object GladeXML (GtkData)
   (fields

@@ -90,12 +90,16 @@ being used. The dependence tree is something like:
 sgtk-types provides conversions for the basic C types (and GLIB's GList
 and GSList types).
 
-*Note* that before using any `gnomeui' functions, you _must_ call
+If, when `gnomeui' is loaded, the special variables `*gnome-app-id*'
+and `*gnome-app-version*' are bound to strings, then the gnome-init
+function is called automatically with these values.
+
+Otherwise before using any `gnomeui' functions, you _must_ call
 `gnome-init'. Likewise, if using `gnomelib' without `gnomeui', you
 _must_ call `gnomelib-init'
 
 To use libglade with the GNOME widgets, require the `libglade-gnome'
-module instead of `libglade', then remember to call `gnome-init'!
+module instead of `libglade'
 
 
 Caveats
