@@ -2,8 +2,9 @@
 exec rep "$0" "$@"
 !#
 
+(require 'gtk)
+(require 'gnomeui)
 (require 'gnome-canvas)
-(gnome-init "canvas-test" "0")
 
 (let*
     ((app (gnome-app-new "canvas-test" "canvas-test"))

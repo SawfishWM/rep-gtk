@@ -2,8 +2,8 @@
 exec rep "$0" "$@"
 !#
 
+(require 'gtk)
 (require 'gnomeui)
-(gnome-init "test" "0.0")
 
 (let
     ((req (gnome-about-new
