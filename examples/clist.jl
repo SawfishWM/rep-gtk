@@ -2,50 +2,49 @@
 exec rep --batch "$0" "$@"
 !#
 
-(require 'gui.gtk-2.gtk)
+(structure ()
 
-(let*
-    ((titles ["name" "uid" "gid" "passwd" "gecos" "home" "shell"])
-     (window (gtk-window-new 'toplevel))
-     (scrolled-window (gtk-scrolled-window-new))
-     (clist (gtk-clist-new-with-titles titles)))
+    (open rep
+	  rep.system
+	  gui.gtk-2.gtk)
+
+  (define titles ["name" "uid" "gid" "passwd" "gecos" "home" "shell"])
+
+  (define window (gtk-window-new 'toplevel))
+
+  (define scrolled-window (gtk-scrolled-window-new))
+
+  (define clist (gtk-clist-new-with-titles titles))
 
   (gtk-container-add window scrolled-window)
   (gtk-container-add scrolled-window clist)
   (gtk-scrolled-window-set-policy scrolled-window 'automatic 'automatic)
   (gtk-window-set-default-size window 400 200)
-  (g-signal-connect
-   window "delete_event"
-   #'(lambda (w) (if (gtk-standalone-p)
-		     (throw 'quit 0)
-		   (gtk-widget-destroy w))))
 
-  (let
-      ((i 0))
-    (while (< i 10)
-      (gtk-clist-append clist
-			(vector (format nil "record-%d" i)
-				(format nil "field1-%d" i)
-				(format nil "field2-%d" i)
-				(format nil "field3-%d" i)
-				(format nil "field4-%d" i)
-				(format nil "field5-%d" i)
-				(format nil "field6-%d" i)))
-      (setq i (1+ i))))
+  (do ((i 0 (1+ i)))
+      ((= i 10))
+    (gtk-clist-append clist (vector (format nil "record-%d" i)
+				    (format nil "field1-%d" i)
+				    (format nil "field2-%d" i)
+				    (format nil "field3-%d" i)
+				    (format nil "field4-%d" i)
+				    (format nil "field5-%d" i)
+				    (format nil "field6-%d" i))))
 
-  (let
-      ((i 0))
-    (while (< i (length titles))
-      (gtk-clist-set-column-auto-resize clist i t)
-      (setq i (1+ i))))
+  (do ((i 0 (1+ i)))
+      ((= i (length titles)))
+    (gtk-clist-set-column-auto-resize clist i t))
 
-  (g-signal-connect clist "select_row" #'(lambda args
-					   (format standard-error
-						   "select: %S\n" args)))
+  (g-signal-connect window "delete_event" (lambda (w) (throw 'quit 0)))
+
+  (g-signal-connect clist "select_row"
+		    (lambda args
+		      (format standard-error "select: %S\n" args)))
 
   (gtk-widget-show-all window)
-  (when (gtk-standalone-p)
-    (gtk-main)))
+
+  (setq interrupt-mode 'exit)
+  (recursive-edit))
 
 ;; Local variables:
 ;; major-mode: lisp-mode

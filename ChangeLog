@@ -1,5 +1,8 @@
 2002-10-24  John Harper  <jsh@unfactored.org>
 
+	* examples/text.jl, examples/hello.jl, examples/clist.jl:
+	tidied up these examples
+
 	* gdk.defs (GdkSelection): cast items to integers to avoid
 	generating compiler errors on IRIX
 
