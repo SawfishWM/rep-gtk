@@ -26,7 +26,6 @@
 ;; Todo:
 ;;  * make the `import' directive work as in guile-gtk?
 ;;  * doesn't check for `listable' type-property
-;;  * output type predicates for boxed and object types
 ;;
 ;; WARNING: This makes some pretty gruesome assumptions. [where?]
 
@@ -871,14 +870,14 @@
 			  (output-field-accessors
 			   (car def) field output
 			   (car (cdr (assq 'setter (nthcdr 2 field))))))
-		      fields))))
+		      fields))
+	      (output-type-predicate (car def) output)))
 	type-list))
 
 (defun output-field-accessors (datatype field output &optional settable)
   (let*
       ((type (car field))
-       (rdatatype (gtk-canonical-name (symbol-name datatype)))
-       (cdatatype (gtk-unhyphenate-name rdatatype))
+       (cdatatype (gtk-canonical-name (symbol-name datatype)))
        (cfieldname (symbol-name (nth 1 field))))
     (output-function (list (intern (format nil "%s_%s" cdatatype cfieldname))
 			   type (list (list datatype 'obj)))
@@ -893,6 +892,26 @@
 		       output
 		       `(lambda (output)
 			  (@ "  c_obj->%s = c_data;\n" ,cfieldname))))))
+
+(defun output-type-predicate (type output)
+  (let*
+      ((typage (gtk-type-info type))
+       (ctype (gtk-canonical-name (symbol-name type)))
+       (rtype (gtk-hyphenate-name ctype))
+       (pred (gtk-type-pred typage)))
+    (cond ((stringp pred)
+	   (setq pred (format nil "%s \(p_obj\)" pred)))
+	  ((functionp pred)
+	   (let
+	       ((temporary-output (make-string-output-stream)))
+	     (funcall pred temporary-output type "p_obj" typage nil)
+	     (setq pred (get-output-stream-string temporary-output))))
+	  ((null pred)
+	   (setq pred "1")))
+    (@ "DEFUN\(\"%s-p\", F%s_p, S%s_p, \(repv p_obj\), rep_Subr1\)\n{\n"
+       rtype ctype ctype)
+    (@ "  return \(%s\) ? Qt : Qnil;\n}\n\n" pred)
+    (setq gtk-subrs (cons (intern (format nil "%s_p" ctype)) gtk-subrs))))
 
 
 ;; Composite type helper functions
