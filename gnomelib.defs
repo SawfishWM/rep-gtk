@@ -1,0 +1,404 @@
+;;; -*- lisp -*-
+;;; gnomelib.defs - Export Gnome interfaces to Guile.
+;;; 
+;;; Copyright (C) 1998 Tom Tromey
+;;; Copyright (C) 2000 John Harper
+;;; 
+;;; This program is free software; you can redistribute it and/or modify
+;;; it under the terms of the GNU General Public License as published by
+;;; the Free Software Foundation; either version 2, or (at your option)
+;;; any later version.
+;;; 
+;;; This program is distributed in the hope that it will be useful,
+;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;; GNU General Public License for more details.
+;;; 
+;;; You should have received a copy of the GNU General Public License
+;;; along with this program; if not, write to the Free Software
+;;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+;;; 02111-1307, USA.  */
+
+
+;; Gnome util.
+
+(define-func gnome_libdir_file
+  string
+  ((string filename)))
+
+(define-func gnome_datadir_file
+  string
+  ((string filename)))
+
+(define-func gnome_pixmap_file
+  string
+  ((string filename)))
+
+(define-func gnome_unconditional_libdir_file
+  string
+  ((string filename)))
+
+(define-func gnome_unconditional_datadir_file
+  string
+  ((string filename)))
+
+(define-func gnome_unconditional_pixmap_file
+  string
+  ((string filename)))
+
+
+;; Gnome config.
+;; FIXME: iterators and _with_default functions not included.
+
+(define-func gnome_config_get_string
+  string
+  ((string path)))
+
+(define-func gnome_config_get_int
+  int
+  ((string path)))
+
+(define-func gnome_config_get_bool
+  bool
+  ((string path)))
+
+(define-func gnome_config_set_string
+  none
+  ((string path)
+   (string value)))
+
+(define-func gnome_config_set_int
+  none
+  ((string path)
+   (int value)))
+
+(define-func gnome_config_set_bool
+  none
+  ((string path)
+   (bool value)))
+
+(define-func gnome_config_has_section
+  bool
+  ((string path)))
+
+(define-func gnome_config_drop_all
+  none
+  ())
+
+(define-func gnome_config_sync
+  none
+  ())
+
+(define-func gnome_config_clean_file
+  none
+  ((string path)))
+
+(define-func gnome_config_clean_section
+  none
+  ((string path)))
+
+(define-func gnome_config_clean_key
+  none
+  ((string path)))
+
+(define-func gnome_config_push_prefix
+  none
+  ((string path)))
+
+(define-func gnome_config_pop_prefix
+  none
+  ())
+
+
+;; gnome-dentry
+
+;; XXX can't handle structure conversion currently
+
+
+;; gnome-fileconvert
+
+(define-func gnome_file_convert_fd
+  file-descriptor
+  ((file-descriptor fd)
+   (string fromtype)
+   (string totype)))
+
+(define-func gnome_file_convert
+  file-descriptor
+  ((string filename)
+   (string fromtype)
+   (string totype)))
+
+
+;; gnome-help
+
+(define-func gnome_help_file_find_file
+  string
+  ((string app)
+   (string path)))
+
+(define-func gnome_help_file_path
+  string
+  ((string app)
+   (string path)))
+
+(define-func gnome_help_display
+  none
+  ((pointer ignore)
+   ((fvec string 2) ref)))		;actually GnomeHelpMenuEntry
+
+(define-func gnome_help_goto
+  none
+  ((pointer ignore)
+   (string file)))
+
+(define-func gnome_help_pbox_display
+  none
+  ((pointer ignore)
+   (int page_num)
+   ((fvec string 2) ref)))		;actually GnomeHelpMenuEntry
+
+(define-func gnome_help_pbox_goto
+  none
+  ((pointer ignore)
+   (int ignore2 (= "0"))
+   ((fvec string 2) ref)))		;actually GnomeHelpMenuEntry
+
+
+;; gnome-history
+
+;; FIXME: other functions done by hand due to build-guile-gtk limitations.
+
+;(define-func gnome_history_recently_used
+;  none
+;  ((string filename)
+;   (string filetype)
+;   (string creator)
+;   (string desc)))
+
+
+;; gnome-i18n
+
+(define-func gnome_i18n_get_language
+  static_string
+  ())
+
+(define-func gnome_i18n_get_language_list
+  ((list string))
+  ((string category_name)))
+
+(define-func gnome_i18n_set_preferred_language
+  none
+  ((string val)))
+
+(define-func gnome_i18n_get_preferred_language
+  static_string
+  ())
+
+
+;; gnome-metadata
+
+;; should really handle the error typedef
+
+(define-func sgtk_gnome_metadata_set
+  int
+  ((string file)
+   (string name)
+   (SCM data))
+  (scm-name "gnome-metadata-set"))
+
+(define-func gnome_metadata_remove
+  int
+  ((string file)
+   (string name)))
+
+;XXX can't return vectors currently
+;(define-func gnome_metadata_list
+;  (tvec string)
+;  ((string file)))
+
+(define-func sgtk_gnome_metadata_get
+  SCM
+  ((string file)
+   (string name))
+  (scm-name "gnome-metadata-get"))
+
+(define-func sgtk_gnome_metadata_get_fast
+  SCM
+  ((string file)
+   (string name))
+  (scm-name "gnome-metadata-get-fast"))
+
+(define-func gnome_metadata_rename
+  int
+  ((string from)
+   (string to)))
+
+(define-func gnome_metadata_copy
+  int
+  ((string from)
+   (string to)))
+
+(define-func gnome_metadata_delete
+  int
+  ((string file)))
+
+(define-func sgtk_gnome_metadata_regex_add
+  none
+  ((string regex)
+   (string key)
+   (SCM data))
+  (scm-name "gnome-metadata-regex-add"))
+
+(define-func gnome_metadata_regex_remove
+  none
+  ((string regex)
+   (string key)))
+
+(define-func sgtk_gnome_metadata_type_add
+  none
+  ((string regex)
+   (string key)
+   (SCM data))
+  (scm-name "gnome-metadata-type-add"))
+
+(define-func gnome_metadata_type_remove
+  none
+  ((string regex)
+   (string key)))
+
+(define-func gnome_metadata_lock
+  none
+  ())
+
+(define-func gnome_metadata_unlock
+  none
+  ())
+
+
+;; gnome-mime-info
+
+(define-func gnome_mime_get_value
+  static_string
+  ((string mime_type)
+   (string key)))
+
+(define-func gnome_mime_get_keys
+  ((list string))
+  ((string mime_type)))
+
+(define-func gnome_mime_program
+  static_string
+  ((string mime_type)))
+
+(define-func gnome_mime_description
+  static_string
+  ((string mime_type)))
+
+(define-func gnome_mime_nametemplate
+  static_string
+  ((string mime_type)))
+
+(define-func gnome_mime_test
+  static_string
+  ((string mime_type)))
+
+(define-func gnome_mime_composetyped
+  static_string
+  ((string mime_type)))
+
+(define-func gnome_mime_copiousoutput
+  bool
+  ((string mime_type)
+   (string key)))
+
+(define-func gnome_mime_needsterminal
+  bool
+  ((string mime_type)
+   (string key)))
+
+
+;; gnome-mime
+
+(define-func gnome_mime_type
+  static_string
+  ((string filename)))
+
+(define-func gnome_mime_type_of_file
+  static_string
+  ((string existing_filename)))
+
+(define-func gnome_mime_type_from_magic
+  static_string
+  ((string filename)))
+
+(define-func gnome_uri_list_extract_filenames
+  ((list string))
+  ((string uri_list)))
+
+(define-func gnome_uri_list_extract_uris
+  ((list string))
+  ((string uri_list)))
+
+
+;; gnome-paper, gnome-popt, gnome-regex, gnome-remote
+
+;; [can't be arsed]
+
+
+;; gnome-score
+
+(define-func gnome_score_init
+  int
+  ((string gamename)))
+
+(define-func gnome_score_log
+  int
+  ((float score)
+   (string level)
+   (bool higher_to_lower_score_order)))
+
+
+;; gnome-sound
+
+(define-func gnome_sound_init
+  none
+  ((string hostname)))
+
+(define-func gnome_sound_shutdown
+  none
+  ())
+
+(define-func gnome_sound_sample_load
+  int
+  ((string sample_name)
+   (string filename)))
+
+(define-func gnome_sound_play
+  none
+  ((string filename)))
+
+
+;; gnome-url
+
+(define-func gnome_url_show
+  none
+  ((string url)))
+
+
+;; init
+
+(define-func gnomelib_init
+  none
+  ((string app_id)
+   (string app_version)))
+
+
+;; Options
+
+(options
+ (includes "#include <gnome.h>")
+ (includes "#include <libgnome/gnome-fileconvert.h>")
+ (includes "#include <libgnome/gnome-help.h>")
+ (includes "#include \"rep-gnome.h\"")
+ (init-func "sgtk_gnome_init_gnome_glue"))

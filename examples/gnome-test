@@ -1,0 +1,34 @@
+#!/bin/sh
+exec rep "$0" "$@"
+!#
+
+(require 'gnomeui)
+(gnome-init "test" "0.0")
+
+(let
+    ((req (gnome-about-new
+	   "Testing" "0.0" "(C) 2000 John Harper"
+	   '("John Harper (john@dcs.warwick.ac.uk)" "Marius Vollmer")
+	   "This is a test!")))
+  (gtk-signal-connect req "destroy" gtk-main-quit)
+  (gtk-widget-show req)
+  (gtk-main))
+
+(let
+    ((req (gnome-ok-cancel-dialog
+	   "Foo?" (lambda args
+		    (format standard-error "foo: %S\n" args)
+		    (gtk-main-quit)))))
+  (gtk-widget-show req)
+  (gtk-main))
+
+(let
+    ((req (gnome-request-dialog
+	   nil "Bar?" nil 256
+	   (lambda args
+	     (format standard-error "bar: %S\n" args)
+	     (gtk-main-quit)))))
+  (gtk-widget-show req)
+  (gtk-main))
+
+

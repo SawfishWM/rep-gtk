@@ -1,0 +1,48 @@
+#!/bin/sh
+exec rep "$0" "$@"
+!#
+
+(require 'gnome-canvas)
+(gnome-init "canvas-test" "0")
+
+(let*
+    ((app (gnome-app-new "canvas-test" "canvas-test"))
+     (frame (gtk-frame-new "Canvas"))
+     (canvas (gnome-canvas-new)))
+
+  (gtk-widget-set-usize canvas 400 400)
+  (gnome-canvas-set-scroll-region canvas 0 0 400 400)
+
+  (gnome-canvas-item-new (gnome-canvas-root canvas)
+			 'GnomeCanvasRect
+			 (list 'x1 10 'y1 10
+			       'x2 200 'y2 200
+			       'fill_color "tan"
+			       'outline_color "blue"))
+
+  (gnome-canvas-item-new (gnome-canvas-root canvas)
+			 'GnomeCanvasEllipse
+			 (list 'x1 50 'y1 50
+			       'x2 150 'y2 150
+			       'outline_color "black"
+			       'fill_color "mediumseagreen"))
+
+;  (gnome-canvas-item-new (gnome-canvas-root canvas)
+;			 'GnomeCanvasLine
+;			 (list 'points '(150 150
+;					 250 150
+;					 250 250
+;					 150 250)))
+
+  (gnome-canvas-item-new (gnome-canvas-root canvas)
+			 'GnomeCanvasText
+			 (list 'x 100 'y 100 'text "hello, world"
+			       'font "fixed"))
+
+  (gtk-container-add frame canvas)
+  (gnome-app-set-contents app frame)
+  (gtk-widget-show-all app)
+
+  (setq interrupt-mode 'exit)
+  (recursive-edit))
+  
