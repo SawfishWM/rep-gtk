@@ -1,3 +1,9 @@
+2000-10-31  John Harper  <jsh@eazel.com>
+
+	* gnomeui.defs: added most definitions from the
+	<libgnomeui/gnome-winhints.h> header file. Left out some
+	meaningless stuff that never made it to the actual wm-spec
+
 2000-09-26  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gnome-canvas.defs (gnome_canvas_item_scale,

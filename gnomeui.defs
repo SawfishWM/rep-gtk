@@ -1277,6 +1277,95 @@
    (string subtype)))
 
 
+;; gnome-winhints
+
+(define-enum GnomeWinLayer
+  (desktop WIN_LAYER_DESKTOP)
+  (below WIN_LAYER_BELOW)
+  (normal WIN_LAYER_NORMAL)
+  (on-top WIN_LAYER_ONTOP)
+  (dock WIN_LAYER_DOCK)
+  (above-dock WIN_LAYER_ABOVE_DOCK))
+
+(define-flags GnomeWinState
+  (sticky WIN_STATE_STICKY)
+  (minimized WIN_STATE_MINIMIZED)
+  (maximized-vert WIN_STATE_MAXIMIZED_VERT)
+  (maximized-horiz WIN_STATE_MAXIMIZED_HORIZ)
+  (hidden WIN_STATE_HIDDEN)
+  (shaded WIN_STATE_SHADED)
+  (hid-workspace WIN_STATE_HID_WORKSPACE)
+  (hid-transient WIN_STATE_HID_TRANSIENT)
+  (fixed-position WIN_STATE_FIXED_POSITION)
+  (arrange-ignore WIN_STATE_ARRANGE_IGNORE))
+
+(define-flags GnomeWinHints
+  (skip-focus WIN_HINTS_SKIP_FOCUS)
+  (skip-winlist WIN_HINTS_SKIP_WINLIST)
+  (skip-taskbar WIN_HINTS_SKIP_TASKBAR)
+  (group-transient WIN_HINTS_GROUP_TRANSIENT)
+  (focus-on-click WIN_HINTS_FOCUS_ON_CLICK)
+  (do-not-cover WIN_HINTS_DO_NOT_COVER))
+
+(define-func gnome_win_hints_set_layer
+  none
+  ((GtkWidget window)
+   (GnomeWinLayer layer)))
+
+(define-func gnome_win_hints_get_layer
+  GnomeWinLayer
+  ((GtkWidget window)))
+
+(define-func gnome_win_hints_set_state
+  none
+  ((GtkWidget window)
+   (GnomeWinState state)))
+
+(define-func gnome_win_hints_get_state
+  GnomeWinState
+  ((GtkWidget window)))
+
+(define-func gnome_win_hints_set_hints
+  none
+  ((GtkWidget window)
+   (GnomeWinHints state)))
+
+(define-func gnome_win_hints_get_hints
+  GnomeWinHints
+  ((GtkWidget window)))
+
+(define-func gnome_win_hints_set_workspace
+  none
+  ((GtkWidget window)
+   (int workspace)))
+
+(define-func gnome_win_hints_get_workspace
+  int
+  ((GtkWidget window)))
+
+(define-func gnome_win_hints_set_current_workspace
+  none
+  ((int workspace)))
+
+(define-func gnome_win_hints_get_current_workspace
+  int
+  ())
+
+(define-func gnome_win_hints_get_workspace_names
+  (list string)
+  ())
+
+(define-func gnome_win_hints_get_workspace_count
+  int
+  ())
+
+;; XXX missed out a load of pointless functions
+
+(define-func gnome_win_hints_wm_exists
+  bool
+  ())
+
+
 ;; GtkClock
 
 (define-object GtkClock (GtkLabel))
