@@ -2,7 +2,12 @@
 exec rep "$0" "$@"
 !#
 
-(require 'libglade)
+(if (get-command-line-option "--gnome")
+    (progn
+      (require 'libglade-gnome)
+      (require 'gnomeui)
+      (gnome-init "test-libglade" "0.0"))
+  (require 'libglade))
 
 (let
     ((xml (or (glade-xml-new (car command-line-args))
