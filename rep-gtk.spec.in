@@ -3,7 +3,7 @@ Name: rep-gtk
 Version: @version@
 Release: 1
 Summary: GTK+ binding for librep Lisp environment
-Requires: librep >= 0.11, gtk+ >= 1.2
+Requires: librep >= 0.12, gtk+ >= 1.2
 Copyright: GPL
 Group: Development/Languages
 Source: http://download.sourceforge.net/rep-gtk/rep-gtk-%{version}.tar.gz
