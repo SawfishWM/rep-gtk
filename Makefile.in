@@ -2,9 +2,6 @@
 # Copyright (C) 1998 John Harper <john@dcs.warwick.ac.uk>
 # $Id$
 
-DEFS = gdk-1.2.defs gtk-1.2.defs
-RDEFS= $(DEFS:.defs=.defs.jl)
-
 SGTK_SRCS = rep-types.c
 SGTK_OBJS = $(SGTK_SRCS:.c=.lo)
 
@@ -24,6 +21,12 @@ GNOMEUI_OBJS = $(GNOMEUI_SRCS:.c=.lo)
 GNOME_CANVAS_SRCS = gnome-canvas-support.c gnome-canvas-glue.c
 GNOME_CANVAS_OBJS = $(GNOME_CANVAS_SRCS:.c=.lo)
 
+GDK_PIXBUF_SRCS = gdk-pixbuf-glue.c
+GDK_PIXBUF_OBJS = $(GDK_PIXBUF_SRCS:.c=.lo)
+
+GNOME_CANVAS_PIXBUF_SRCS = gnome-canvas-pixbuf-glue.c
+GNOME_CANVAS_PIXBUF_OBJS = $(GNOME_CANVAS_PIXBUF_SRCS:.c=.lo)
+
 OUT = @OUT@
 
 version=@version@
@@ -38,13 +41,15 @@ CPPFLAGS=@CPPFLAGS@
 CFLAGS=@CFLAGS@
 LDFLAGS=@LDFLAGS@
 override CPPFLAGS += -DHAVE_CONFIG_H -I.
-override CFLAGS += @GLIB_CFLAGS@ @GTK_CFLAGS@ @REP_CFLAGS@ @LIBGLADE_CFLAGS@ @GNOME_CFLAGS@
+override CFLAGS += @GLIB_CFLAGS@ @GTK_CFLAGS@ @REP_CFLAGS@ @LIBGLADE_CFLAGS@ @GNOME_CFLAGS@ @GDK_PIXBUF_CFLAGS@ @GNOME_CANVAS_PIXBUF_CFLAGS@
 REP_SGTK_LIBS=@GLIB_LIBS@ @LIBS@
 REP_GTK_LIBS=@GTK_LIBS@ @LIBS@
 REP_LIBGLADE_LIBS=@LIBGLADE_LIBS@ @LIBS@
 REP_GNOME_LIBGLADE_LIBS=@GNOME_LIBGLADE_LIBS@ @LIBS@
 REP_GNOMELIB_LIBS=@GNOME_LIBS@ @LIBS@
 REP_GNOMEUI_LIBS=@GNOMEUI_LIBS@ @LIBS@
+REP_GDK_PIXBUF_LIBS=@GDK_PIXBUF_LIBS@ @LIBS@
+REP_GNOME_CANVAS_PIXBUF_LIBS=@GNOME_CANVAS_PIXBUF_LIBS@ @LIBS@
 
 INSTALL=@INSTALL@
 INSTALL_DATA=@INSTALL_DATA@
@@ -82,14 +87,14 @@ gnomeui.la : $(GNOMEUI_OBJS)
 gnome-canvas.la : $(GNOME_CANVAS_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOMEUI_LIBS)
 
-%-glue.c : %-1.2.defs.jl $(RDEFS) build-gtk.jlc
-	rep build-gtk.jlc -f build-gtk-batch $< $@
+gdk-pixbuf.la : $(GDK_PIXBUF_OBJS)
+	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GDK_PIXBUF_LIBS)
 
-%-glue.c : %.defs.jl $(RDEFS) build-gtk.jlc
-	rep build-gtk.jlc -f build-gtk-batch $< $@
+gnome-canvas-pixbuf.la : $(GNOME_CANVAS_PIXBUF_OBJS)
+	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOME_CANVAS_PIXBUF_LIBS)
 
-%.defs.jl : %.defs
-	sed -f sed-fix-defs $< >$@
+%-glue.c : %.defs build-gtk.jlc
+	rep build-gtk.jlc -f build-gtk-batch $< $@
 
 build-gtk.jlc : build-gtk.jl
 	rep compiler -f compile-batch $<
@@ -106,10 +111,12 @@ install : all installdirs
 	  case $$f in \
 	    gtk.la|gnomelib.la) \
 	      printf "\nrep_requires='sgtk-types'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
-	    libglade*.la|gnomeui.la) \
+	    libglade*.la|gnomeui.la|gdk-pixbuf.la) \
 	      printf "\nrep_requires='gtk'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
 	    gnome-canvas.la) \
 	      printf "\nrep_requires='gnomeui'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
+	    gnome-canvas-pixbuf.la) \
+	      printf "\nrep_requires='gnome-canvas'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
 	  esac; \
 	done
 	for f in $(OUT); do \
@@ -123,7 +130,7 @@ uninstall :
 	$(rep_DL_UNINSTALL) $(DESTDIR)$(installdir)/$(OUT)
 
 clean :
-	rm -f *.defs.jl *-glue.c *~ core *.jlc *.o *.lo *.la
+	rm -f *-glue.c *~ core *.jlc *.o *.lo *.la
 	rm -rf .libs
 
 realclean : clean

@@ -108,6 +108,31 @@ if test "$with_libglade" = "yes" -a "$with_gnome" = "yes"; then
   fi
 fi
 
+AC_ARG_WITH(gdk-pixbuf,
+ [  --with-gdk-pixbuf	  Build gdk-pixbuf wrappers],
+ [], [with_gdk_pixbuf=yes])
+if test "$with_gdk_pixbuf" = "yes"; then
+  AM_PATH_GDK_PIXBUF(, [OUT="$OUT gdk-pixbuf.la"])
+fi
+
+AC_MSG_CHECKING([for GNOME canvas pixbuf support])
+AC_ARG_WITH(gnome-canvas-pixbuf,
+ [  --with-gnome-canvas-pixbuf], [], [with_gnome_canvas_pixbuf=yes])
+if test "$with_gnome_canvas_pixbuf" = "yes"; then
+  GNOME_CANVAS_PIXBUF_VERSION="`gnome-config --modversion gnomecanvaspixbuf`"
+  if test $? -eq 0; then
+    GNOME_CANVAS_PIXBUF_LIBS="`gnome-config --libs gnomecanvaspixbuf`"
+    GNOME_CANVAS_PIXBUF_CFLAGS="`gnome-config --cflags gnomecanvaspixbuf`"
+    AC_MSG_RESULT([$GNOME_CANVAS_PIXBUF_VERSION])
+    AC_SUBST(GNOME_CANVAS_PIXBUF_VERSION)
+    AC_SUBST(GNOME_CANVAS_PIXBUF_LIBS)
+    AC_SUBST(GNOME_CANVAS_PIXBUF_CFLAGS)
+    OUT="$OUT gnome-canvas-pixbuf.la"
+  else
+    AC_MSG_ERROR([can't run gnome-config]);
+  fi
+fi
+
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_INLINE
