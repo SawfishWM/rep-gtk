@@ -272,17 +272,24 @@ gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
 GtkWidget* gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group);
 GtkWidget* gtk_pixmap_new_interp (char *file, GtkWidget *intended_parent);
 
+#ifndef HAVE_GDK_COLOR_COPY
 GdkColor*    gdk_color_copy     (GdkColor *);
 void         gdk_color_free     (GdkColor *);
+#endif
 
 GdkColor *gdk_color_parse_interp (char *spec);
 GdkColor *gtk_style_get_white_interp (GtkStyle *style);
 
+#ifndef HAVE_GTK_WIDGET_PEEK_COLORMAP
 GdkColormap *gtk_widget_peek_colormap (void);
+#endif
 
 void gtk_list_append_item (GtkList *list, GtkListItem *item);
 
+#ifndef HAVE_GTK_TYPE_GET_INFO
 gboolean gtk_type_get_info (GtkType type, GtkTypeInfo *info);
+#endif
+
 GtkType gtk_class_new (GtkType parent_type, gchar *name);
 guint
 gtk_signal_new_generic (const gchar     *name,
@@ -292,12 +299,15 @@ gtk_signal_new_generic (const gchar     *name,
 			guint            nparams,
 			GtkType         *params);
 void sgtk_signal_emit (GtkObject *obj, char *name, repv rep_args);
+
+#ifndef HAVE_GTK_SIGNAL_SET_CLASS_FUNCTION_FULL
 void gtk_signal_set_class_function_full (GtkType            type,
 					 const gchar       *signal,
 					 GtkSignalFunc      func,
 					 GtkCallbackMarshal marshal,
 					 gpointer           data,
 					 GtkDestroyNotify   destroy_func);
+#endif
 
 void gtk_color_selection_set_color_interp (GtkColorSelection *sel, GdkColor *color);
 GdkColor *gtk_color_selection_get_color_interp (GtkColorSelection *sel);
