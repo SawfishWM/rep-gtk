@@ -295,10 +295,6 @@
   static_string
   ((string mime_type)))
 
-(define-func gnome_mime_nametemplate
-  static_string
-  ((string mime_type)))
-
 (define-func gnome_mime_test
   static_string
   ((string mime_type)))
