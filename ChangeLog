@@ -1,3 +1,9 @@
+2000-06-16  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.11
+
+	* rep-gtk.spec.in: require rep 0.12+
+
 2000-06-14  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gnomeui.defs (gnome-dialog-new): fixed typo
