@@ -2,6 +2,7 @@
 exec rep "$0" "$@"
 !#
 
+(require 'gtk)
 (require 'gnome-canvas)
 (require 'gdk-pixbuf)
 (require 'gnome-canvas-pixbuf)

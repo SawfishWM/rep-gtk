@@ -1,3 +1,27 @@
+2000-07-23  John Harper  <john@dcs.warwick.ac.uk>
+
+	Changed the module hierarchy, now:
+
+		gui.gtk.{gtk,libglade,gdk-pixbuf}
+		gui.gnome.{lib,ui,canvas,canvas-pixbuf,libglade}
+
+	the old names all still work
+
+	* Makefile.in: various changes
+
+	* rep-gtk.c: renamed module, export rep-gtk-version
+
+	* libglade-support.c, gnomeui-support.c, gnomelib-support.c,
+	gnome-canvas-support.c, rep-types.c: renamed modules, added
+	aliases
+
+	* gnome-canvas-pixbuf.defs, gdk-pixbuf.defs: add alias
+	definitions
+
+	* configure.in: require rep 0.13 (unreleased)
+
+	* build-gtk.jl: added new global option `alias'
+
 2000-07-20  John Harper  <john@dcs.warwick.ac.uk>
 
 	* Makefile.in: include --mode argument to libtool (from David

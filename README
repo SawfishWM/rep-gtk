@@ -25,8 +25,8 @@ Currently it only works with GTK 1.2.
 Usage
 =====
 
-Do `(require 'gtk)' to load the library, then call functions as in
-guile-gtk. The only difference is that Lisp conventions are used for
+Do `(require 'gui.gtk.gtk)' to load the library, then call functions as
+in guile-gtk. The only difference is that Lisp conventions are used for
 booleans, i.e. nil for #f, and non-nil for #t.
 
 I changed the names of three functions:
@@ -51,12 +51,10 @@ From the libglade README file:
 So you can now use GLADE with rep! Here's an example from the
 examples/test-libglade script:
 
-    (require 'libglade)
+    (require 'gui.gtk.libglade)
 
-    (let
-        ((xml (or (glade-xml-new (car command-line-args))
-                  (error "something bad happened"))))
-
+    (let ((xml (or (glade-xml-new (car command-line-args))
+		   (error "something bad happened"))))
       (glade-xml-signal-autoconnect xml)
       (gtk-main))
 
@@ -73,36 +71,36 @@ GNOME
 There's also now reasonably complete bindings of gnome and gnomeui.
 These extra modules will get built and installed:
 
-	gnomelib		Non-UI GNOME functions, doesn't require GTK
-	gnomeui			GNOME UI widgets and utilities
-	gnome-canvas		GNOME Canvas widgets and utilities
-	gdk-pixbuf		Image loading and rendering
-	gnome-canvas-pixbuf	CanvasItem for displaying GdkPixbuf's
+	gui.gnome.lib		Non-UI GNOME functions, doesn't require GTK
+	gui.gnome.ui		GNOME UI widgets and utilities
+	gui.gnome.canvas	GNOME Canvas widgets and utilities
+	gui.gtk.gdk-pixbuf	Image loading and rendering
+	gui.gnome.canvas-pixbuf	CanvasItem for displaying GdkPixbuf's
 
 see the .defs files for the gruesome details about what goes in what.
 The dependence tree is something like:
 
-			       gdk-pixbuf
-			     /
-	sgtk-types -+- gtk -+- libglade
-		     \	     \
-		      \	       gnomeui -+- gnome-canvas
-		       \		 \
-			 gnomelib	   gnome-canvas-pixbuf
+			   gdk-pixbuf
+			 /
+	types -+- gtk -+- libglade
+		     \	 \
+		      \	   ui -+- canvas
+		       \	\
+			 lib	  canvas-pixbuf
 
-sgtk-types provides conversions for the basic C types (and GLIB's GList
-and GSList types).
+gui.gtk.types provides conversions for the basic C types (and GLIB's
+GList and GSList types).
 
-When `gnomeui' is loaded the gnome-init function is called
+When `gui.gnome.ui' is loaded the gnome-init function is called
 automatically. If the special variables `*gnome-app-id*' and
 `*gnome-app-version*' are bound to strings, then these values will be
 used, otherwise something will be fabricated.
 
-However, if using `gnomelib' without `gnomeui', you should call
-`gnomelib-init' manually.
+However, if using `gui.gnome.lib' without `gui.gnome.ui', you should
+call `gnomelib-init' manually.
 
-To use libglade with the GNOME widgets, require the `libglade-gnome'
-module instead of `libglade'
+To use libglade with the GNOME widgets, load the `gui.gnome.libglade'
+module instead of `gui.gtk.libglade'
 
 
 Caveats

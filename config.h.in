@@ -17,3 +17,5 @@
 
 /* Define if <glade/glade-xml.h> has `txtdomain' not `textdomain' field */
 #undef LIBGLADE_XML_TXTDOMAIN
+
+#undef REP_GTK_VERSION
