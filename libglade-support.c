@@ -97,9 +97,6 @@ sgtk_glade_xml_new_from_string (repv text, const char *root,
 repv
 rep_dl_init (void)
 {
-    /* XXX it would be nice if we could pull in gtk automatically;
-       XXX but we can't, since we depend on its symbols.. */
-
     char *tem = getenv ("REP_GTK_DONT_INITIALIZE");
     if (tem == 0 || atoi (tem) == 0)
 	glade_init ();

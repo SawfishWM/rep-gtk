@@ -54,7 +54,6 @@ From the libglade README file:
 So you can now use GLADE with rep! Here's an example from the
 examples/test-libglade script:
 
-    (require 'gtk)
     (require 'libglade)
 
     (let
