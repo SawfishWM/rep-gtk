@@ -41,7 +41,7 @@ $(OUT) : $(OBJS)
 	$(LIBTOOL) gcc -export-dynamic $(CPPFLAGS) $(CFLAGS) -o $@ $^ \
 	  $(LIBS) -rpath $(repexecdir)
 
-gtk-glue.c : gtk-1.2.defs.jl gdk-1.2.defs.jl build-gtk.jl
+gtk-glue.c : gtk-1.2.defs.jl gdk-1.2.defs.jl build-gtk.jlc
 	rep --batch -l build-gtk -f build-gtk-batch $< $@
 
 %.defs.jl : %.defs
