@@ -1093,7 +1093,7 @@
 	      "sgtk_pointerp")
 	(list 'object output-complex-type output-rep-to-object
 	      output-object-to-rep output-object-pred '(listable . t))
-	(list 'static_string "char*" nil "sgtk_static_string_to_rep" nil
+	(list 'static_string "const char*" nil "sgtk_static_string_to_rep" nil
 	      '(listable . t))
 	(list 'full-callback "repv" output-rep-to-full-callback nil
 	      "sgtk_valid_function" (cons 'c2args output-full-callback-args))
