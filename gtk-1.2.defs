@@ -359,7 +359,8 @@
 (define-object GtkWidget (GtkObject)
   (fields
    (GtkStyle style)
-   (GdkWindow window)))
+   (GdkWindow window)
+   (GtkWidget parent)))
 
 (define-func gtk_grab_add
   none
