@@ -265,8 +265,13 @@ sgtk_gnome_init (const char *app_id, const char *app_version)
 repv
 rep_dl_init (void)
 {
-    repv s = rep_push_structure ("gnomeui");
+    repv s = rep_push_structure ("gui.gnome.ui");
     repv id, version;
+
+    /* ::alias:gnomeui gui.gnome.ui::
+       ::alias:gui.gnome gui.gnome.ui:: */
+    rep_alias_structure ("gui.gnome");
+    rep_alias_structure ("gnomeui");
 
     sgtk_gnome_init_gnomeui_glue ();
     rep_ADD_SUBR (Sgnome_client_set_clone_command);

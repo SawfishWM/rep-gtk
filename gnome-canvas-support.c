@@ -117,7 +117,9 @@ sgtk_gnome_canvas_points_conversion (repv arg)
 repv
 rep_dl_init (void)
 {
-    repv s = rep_push_structure ("gnome-canvas");
+    repv s = rep_push_structure ("gui.gnome.canvas");
+    /* ::alias:gnome-canvas gui.gnome.canvas:: */
+    rep_alias_structure ("gnome-canvas");
     sgtk_gnome_init_gnome_canvas_glue ();
     rep_ADD_SUBR (Sgnome_canvas_item_new);
     rep_ADD_SUBR (Sgnome_canvas_item_set);
