@@ -469,6 +469,14 @@ gdk_window_xid (GdkWindow *win)
     return GDK_WINDOW_XID (win);
 }
 
+GtkTextIter *
+gtk_text_iter_new (void)
+{
+    GtkTextIter foo = {0};
+    return gtk_text_iter_copy (&foo);
+}
+
+
 
 
 repv

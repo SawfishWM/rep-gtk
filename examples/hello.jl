@@ -9,11 +9,11 @@ exec rep --batch "$0" "$@"
 (let
     ((window (gtk-window-new 'toplevel))
      (button (gtk-button-new-with-label "say hello")))
-  (gtk-container-border-width window 10)
+  (gtk-container-set-border-width window 10)
   (gtk-signal-connect
    window "delete_event"
    #'(lambda (w) (if (gtk-standalone-p)
-		     (gtk-exit)
+		     (throw 'quit 0)
 		   (gtk-widget-destroy w))))
   (gtk-signal-connect
    button "clicked"

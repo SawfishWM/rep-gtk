@@ -74,13 +74,10 @@ These extra modules will get built and installed:
 	gui.gtk-2.gnome-lib	Non-UI GNOME functions, doesn't require GTK
 	gui.gtk-2.gnome-ui	GNOME UI widgets and utilities
 	gui.gtk-2.gnome-canvas	GNOME Canvas widgets and utilities
-	gui.gtk-2.gdk-pixbuf	Image loading and rendering
 
 see the .defs files for the gruesome details about what goes in what.
 The dependence tree is something like:
 
-			  gdk-pixbuf
-			/
 	types -+- gtk -+- libglade
 		     \  \
 		      \   gnome-ui -+- gnome-canvas

@@ -13,11 +13,11 @@ exec rep --batch "$0" "$@"
   (gtk-container-add window scrolled-window)
   (gtk-container-add scrolled-window clist)
   (gtk-scrolled-window-set-policy scrolled-window 'automatic 'automatic)
-  (gtk-widget-set-usize window 400 200)
+  (gtk-window-set-default-size window 400 200)
   (gtk-signal-connect
    window "delete_event"
    #'(lambda (w) (if (gtk-standalone-p)
-		     (gtk-exit)
+		     (throw 'quit 0)
 		   (gtk-widget-destroy w))))
 
   (let

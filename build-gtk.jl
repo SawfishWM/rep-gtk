@@ -18,6 +18,8 @@
 
 (provide 'build-gtk)
 
+(setq debug-on-error '(bad-arg invalid-function missing-arg))
+
 ;; Notes:
 
 ;; This assumes that the `sed-fix-defs' sed script has been run over all
@@ -196,10 +198,9 @@
 				    'read)))
 		(or file (error "Can't open input file: %s" (nth 1 def)))
 		(unwind-protect
-		    (if (eq (car def) 'import)
-			(let
-			    ((gtk-importing t))
-			  (parse-gtk file))
+		    (let ((gtk-importing (if (eq (car def) 'import)
+					     t
+					   gtk-importing)))
 		      (parse-gtk file))
 		  (close-file file))))
 	     ((eq (car def) 'define-enum)

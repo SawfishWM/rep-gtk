@@ -1,3 +1,22 @@
+2002-02-12  John Harper  <jsh@unfactored.org>
+
+	Status: gtk mostly all ported except for Tree classes. Removed
+	deprecated functions.
+
+	* gtktext.defs, gtk.defs, glib.defs, gdk.defs, gdk-pixbuf.defs:
+	updated for current state of gtk-2. gtktext.defs is a new file
+	describing the various classes of the new Text widget. Only
+	thing left to do for complete gtk coverage (modulo from the
+	usual number of functions that aren't easy to wrap) is the new
+	Tree widget
+
+	* rep-types.c, rep-gtk.h, gtk-support.c, gtk-compat.c,
+	configure.in, build-gtk.jl, README, Makefile.in: more random
+	porting changes
+
+	* examples/hello.jl, examples/clist.jl: ported
+	* examples/text.jl: new, needs more code
+
 2002-01-30  John Harper  <jsh@unfactored.org>
 
 	All modules now compile and link. Though the gnome example

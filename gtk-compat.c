@@ -71,6 +71,14 @@ gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
 }
 
 GtkWidget*
+gtk_radio_menu_item_new_with_mnemonic_from_widget (GtkRadioMenuItem *group,
+						   gchar            *label)
+{
+  GSList *g = group? gtk_radio_menu_item_group (group) : NULL;
+  return gtk_radio_menu_item_new_with_mnemonic (g, label);
+}
+
+GtkWidget*
 gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group)
 {
   GSList *g = group? gtk_radio_menu_item_group (group) : NULL;

@@ -610,5 +610,4 @@
 (options
  (includes "#include <gdk/gdk.h>")
  (init-func "sgtk_init_gtk_gdk_glue")
- (other-inits "sgtk_init_gtk_glib_glue")
- (other-inits "sgtk_init_gtk_gtk_glue"))
+ (other-inits "sgtk_init_gtk_glib_glue"))

@@ -232,6 +232,13 @@ list_length (repv list)
     return (len && rep_INTP (len)) ? rep_INT (len) : 0;
 }
 
+/* namespace fuckage. needed so we can represent GObject base class */
+GType
+gobject_get_type (void)
+{
+  return G_TYPE_OBJECT;
+}
+
 
 /* Floats. */
 

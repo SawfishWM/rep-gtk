@@ -1,22 +1,74 @@
-;; -*- scheme -*-
+;; -*- lisp -*-
+
+;; updated for gtk+ 1.3:
+
+;; GtkButton, GtkWidget, GtkContainer, GtkFixed, GtkWindow, GtkHandleBox,
+;; GtkBox, GtkButtonBox, Gtk[HV]ButtonBox, GtkToolbar, GtkTable,
+;; GtkToggleButton, GtkCheckButton, GtkRadioButton, GtkMisc, GtkArrow,
+;; GtkLabel, GtkLayout, GtkTipsQuery, GtkVBox, GtkHBox, GtkItem, GtkCombo,
+;; GtkStatusBar, GtkGammaCurve, Gtk[HV]Separator, GtkFrame, GtkAspectFrame,
+;; GtkProgress, GtkProgressBar, GtkTooltips, GtkMenuShell, GtkMenuBar,
+;; GtkMenu, GtkMenuItem, GtkCheckMenuItem, GtkRadioMenuItem, GtkOptionMenu,
+;; GtkPixmap, GtkViewport, GtkScrolledWindow, GtkListItem, GtkList,
+;; GtkNotebook, GtkEditable, GtkEntry, GtkSpinButton, GtkDrawingArea,
+;; GtkCurve, GtkPreview, GtkFileSelection, GtkFontSelectionDialog,
+;; GtkColorSelectionDialog, GtkColorSelection, GtkRange, GtkScale,
+;; Gtk[HV]Scale, GtkScrollbar, Gtk[HV]Scrollbar, GtkRuler, Gtk[HV]Ruler,
+;; GtkDialog, GtkInputDialog, GtkPaned, Gtk[HV]Paned, GtkPlug, GtkSocket,
+;; GtkTearOffMenuItem, GtkCalendar, GtkIconFactory, GtkImage,
+;; GtkImageMenuItem, GtkInvisible, GtkSeparatorMenuItem
+
+;; Todo: TreeView/TreeModel et al; delete Tree and CList
 
 ;;; Gtk enums
 
 (import "glib.defs")
 (import "gdk.defs")
+(import "gdk-pixbuf.defs")
 
-(define-enum GtkWindowType
-  (toplevel GTK_WINDOW_TOPLEVEL)
-  (popup GTK_WINDOW_POPUP)
-  ;; compat with gtk 1..
-  (dialog GTK_WINDOW_POPUP))
+(define-enum GtkAnchorType
+  (center GTK_ANCHOR_CENTER)
+  (north GTK_ANCHOR_NORTH)
+  (south GTK_ANCHOR_SOUTH)
+  (east GTK_ANCHOR_EAST)
+  (west GTK_ANCHOR_WEST)
+  (north-west GTK_ANCHOR_NORTH_WEST)
+  (north-east GTK_ANCHOR_NORTH_EAST)
+  (south-west GTK_ANCHOR_SOUTH_WEST)
+  (south-east GTK_ANCHOR_SOUTH_EAST))
 
-(define-enum GtkStateType
-  (normal GTK_STATE_NORMAL)
-  (active GTK_STATE_ACTIVE)
-  (prelight GTK_STATE_PRELIGHT)
-  (selected GTK_STATE_SELECTED)
-  (insensitive GTK_STATE_INSENSITIVE))
+(define-enum GtkArrowType
+  (up GTK_ARROW_UP)
+  (down GTK_ARROW_DOWN)
+  (left GTK_ARROW_LEFT)
+  (right GTK_ARROW_RIGHT))
+
+(define-flags GtkAttachOptions
+  (expand GTK_EXPAND)
+  (shrink GTK_SHRINK)
+  (fill GTK_FILL))
+
+(define-enum GtkButtonBoxStyle
+  (default-style GTK_BUTTONBOX_DEFAULT_STYLE)
+  (spread GTK_BUTTONBOX_SPREAD)
+  (edge GTK_BUTTONBOX_EDGE)
+  (start GTK_BUTTONBOX_START)
+  (end GTK_BUTTONBOX_END))
+
+(define-enum GtkCurveType
+  (linear GTK_CURVE_TYPE_LINEAR)
+  (spline GTK_CURVE_TYPE_SPLINE)
+  (free GTK_CURVE_TYPE_FREE))
+
+(define-enum GtkDeleteType
+  (chars GTK_DELETE_CHARS)
+  (word-ends GTK_DELETE_WORD_ENDS)
+  (words GTK_DELETE_WORDS)
+  (display-lines GTK_DELETE_DISPLAY_LINES)
+  (display-line-ends GTK_DELETE_DISPLAY_LINE_ENDS)
+  (paragraph-ends GTK_DELETE_PARAGRAPH_ENDS)
+  (paragraphs GTK_DELETE_PARAGRAPHS)
+  (whitespace GTK_DELETE_WHITESPACE))
 
 (define-enum GtkDirectionType
   (tab-forward GTK_DIR_TAB_FORWARD)
@@ -26,6 +78,138 @@
   (left GTK_DIR_LEFT)
   (right GTK_DIR_RIGHT))
 
+(define-enum GtkExpanderStyle
+  (collapsed GTK_EXPANDER_COLLAPSED)
+  (semi-collapsed GTK_EXPANDER_SEMI_COLLAPSED)
+  (semi-expanded GTK_EXPANDER_SEMI_EXPANDED)
+  (expanded GTK_EXPANDER_EXPANDED))
+
+(define-enum GtkIconSize
+  (invalid GTK_ICON_SIZE_INVALID)
+  (menu GTK_ICON_SIZE_MENU)
+  (small-toolbar GTK_ICON_SIZE_SMALL_TOOLBAR)
+  (large-toolbar GTK_ICON_SIZE_LARGE_TOOLBAR)
+  (button GTK_ICON_SIZE_BUTTON)
+  (dnd GTK_ICON_SIZE_DND)
+  (dialog GTK_ICON_SIZE_DIALOG))
+
+(define-enum GtkTextDirection
+  (none GTK_TEXT_DIR_NONE)
+  (ltr GTK_TEXT_DIR_LTR)
+  (rtl GTK_TEXT_DIR_RTL))
+
+(define-enum GtkJustification
+  (left GTK_JUSTIFY_LEFT)
+  (right GTK_JUSTIFY_RIGHT)
+  (center GTK_JUSTIFY_CENTER)
+  (fill GTK_JUSTIFY_FILL))
+
+(define-enum GtkMenuDirectionType
+  (parent GTK_MENU_DIR_PARENT)
+  (child GTK_MENU_DIR_CHILD)
+  (next GTK_MENU_DIR_NEXT)
+  (prev GTK_MENU_DIR_PREV))
+
+(define-enum GtkMetricType
+  (pixels GTK_PIXELS)
+  (inches GTK_INCHES)
+  (centimeters GTK_CENTIMETERS))
+
+(define-enum GtkMovementStep
+  (logical-positions GTK_MOVEMENT_LOGICAL_POSITIONS)
+  (visual-positions GTK_MOVEMENT_VISUAL_POSITIONS)
+  (words GTK_MOVEMENT_WORDS)
+  (display-lines GTK_MOVEMENT_DISPLAY_LINES)
+  (display-line-ends GTK_MOVEMENT_DISPLAY_LINE_ENDS)
+  (paragraph-ends GTK_MOVEMENT_PARAGRAPH_ENDS)
+  (paragraphs GTK_MOVEMENT_PARAGRAPHS)
+  (pages GTK_MOVEMENT_PAGES)
+  (buffer-ends GTK_MOVEMENT_BUFFER_ENDS))
+
+(define-enum GtkOrientation
+  (horizontal GTK_ORIENTATION_HORIZONTAL)
+  (vertical GTK_ORIENTATION_VERTICAL))
+
+(define-enum GtkCornerType
+  (top-left GTK_CORNER_TOP_LEFT)
+  (bottom-left GTK_CORNER_BOTTOM_LEFT)
+  (top-right GTK_CORNER_TOP_RIGHT)
+  (bottom-right GTK_CORNER_BOTTOM_RIGHT))
+
+(define-enum GtkPackType
+  (start GTK_PACK_START)
+  (end GTK_PACK_END))
+
+(define-enum GtkPathPriorityType
+  (lowest GTK_PATH_PRIO_LOWEST)
+  (gtk GTK_PATH_PRIO_GTK)
+  (application GTK_PATH_PRIO_APPLICATION)
+  (theme GTK_PATH_PRIO_THEME)
+  (rc GTK_PATH_PRIO_RC)
+  (highest GTK_PATH_PRIO_HIGHEST))
+
+(define-enum GtkPathType
+  (widget GTK_PATH_WIDGET)
+  (widget-class GTK_PATH_WIDGET_CLASS)
+  (class GTK_PATH_CLASS))
+
+(define-enum GtkPolicyType
+  (always GTK_POLICY_ALWAYS)
+  (automatic GTK_POLICY_AUTOMATIC)
+  (never GTK_POLICY_NEVER))
+
+(define-enum GtkPositionType
+  (left GTK_POS_LEFT)
+  (right GTK_POS_RIGHT)
+  (top GTK_POS_TOP)
+  (bottom GTK_POS_BOTTOM))
+
+;; XXX deprecated
+(define-enum GtkPreviewType
+  (color GTK_PREVIEW_COLOR)
+  (grayscale GTK_PREVIEW_GRAYSCALE))
+
+(define-enum GtkReliefStyle
+  (normal GTK_RELIEF_NORMAL)
+  (half GTK_RELIEF_HALF)
+  (none GTK_RELIEF_NONE))
+
+(define-enum GtkResizeMode
+  (parent GTK_RESIZE_PARENT)
+  (queue GTK_RESIZE_QUEUE)
+  (immediate GTK_RESIZE_IMMEDIATE))
+
+;; XXX deprecated
+(define-flags GtkSignalRunType
+  (first GTK_RUN_FIRST)
+  (last GTK_RUN_LAST)
+  (both GTK_RUN_BOTH)
+  (no-recurse GTK_RUN_NO_RECURSE)
+  (action GTK_RUN_ACTION)
+  (no-hooks GTK_RUN_NO_HOOKS))
+
+(define-enum GtkScrollType
+  (none GTK_SCROLL_NONE)
+  (jump GTK_SCROLL_JUMP)
+  (step-backward GTK_SCROLL_STEP_BACKWARD)
+  (step-forward GTK_SCROLL_STEP_FORWARD)
+  (page-backward GTK_SCROLL_PAGE_BACKWARD)
+  (page-forward GTK_SCROLL_PAGE_FORWARD)
+  (step-up GTK_SCROLL_STEP_UP)
+  (step-down GTK_SCROLL_STEP_DOWN)
+  (page-up GTK_SCROLL_PAGE_UP)
+  (page-down GTK_SCROLL_PAGE_DOWN)
+  (step-left GTK_SCROLL_STEP_LEFT)
+  (step-right GTK_SCROLL_STEP_RIGHT)
+  (start GTK_SCROLL_START)
+  (end GTK_SCROLL_END))
+
+(define-enum GtkSelectionMode
+  (none GTK_SELECTION_NONE)
+  (single GTK_SELECTION_SINGLE)
+  (browse GTK_SELECTION_BROWSE)
+  (multiple GTK_SELECTION_MULTIPLE))
+
 (define-enum GtkShadowType
   (none GTK_SHADOW_NONE)
   (in GTK_SHADOW_IN)
@@ -33,19 +217,26 @@
   (etched-in GTK_SHADOW_ETCHED_IN)
   (etched-out GTK_SHADOW_ETCHED_OUT))
 
-(define-enum GtkArrowType
-  (up GTK_ARROW_UP)
-  (down GTK_ARROW_DOWN)
-  (left GTK_ARROW_LEFT)
-  (right GTK_ARROW_RIGHT))
+(define-enum GtkStateType
+  (normal GTK_STATE_NORMAL)
+  (active GTK_STATE_ACTIVE)
+  (prelight GTK_STATE_PRELIGHT)
+  (selected GTK_STATE_SELECTED)
+  (insensitive GTK_STATE_INSENSITIVE))
 
-(define-enum GtkPackType
-  (start GTK_PACK_START)
-  (end GTK_PACK_END))
+;; XXX deprecated
+(define-enum GtkSubmenuDirection
+  (left GTK_DIRECTION_LEFT)
+  (right GTK_DIRECTION_RIGHT))
+(define-enum GtkSubmenuPlacement
+  (top-bottom GTK_TOP_BOTTOM)
+  (left-right GTK_LEFT_RIGHT))
 
-(define-enum GtkPolicyType
-  (always GTK_POLICY_ALWAYS)
-  (automatic GTK_POLICY_AUTOMATIC))
+(define-enum GtkToolbarStyle
+  (icons GTK_TOOLBAR_ICONS)
+  (text GTK_TOOLBAR_TEXT)
+  (both GTK_TOOLBAR_BOTH)
+  (both-horiz GTK_TOOLBAR_BOTH_HORIZ))
 
 (define-enum GtkUpdateType
   (continuous GTK_UPDATE_CONTINUOUS)
@@ -57,84 +248,36 @@
   (partial GTK_VISIBILITY_PARTIAL)
   (full GTK_VISIBILITY_FULL))
 
-(define-flags GtkAttachOptions
-  (expand GTK_EXPAND)
-  (shrink GTK_SHRINK)
-  (fill GTK_FILL))
-
-(define-flags GtkSignalRunType
-  (first GTK_RUN_FIRST)
-  (last GTK_RUN_LAST)
-  (both GTK_RUN_BOTH)
-  (no-recurse GTK_RUN_NO_RECURSE)
-  (action GTK_RUN_ACTION)
-  (no-hooks GTK_RUN_NO_HOOKS))
-
 (define-enum GtkWindowPosition
   (none GTK_WIN_POS_NONE)
   (center GTK_WIN_POS_CENTER)
-  (mouse GTK_WIN_POS_MOUSE))
+  (mouse GTK_WIN_POS_MOUSE)
+  (center-always GTK_WIN_POS_CENTER_ALWAYS)
+  (center-on-parent GTK_WIN_POS_CENTER_ON_PARENT))
 
-(define-enum GtkSubmenuDirection
-  (left GTK_DIRECTION_LEFT)
-  (right GTK_DIRECTION_RIGHT))
+(define-enum GtkWindowType
+  (toplevel GTK_WINDOW_TOPLEVEL)
+  (popup GTK_WINDOW_POPUP))
 
-(define-enum GtkSubmenuPlacement
-  (top-bottom GTK_TOP_BOTTOM)
-  (left-right GTK_LEFT_RIGHT))
+(define-enum GtkWrapMode
+  (none GTK_WRAP_NONE)
+  (char GTK_WRAP_CHAR)
+  (word GTK_WRAP_WORD))
+
+(define-enum GtkSortType
+  (ascending GTK_SORT_ASCENDING)
+  (descending GTK_SORT_DESCENDING))
 
 ;(define-enum GtkMenuFactoryType
 ;  (menu GTK_MENU_FACTORY_MENU)
 ;  (menu-bar GTK_MENU_FACTORY_MENU_BAR)
 ;  (option-menu GTK_MENU_FACTORY_OPTION_MENU))
 
-(define-enum GtkMetricType
-  (pixels GTK_PIXELS)
-  (inches GTK_INCHES)
-  (centimeters GTK_CENTIMETERS))
-
-(define-enum GtkScrollType
-  (none GTK_SCROLL_NONE)
-  (step-backward GTK_SCROLL_STEP_BACKWARD)
-  (step-forward GTK_SCROLL_STEP_FORWARD)
-  (page-backward GTK_SCROLL_PAGE_BACKWARD)
-  (page-forward GTK_SCROLL_PAGE_FORWARD))
-
 ;(define-enum GtkTroughType
 ;  (none GTK_TROUGH_NONE)
 ;  (start GTK_TROUGH_START)
 ;  (end GTK_TROUGH_END))
 
-(define-enum GtkPositionType
-  (left GTK_POS_LEFT)
-  (right GTK_POS_RIGHT)
-  (top GTK_POS_TOP)
-  (bottom GTK_POS_BOTTOM))
-
-(define-enum GtkPreviewType
-  (color GTK_PREVIEW_COLOR)
-  (grayscale GTK_PREVIEW_GRAYSCALE))
-
-;; (define-flags GtkWidgetFlags
-;;   (destroyed GTK_DESTROYED)
-;;   (visible GTK_VISIBLE)
-;;   (mapped GTK_MAPPED)
-;;   ;(unmapped GTK_UNMAPPED)
-;;   (realized GTK_REALIZED)
-;;   (sensitive GTK_SENSITIVE)
-;;   (parent-sensitive GTK_PARENT_SENSITIVE)
-;;   (no-window GTK_NO_WINDOW)
-;;   (has-focus GTK_HAS_FOCUS)
-;;   (can-focus GTK_CAN_FOCUS)
-;;   (has-default GTK_HAS_DEFAULT)
-;;   (can-default GTK_CAN_DEFAULT)
-;;   ;(propagate-state GTK_PROPAGATE_STATE)
-;;   ;(anchored GTK_ANCHORED)
-;;   (basic GTK_BASIC)
-;;   ;(user-style GTK_USER_STYLE
-;;   (has-grab GTK_HAS_GRAB)
-;;   (toplevel GTK_TOPLEVEL))
- 
 (define-flags GtkWidgetFlags
    (toplevel GTK_TOPLEVEL)
    (no-window GTK_NO_WINDOW)
@@ -149,22 +292,11 @@
    (has-default GTK_HAS_DEFAULT)
    (has-grab GTK_HAS_GRAB)
    (rc-style GTK_RC_STYLE)
-   (composite-child GTK_COMPOSITE_CHILD))
-
-(define-enum GtkSelectionMode
-  (single GTK_SELECTION_SINGLE)
-  (browse GTK_SELECTION_BROWSE)
-  (multiple GTK_SELECTION_MULTIPLE)
-  (extended GTK_SELECTION_EXTENDED))
-
-(define-enum GtkOrientation
-  (horizontal GTK_ORIENTATION_HORIZONTAL)
-  (vertical GTK_ORIENTATION_VERTICAL))
-
-(define-enum GtkToolbarStyle
-  (icons GTK_TOOLBAR_ICONS)
-  (text GTK_TOOLBAR_TEXT)
-  (both GTK_TOOLBAR_BOTH))
+   (composite-child GTK_COMPOSITE_CHILD)
+   (no-reparent GTK_NO_REPARENT)
+   (app-paintable GTK_APP_PAINTABLE)
+   (receives-default GTK_RECEIVES_DEFAULT)
+   (double-buffered GTK_DOUBLE_BUFFERED))
 
 (define-enum GtkToolbarChildType
   (space GTK_TOOLBAR_CHILD_SPACE)
@@ -173,21 +305,9 @@
   (radio-button GTK_TOOLBAR_CHILD_RADIOBUTTON)
   (widget GTK_TOOLBAR_CHILD_WIDGET))
 
-(define-enum GtkButtonBoxStyle
-  (default-style GTK_BUTTONBOX_DEFAULT_STYLE)
-  (spread GTK_BUTTONBOX_SPREAD)
-  (edge GTK_BUTTONBOX_EDGE)
-  (start GTK_BUTTONBOX_START)
-  (end GTK_BUTTONBOX_END))
-
 ;(define-enum GtkTreeViewMode
 ;  (line GTK_TREE_VIEW_LINE)
 ;  (item GTK_TREE_VIEW_ITEM))
-
-(define-enum GtkCurveType
-  (linear GTK_CURVE_TYPE_LINEAR)
-  (spline GTK_CURVE_TYPE_SPLINE)
-  (free GTK_CURVE_TYPE_FREE))
 
 (define-enum GtkFundamentalType
   (invalid GTK_TYPE_INVALID)
@@ -212,12 +332,6 @@
 ;  (object GTK_TYPE_OBJECT)
 )
 
-(define-enum GtkJustification
-  (left GTK_JUSTIFY_LEFT)
-  (right GTK_JUSTIFY_RIGHT)
-  (center GTK_JUSTIFY_CENTER)
-  (fill GTK_JUSTIFY_FILL))
-
 (define-enum GtkSpinButtonUpdatePolicy
   (always GTK_UPDATE_ALWAYS)
   (if-valid GTK_UPDATE_IF_VALID))
@@ -238,20 +352,11 @@
   (pixtext GTK_CELL_PIXTEXT)
   (widget GTK_CELL_WIDGET))
 
-(define-enum GtkSortType
-  (ascending GTK_SORT_ASCENDING)
-  (descending GTK_SORT_DESCENDING))
-
-(define-enum GtkAnchorType
-  (center GTK_ANCHOR_CENTER)
-  (north GTK_ANCHOR_NORTH)
-  (south GTK_ANCHOR_SOUTH)
-  (east GTK_ANCHOR_EAST)
-  (west GTK_ANCHOR_WEST)
-  (north-west GTK_ANCHOR_NORTH_WEST)
-  (north-east GTK_ANCHOR_NORTH_EAST)
-  (south-west GTK_ANCHOR_SOUTH_WEST)
-  (south-east GTK_ANCHOR_SOUTH_EAST))
+(define-enum GtkProgressBarOrientation
+  (left-to-right GTK_PROGRESS_LEFT_TO_RIGHT)
+  (right-to-left GTK_PROGRESS_RIGHT_TO_LEFT)
+  (bottom-to-top GTK_PROGRESS_BOTTOM_TO_TOP)
+  (top-to-bottom GTK_PROGRESS_TOP_TO_BOTTOM))
 
 (define-flags GtkArgFlags
   (readable GTK_ARG_READABLE)
@@ -265,16 +370,26 @@
   (visible GTK_ACCEL_VISIBLE)
 ;  (signal-visible GTK_ACCEL_SIGNAL_VISIBLE)
   (locked GTK_ACCEL_LOCKED))
+
+(define-flags GtkCalendarDisplayOptions
+  (show-heading GTK_CALENDAR_SHOW_HEADING)
+  (show-day-names GTK_CALENDAR_SHOW_DAY_NAMES)
+  (no-month-changed GTK_CALENDAR_NO_MONTH_CHANGE)
+  (show-week-numbers GTK_CALENDAR_SHOW_WEEK_NUMBERS)
+  (week-start-monday GTK_CALENDAR_WEEK_START_MONDAY))
  
 ;;; Gtk boxed types
 
-(define-boxed GtkAccelGroup
-  (copy gtk_accel_group_ref)
-  (free gtk_accel_group_unref))
+(define-object GtkWidget (GtkObject)
+  (fields
+   (GtkStyle style)
+   (GdkWindow window)
+   (GtkWidget parent)
+   (SCM allocation (getter sgtk_gtk_widget_get_allocation))))
 
-(define-boxed GtkStyle
-  (copy gtk_style_ref)
-  (free gtk_style_unref))
+(define-object GtkAccelGroup (GObject))
+
+(define-object GtkStyle (GObject))
 
 (define-func gtk_style_get_white_interp
   GdkColor
@@ -292,11 +407,17 @@
 
 ;;; Functions
 
-;; main
+;; 
 
-(define-func gtk_exit
-  none
-  ((int code (= "0"))))
+;; gtkmain.h
+
+(define-func gtk_set_locale
+  static_string
+  ())
+
+(define-func gtk_events_pending
+  int
+  ())
 
 (define-func gtk_main
   none
@@ -304,7 +425,7 @@
   (undeferred t))
 
 (define-func gtk_main_level
-  int
+  uint
   ())
 
 (define-func gtk_main_quit
@@ -312,24 +433,43 @@
   ())
 
 (define-func gtk_main_iteration
-  int
+  bool
   ())
 
 (define-func gtk_main_iteration_do
-  int
-  ((bool val)))
+  bool
+  ((bool blocking)))
 
 (define-func gtk_true
-  int
+  bool
   ())
 
-(define-func gtk_events_pending
-  int
+(define-func gtk_false
+  bool
   ())
 
-(define-func gtk_set_locale
-  static_string
+(define-func gtk_grab_add
+  none
+  ((GtkWidget widget)))
+
+(define-func gtk_grab_get_current
+  GtkWidget
   ())
+
+(define-func gtk_grab_remove
+  none
+  ((GtkWidget widget)))
+
+(define-func gtk_quit_add_full
+  uint
+  ((uint main_level)
+   (full-callback function))
+  (scm-name "gtk-quit-add")
+  (protection t))
+
+(define-func gtk_quit_remove
+  none
+  ((uint handler_id)))
 
 (define-func gtk_timeout_add_full
   int
@@ -365,13 +505,38 @@
   none
   ((int tag)))
 
+(define-func gtk_get_current_event
+  GdkEvent
+  ())
+
+(define-func gtk_get_current_event_time
+  ulong
+  ())
+
+;; gtkrc.h
+
+(define-object GtkRcStyle (GObject))
+
+(define-func gtk_rc_add_default_file
+  none
+  ((string filename)))
+
+;; XXX
+;(define-func gtk_rc_set_default_files
+;  none
+;  ((tvec string in) filenames))
+;
+;(define-func gtk_rc_get_default_files
+;  (tvec string out)
+;  ())
+
+(define-func gtk_rc_get_style
+  GtkStyle
+  ((GtkWidget widget)))
+
 (define-func gtk_rc_parse
   none
   ((string file)))
-
-(define-func g_mem_chunk_info
-  none
-  ())
 
 ;; GtkObject
 
@@ -379,10 +544,6 @@
 
 (define-func gtk_object_destroy
   none
-  ((GtkObject object)))
-
-(define-func GTK_OBJECT_DESTROYED
-  bool
   ((GtkObject object)))
 
 (define-func GTK_OBJECT_TYPE
@@ -413,24 +574,7 @@
 
 ;; GtkWidget
 
-(define-object GtkWidget (GtkObject)
-  (fields
-   (GtkStyle style)
-   (GdkWindow window)
-   (GtkWidget parent)
-   (SCM allocation (getter sgtk_gtk_widget_get_allocation))))
-
-(define-func gtk_grab_add
-  none
-  ((GtkWidget widget)))
-
-(define-func gtk_grab_get_current
-  GtkWidget
-  ())
-
-(define-func gtk_grab_remove
-  none
-  ((GtkWidget widget)))
+(define-object GtkAdjustment (GtkWidget))
 
 (define-func GTK_WIDGET_STATE
   GtkStateType
@@ -462,6 +606,10 @@
   ((GtkWidget widget)))
 
 (define-func gtk_widget_show
+  none
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_show_now
   none
   ((GtkWidget widget)))
 
@@ -497,6 +645,22 @@
   none
   ((GtkWidget widget)))
 
+(define-func gtk_widget_queue_draw
+  none
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_queue_draw_area
+  none
+  ((GtkWidget widget)
+   (int x)
+   (int y)
+   (int width)
+   (int height)))
+
+(define-func gtk_widget_queue_resize
+  none
+  ((GtkWidget widget)))
+
 (define-func gtk_widget_add_accelerator
   none
   ((GtkWidget          widget)
@@ -506,54 +670,12 @@
    (GdkModifierType    accel_mods)
    (GtkAccelFlags      accel_flags)))
 
-;;(define-func gtk_widget_install_accelerator
-;;  none
-;;  ((GtkWidget widget)
-;;   (GtkAcceleratorTable table)
-;;   (string signal_name)
-;;   (char key)
-;;   (uint modifiers)))
-
-(define-func gtk_widget_add_accelerator
-  none
-  ((GtkWidget widget)
-   (string accel_signal)
-   (GtkAccelGroup accel_group)
-   (uint accel_key)
-   (uint accel_mods)
-   (uint accel_flags)))
-
 (define-func gtk_widget_remove_accelerator
   none
   ((GtkWidget widget)
    (GtkAccelGroup accel_group)
    (uint accel_key)
-   (uint accel_mods)))
-
-(define-func gtk_widget_remove_accelerators
-  none
-  ((GtkWidget widget)
-   (string accel_signal)
-   (bool visible_only)))
-
-(define-func gtk_widget_accelerator_signal
-  uint
-  ((GtkWidget widget)
-   (GtkAccelGroup accel_group)
-   (uint accel_key)
-   (uint accel_mods)))
-
-(define-func gtk_widget_lock_accelerators
-  none
-  ((GtkWidget widget)))
-
-(define-func gtk_widget_unlock_accelerators
-  none
-  ((GtkWidget widget)))
-
-(define-func gtk_widget_accelerators_locked
-  bool
-  ((GtkWidget widget)))
+   (GdkModifierType accel_mods)))
 
 (define-func gtk_widget_event
   bool
@@ -564,16 +686,20 @@
   none
   ((GtkWidget widget)))
 
+(define-func gtk_widget_set_scroll_adjustments
+  bool
+  ((GtkWidget widget)
+   (GtkAdjustment hadj)
+   (GtkAdjustment vadj)))
+
 (define-func gtk_widget_reparent
   none
   ((GtkWidget widget)
    (GtkWidget new_parent)))
 
-(define-func gtk_widget_popup
-  none
-  ((GtkWidget widget)
-   (int x)
-   (int y)))
+(define-func gtk_widget_is_focus
+  bool
+  ((GtkWidget widget)))
 
 (define-func gtk_widget_grab_focus
   none
@@ -602,27 +728,52 @@
   ((GtkWidget widget)
    (bool sensitive)))
 
+(define-func gtk_widget_set_app_paintable
+  none
+  ((GtkWidget widget)
+   (bool app_paintable)))
+
+(define-func gtk_widget_set_double_buffered
+  none
+  ((GtkWidget widget)
+   (bool double_buffered)))
+
+(define-func gtk_widget_set_redraw_on_allocate
+  none
+  ((GtkWidget widget)
+   (bool redraw_on_allocate)))
+
 (define-func gtk_widget_set_parent
   none
   ((GtkWidget widget)
    (GtkWidget parent)))
 
-(define-func gtk_widget_set_style
+(define-func gtk_widget_set_parent_window
   none
   ((GtkWidget widget)
-   (GtkStyle style)))
+   (GdkWindow parent_window)))
 
-(define-func gtk_widget_set_uposition
+(define-func gtk_widget_set_child_visible
   none
   ((GtkWidget widget)
-   (int x)
-   (int y)))
+   (bool child_visible)))
 
-(define-func gtk_widget_set_usize
+(define-func gtk_widget_get_child_visible
+  bool
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_get_parent
+  GtkWidget
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_get_parent_window
+  GdkWindow
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_child_focus
   none
   ((GtkWidget widget)
-   (int height)
-   (int width)))
+   (GtkDirectionType direction)))
 
 (define-func gtk_widget_set_events
   none
@@ -639,14 +790,14 @@
   ((GtkWidget widget)
    (GdkEventMask events)))
 
+;(define-func gtk_widget_get_ancestor
+;  GtkWidget
+;  ((GtkWidget widget)
+;   (GtkType type)))
+
 (define-func gtk_widget_get_toplevel
   GtkWidget
   ((GtkWidget widget)))
-
-;;(define-func gtk_widget_get_ancestor
-;;  GtkWidget
-;;  ((GtkWidget widget)
-;;   (GtkType type)))
 
 (define-func gtk_widget_get_colormap
   GdkColormap
@@ -654,18 +805,6 @@
 
 (define-func gtk_widget_get_visual
   GdkVisual
-  ((GtkWidget widget)))
-
-(define-func gtk_widget_get_style
-  GtkStyle
-  ((GtkWidget widget)))
-
-(define-func gtk_widget_get_events
-  GdkEventMask
-  ((GtkWidget widget)))
-
-(define-func gtk_widget_get_extension_events
-  GdkEventMask
   ((GtkWidget widget)))
 
 ;; XXX - need multiple return values
@@ -676,41 +815,92 @@
   ((GtkWidget widget)
    (GtkWidget ancestor)))
 
+(define-func gtk_widget_hide_on_delete
+  bool
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_set_style
+  none
+  ((GtkWidget widget)
+   (GtkStyle style)))
+
+(define-func gtk_widget_ensure_style
+  none
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_get_style
+  GtkStyle
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_modify_style
+  none
+  ((GtkWidget widget)
+   (GtkRcStyle style)))
+
+(define-func gtk_widget_get_modifier_style
+  GtkRcStyle
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_modify_fg
+  none
+  ((GtkWidget widget)
+   (GtkStateType state)
+   (GdkColor color)))
+
+(define-func gtk_widget_modify_bg
+  none
+  ((GtkWidget widget)
+   (GtkStateType state)
+   (GdkColor color)))
+
+(define-func gtk_widget_modify_text
+  none
+  ((GtkWidget widget)
+   (GtkStateType state)
+   (GdkColor color)))
+
+(define-func gtk_widget_modify_base
+  none
+  ((GtkWidget widget)
+   (GtkStateType state)
+   (GdkColor color)))
+
+;; XXX gdk_widget_modify_font
+
+(define-func gtk_widget_render_icon
+  GdkPixbuf
+  ((GtkWidget widget)
+   (string stock_id)
+   (GtkIconSize size)
+   (string detail)))
+
+(define-func gtk_widget_get_events
+  GdkEventMask
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_get_extension_events
+  GdkEventMask
+  ((GtkWidget widget)))
+
 (define-func gtk_widget_push_colormap
   none
   ((GdkColormap cmap)))
 
-(define-func gtk_widget_push_visual
+(define-func gtk_widget_push_composite_child
   none
-  ((GdkVisual visual)))
-
-(define-func gtk_widget_push_style
-  none
-  ((GtkStyle style)))
+  ())
 
 (define-func gtk_widget_pop_colormap
   none
   ())
 
-(define-func gtk_widget_pop_visual
-  none
-  ())
-
-(define-func gtk_widget_pop_style
+(define-func gtk_widget_pop_composite_child
   none
   ())
 
 (define-func gtk_widget_set_default_colormap
   none
   ((GdkColormap cmap)))
-
-(define-func gtk_widget_set_default_visual
-  none
-  ((GdkVisual visual)))
-
-(define-func gtk_widget_set_default_style
-  none
-  ((GtkStyle style)))
 
 (define-func gtk_widget_get_default_colormap
   GdkColormap
@@ -733,10 +923,14 @@
 
 (define-object GtkContainer (GtkWidget))
 
-(define-func gtk_container_border_width
+(define-func gtk_container_set_border_width
   none
   ((GtkContainer container)
    (int border_width)))
+
+(define-func gtk_container_get_border_width
+  int
+  ((GtkContainer container)))
 
 (define-func gtk_container_add
   none
@@ -748,27 +942,37 @@
   ((GtkContainer container)
    (GtkWidget widget)))
 
+(define-func gtk_container_set_resize_mode
+  none
+  ((GtkContainer container)
+   (GtkResizeMode resize_mode)))
+
+(define-func gtk_container_get_resize_mode
+  GtkResizeMode
+  ((GtkContainer container)))
+
+(define-func gtk_container_check_resize
+  none
+  ((GtkContainer container)))
+
+;; XXX this is deprecated?
 (define-func gtk_container_foreach_full 
   none
   ((GtkContainer container)
    (full-callback function (protect-during)))
   (scm-name "gtk-container-foreach"))
 
-(define-func gtk_container_children
+(define-func gtk_container_get_children
   ((list GtkWidget))
   ((GtkContainer container)))
 
-(define-func gtk_container_focus
-  GtkDirectionType
+(define-func gtk_container_set_focus_chain
+  none
   ((GtkContainer container)
-   (GtkDirectionType direction)))
+   ((list GtkWidget) focusable_widgets)))
 
-(define-func gtk_container_register_toplevel 
-  none 
-  ((GtkContainer container)))
-
-(define-func gtk_container_unregister_toplevel
-  none 
+(define-func gtk_container_unset_focus_chain
+  none
   ((GtkContainer container)))
 
 ;;; Fixed
@@ -783,7 +987,6 @@
   none
   ((GtkFixed fixed)
    (GtkWidget widget)
-   ;; next two should be int16s in theory - does it matter?
    (int x)
    (int y)))
 
@@ -791,9 +994,17 @@
   none
   ((GtkFixed fixed)
    (GtkWidget widget)
-   ;; next two should be int16s in theory - does it matter?
    (int x)
    (int y)))
+
+(define-func gtk_fixed_set_has_window
+  none
+  ((GtkFixed fixed)
+   (bool has_window)))
+
+(define-func gtk_fixed_get_has_window
+  bool
+  ((GtkFixed fixed)))
 
 ;; TreeItem
 
@@ -909,50 +1120,6 @@
   none
   ((GtkTree tree)
    (bool flag)))
-
-;; Data
-
-;(define-object GtkData (GtkObject))
-
-;; Adjustment
-
-(define-object GtkAdjustment (GtkObject)
-  (fields
-   (float value)
-   (float lower)
-   (float upper)
-   (float step_increment)
-   (float page_increment)
-   (float page_size)))
-
-(define-func gtk_adjustment_new
-  GtkObject
-  ((float value)
-   (float lower)
-   (float upper)
-   (float step_increment)
-   (float page_increment)
-   (float page_size)))
-
-(define-func gtk_adjustment_changed 
-  none
-  ((GtkAdjustment adjustment)))
-
-(define-func gtk_adjustment_value_changed
-  none
-  ((GtkAdjustment adjustment)))
-
-(define-func gtk_adjustment_clamp_page
-  none 
-  ((GtkAdjustment adjustment)
-   (float lower)
-   (float upper)))
-  
-(define-func gtk_adjustment_set_value
-  none
-  ((GtkAdjustment adjustment)
-   (float value)))
-
 
 ;;; GtkCList
 
@@ -1327,23 +1494,24 @@
   ((GtkWindow window)
    (string title)))
 
+(define-func gtk_window_get_title
+  static_string
+  ((GtkWindow window)))
+
 (define-func gtk_window_set_wmclass
   none
   ((GtkWindow window)
    (string wmclass_class)
    (string wmclass_name)))
 
-(define-func gtk_window_set_policy
+(define-func gtk_window_set_role
   none
   ((GtkWindow window)
-   (bool allow_shrink)
-   (bool allow_grow)
-   (bool auto_shrink)))
+   (string role)))
 
-(define-func gtk_window_set_default
-  none
-  ((GtkWindow window)
-   (GtkWidget default)))
+(define-func gtk_window_get_role
+  static_string
+  ((GtkWindow window)))
 
 (define-func gtk_window_add_accel_group
   none
@@ -1360,10 +1528,10 @@
   ((GtkWindow window)
    (GtkWindowPosition position)))
 
-(define-func gtk_window_position
+(define-func gtk_window_set_default
   none
   ((GtkWindow window)
-   (GtkWindowPosition position)))
+   (GtkWidget default)))
 
 (define-func gtk_window_activate_focus
   int
@@ -1378,24 +1546,188 @@
   ((GtkWindow window)
    (GtkWindow parent (null-ok))))
 
-(define-func gtk_window_set_default_size
+(define-func gtk_window_get_transient_for
+  GtkWindow
+  ((GtkWindow window)))
+
+;; XXX GdkWindowTypeHint?
+;(define-func gtk_window_set_type_hint
+;  none
+;  ((GtkWindow window)
+;   (GdkWindowTypeHint hint)))
+;
+;(define-func gtk_window_get_type_hint
+;  GdkWindowTypeHint
+;  ((GtkWindow window)))
+
+(define-func gtk_window_set_destroy_with_parent
   none
   ((GtkWindow window)
-   (int width)
-   (int height)))
+   (bool setting)))
+
+(define-func gtk_window_get_destroy_with_parent
+  bool
+  ((GtkWindow window)))
+
+(define-func gtk_window_set_resizable
+  none
+  ((GtkWindow window)
+   (bool resizable)))
+
+(define-func gtk_window_get_resizable
+  bool
+  ((GtkWindow window)))
+
+;; XXX GdkGravity?
+;(define-func gtk_window_set_gravity
+;  none
+;  ((GtkWindow window)
+;   (GdkGravity gravity)))
+;
+;(define-func gtk_window_get_gravity
+;  GdkGravity
+;  ((GtkWindow window)))
 
 ;; XXX gtk_window_set_geometry_hints
+
+(define-func gtk_window_set_has_frame
+  none
+  ((GtkWindow window)
+   (bool has_frame)))
+
+(define-func gtk_window_get_has_frame
+  bool
+  ((GtkWindow window)))
+
+(define-func gtk_window_set_frame_dimensions
+  none
+  ((GtkWindow window)
+   (int left)
+   (int top)
+   (int right)
+   (int bottom)))
+
+;; XXX gtk_window_get_frame_dimensions
+
+(define-func gtk_window_set_decorated
+  none
+  ((GtkWindow window)
+   (bool decorated)))
+
+(define-func gtk_window_get_decorated
+  bool
+  ((GtkWindow window)))
+
+;; XXX icon-list stuff
 
 (define-func gtk_window_set_modal
   none
   ((GtkWindow window)
    (bool modal)))
 
-;; XXX marked as internal
-(define-func gtk_window_set_focus
+(define-func gtk_window_get_modal
+  bool
+  ((GtkWindow window)))
+
+
+(define-func gtk_window_list_toplevels
+  ((list GtkWindow))
+  ())
+
+(define-func gtk_window_add_mnemonic
   none
   ((GtkWindow window)
-   (GtkWidget focus)))
+   (uint keyval)
+   (GtkWidget target)))
+
+(define-func gtk_window_remove_mnemonic
+  none
+  ((GtkWindow window)
+   (uint keyval)
+   (GtkWidget target)))
+
+(define-func gtk_window_mnemonic_activate
+  bool
+  ((GtkWindow window)
+   (uint keyval)
+   (GdkModifierType modifier)))
+
+(define-func gtk_window_set_mnemonic_modifier
+  none
+  ((GtkWindow window)
+   (GdkModifierType modifier)))
+
+(define-func gtk_window_get_mnemonic_modifier
+  GdkModifierType
+  ((GtkWindow window)))
+
+(define-func gtk_window_present
+  none
+  ((GtkWindow window)))
+
+(define-func gtk_window_iconify
+  none
+  ((GtkWindow window)))
+
+(define-func gtk_window_deiconify
+  none
+  ((GtkWindow window)))
+
+(define-func gtk_window_stick
+  none
+  ((GtkWindow window)))
+
+(define-func gtk_window_unstick
+  none
+  ((GtkWindow window)))
+
+(define-func gtk_window_maximize
+  none
+  ((GtkWindow window)))
+
+(define-func gtk_window_unmaximize
+  none
+  ((GtkWindow window)))
+
+;; XXX begin_{move,resize}_drag
+
+(define-func gtk_window_set_default_size
+  none
+  ((GtkWindow window)
+   (int width)
+   (int height)))
+
+;; XXX get_default_size
+
+(define-func gtk_window_resize
+  none
+  ((GtkWindow window)
+   (int width)
+   (int height)))
+
+;; XXX get_size
+
+(define-func gtk_window_move
+  none
+  ((GtkWindow window)
+   (int x)
+   (int y)))
+
+;; XXX get_position
+
+(define-func gtk_window_parse_geometry
+  bool
+  ((GtkWindow window)
+   (string geometry)))
+
+;; XXX GtkWindowGroup
+
+;; XXX marked as internal
+(define-func _gtk_window_internal_set_focus
+  none
+  ((GtkWindow window)
+   (GtkWidget focus))
+  (scm-name "gtk-window-set-focus"))
 
 ;;; HandleBox
 
@@ -1407,18 +1739,30 @@
 
 (define-func gtk_handle_box_set_shadow_type
   none
-  ((GtkHandleBox handlebox) 
+  ((GtkHandleBox handlebox)
    (GtkShadowType type)))
+
+(define-func gtk_handle_box_get_shadow_type
+  GtkShadowType
+  ((GtkHandleBox handlebox)))
 
 (define-func gtk_handle_box_set_handle_position
   none
   ((GtkHandleBox handlebox)
    (GtkPositionType position)))
 
+(define-func gtk_handle_box_get_handle_position
+  GtkPositionType
+  ((GtkHandleBox handlebox)))
+
 (define-func gtk_handle_box_set_snap_edge
   none
   ((GtkHandleBox handlebox)
    (GtkPositionType edge)))
+
+(define-func gtk_handle_box_get_snap_edge
+  GtkPositionType
+  ((GtkHandleBox handlebox)))
 
 ;;; Box
 
@@ -1455,16 +1799,24 @@
   ((GtkBox box)
    (bool homogenous)))
 
+(define-func gtk_box_get_homogeneous
+  bool
+  ((GtkBox box)))
+
 (define-func gtk_box_set_spacing
   none
   ((GtkBox box)
    (int spacing)))
 
+(define-func gtk_box_get_spacing
+  int
+  ((GtkBox box)))
+
 (define-func gtk_box_reorder_child
   none
   ((GtkBox box)
    (GtkWidget child)
-   (uint pos)))
+   (int pos)))
 
 ;; XXX - needs multiple return values
 ;; (define-func gtk_box_query_child_packing)
@@ -1482,57 +1834,34 @@
 
 (define-object GtkButtonBox (GtkBox))
 
-;; XXX - needs multiple return values
-;; (define-func gtk_button_box_get_child_size_default)
-
-;; XXX - needs multiple return values
-;; (define-func gtk_button_box_get_child_ipadding_default)
-
-(define-func gtk_button_box_set_child_size_default 
-  none
-  ((int min_width)
-   (int min_height)))
-
-(define-func gtk_button_box_set_child_ipadding_default 
-  none
-  ((int ipad_x)
-   (int ipad_y)))
-
-(define-func gtk_button_box_get_spacing 
-  int 
-  ((GtkButtonBox widget)))
-
-(define-func gtk_button_box_get_layout 
-  GtkButtonBoxStyle
-  ((GtkButtonBox widget)))
-
-;; XXX - needs multiple return values
-;; (define-func gtk_button_box_get_child_size)
-
-;; XXX - needs multiple return values
-;; (define-func gtk_button_box_get_child_ipadding)
-
-(define-func gtk_button_box_set_spacing 
-  none
-  ((GtkButtonBox widget) 
-   (int spacing)))
-
 (define-func gtk_button_box_set_layout 
   none 
   ((GtkButtonBox widget)
    (GtkButtonBoxStyle layout_style)))
 
-(define-func gtk_button_box_set_child_size	 
+(define-func gtk_button_box_get_layout 
+  GtkButtonBoxStyle
+  ((GtkButtonBox widget)))
+
+(define-func gtk_button_box_set_child_secondary
   none
   ((GtkButtonBox widget)
-   (int min_width) 
+   (GtkWidget child)
+   (bool is_secondary)))
+
+(define-func gtk_button_box_set_child_size 
+  none
+  ((GtkButtonBox widget)
+   (int min_width)
    (int min_height)))
 
-(define-func gtk_button_box_set_child_ipadding 
+(define-func gtk_button_box_set_child_ipadding
   none
-  ((GtkButtonBox widget) 
-   (int ipad_x) 
+  ((GtkButtonBox widget)
+   (int ipad_x)
    (int ipad_y)))
+
+;; XXX get_child_size, get_child_ipadding
 
 ;;; HButtonBox
 
@@ -1542,45 +1871,13 @@
   GtkWidget
   ())
 
-(define-func gtk_hbutton_box_get_spacing_default 
-  int 
-  ())
-
-(define-func gtk_hbutton_box_get_layout_default 
-  GtkButtonBoxStyle
-  ())
-
-(define-func gtk_hbutton_box_set_spacing_default 
-  none
-  ((int spacing)))
-
-(define-func gtk_hbutton_box_set_layout_default 
-  none
-  ((GtkButtonBoxStyle layout)))
-
-;;; HVuttonBox
+;;; VButtonBox
 
 (define-object GtkVButtonBox (GtkButtonBox))
 
 (define-func gtk_vbutton_box_new  
   GtkWidget
   ())
-
-(define-func gtk_vbutton_box_get_spacing_default 
-  int 
-  ())
-
-(define-func gtk_vbutton_box_get_layout_default 
-  GtkButtonBoxStyle
-  ())
-
-(define-func gtk_vbutton_box_set_spacing_default 
-  none
-  ((int spacing)))
-
-(define-func gtk_vbutton_box_set_layout_default 
-  none
-  ((GtkButtonBoxStyle layout)))
 
 ;;;; Toolbar
 
@@ -1594,6 +1891,7 @@
 ;; (define-func gtk_toolbar_append_item)
 ;; (define-func gtk_toolbar_prepend_item)
 ;; (define-func gtk_toolbar_insert_item)
+;; (define-func gtk_toolbar_insert_stock)
  
 (define-func gtk_toolbar_append_space
   none
@@ -1604,6 +1902,11 @@
   ((GtkToolbar toolbar)))
 
 (define-func gtk_toolbar_insert_space
+  none
+  ((GtkToolbar toolbar)
+   (int position)))
+
+(define-func gtk_toolbar_remove_space
   none
   ((GtkToolbar toolbar)
    (int position)))
@@ -1646,15 +1949,39 @@
   ((GtkToolbar toolbar)
    (GtkToolbarStyle style)))
 
-(define-func gtk_toolbar_set_space_size
+(define-func gtk_toolbar_set_icon_size
   none
   ((GtkToolbar toolbar)
-   (int space_size)))
+   (GtkIconSize size)))
 
 (define-func gtk_toolbar_set_tooltips
   none
   ((GtkToolbar toolbar)
    (bool enable)))
+
+(define-func gtk_toolbar_unset_style
+  none
+  ((GtkToolbar toolbar)))
+
+(define-func gtk_toolbar_unset_icon_size
+  none
+  ((GtkToolbar toolbar)))
+
+(define-func gtk_toolbar_get_orientation
+  GtkOrientation
+  ((GtkToolbar toolbar)))
+
+(define-func gtk_toolbar_get_style
+  GtkToolbarStyle
+  ((GtkToolbar toolbar)))
+
+(define-func gtk_toolbar_get_icon_size
+  GtkIconSize
+  ((GtkToolbar toolbar)))
+
+(define-func gtk_toolbar_get_tooltips
+  bool
+  ((GtkToolbar toolbar)))
 
 ;;; Table
 
@@ -1662,59 +1989,87 @@
 
 (define-func gtk_table_new
   GtkWidget
-  ((int rows)
-   (int columns)
+  ((uint rows)
+   (uint columns)
    (bool homogenous)))
+
+(define-func gtk_table_resize
+  none
+  ((GtkTable table)
+   (uint rows)
+   (uint columns)))
 
 (define-func gtk_table_attach
   none
   ((GtkTable table)
    (GtkWidget child)
-   (int left_attach)
-   (int right_attach)
-   (int top_attach)
-   (int bottom_attach)
+   (uint left_attach)
+   (uint right_attach)
+   (uint top_attach)
+   (uint bottom_attach)
    (GtkAttachOptions xoptions (= "GTK_EXPAND|GTK_FILL"))
    (GtkAttachOptions yoptions (= "GTK_EXPAND|GTK_FILL"))
-   (int xpadding (= "0"))
-   (int ypadding (= "0"))))
+   (uint xpadding (= "0"))
+   (uint ypadding (= "0"))))
 
 (define-func gtk_table_attach_defaults
   none
   ((GtkTable table)
    (GtkWidget child)
-   (int left_attach)
-   (int right_attach)
-   (int top_attach)
-   (int bottom_attach)))
+   (uint left_attach)
+   (uint right_attach)
+   (uint top_attach)
+   (uint bottom_attach)))
 
 (define-func gtk_table_set_row_spacing
   none
   ((GtkTable table)
-   (int row)
-   (int spacing)))
+   (uint row)
+   (uint spacing)))
+
+(define-func gtk_table_get_row_spacing
+  uint
+  ((GtkTable table)
+   (uint row)))
 
 (define-func gtk_table_set_col_spacing
   none
   ((GtkTable table)
-   (int column)
-   (int spacing)))
+   (uint column)
+   (uint spacing)))
+
+(define-func gtk_table_get_col_spacing
+  uint
+  ((GtkTable table)
+   (uint column)))
 
 (define-func gtk_table_set_row_spacings
   none
   ((GtkTable table)
    (int spacing)))
 
+(define-func gtk_table_get_default_row_spacing
+  uint
+  ((GtkTable table)))
+
 (define-func gtk_table_set_col_spacings
   none
   ((GtkTable table)
-   (int spacing)))
+   (uint spacing)))
+
+(define-func gtk_table_set_homogeneous
+  none
+  ((GtkTable table)
+   (bool homogeneous)))
+
+(define-func gtk_table_get_homogeneous
+  bool
+  ((GtkTable table)))
 
 ;;; Button
 
 (define-object GtkButton (GtkContainer)
   (fields
-;   (GtkWidget child)
    (bool in_button)
    (bool button_down)))
 
@@ -1723,6 +2078,14 @@
   ())
 
 (define-func gtk_button_new_with_label
+  GtkWidget
+  ((string label)))
+
+(define-func gtk_button_new_from_stock
+  GtkWidget
+  ((string stock_id)))
+
+(define-func gtk_button_new_with_mnemonic
   GtkWidget
   ((string label)))
 
@@ -1746,12 +2109,45 @@
   none
   ((GtkButton button)))
 
+(define-func gtk_button_set_relief
+  none
+  ((GtkButton button)
+   (GtkReliefStyle relief)))
+
+(define-func gtk_button_get_relief
+  GtkReliefStyle
+  ((GtkButton button)))
+
+(define-func gtk_button_set_label
+  none
+  ((GtkButton button)
+   (string label)))
+
+(define-func gtk_button_get_label
+  static_string
+  ((GtkButton button)))
+
+(define-func gtk_button_set_use_underline
+  none
+  ((GtkButton button)
+   (bool use_underline)))
+
+(define-func gtk_button_get_use_underline
+  bool
+  ((GtkButton button)))
+
+(define-func gtk_button_set_use_stock
+  none
+  ((GtkButton button)
+   (bool use_stock)))
+
+(define-func gtk_button_get_use_stock
+  bool
+  ((GtkButton button)))
+
 ;;; ToggleButton
 
-(define-object GtkToggleButton (GtkButton)
-  (fields
-   (bool active)
-   (bool draw_indicator)))
+(define-object GtkToggleButton (GtkButton))
 
 (define-func gtk_toggle_button_new
   GtkWidget
@@ -1761,18 +2157,39 @@
   GtkWidget
   ((string label)))
 
+(define-func gtk_toggle_button_new_with_mnemonic
+  GtkWidget
+  ((string mnemonic)))
+
 (define-func gtk_toggle_button_set_mode
   none
   ((GtkToggleButton toggle_button)
    (bool draw_indicator)))
 
-(define-func gtk_toggle_button_set_state
+(define-func gtk_toggle_button_get_mode
+  bool
+  ((GtkToggleButton toggle_button)))
+
+(define-func gtk_toggle_button_set_active
   none
   ((GtkToggleButton toggle_button)
-   (bool state)))
+   (bool is_active)))
+
+(define-func gtk_toggle_button_get_active
+  bool
+  ((GtkToggleButton toggle_button)))
 
 (define-func gtk_toggle_button_toggled
   none
+  ((GtkToggleButton toggle_button)))
+
+(define-func gtk_toggle_button_set_inconsistent
+  none
+  ((GtkToggleButton toggle_button)
+   (bool setting)))
+
+(define-func gtk_toggle_button_get_inconsistent
+  bool
   ((GtkToggleButton toggle_button)))
 
 ;;; CheckButton
@@ -1787,6 +2204,10 @@
   GtkWidget
   ((string label)))
 
+(define-func gtk_check_button_new_with_mnemonic
+  GtkWidget
+  ((string mnemonic)))
+
 ;;; RadioButton
 
 (define-object GtkRadioButton (GtkCheckButton))
@@ -1800,14 +2221,20 @@
   ((GtkRadioButton group (null-ok))
    (string label)))
 
-(define-func gtk_radio_button_group
-  ((slist GtkWidget))
-  ((GtkRadioButton button)))
+(define-func gtk_radio_button_new_with_mnemonic_from_widget
+  GtkWidget
+  ((GtkRadioButton group (null-ok))
+   (string label)))
 
-;; XXX - only for testing
-;(define-func gtk_radio_button_new
-;  GtkWidget
-;  (((slist GtkWidget) group)))
+;; XXX
+;(define-func gtk_radio_button_get_group
+;  ((slist GtkWidget))
+;  ((GtkRadioButton button)))
+;
+;(define-func gtk_radio_button_set_group
+;  none
+;  ((GtkRadioButton button)
+;   (slist GtkWidget)))
 
 ;;; Misc
 
@@ -1819,11 +2246,15 @@
    (float xalign)
    (float yalign)))
 
+;; XXX get_alignment
+
 (define-func gtk_misc_set_padding
   none
   ((GtkMisc misc)
    (int xpad)
    (int ypad)))
+
+;; XXX get_padding
 
 ;;; Arrow
 
@@ -1848,34 +2279,113 @@
   GtkWidget
   ((string str)))
 
-(define-func gtk_label_set
+(define-func gtk_label_new_with_mnemonic
+  GtkWidget
+  ((string str)))
+
+(define-func gtk_label_set_text
   none
   ((GtkLabel label)
    (string str)))
 
-(define-func gtk_label_get_interp
+(define-func gtk_label_get_text
   static_string
   ((GtkLabel label)))
+
+(define-func gtk_label_set_label
+  none
+  ((GtkLabel label)
+   (string str)))
+
+(define-func gtk_label_get_label
+  static_string
+  ((GtkLabel label)))
+
+(define-func gtk_label_set_markup
+  none
+  ((GtkLabel label)
+   (string str)))
+
+(define-func gtk_label_set_use_markup
+  none
+  ((GtkLabel label)
+   (bool setting)))
+
+(define-func gtk_label_get_use_markup
+  bool
+  ((GtkLabel label)))
+
+(define-func gtk_label_set_use_underline
+  none
+  ((GtkLabel label)
+   (bool setting)))
+
+(define-func gtk_label_get_use_underline
+  bool
+  ((GtkLabel label)))
+
+(define-func gtk_label_set_markup_with_mnemonic
+  none
+  ((GtkLabel label)
+   (string str)))
+
+(define-func gtk_label_get_mnemonic_keyval
+  uint
+  ((GtkLabel label)))
+
+(define-func gtk_label_set_mnemonic_widget
+  none
+  ((GtkLabel label)
+   (GtkWidget widget)))
+
+(define-func gtk_label_get_mnemonic_widget
+  GtkWidget
+  ((GtkLabel label)))
+
+(define-func gtk_label_set_text_with_mnemonic
+  none
+  ((GtkLabel label)
+   (string str)))
 
 (define-func gtk_label_set_justify
   none
   ((GtkLabel label)
    (GtkJustification jtype)))
 
-(define-func gtk_label_set_line_wrap
-  none
-  ((GtkLabel label)
-   (bool wrap)))
+(define-func gtk_label_get_justify
+  GtkJustification
+  ((GtkLabel label)))
 
 (define-func gtk_label_set_pattern
   none
   ((GtkLabel label)
    (string pattern)))
 
-(define-func gtk_label_parse_uline
-  uint
+(define-func gtk_label_set_line_wrap
+  none
   ((GtkLabel label)
-   (string string)))
+   (bool wrap)))
+
+(define-func gtk_label_get_line_wrap
+  bool
+  ((GtkLabel label)))
+
+(define-func gtk_label_set_selectable
+  none
+  ((GtkLabel label)
+   (bool setting)))
+
+(define-func gtk_label_get_selectable
+  bool
+  ((GtkLabel label)))
+
+(define-func gtk_label_select_region
+  none
+  ((GtkLabel label)
+   (int start_offset)
+   (int end_offset)))
+
+;; XXX get_layout, get_layout_offsets
 
 ;;; GtkLayout
 
@@ -1889,22 +2399,24 @@
 (define-func gtk_layout_put
   none
   ((GtkLayout layout)
-   (GtkWidget widget)
+   (GtkWidget child_widget)
    (int x)
    (int y)))
 
 (define-func gtk_layout_move
   none
   ((GtkLayout layout)
-   (GtkWidget widget)
+   (GtkWidget child_widget)
    (int x)
    (int y)))
 
 (define-func gtk_layout_set_size
   none
   ((GtkLayout layout)
-   (int width)
-   (int height)))
+   (uint width)
+   (uint height)))
+
+;; XXX get_size
 
 (define-func gtk_layout_get_hadjustment
   GtkAdjustment 
@@ -1923,14 +2435,6 @@
   none
   ((GtkLayout layout)
    (GtkAdjustment adjustment)))
-
-(define-func gtk_layout_freeze
-  none
-  ((GtkLayout layout)))
-
-(define-func gtk_layout_thaw
-  none
-  ((GtkLayout layout)))
 
 ;;; GtkTipsQuery
 
@@ -2051,6 +2555,11 @@
   GtkWidget
   ())
 
+(define-func gtk_statusbar_get_context_id
+  uint
+  ((GtkStatusbar statusbar)
+   (string context_description)))
+
 (define-func gtk_statusbar_push
   uint
   ((GtkStatusbar statusbar)
@@ -2061,11 +2570,6 @@
   none
   ((GtkStatusbar statusbar)
    (uint context_id)))
-
-(define-func gtk_statusbar_get_context_id
-  uint
-  ((GtkStatusbar statusbar)
-   (string context_description)))
 
 (define-func gtk_statusbar_remove
   none
@@ -2120,16 +2624,35 @@
   ((GtkFrame frame)
    (string label)))
 
+(define-func gtk_frame_get_label
+  static_string
+  ((GtkFrame frame)))
+
+(define-func gtk_frame_set_label_widget
+  none
+  ((GtkFrame frame)
+   (GtkWidget widget)))
+
+(define-func gtk_frame_get_label_widget
+  GtkWidget
+  ((GtkFrame frame)))
+
 (define-func gtk_frame_set_label_align
   none
   ((GtkFrame frame)
    (float xalign)
    (float yalign)))
 
+;; XXX get_label_align
+
 (define-func gtk_frame_set_shadow_type
   none
   ((GtkFrame frame)
    (GtkShadowType type)))
+
+(define-func gtk_frame_get_shadow_type
+  GtkShadowType
+  ((GtkFrame frame)))
 
 ;; Aspect Frame
 
@@ -2164,14 +2687,45 @@
   GtkWidget
   ())
 
-(define-func gtk_progress_bar_update
+(define-func gtk_progress_bar_pulse
   none
-  ((GtkProgressBar progress_bar)
-   (float percentage)))
+  ((GtkProgressBar pbar)))
 
-;;(define-func gtk_progress_bar_percentage
-;;  float
-;;  ((GtkProgressBar progress_bar)))
+(define-func gtk_progress_bar_set_text
+  none
+  ((GtkProgressBar pbar)
+   (string text)))
+
+(define-func gtk_progress_bar_set_fraction
+  none
+  ((GtkProgressBar pbar)
+   (double fraction)))
+
+(define-func gtk_progress_bar_set_pulse_step
+  none
+  ((GtkProgressBar pbar)
+   (double fraction)))
+
+(define-func gtk_progress_bar_set_orientation
+  none
+  ((GtkProgressBar pbar)
+   (GtkProgressBarOrientation orientation)))
+
+(define-func gtk_progress_bar_get_text
+  static_string
+  ((GtkProgressBar pbar)))
+
+(define-func gtk_progress_bar_get_fraction
+  double
+  ((GtkProgressBar pbar)))
+
+(define-func gtk_progress_bar_get_pulse_step
+  double
+  ((GtkProgressBar pbar)))
+
+(define-func gtk_progress_bar_get_orientation
+  GtkProgressBarOrientation
+  ((GtkProgressBar pbar)))
 
 ;; Tooltips
 
@@ -2189,11 +2743,6 @@
   none
   ((GtkTooltips tooltips)))
 
-(define-func gtk_tooltips_set_delay
-  none
-  ((GtkTooltips tooltips)
-   (int delay)))
-
 (define-func gtk_tooltips_set_tip
   none
   ((GtkTooltips tooltips)
@@ -2201,11 +2750,11 @@
    (string tip_text (null-ok))
    (string tip_private)))
 
-(define-func gtk_tooltips_set_colors
+;; XXX data_get
+
+(define-func gtk_tooltips_force_window
   none
-  ((GtkTooltips tooltips)
-   (GdkColor background)
-   (GdkColor foreground)))
+  ((GtkTooltips tooltips)))
 
 ;; MenuShell
 
@@ -2254,22 +2803,6 @@
   GtkWidget
   ())
 
-(define-func gtk_menu_bar_append
-  none
-  ((GtkMenuBar menu_bar)
-   (GtkWidget child)))
-
-(define-func gtk_menu_bar_prepend
-  none
-  ((GtkMenuBar menu_bar)
-   (GtkWidget child)))
-
-(define-func gtk_menu_bar_insert
-  none
-  ((GtkMenuBar menu_bar)
-   (GtkWidget child)
-   (int position)))
-
 ;; Menu
 
 (define-object GtkMenu (GtkMenuShell))
@@ -2278,30 +2811,18 @@
   GtkWidget
   ())
 
-(define-func gtk_menu_append
-  none
-  ((GtkMenu menu)
-   (GtkWidget child)))
-
-(define-func gtk_menu_prepend
-  none
-  ((GtkMenu menu)
-   (GtkWidget child)))
-
-(define-func gtk_menu_insert
-  none
-  ((GtkMenu menu)
-   (GtkWidget child)
-   (int position)))
-
 (define-func gtk_menu_popup_interp
   none
   ((GtkMenu menu)
    (GtkWidget parent_menu_shell (null-ok))
    (GtkWidget parent_menu_item (null-ok))
-   (int button)
+   (uint button)
    (uint activate_time)
    (SCM position)))
+
+(define-func gtk_menu_reposition
+  none
+  ((GtkMenu menu)))
 
 (define-func gtk_menu_popdown
   none
@@ -2314,7 +2835,7 @@
 (define-func gtk_menu_set_active
   none
   ((GtkMenu menu)
-   (int index)))
+   (uint index)))
 
 (define-func gtk_menu_set_accel_group
   none
@@ -2325,20 +2846,13 @@
   GtkAccelGroup
   ((GtkMenu menu)))
 
-;(define-func gtk_menu_get_uline_accel_group
-;  GtkAccelGroup
-;  ((GtkMenu menu)))
-
-;(define-func gtk_menu_ensure_uline_accel_group
-;  GtkAccelGroup
-;  ((GtkMenu menu)))
+(define-func gtk_menu_set_accel_path
+  none
+  ((GtkMenu menu)
+   (string accel_path)))
 
 ;; XXX - probably needs _interp version
 ;; gtk_menu_attach_to_widget
-
-(define-func gtk_menu_get_attach_widget
-  GtkWidget
-  ((GtkMenu menu)))
 
 (define-func gtk_menu_detach
   none
@@ -2353,10 +2867,18 @@
   ((GtkMenu menu)
    (bool torn_off)))
 
+(define-func gtk_menu_get_tearoff_state
+  bool
+  ((GtkMenu menu)))
+
 (define-func gtk_menu_set_title
   none
   ((GtkMenu menu)
    (string title)))
+
+(define-func gtk_menu_get_title
+  static_string
+  ((GtkMenu menu)))
 
 (define-func gtk_menu_reorder_child
   none
@@ -2376,25 +2898,22 @@
   GtkWidget
   ((string label)))
 
+(define-func gtk_menu_item_new_with_mnemonic
+  GtkWidget
+  ((string label)))
+
 (define-func gtk_menu_item_set_submenu
   none
   ((GtkMenuItem menu_item)
    (GtkWidget submenu)))
 
+(define-func gtk_menu_item_get_submenu
+  GtkWidget
+  ((GtkMenuItem menu_item)))
+
 (define-func gtk_menu_item_remove_submenu
   none
   ((GtkMenuItem menu_item)))
-
-(define-func gtk_menu_item_set_placement
-  none
-  ((GtkMenuItem menu_item)
-   (GtkSubmenuPlacement placement)))
-
-(define-func gtk_menu_item_configure
-  none
-  ((GtkMenuItem menu_item)
-   (bool show_toggle_indicator)
-   (bool show_submenu_indicator)))
 
 (define-func gtk_menu_item_select
   none
@@ -2408,9 +2927,21 @@
   none
   ((GtkMenuItem menu_item)))
 
-(define-func gtk_menu_item_right_justify
+;; XXX toggle_size_request, toggle_size_allocate
+
+(define-func gtk_menu_item_set_right_justified
   none
+  ((GtkMenuItem menu_item)
+   (bool setting)))
+
+(define-func gtk_menu_item_get_right_justified
+  bool
   ((GtkMenuItem menu_item)))
+
+(define-func gtk_menu_item_set_accel_path
+  none
+  ((GtkMenuItem menu_item)
+   (string accel_path)))
 
 ;; CheckMenuItem
 
@@ -2426,19 +2957,31 @@
   GtkWidget
   ((string label)))
 
-(define-func gtk_check_menu_item_set_state
+(define-func gtk_check_menu_item_new_with_mnemonic
+  GtkWidget
+  ((string label)))
+
+(define-func gtk_check_menu_item_set_active
   none
   ((GtkCheckMenuItem check_menu_item)
-   (bool state)))
+   (bool is_active)))
 
-(define-func gtk_check_menu_item_set_show_toggle
-  none
-  ((GtkCheckMenuItem menu_item)
-   (bool always)))
+(define-func gtk_check_menu_item_get_active
+  bool
+  ((GtkCheckMenuItem check_menu_item)))
 
 (define-func gtk_check_menu_item_toggled
   none
   ((GtkCheckMenuItem check_menu_item)))
+
+(define-func gtk_check_menu_item_set_inconsistent
+  none
+  ((GtkCheckMenuItem menu_item)
+   (bool setting)))
+
+(define-func gtk_check_menu_item_get_inconsistent
+  bool
+  ((GtkCheckMenuItem menu_item)))
 
 ;; RadioMenuItem
 
@@ -2449,6 +2992,11 @@
   ((GtkRadioMenuItem group (null-ok))))
 
 (define-func gtk_radio_menu_item_new_with_label_from_widget
+  GtkWidget
+  ((GtkRadioMenuItem group (null-ok))
+   (string label)))
+
+(define-func gtk_radio_menu_item_new_with_mnemonic_from_widget
   GtkWidget
   ((GtkRadioMenuItem group (null-ok))
    (string label)))
@@ -2472,6 +3020,10 @@
 
 (define-func gtk_option_menu_remove_menu
   none
+  ((GtkOptionMenu option_menu)))
+
+(define-func gtk_option_menu_get_history
+  int
   ((GtkOptionMenu option_menu)))
 
 (define-func gtk_option_menu_set_history
@@ -2520,6 +3072,10 @@
   ((GtkViewport viewport)
    (GtkShadowType type)))
 
+(define-func gtk_viewport_get_shadow_type
+  GtkShadowType
+  ((GtkViewport viewport)))
+
 ;; ScrolledWindow
 
 (define-object GtkScrolledWindow (GtkContainer))
@@ -2529,10 +3085,15 @@
   ((GtkAdjustment hadjustment (null-ok) (= "NULL"))
    (GtkAdjustment vadjustment (null-ok) (= "NULL"))))
 
-(define-func gtk_scrolled_window_add_with_viewport
+(define-func gtk_scrolled_window_set_hadjustment
   none
   ((GtkScrolledWindow scrolled_window)
-   (GtkWidget child)))
+   (GtkAdjustment hadjustment)))
+
+(define-func gtk_scrolled_window_set_vadjustment
+  none
+  ((GtkScrolledWindow scrolled_window)
+   (GtkAdjustment vadjustment)))
 
 (define-func gtk_scrolled_window_get_hadjustment
   GtkAdjustment
@@ -2547,6 +3108,31 @@
   ((GtkScrolledWindow scrolled_window)
    (GtkPolicyType hscrollbar_policy)
    (GtkPolicyType vscrollbar_policy)))
+
+;; XXX get_policy
+
+(define-func gtk_scrolled_window_set_placement
+  none
+  ((GtkScrolledWindow scrolled_window)
+   (GtkCornerType window_placement)))
+
+(define-func gtk_scrolled_window_get_placement
+  GtkCornerType
+  ((GtkScrolledWindow scrolled_window)))
+
+(define-func gtk_scrolled_window_set_shadow_type
+  none
+  ((GtkScrolledWindow scrolled_window)
+   (GtkShadowType type)))
+
+(define-func gtk_scrolled_window_get_shadow_type
+  GtkShadowType
+  ((GtkScrolledWindow scrolled_window)))
+
+(define-func gtk_scrolled_window_add_with_viewport
+  none
+  ((GtkScrolledWindow scrolled_window)
+   (GtkWidget child)))
 
 ;; ListItem
 
@@ -2576,11 +3162,32 @@
   GtkWidget
   ())
 
+(define-func gtk_list_insert_items
+  none
+  ((GtkList list)
+   ((list GtkListItem) items)
+   (int position)))
+
+(define-func gtk_list_append_items
+  none
+  ((GtkList list)
+   ((list GtkListItem) items)))
+
+(define-func gtk_list_prepend_items
+  none
+  ((GtkList list)
+   ((list GtkListItem) items)))
+
+(define-func gtk_list_remove_items
+  none
+  ((GtkList list)
+   ((list GtkListItem) items)))
+
+;; in gtk-compat.c
 (define-func gtk_list_append_item
   none
   ((GtkList list)
    (GtkListItem item)))
-
 (define-func gtk_list_prepend_item
   none
   ((GtkList list)
@@ -2623,6 +3230,62 @@
   none
   ((GtkList list)
    (GtkSelectionMode mode)))
+
+(define-func gtk_list_extend_selection
+  none
+  ((GtkList list)
+   (GtkScrollType scroll_type)
+   (float position)
+   (bool auto_start_selection)))
+
+(define-func gtk_list_start_selection
+  none
+  ((GtkList list)))
+
+(define-func gtk_list_end_selection
+  none
+  ((GtkList list)))
+
+(define-func gtk_list_select_all
+  none
+  ((GtkList list)))
+
+(define-func gtk_list_unselect_all
+  none
+  ((GtkList list)))
+
+(define-func gtk_list_scroll_horizontal
+  none
+  ((GtkList list)
+   (GtkScrollType type)
+   (float position)))
+
+(define-func gtk_list_scroll_vertical
+  none
+  ((GtkList list)
+   (GtkScrollType type)
+   (float position)))
+
+(define-func gtk_list_toggle_add_mode
+  none
+  ((GtkList list)))
+
+(define-func gtk_list_toggle_focus_row
+  none
+  ((GtkList list)))
+
+(define-func gtk_list_toggle_row
+  none
+  ((GtkList list)
+   (GtkWidget item)))
+
+(define-func gtk_list_undo_selection
+  none
+  ((GtkList list)))
+
+(define-func gtk_list_end_drag_selection
+  none
+  ((GtkList list)))
 
 ;; Notebook
 
@@ -2694,7 +3357,7 @@
   ((GtkNotebook notebook)
    (GtkWidget child)))
 
-(define-func gtk_notebook_set_page
+(define-func gtk_notebook_set_current_page
   none
   ((GtkNotebook notebook)
    (int page_num)))
@@ -2707,45 +3370,41 @@
   none
   ((GtkNotebook notebook)))
 
+(define-func gtk_notebook_set_show_border
+  none
+  ((GtkNotebook notebook)
+   (bool show_border)))
+
+(define-func gtk_notebook_get_show_border
+  bool
+  ((GtkNotebook notebook)))
+
 (define-func gtk_notebook_set_show_tabs
   none
   ((GtkNotebook notebook)
    (bool show_tabs)))
 
-(define-func gtk_notebook_set_show_border
-  none
-  ((GtkNotebook notebook)
-   (bool show_border)))
+(define-func gtk_notebook_get_show_tabs
+  bool
+  ((GtkNotebook notebook)))
 
 (define-func gtk_notebook_set_tab_pos
   none
   ((GtkNotebook notebook)
    (GtkPositionType pos)))
 
-(define-func gtk_notebook_set_homogeneous_tabs
-  none
-  ((GtkNotebook notebook)
-   (bool homogeneous)))
-
-(define-func gtk_notebook_set_tab_border 
-  none
-  ((GtkNotebook notebook)
-   (int border_width)))
-
-(define-func gtk_notebook_set_tab_hborder 
-  none
-  ((GtkNotebook notebook)
-   (int tab_hborder)))
-
-(define-func gtk_notebook_set_tab_vborder 
-  none
-  ((GtkNotebook notebook)
-   (int tab_vborder)))
+(define-func gtk_notebook_get_tab_pos
+  GtkPositionType
+  ((GtkNotebook notebook)))
 
 (define-func gtk_notebook_set_scrollable 
   none
   ((GtkNotebook notebook)
    (bool scrollable)))
+
+(define-func gtk_notebook_get_scrollable 
+  bool
+  ((GtkNotebook notebook)))
 
 (define-func gtk_notebook_popup_enable 
   none
@@ -2766,7 +3425,40 @@
    (GtkWidget child)
    (GtkWidget tab_label)))
 
-;; XXX others..
+(define-func gtk_notebook_set_tab_label_text
+  none
+  ((GtkNotebook notebook)
+   (GtkWidget child)
+   (string text)))
+
+(define-func gtk_notebook_get_tab_label_text
+  static_string
+  ((GtkNotebook notebook)
+   (GtkWidget child)))
+
+(define-func gtk_notebook_get_menu_label
+  GtkWidget
+  ((GtkNotebook notebook)
+   (GtkWidget child)))
+
+(define-func gtk_notebook_set_menu_label
+  none
+  ((GtkNotebook notebook)
+   (GtkWidget child)
+   (GtkWidget menu_label)))
+
+(define-func gtk_notebook_set_menu_label_text
+  none
+  ((GtkNotebook notebook)
+   (GtkWidget child)
+   (string text)))
+
+(define-func gtk_notebook_get_menu_label_text
+  static_string
+  ((GtkNotebook notebook)
+   (GtkWidget child)))
+
+;; XXX query_tab_label_packing, set_tab_label_packing
 
 (define-func gtk_notebook_reorder_child
   none
@@ -2783,6 +3475,8 @@
   ((GtkEditable editable)
    (int start)
    (int end)))
+
+;; XXX get_selection_bounds
 
 (define-func gtk_editable_insert_text
   none
@@ -2803,6 +3497,22 @@
    (int start_pos)
    (int end_pos)))
 
+(define-func gtk_editable_cut_clipboard
+  none
+  ((GtkEditable editable)))
+
+(define-func gtk_editable_copy_clipboard
+  none
+  ((GtkEditable editable)))
+
+(define-func gtk_editable_paste_clipboard
+  none
+  ((GtkEditable editable)))
+
+(define-func gtk_editable_delete_selection
+  none
+  ((GtkEditable editable)))
+
 (define-func gtk_editable_set_position
   none
   ((GtkEditable editable)
@@ -2817,6 +3527,10 @@
   ((GtkEditable editable)
    (bool is_editable)))
 
+(define-func gtk_editable_get_editable
+  bool
+  ((GtkEditable editable)))
+
 ;; Entry
 
 (define-object GtkEntry (GtkEditable))
@@ -2825,61 +3539,85 @@
   GtkWidget
   ())
 
-(define-func gtk_entry_new_with_max_length 
-  GtkWidget
-;; should actually be int16 - does it matter?
-;; nope, C is expected to have a proper prototype for all functions. -mvo
-  ((int max)))
+(define-func gtk_entry_set_visibility
+  none
+  ((GtkEntry entry)
+   (bool visible)))
+
+(define-func gtk_entry_get_visibility
+  bool
+  ((GtkEntry entry)))
+
+;; XXX unichar?
+;(define-func gtk_entry_set_invisibile_char
+;  none
+;  ((GtkEntry entry)
+;   (unichar ch)))
+;
+;(define-func gtk_entry_get_invisibile_char
+;  unichar
+;  ((GtkEntry entry)))
+
+(define-func gtk_entry_set_has_frame
+  none
+  ((GtkEntry entry)
+   (bool setting)))
+
+(define-func gtk_entry_get_has_frame
+  bool
+  ((GtkEntry entry)))
+
+(define-func gtk_entry_set_max_length
+  none
+  ((GtkEntry entry)
+   (int max)))
+
+(define-func gtk_entry_get_max_length
+  int
+  ((GtkEntry entry)))
+
+(define-func gtk_entry_set_activates_default
+  none
+  ((GtkEntry entry)
+   (bool setting)))
+
+(define-func gtk_entry_get_activates_default
+  bool
+  ((GtkEntry entry)))
+
+(define-func gtk_entry_set_width_chars
+  none
+  ((GtkEntry entry)
+   (int n_chars)))
+
+(define-func gtk_entry_get_width_chars
+  int
+  ((GtkEntry entry)))
 
 (define-func gtk_entry_set_text
   none
   ((GtkEntry entry)
    (string text)))
 
-(define-func gtk_entry_append_text
-  none
-  ((GtkEntry entry)
-   (string text)))
-
-(define-func gtk_entry_prepend_text
-  none
-  ((GtkEntry entry)
-   (string text)))
-
-(define-func gtk_entry_set_position
-  none
-  ((GtkEntry entry)
-   (int position)))
-
 (define-func gtk_entry_get_text
   static_string
   ((GtkEntry entry)))
-
-(define-func gtk_entry_select_region
-  none
-  ((GtkEntry entry)
-   (int start)
-   (int end)))
-
-(define-func gtk_entry_set_visibility
-  none
-  ((GtkEntry entry)
-   (bool visible)))
-
-(define-func gtk_entry_set_editable
-  none
-  ((GtkEntry entry)
-   (bool editable)))
 
 ;; SpinButton
 
 (define-object GtkSpinButton (GtkEntry))
 
-(define-func gtk_spin_button_new   
+(define-func gtk_spin_button_new
   GtkWidget
   ((GtkAdjustment adjustment)
-   (float climb_rate)
+   (double climb_rate)
    (int digits)))
+  
+(define-func gtk_spin_button_new_with_range
+  GtkWidget
+  ((double min)
+   (double max)
+   (double step)))
 
 (define-func gtk_spin_button_set_adjustment 
   none
@@ -2895,8 +3633,28 @@
   ((GtkSpinButton spin_button)
    (int digits)))
 
-(define-func gtk_spin_button_get_value_as_float 
-  float 
+(define-func gtk_spin_button_get_digits 
+  int
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_set_increments
+  none
+  ((GtkSpinButton spin_button)
+   (double step)
+   (double page)))
+
+;; XXX get_increments
+
+(define-func gtk_spin_button_set_range
+  none
+  ((GtkSpinButton spin_button)
+   (double min)
+   (double max)))
+
+;; XXX get_range
+
+(define-func gtk_spin_button_get_value
+  double
   ((GtkSpinButton spin_button)))
 
 (define-func gtk_spin_button_get_value_as_int  
@@ -2906,85 +3664,53 @@
 (define-func gtk_spin_button_set_value 
   none
   ((GtkSpinButton spin_button) 
-   (float value)))
+   (double value)))
 
 (define-func gtk_spin_button_set_update_policy 
   none
   ((GtkSpinButton spin_button)
    (GtkSpinButtonUpdatePolicy policy)))
 
-;; Text
+(define-func gtk_spin_button_get_update_policy 
+  GtkSpinButtonUpdatePolicy
+  ((GtkSpinButton spin_button)))
 
-(define-object GtkText (GtkEditable)
-  (fields
-   (GtkAdjustment hadj)
-   (GtkAdjustment vadj)))
-
-(define-func gtk_text_new
-  GtkWidget
-  ((GtkAdjustment hadj (null-ok))
-   (GtkAdjustment vadj (null-ok))))
-
-(define-func gtk_text_set_editable
+(define-func gtk_spin_button_set_numeric
   none
-  ((GtkText text)
-   (bool editable)))
+  ((GtkSpinButton spin_button)
+   (bool numeric)))
 
-(define-func gtk_text_set_word_wrap
+(define-func gtk_spin_button_get_numeric
+  bool
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_spin
   none
-  ((GtkText text)
-   (bool word_wrap)))
+  ((GtkSpinButton spin_button)
+   (GtkSpinType direction)
+   (double increment)))
 
-(define-func gtk_text_set_line_wrap
+(define-func gtk_spin_button_set_wrap
   none
-  ((GtkText text)
-   (bool line_wrap)))
+  ((GtkSpinButton spin_button)
+   (bool wrap)))
 
-(define-func gtk_text_set_adjustments
+(define-func gtk_spin_button_get_wrap
+  bool
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_set_snap_to_ticks
   none
-  ((GtkText text)
-   (GtkAdjustment hadj)
-   (GtkAdjustment vadj)))
+  ((GtkSpinButton spin_button)
+   (bool snap_to_ticks)))
 
-(define-func gtk_text_set_point
+(define-func gtk_spin_button_get_snap_to_ticks
+  bool
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_update
   none
-  ((GtkText text)
-   (uint index)))
-
-(define-func gtk_text_get_point
-  uint
-  ((GtkText text)))
-
-(define-func gtk_text_get_length
-  uint
-  ((GtkText text)))
-
-(define-func gtk_text_freeze
-  none
-  ((GtkText text)))
-
-(define-func gtk_text_thaw
-  none
-  ((GtkText text)))
-
-(define-func gtk_text_insert
-  none
-  ((GtkText text)
-   (GdkFont font (null-ok))
-   (GdkColor fore (null-ok))
-   (GdkColor back (null-ok))
-   (string chars)
-   (int length)))
-
-(define-func gtk_text_backward_delete
-  none
-  ((GtkText text)
-   (uint nchars)))
-
-(define-func gtk_text_forward_delete
-  none
-  ((GtkText text)
-   (uint nchars)))
+  ((GtkSpinButton spin_button)))
 
 ;; Alignment
 
@@ -3012,13 +3738,6 @@
 (define-func gtk_drawing_area_new
   GtkWidget
   ())
-
-(define-func gtk_drawing_area_size
-  none
-  ((GtkDrawingArea darea)
-   (int width)
-   (int height)))
-
 
 ;; Curve
 
@@ -3048,7 +3767,7 @@
 ;; XXX - needs to convert something to length and array of floats
 ;; (define-func gtk_curve_set_vector)
 
-;; XXX - needs to conver something to length and array of floats
+;; XXX - needs to convert something to length and array of floats
 ;; (define-func gtk_curve_get_vector)
 
 (define-func gtk_curve_set_curve_type
@@ -3115,14 +3834,6 @@
   none
   ((int nreserved)))
 
-(define-func gtk_preview_get_visual
-  GdkVisual
-  ())
-
-(define-func gtk_preview_get_cmap
-  GdkColormap
-  ())
-
 ;; FileSelection
 
 (define-object GtkFileSelection (GtkWindow)
@@ -3181,16 +3892,10 @@
   string
   ((GtkFontSelectionDialog fontsel)))
 
-(define-func gtk_font_selection_dialog_get_font
-  GdkFont
-  ((GtkFontSelectionDialog fontsel)))
-
 (define-func gtk_font_selection_dialog_set_font_name
   bool
   ((GtkFontSelectionDialog fontsel)
    (string fontname)))
-
-;(define-func gtk_font_selection_dialog_set_filter)
 
 (define-func gtk_font_selection_dialog_get_preview_text
   static_string
@@ -3206,9 +3911,7 @@
 (define-object GtkColorSelectionDialog (GtkWindow)
   (fields
    (GtkWidget colorsel)
-;   (GtkWidget main_vbox)
    (GtkWidget ok_button)
-;   (GtkWidget reset_button)
    (GtkWidget cancel_button)
    (GtkWidget help_button)))
 
@@ -3224,15 +3927,47 @@
   GtkWidget
   ())
 
-(define-func gtk_color_selection_set_update_policy
+(define-func gtk_color_selection_set_has_opacity_control
   none
   ((GtkColorSelection colorsel)
-   (GtkUpdateType policy)))
+   (bool has_opacity)))
 
-(define-func gtk_color_selection_set_opacity
+(define-func gtk_color_selection_get_has_opacity_control
+  bool
+  ((GtkColorSelection colorsel)))
+
+(define-func gtk_color_selection_get_has_palette
+  bool
+  ((GtkColorSelection colorsel)))
+
+(define-func gtk_color_selection_set_has_palette
   none
   ((GtkColorSelection colorsel)
-   (bool use_opacity)))
+   (bool setting)))
+
+(define-func gtk_color_selection_set_current_color
+  none
+  ((GtkColorSelection colorsel)
+   (GdkColor color)))
+
+(define-func gtk_color_selection_set_current_alpha
+  none
+  ((GtkColorSelection colorsel)
+   (ushort alpha)))
+
+;; XXX get_current_color
+
+(define-func gtk_color_selection_get_current_alpha
+  ushort
+  ((GtkColorSelection colorsel)))
+
+;; XXX `previous' functions
+
+(define-func gtk_color_selection_is_adjusting
+  bool
+  ((GtkColorSelection colorsel)))
+
+;; XXX palette_from,to_string
 
 (define-func gtk_color_selection_set_color_interp
   none
@@ -3248,19 +3983,53 @@
 
 (define-object GtkRange (GtkWidget))
 
-(define-func gtk_range_get_adjustment
-  GtkAdjustment
-  ((GtkRange range)))
-
 (define-func gtk_range_set_update_policy
   none
   ((GtkRange range)
    (GtkUpdateType policy)))
 
+(define-func gtk_range_get_update_policy
+  GtkUpdateType
+  ((GtkRange range)))
+
 (define-func gtk_range_set_adjustment
   none
   ((GtkRange range)
    (GtkAdjustment adjustment)))
+
+(define-func gtk_range_get_adjustment
+  GtkAdjustment
+  ((GtkRange range)))
+
+(define-func gtk_range_set_inverted
+  none
+  ((GtkRange range)
+   (bool setting)))
+
+(define-func gtk_range_get_inverted
+  bool
+  ((GtkRange range)))
+
+(define-func gtk_range_set_increments
+  none
+  ((GtkRange range)
+   (double step)
+   (double page)))
+
+(define-func gtk_range_set_range
+  none
+  ((GtkRange range)
+   (double min)
+   (double max)))
+
+(define-func gtk_range_set_value
+  none
+  ((GtkRange range)
+   (double value)))
+
+(define-func gtk_range_get_value
+  double
+  ((GtkRange range)))
 
 ;; Scale
 
@@ -3269,24 +4038,28 @@
 (define-func gtk_scale_set_digits
   none
   ((GtkScale scale)
-   (uint digits)))
+   (int digits)))
+
+(define-func gtk_scale_get_digits
+  int
+  ((GtkScale scale)))
 
 (define-func gtk_scale_set_draw_value
   none
   ((GtkScale scale)
    (bool draw_value)))
 
+(define-func gtk_scale_get_draw_value
+  bool
+  ((GtkScale scale)))
+
 (define-func gtk_scale_set_value_pos
   none
   ((GtkScale scale)
    (GtkPositionType pos)))
 
-(define-func gtk_scale_value_width
-  int
-  ((GtkScale scale)))
-
-(define-func gtk_scale_draw_value
-  none
+(define-func gtk_scale_get_value_pos
+  GtkPositionType
   ((GtkScale scale)))
 
 ;; HScale
@@ -3297,6 +4070,12 @@
   GtkWidget
   ((GtkAdjustment adjustment)))
 
+(define-func gtk_hscale_new_with_range
+  GtkWidget
+  ((double min)
+   (double max)
+   (double step)))
+
 ;; VScale
 
 (define-object GtkVScale (GtkScale))
@@ -3304,6 +4083,12 @@
 (define-func gtk_vscale_new
   GtkWidget
   ((GtkAdjustment adjustment)))
+
+(define-func gtk_vscale_new_with_range
+  GtkWidget
+  ((double min)
+   (double max)
+   (double step)))
 
 ;; Scrollbar
 
@@ -3350,6 +4135,12 @@
   none
   ((GtkRuler ruler)))
 
+(define-func gtk_ruler_get_metric
+  GtkMetricType
+  ((GtkRuler ruler)))
+
+;; XXX get_range
+
 ;; HRuler
 
 (define-object GtkHRuler (GtkRuler))
@@ -3376,6 +4167,45 @@
 (define-func gtk_dialog_new
   GtkWidget
   ())
+
+;; XXX new_with_buttons
+
+(define-func gtk_dialog_add_button
+  GtkWidget
+  ((GtkDialog dialog)
+   (string button_text)
+   (int response_id)))
+
+;; XXX add_buttons
+
+(define-func gtk_dialog_set_response_sensitive
+  none
+  ((GtkDialog dialog)
+   (int response_id)
+   (bool setting)))
+
+(define-func gtk_dialog_set_default_response
+  none
+  ((GtkDialog dialog)
+   (int response_id)))
+
+(define-func gtk_dialog_set_has_separator
+  none
+  ((GtkDialog dialog)
+   (bool setting)))
+
+(define-func gtk_dialog_get_has_separator
+  bool
+  ((GtkDialog dialog)))
+
+(define-func gtk_dialog_response
+  none
+  ((GtkDialog dialog)
+   (int response_id)))
+
+(define-func gtk_dialog_run
+  int
+  ((GtkDialog dialog)))
 
 ;; InputDialog
 
@@ -3416,15 +4246,9 @@
    (bool resize)
    (bool shrink)))
 
-(define-func gtk_paned_handle_size
-  none
-  ((GtkPaned paned)
-   (int size)))
-
-(define-func gtk_paned_gutter_size
-  none
-  ((GtkPaned paned)
-   (int size)))
+(define-func gtk_paned_get_position
+  int
+  ((GtkPaned paned)))
 
 (define-func gtk_paned_set_position
   none
@@ -3511,10 +4335,14 @@
   GtkWidget
   ())
 
-(define-func gtk_socket_steal
+(define-func gtk_socket_add_id
   none
   ((GtkSocket socket)
-   (uint wid)))
+   (ulong window_id)))
+
+(define-func gtk_socket_get_id
+  ulong
+  ((GtkSocket socket)))
 
 ;; TearoffMenuItem
 
@@ -3526,10 +4354,235 @@
   GtkWidget
   ())
 
+;; Calendar
+
+(define-object GtkCalendar (GtkWidget))
+
+(define-func gtk_calendar_new
+  GtkWidget
+  ())
+
+(define-func gtk_calendar_select_month
+  none
+  ((GtkCalendar cal)
+   (uint month)
+   (uint year)))
+
+(define-func gtk_calendar_select_day
+  none
+  ((GtkCalendar cal)
+   (uint day)))
+
+(define-func gtk_calendar_mark_day
+  bool
+  ((GtkCalendar cal)
+   (uint day)))
+
+(define-func gtk_calendar_unmark_day
+  bool
+  ((GtkCalendar cal)
+   (uint day)))
+
+(define-func gtk_calendar_clear_marks
+  none
+  ((GtkCalendar cal)))
+
+(define-func gtk_calendar_display_options
+  none
+  ((GtkCalendar cal)
+   (GtkCalendarDisplayOptions flags)))
+
+(define-func gtk_calendar_get_date
+  none
+  ((GtkCalendar cal)
+   ((fvec uint 1 out) year)
+   ((fvec uint 1 out) month)
+   ((fvec uint 1 out) day)))
+
+(define-func gtk_calendar_freeze
+  none
+  ((GtkCalendar cal)))
+
+(define-func gtk_calendar_thaw
+  none
+  ((GtkCalendar cal)))
+
+;; IconFactory
+
+(define-object GtkIconFactory (GObject))
+
+(define-boxed GtkIconSet
+  (copy gtk_icon_set_copy)
+  (free gtk_icon_set_unref))
+
+(define-func gtk_icon_factory_new
+  GtkIconFactory
+  ())
+
+(define-func gtk_icon_factory_add
+  none
+  ((GtkIconFactory factory)
+   (string stock_id)
+   (GtkIconSet icon_set)))
+
+(define-func gtk_icon_factory_lookup
+  GtkIconSet
+  ((GtkIconFactory factory)
+   (string stock_id)))
+
+(define-func gtk_icon_factory_add_default
+  none
+  ((GtkIconFactory factory)))
+
+(define-func gtk_icon_factory_remove_default
+  none
+  ((GtkIconFactory factory)))
+
+(define-func gtk_icon_factory_lookup_default
+  GtkIconSet
+  ((string stock_id)))
+
+;; XXX size_lookup
+
+(define-func gtk_icon_size_register
+  GtkIconSize
+  ((string name)
+   (int width)
+   (int height)))
+
+(define-func gtk_icon_size_register_alias
+  none
+  ((string alias)
+   (GtkIconSize target)))
+
+(define-func gtk_icon_size_from_name
+  GtkIconSize
+  ((string name)))
+
+(define-func gtk_icon_size_get_name
+  static_string
+  ((GtkIconSize size)))
+
+(define-func gtk_icon_set_render_icon
+  GdkPixbuf
+  ((GtkIconSet icon_set)
+   (GtkStyle style (null-ok))
+   (GtkTextDirection direction)
+   (GtkStateType state)
+   (GtkIconSize size)
+   (GtkWidget widget (null-ok))
+   (string detail (null-ok))))
+
+;; XXX icon_source foo
+
+;; Image
+
+(define-object GtkImage (GtkMisc))
+
+(define-func gtk_image_new
+  GtkWidget
+  ())
+
+(define-func gtk_image_new_from_file
+  GtkWidget
+  ((string filename)))
+
+(define-func gtk_image_new_from_pixbuf
+  GtkWidget
+  ((GdkPixbuf pixbuf)))
+
+(define-func gtk_image_new_from_stock
+  GtkWidget
+  ((string stock_id)
+   (GtkIconSize size)))
+
+(define-func gtk_image_new_from_icon_set
+  GtkWidget
+  ((GtkIconSet icon_set)
+   (GtkIconSize size)))
+
+(define-func gtk_image_set_from_file
+  none
+  ((GtkImage image)
+   (string filename)))
+
+(define-func gtk_image_set_from_pixbuf
+  none
+  ((GtkImage image)
+   (GdkPixbuf pixbuf)))
+
+(define-func gtk_image_set_from_stock
+  none
+  ((GtkImage image)
+   (string stock_id)
+   (GtkIconSize size)))
+
+(define-func gtk_image_set_from_icon_set
+  none
+  ((GtkImage image)
+   (GtkIconSet icon_set)
+   (GtkIconSize size)))
+
+(define-func gtk_image_get_pixbuf
+  GdkPixbuf
+  ((GtkImage image)))
+
+;; ImageMenuItem
+
+(define-object GtkImageMenuItem (GtkMenuItem))
+
+(define-func gtk_image_menu_item_new
+  GtkWidget
+  ())
+
+(define-func gtk_image_menu_item_new_with_label
+  GtkWidget
+  ((string label)))
+
+(define-func gtk_image_menu_item_new_with_mnemonic
+  GtkWidget
+  ((string label)))
+
+(define-func gtk_image_menu_item_new_from_stock
+  GtkWidget
+  ((string stock_id)
+   (GtkAccelGroup accel_group)))
+
+(define-func gtk_image_menu_item_set_image
+  none
+  ((GtkImageMenuItem item)
+   (GtkWidget image)))
+
+(define-func gtk_image_menu_item_get_image
+  GtkWidget
+  ((GtkImageMenuItem item)))
+
+;; Invisible
+
+(define-object GtkInvisible (GtkWidget))
+
+(define-func gtk_invisible_new
+  GtkWidget
+  ())
+
+;; SeparatorMenuItem
+
+(define-object GtkSeparatorMenuItem (GtkMenuItem))
+
+(define-func gtk_separator_menu_item_new
+  GtkWidget
+  ())
+
+;; More defs files
+
+(include "gtktext.defs")
+
 ;; Options
 
 (options
+ ;; XXX remove the enable-broken when possible
  (includes "#define GTK_ENABLE_BROKEN\n#include <gtk/gtk.h>")
  (init-func "sgtk_init_gtk_gtk_glue")
  (other-inits "sgtk_init_gtk_glib_glue")
- (other-inits "sgtk_init_gtk_gdk_glue"))
+ (other-inits "sgtk_init_gtk_gdk_glue")
+ (other-inits "sgtk_init_gdk_pixbuf_glue"))

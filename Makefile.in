@@ -5,7 +5,7 @@
 SGTK_SRCS = rep-types.c
 SGTK_OBJS = $(SGTK_SRCS:.c=.lo)
 
-SRCS = rep-gtk.c gtk-support.c gtk-compat.c glib-glue.c gdk-glue.c gtk-glue.c
+SRCS = rep-gtk.c gtk-support.c gtk-compat.c glib-glue.c gdk-glue.c gtk-glue.c gdk-pixbuf-glue.c
 OBJS = $(SRCS:.c=.lo)
 
 LIBGLADE_SRCS = libglade-support.c libglade-glue.c
@@ -20,9 +20,6 @@ GNOMEUI_OBJS = $(GNOMEUI_SRCS:.c=.lo)
 
 GNOME_CANVAS_SRCS = gnome-canvas-support.c gnome-canvas-glue.c
 GNOME_CANVAS_OBJS = $(GNOME_CANVAS_SRCS:.c=.lo)
-
-GDK_PIXBUF_SRCS = gdk-pixbuf-glue.c
-GDK_PIXBUF_OBJS = $(GDK_PIXBUF_SRCS:.c=.lo)
 
 OUT = @OUT@
 OUT_DESTS = $(foreach x, $(OUT), gui/$(x))
@@ -46,7 +43,6 @@ REP_LIBGLADE_LIBS=@LIBGLADE_LIBS@ @LIBS@
 REP_GNOMELIB_LIBS=@GNOME_LIBS@ @LIBS@
 REP_GNOMEUI_LIBS=@GNOMEUI_LIBS@ @LIBS@
 REP_GNOME_CANVAS_LIBS=@GNOME_CANVAS_LIBS@ @LIBS@
-REP_GDK_PIXBUF_LIBS=@GDK_PIXBUF_LIBS@ @LIBS@
 
 INSTALL=@INSTALL@
 INSTALL_DATA=@INSTALL_DATA@
@@ -80,9 +76,6 @@ gtk-2/gnome-ui.la : $(GNOMEUI_OBJS)
 
 gtk-2/gnome-canvas.la : $(GNOME_CANVAS_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOME_CANVAS_LIBS)
-
-gtk-2/gdk-pixbuf.la : $(GDK_PIXBUF_OBJS)
-	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GDK_PIXBUF_LIBS)
 
 %-glue.c : %.defs build-gtk.jlc
 	rep build-gtk.jlc -f build-gtk-batch $< $@
@@ -134,3 +127,6 @@ build_dirs : gtk-2
 
 gtk-2 :
 	mkdir gtk-2
+
+# hand-needed dependences
+gtk-glue.c : gtk.defs gtktext.defs build-gtk.jlc

@@ -2,7 +2,7 @@
 
 ;;; GLib defs
 
-;(define-object GObject ())
+(define-object GObject ())
 
 ;(define-func sgtk_g_object_set_property
 ;  none
@@ -21,8 +21,6 @@
 
 (options
  (includes "#include <glib.h>")
- (init-func "sgtk_init_gtk_glib_glue")
- (other-inits "sgtk_init_gtk_gdk_glue")
- (other-inits "sgtk_init_gtk_gtk_glue"))
+ (init-func "sgtk_init_gtk_glib_glue"))
 
 

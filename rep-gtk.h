@@ -141,6 +141,8 @@ int sgtk_valid_pointer (repv obj);
 void *sgtk_rep_to_pointer (repv obj);
 repv sgtk_pointer_to_rep (void *ptr);
 
+GType gobject_get_type (void);
+
 int sgtk_valid_point (repv obj);
 GdkPoint sgtk_rep_to_point (repv obj);
 repv sgtk_point_to_rep (GdkPoint p);
@@ -290,6 +292,9 @@ void gtk_menu_popup_interp (GtkMenu *menu,
 GtkWidget*
 gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
 						gchar            *label);
+GtkWidget*
+gtk_radio_menu_item_new_with_mnemonic_from_widget (GtkRadioMenuItem *group,
+						   gchar            *label);
 GtkWidget* gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group);
 GtkWidget* gtk_pixmap_new_interp (char *file, GtkWidget *intended_parent);
 
@@ -306,6 +311,7 @@ GdkColormap *gtk_widget_peek_colormap (void);
 #endif
 
 void gtk_list_append_item (GtkList *list, GtkListItem *item);
+void gtk_list_prepend_item (GtkList *list, GtkListItem *item);
 
 #ifndef HAVE_GTK_TYPE_GET_INFO
 gboolean gtk_type_get_info (GtkType type, GtkTypeInfo *info);
@@ -334,6 +340,7 @@ void gtk_color_selection_set_color_interp (GtkColorSelection *sel, GdkColor *col
 GdkColor *gtk_color_selection_get_color_interp (GtkColorSelection *sel);
 extern void gtk_widget_draw_interp (GtkWidget *widget);
 
+GtkTextIter *gtk_text_iter_new (void);
 repv sgtk_gtk_widget_get_allocation (GtkWidget *w);
 
 extern rep_xsubr *sgtk_subrs[];

@@ -226,5 +226,5 @@
 (options
  (includes "#include <gdk-pixbuf/gdk-pixbuf.h>")
  (init-func "sgtk_init_gdk_pixbuf_glue")
- (system-init-code "gdk_rgb_init ();")
- (provide gui.gtk-2.gdk-pixbuf))
+ (other-inits "sgtk_init_gtk_glib_glue")
+ (other-inits "sgtk_init_gtk_gdk_glue"))
