@@ -2182,6 +2182,61 @@ sgtk_signal_emit (GtkObject *obj, char *name, repv scm_args)
 }
 
 
+/* Support rep input handling through gtk_main
+
+   XXX really need to add all _previously_ registered rep inputs
+   XXX on initialisation.. */
+
+static int registered_input_tags [FD_SETSIZE];
+
+static void
+sgtk_register_input_fd (int fd, void (*callback)(int fd))
+{
+    if (callback != 0)
+    {
+	registered_input_tags[fd] = gdk_input_add (fd, GDK_INPUT_READ,
+						   (GdkInputFunction)callback,
+						   (gpointer)fd);
+    }
+}
+
+static void
+sgtk_deregister_input_fd (int fd)
+{
+    if (registered_input_tags[fd] != 0)
+    {
+	gdk_input_remove (registered_input_tags[fd]);
+	registered_input_tags[fd] = 0;
+    }
+}
+
+static repv
+sgtk_event_loop (void)
+{
+    while (1)
+    {
+	if (rep_redisplay_fun != 0)
+	    (*rep_redisplay_fun)();
+
+	gtk_main ();
+
+	/* Check for exceptional conditions. */
+	if(rep_throw_value != rep_NULL)
+	{
+	    repv result;
+	    if(rep_handle_input_exception(&result))
+		return result;
+	}
+
+#ifdef C_ALLOCA
+	/* Using the C implementation of alloca. So garbage collect
+	   anything below the current stack depth. */
+	alloca(0);
+#endif
+    }
+}
+
+
 
 /* Initialization */
 
@@ -2228,6 +2283,13 @@ sgtk_init_substrate (void)
   
   callback_trampoline = Fcons (Qnil, Qnil);
   rep_mark_static (&callback_trampoline);
+
+  rep_register_input_fd_fun = sgtk_register_input_fd;
+  rep_deregister_input_fd_fun = sgtk_deregister_input_fd;
+  rep_event_loop_fun = sgtk_event_loop;
+
+  /* Need this in case sit-for is called. */
+  rep_register_input_fd (ConnectionNumber (gdk_display), 0);
 
   rep_INTERN (gtk_major_version);
   rep_INTERN (gtk_minor_version);
@@ -2337,4 +2399,6 @@ rep_dl_init (void)
 
   for (x = sgtk_subrs; *x != 0; x++)
       rep_add_subr (*x);
+
+  return Qt;
 }
