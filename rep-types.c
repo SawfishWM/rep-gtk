@@ -121,6 +121,12 @@ sgtk_rep_to_char (repv obj)
     return rep_INT (obj);
 }
 
+repv
+sgtk_char_to_rep (gchar c)
+{
+    return rep_MAKE_INT (c);
+}
+
 char *
 sgtk_rep_to_string (repv obj)
 {
