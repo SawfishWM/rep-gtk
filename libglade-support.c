@@ -94,8 +94,6 @@ sgtk_glade_xml_new_from_string (repv text, const char *root,
 
 /* dl hooks / init */
 
-repv rep_dl_feature;
-
 repv
 rep_dl_init (void)
 {
@@ -108,6 +106,5 @@ rep_dl_init (void)
 
     sgtk_init_gtk_libglade_glue ();
     rep_INTERN(libglade);
-    rep_dl_feature = Qlibglade;
-    return Qt;
+    return Qlibglade;
 }

@@ -2522,15 +2522,11 @@ sgtk_init ()
 
 /* DL hooks */
 
-repv rep_dl_feature;
-
 repv
 rep_dl_init (void)
 {
   sgtk_init_gtk_gtk_glue ();
-
-  rep_dl_feature = Qgtk;
-  return Qt;
+  return Qgtk;
 }
 
 /* This is required mainly since other dls may try to unregister
