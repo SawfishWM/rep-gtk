@@ -1950,7 +1950,7 @@ unset_timeout (void)
 static void
 set_timeout (void)
 {
-    if (context != 0 && !context->timed_out)
+    if (context != 0 && !context->timed_out && !context->gtk_tag)
     {
 	u_long max_sleep = rep_max_sleep_for ();
 	context->this_timeout_msecs = rep_input_timeout_secs * 1000;
