@@ -2405,7 +2405,8 @@ sgtk_init_substrate (void)
   rep_sigchld_fun = sgtk_sigchld_callback;
 
   /* Need this in case sit-for is called. */
-  rep_register_input_fd (ConnectionNumber (gdk_display), 0);
+  if (gdk_display != 0)
+      rep_register_input_fd (ConnectionNumber (gdk_display), 0);
 
   rep_ADD_SUBR (Sgtk_callback_trampoline);
   rep_ADD_SUBR (Sgtk_standalone_p);
@@ -2434,8 +2435,13 @@ sgtk_init_with_args (int *argcp, char ***argvp)
      than once.. --jsh */
 
   if (gdk_display == NULL)
-    gtk_init (argcp, argvp);
-  else if (rep_recurse_depth < 0)
+    {
+      char *tem = getenv ("REP_GTK_DONT_INITIALIZE");
+      if (tem == 0 || atoi (tem) == 0)
+	gtk_init (argcp, argvp);
+    }
+
+  if (rep_recurse_depth < 0)
     standalone_p = 0;			/* a reasonable assumption? --jsh */
 
   sgtk_init_substrate ();
@@ -2542,5 +2548,6 @@ rep_dl_kill (void)
 	rep_event_loop_fun = 0;
     if (rep_sigchld_fun == sgtk_sigchld_callback)
 	rep_sigchld_fun = 0;
-    rep_deregister_input_fd (ConnectionNumber (gdk_display));
+    if (gdk_display != 0)
+	rep_deregister_input_fd (ConnectionNumber (gdk_display));
 }
