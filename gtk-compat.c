@@ -62,6 +62,7 @@ gtk_menu_popup_interp (GtkMenu *menu,
 		  func, func_data, button, activate_time);
 }
 
+#if GTK_MAJOR_VERSION < 2 || (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 4)
 GtkWidget*
 gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
 						const gchar      *label)
@@ -84,6 +85,7 @@ gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group)
   GSList *g = group? gtk_radio_menu_item_group (group) : NULL;
   return gtk_radio_menu_item_new (g);
 }
+#endif /* < 2.4 */
 
 GtkWidget*
 gtk_pixmap_new_interp (gchar *file,

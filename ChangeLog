@@ -1,3 +1,8 @@
+2004-04-03  John Harper  <jsh@unfactored.org>
+
+	* rep-gtk.h, gtk-compat.c: better fix for thing below, #ifdef
+	out the functions when using Gtk >= 2.4
+
 2004-03-30  John Harper  <jsh@unfactored.org>
 
 	* rep-gtk.h, gtk-compat.c: changed `label' arg of two functions
