@@ -39,6 +39,10 @@ exec rep --batch "$0" "$@"
       (gtk-clist-set-column-auto-resize clist i t)
       (setq i (1+ i))))
 
+  (gtk-signal-connect clist "select_row" #'(lambda (&rest args)
+					     (format standard-error
+						     "select: %S\n" args)))
+
   (gtk-widget-show-all window)
   (when (gtk-standalone-p)
     (gtk-main)))
