@@ -96,11 +96,21 @@ sgtk_glade_xml_new_from_string (repv text, const char *root,
 repv
 rep_dl_init (void)
 {
+    repv s;
     char *tem = getenv ("REP_GTK_DONT_INITIALIZE");
     if (tem == 0 || atoi (tem) == 0)
 	glade_init ();
 
+#if rep_INTERFACE >= 9
+    s = rep_push_structure ("libglade");
+#endif
+
     sgtk_init_gtk_libglade_glue ();
+
+#if rep_INTERFACE >= 9
+    return rep_pop_structure (s);
+#else
     rep_INTERN(libglade);
     return Qlibglade;
+#endif
 }

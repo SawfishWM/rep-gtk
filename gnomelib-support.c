@@ -81,7 +81,16 @@ sgtk_gnome_metadata_type_add (const char *regex, const char *key, repv data)
 repv
 rep_dl_init (void)
 {
+#if rep_INTERFACE >= 9
+    repv s = rep_push_structure ("gnomelib");
+#endif
+
     sgtk_gnome_init_gnome_glue ();
+
+#if rep_INTERFACE >= 9
+    return rep_pop_structure (s);
+#else
     rep_INTERN(gnomelib);
     return Qgnomelib;
+#endif
 }

@@ -2124,9 +2124,9 @@ sgtk_init_substrate (void)
   rep_INTERN (gtk_minor_version);
   rep_INTERN (gtk_micro_version);
   rep_INTERN (gtk);
-  rep_SYM (Qgtk_major_version)->value = rep_MAKE_INT (GTK_MAJOR_VERSION);
-  rep_SYM (Qgtk_minor_version)->value = rep_MAKE_INT (GTK_MINOR_VERSION);
-  rep_SYM (Qgtk_micro_version)->value = rep_MAKE_INT (GTK_MICRO_VERSION);
+  Fset (Qgtk_major_version, rep_MAKE_INT (GTK_MAJOR_VERSION));
+  Fset (Qgtk_minor_version, rep_MAKE_INT (GTK_MINOR_VERSION));
+  Fset (Qgtk_micro_version, rep_MAKE_INT (GTK_MICRO_VERSION));
 }
 
 static int sgtk_inited = 0;
@@ -2214,8 +2214,8 @@ sgtk_init (void)
   if (sgtk_inited)
     return;
 
-  make_argv (Fcons (rep_SYM(Qprogram_name)->value,
-		    rep_SYM(Qcommand_line_args)->value), &argc, &argv);
+  make_argv (Fcons (Fsymbol_value (Qprogram_name, Qt),
+		    Fsymbol_value (Qcommand_line_args, Qt)), &argc, &argv);
   sgtk_init_with_args (&argc, &argv);
 
   argc--; argv++;
@@ -2228,7 +2228,7 @@ sgtk_init (void)
       argc--;
       argv++;
   }
-  rep_SYM(Qcommand_line_args)->value = head;
+  Fset (Qcommand_line_args, head);
 }
 
 
@@ -2240,8 +2240,17 @@ extern void sgtk_init_gtk_gtk_glue (void);
 repv
 rep_dl_init (void)
 {
+#if rep_INTERFACE >= 9
+  repv tem = rep_push_structure ("gtk");
+#endif
+
   sgtk_init_gtk_gtk_glue ();
+
+#if rep_INTERFACE >= 9
+  return rep_pop_structure (tem);
+#else
   return Qgtk;
+#endif
 }
 
 /* This is required mainly since other dls may try to unregister

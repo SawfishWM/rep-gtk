@@ -201,8 +201,8 @@ sgtk_gnome_init (const char *app_id, const char *app_version)
   if (tem != 0 && atoi (tem) == 0)
       return 0;
 
-  make_argv (Fcons (rep_SYM(Qprogram_name)->value,
-		    rep_SYM(Qcommand_line_args)->value), &argc, &argv);
+  make_argv (Fcons (Fsymbol_value (Qprogram_name, Qt),
+		    Fsymbol_value (Qcommand_line_args, Qt)), &argc, &argv);
 
   gnome_init (app_id, app_version, argc, argv);
 
@@ -216,7 +216,7 @@ sgtk_gnome_init (const char *app_id, const char *app_version)
       argc--;
       argv++;
   }
-  rep_SYM(Qcommand_line_args)->value = head;
+  Fset (Qcommand_line_args, head);
 
   sgtk_gnomeui_inited = TRUE;
   return 1;
@@ -228,12 +228,21 @@ sgtk_gnome_init (const char *app_id, const char *app_version)
 repv
 rep_dl_init (void)
 {
+#if rep_INTERFACE >= 9
+    repv s = rep_push_structure ("gnomeui");
+#endif
+
     sgtk_gnome_init_gnomeui_glue ();
     rep_ADD_SUBR (Sgnome_client_set_clone_command);
     rep_ADD_SUBR (Sgnome_client_set_environment);
     rep_ADD_SUBR (Sgnome_client_set_resign_command);
     rep_ADD_SUBR (Sgnome_client_set_restart_command);
     rep_ADD_SUBR (Sgnome_client_set_shutdown_command);
+
+#if rep_INTERFACE >= 9
+    return rep_pop_structure (s);
+#else
     rep_INTERN(gnomeui);
     return Qgnomeui;
+#endif
 }

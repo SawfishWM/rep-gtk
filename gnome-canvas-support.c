@@ -119,9 +119,18 @@ sgtk_gnome_canvas_points_conversion (repv arg)
 repv
 rep_dl_init (void)
 {
+#if rep_INTERFACE >= 9
+    repv s = rep_push_structure ("gnome-canvas");
+#endif
+
     sgtk_gnome_init_gnome_canvas_glue ();
     rep_ADD_SUBR (Sgnome_canvas_item_new);
     rep_ADD_SUBR (Sgnome_canvas_item_set);
+
+#if rep_INTERFACE >= 9
+    return rep_pop_structure (s);
+#else
     rep_INTERN(gnome_canvas);
     return Qgnome_canvas;
+#endif
 }
