@@ -265,6 +265,11 @@
   ((GtkStyle style)
    (GtkStateType state)))
 
+;; GtkAccelGroup
+(define-boxed GtkAccelGroup
+  (copy gtk_accel_group_ref)
+  (free gtk_accel_group_unref))
+
 ;;; Functions
 
 ;; main
@@ -459,11 +464,34 @@
 ;;   (char key)
 ;;   (uint modifiers)))
 
-;;(define-func gtk_widget_remove_accelerator
-;;  none
-;;  ((GtkWidget widget)
-;;   (GtkAcceleratorTable table)
-;;   (string signal_name)))
+(define-func gtk_widget_add_accelerator
+  none
+  ((GtkWidget widget)
+   (string accel_signal)
+   (GtkAccelGroup accel_group)
+   (uint accel_key)
+   (uint accel_mods)
+   (uint accel_flags)))
+
+(define-func gtk_widget_remove_accelerator
+  none
+  ((GtkWidget widget)
+   (GtkAccelGroup accel_group)
+   (uint accel_key)
+   (uint accel_mods)))
+
+(define-func gtk_widget_remove_accelerators
+  none
+  ((GtkWidget widget)
+   (string accel_signal)
+   (bool visible_only)))
+
+(define-func gtk_widget_accelerator_signal
+  uint
+  ((GtkWidget widget)
+   (GtkAccelGroup accel_group)
+   (uint accel_key)
+   (uint accel_mods)))
 
 (define-func gtk_widget_lock_accelerators
   none
@@ -496,10 +524,6 @@
   ((GtkWidget widget)
    (int x)
    (int y)))
-
-;; (define-func gtk_widget_basic
-;;   bool
-;;   ((GtkWidget widget)))
 
 (define-func gtk_widget_grab_focus
   none
@@ -551,6 +575,11 @@
    (int width)))
 
 (define-func gtk_widget_set_events
+  none
+  ((GtkWidget widget)
+   (GdkEventMask events)))
+
+(define-func gtk_widget_add_events
   none
   ((GtkWidget widget)
    (GdkEventMask events)))
@@ -1712,6 +1741,16 @@
   ((GtkLabel label)
    (bool wrap)))
 
+(define-func gtk_label_set_pattern
+  none
+  ((GtkLabel label)
+   (string pattern)))
+
+(define-func gtk_label_parse_uline
+  uint
+  ((GtkLabel label)
+   (string string)))
+
 ;;;;
 
 (define-object GtkTipsQuery (GtkLabel))
@@ -2011,6 +2050,21 @@
   none
   ((GtkMenuShell menu_shell)))
 
+(define-func gtk_menu_shell_select_item
+  none
+  ((GtkMenuShell menu_shell)
+   (GtkWidget menu_item)))
+
+(define-func gtk_menu_shell_deselect
+  none
+  ((GtkMenuShell menu_shell)))
+
+(define-func gtk_menu_shell_activate_item
+  none
+  ((GtkMenuShell menu_shell)
+   (GtkWidget menu_item)
+   (bool force_deactivate)))
+
 ;; MenuBar
 
 (define-object GtkMenuBar (GtkMenuShell))
@@ -2081,10 +2135,22 @@
   ((GtkMenu menu)
    (int index)))
 
-;;(define-func gtk_menu_set_accelerator_table
-;;  none
-;;  ((GtkMenu menu)
-;;   (GtkAcceleratorTable table)))
+(define-func gtk_menu_set_accel_group
+  none
+  ((GtkMenu menu)
+   (GtkAccelGroup accel_group)))
+
+(define-func gtk_menu_get_accel_group
+  GtkAccelGroup
+  ((GtkMenu menu)))
+
+(define-func gtk_menu_get_uline_accel_group
+  GtkAccelGroup
+  ((GtkMenu menu)))
+
+(define-func gtk_menu_ensure_uline_accel_group
+  GtkAccelGroup
+  ((GtkMenu menu)))
 
 ;; XXX - probably needs _interp version
 ;; gtk_menu_attach_to_widget
@@ -2096,6 +2162,26 @@
 (define-func gtk_menu_detach
   none
   ((GtkMenu menu)))
+
+(define-func gtk_menu_get_attach_widget
+  GtkWidget
+  ((GtkMenu)))
+
+(define-func gtk_menu_set_tearoff_state
+  none
+  ((GtkMenu menu)
+   (bool torn_off)))
+
+(define-func gtk_menu_set_title
+  none
+  ((GtkMenu menu)
+   (string title)))
+
+(define-func gtk_menu_reorder_child
+  none
+  ((GtkMenu menu)
+   (GtkWidget child)
+   (int position)))
 
 ;; MenuItem
 
@@ -2122,16 +2208,6 @@
   none
   ((GtkMenuItem menu_item)
    (GtkSubmenuPlacement placement)))
-
-;;(define-func gtk_menu_item_accelerator_size
-;;  none
-;;  ((GtkMenuItem menu_item)))
-
-;;(define-func gtk_menu_item_accelerator_text
-;;  none
-;;  ((GtkMenuItem menu_item)
-;;   ;; is this right or is it a return value?
-;;   (string accelerator_text))) 
 
 (define-func gtk_menu_item_configure
   none
