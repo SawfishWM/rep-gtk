@@ -1,0 +1,75 @@
+;; -*-lisp-*-
+
+(import "gtk-1.2.defs")
+
+(define-object GladeXML (GtkData)
+  (fields
+   (string filename)
+   (string textdomain)))
+
+(define-func glade_xml_new
+  GladeXML
+  ((string fname)
+   (string root (null-ok))))
+
+(define-func glade_xml_new_with_domain
+  GladeXML
+  ((string fname)
+   (string root (null-ok))
+   (string domain (null-ok))))
+
+;; (define-func glade_xml_new_from_memory)
+
+(define-func glade_xml_construct
+  bool
+  ((GladeXML self)
+   (string fname)
+   (string root (null-ok))
+   (string domain (null-ok))))
+
+(define-func sgtk_glade_xml_signal_connect
+  none
+  ((GladeXML self)
+   (string handler_name)
+   (SCM func (null-ok)))
+  (scm-name "glade-xml-signal-connect")
+  (protection self))
+
+(define-func sgtk_glade_xml_signal_autoconnect
+  none
+  ((GladeXML self))
+  (scm-name "glade-xml-signal-autoconnect"))
+
+(define-func glade_xml_get_widget
+  GtkWidget
+  ((GladeXML self)
+   (string name)))
+
+(define-func glade_xml_get_widget_by_long_name
+  GtkWidget
+  ((GladeXML self)
+   (string longname)))
+
+(define-func glade_xml_relative_file
+  string
+  ((GladeXML self)
+   (string filename)))
+
+(define-func glade_get_widget_name
+  static_string
+  ((GtkWidget widget)))
+
+(define-func glade_get_widget_long_name
+  static_string
+  ((GtkWidget widget)))
+
+(define-func glade_get_widget_tree
+  GladeXML
+  ((GtkWidget widget)))
+
+;; Options
+
+(options
+ (includes "#include <glade/glade.h>")
+ (includes "#include \"rep-libglade.h\"")
+ (init-func "sgtk_init_gtk_libglade_glue"))
