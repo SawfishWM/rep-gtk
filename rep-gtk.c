@@ -2535,7 +2535,10 @@ sgtk_init_with_args (int *argcp, char ***argvp)
     {
       char *tem = getenv ("REP_GTK_DONT_INITIALIZE");
       if (tem == 0 || atoi (tem) == 0)
-	gtk_init (argcp, argvp);
+        {
+	  gtk_set_locale ();
+	  gtk_init (argcp, argvp);
+        }
     }
 
   if (rep_recurse_depth >= 0)
