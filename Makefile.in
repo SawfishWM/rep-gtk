@@ -78,16 +78,16 @@ gnome-canvas.la : $(GNOME_CANVAS_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOMEUI_LIBS)
 
 %-glue.c : %-1.2.defs.jl $(RDEFS) build-gtk.jlc
-	rep --batch -l build-gtk -f build-gtk-batch $< $@
+	rep build-gtk.jlc -f build-gtk-batch $< $@
 
 %-glue.c : %.defs.jl $(RDEFS) build-gtk.jlc
-	rep --batch -l build-gtk -f build-gtk-batch $< $@
+	rep build-gtk.jlc -f build-gtk-batch $< $@
 
 %.defs.jl : %.defs
 	sed -f sed-fix-defs $< >$@
 
 build-gtk.jlc : build-gtk.jl
-	rep --batch -l compiler -f compile-batch $<
+	rep compiler -f compile-batch $<
 
 install : all installdirs
 	set -e; for f in $(OUT); do \
