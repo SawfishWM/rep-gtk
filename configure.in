@@ -23,9 +23,8 @@ AC_REVISION($Revision$)
 AC_INIT(rep-gtk.h)
 AC_CONFIG_HEADER(config.h)
 
-version="0.0"
-version_major=0
-version_minor=0
+dnl Release versioning info
+version="0.1"
 
 dnl Find the system type; this isn't crucial
 AC_CANONICAL_HOST

@@ -7,8 +7,6 @@ OBJS = $(SRCS:.c=.lo)
 OUT  = libgtk.la
 
 version=@version@
-version_major=@version_major@
-version_minor=@version_minor@
 host_type=@host@
 SHELL=/bin/sh
 

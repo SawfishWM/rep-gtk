@@ -1,3 +1,7 @@
+1999-08-03  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.1
+
 1999-06-06  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (sgtk_init_substrate): use rep_map_inputs to add
