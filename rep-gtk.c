@@ -2441,7 +2441,7 @@ sgtk_init_with_args (int *argcp, char ***argvp)
 	gtk_init (argcp, argvp);
     }
 
-  if (rep_recurse_depth < 0)
+  if (rep_recurse_depth >= 0)
     standalone_p = 0;			/* a reasonable assumption? --jsh */
 
   sgtk_init_substrate ();
@@ -2498,6 +2498,9 @@ sgtk_init ()
   char **argv;
   repv head, *last;
 
+  if (sgtk_inited)
+    return;
+
   make_argv (Fcons (rep_SYM(Qprogram_name)->value,
 		    rep_SYM(Qcommand_line_args)->value), &argc, &argv);
   sgtk_init_with_args (&argc, &argv);
@@ -2524,12 +2527,7 @@ repv rep_dl_feature;
 repv
 rep_dl_init (void)
 {
-  rep_xsubr **x;
-
-  sgtk_register_type_infos (sgtk_type_infos);
-
-  for (x = sgtk_subrs; *x != 0; x++)
-      rep_add_subr (*x);
+  sgtk_init_gtk_gtk_glue ();
 
   rep_dl_feature = Qgtk;
   return Qt;
