@@ -25,8 +25,6 @@
 #include <string.h>
 #include <limits.h>
 
-DEFSYM(sgtk_types, "sgtk-types");
-
 
 
 /* Hacking the basic types --jsh */
@@ -589,6 +587,6 @@ sgtk_cvec_to_rep (sgtk_cvec *cvec, repv (*toscm)(void *), size_t sz)
 repv
 rep_dl_init (void)
 {
-    rep_INTERN(sgtk_types);
-    return Qsgtk_types;
+    repv tem = rep_push_structure ("sgtk-types");
+    return rep_pop_structure (tem);
 }
