@@ -1,3 +1,8 @@
+2000-07-10  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.spec.in: remembered that g[td]k-1.2.defs is now
+	called g[td]k.defs
+
 2000-07-09  John Harper  <john@dcs.warwick.ac.uk>
 
 	* configure.in: version 0.13
