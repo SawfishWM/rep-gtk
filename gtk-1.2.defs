@@ -852,7 +852,10 @@
 
 ;;; GtkCList
 
-(define-object GtkCList (GtkContainer))
+(define-object GtkCList (GtkContainer)
+  (fields
+   (int rows)
+   (int columns)))
 
 (define-func gtk_clist_new 
   GtkWidget
@@ -3052,6 +3055,11 @@
   none
   ((GtkPaned paned)
    (int size)))
+
+(define-func gtk_paned_set_position
+  none
+  ((GtkPaned paned)
+   (int position)))
 
 ;; HPaned
 
