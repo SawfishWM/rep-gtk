@@ -9,7 +9,6 @@ exec rep --batch "$0" "$@"
 (let
     ((window (gtk-window-new 'toplevel))
      (button (gtk-button-new-with-label "say hello")))
-  (gtk-window-position window 'mouse)
   (gtk-container-border-width window 10)
   (gtk-signal-connect
    window "delete_event"

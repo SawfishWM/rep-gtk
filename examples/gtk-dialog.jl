@@ -2,8 +2,6 @@
 
 (require 'gtk)
 
-(defvar gtk-dialog-position 'center)
-
 ;; Each BUTTON is (TEXT . RETURNED-VALUE)
 (defun gtk-dialog (message &rest buttons)
   (let
@@ -14,7 +12,6 @@
     (catch 'exit
       (unwind-protect
 	  (progn
-	    (gtk-window-position window gtk-dialog-position)
 	    (gtk-container-border-width window 6)
 	    (gtk-signal-connect window "delete_event"
 				(lambda ()
