@@ -1823,14 +1823,43 @@ DEFUN ("gtk-callback-trampoline", Fgtk_callback_trampoline,
    scm_gc_heap_lock is set during gc.  */
 #define rep_GC_P (rep_in_gc)
 
+struct callback_info {
+  GtkObject *obj;
+  repv proc;
+  gint n_args;
+  GtkArg *args;
+};
+
+static repv
+inner_callback_marshal (repv data)
+{
+  struct callback_info *info = (struct callback_info *) rep_PTR (data);
+  int i;
+  repv args = Qnil, ans;
+
+  for (i = info->n_args-1; i >= 0; i--)
+    args = Fcons (sgtk_arg_to_rep (info->args+i, 0), args);
+  args = Fcons (sgtk_wrap_gtkobj (info->obj), args);
+
+  if (rep_CAR(callback_trampoline) == Qnil)
+    ans = rep_funcall (info->proc, args, rep_FALSE);
+  else
+    ans = rep_funcall (rep_CAR(callback_trampoline),
+		       Fcons (info->proc, Fcons (args, Qnil)), rep_FALSE);
+
+  if (info->args[info->n_args].type != GTK_TYPE_NONE)
+    sgtk_rep_to_ret (info->args+info->n_args, ans);
+
+  return Qnil;
+}
+
 void
 sgtk_callback_marshal (GtkObject *obj,
 		       gpointer data,
 		       guint n_args,
 		       GtkArg *args)
 {
-  repv fun = ((sgtk_protshell *)data)->object, real_args = Qnil, ans;
-  int i;
+  struct callback_info info;
 
   if (rep_GC_P)
     {
@@ -1840,21 +1869,19 @@ sgtk_callback_marshal (GtkObject *obj,
       return;
     }
   
-  for (i = n_args - 1; i >= 0; i--)
-    real_args = Fcons (sgtk_arg_to_rep (args + i, 0), real_args);
+  info.obj = obj;
+  info.proc = ((sgtk_protshell *)data)->object;
+  info.n_args = n_args;
+  info.args = args;
 
-  real_args = Fcons (sgtk_wrap_gtkobj (obj), real_args);
-
-  if (rep_CAR(callback_trampoline) == Qnil)
-    ans = rep_funcall (fun, real_args, rep_FALSE);
-  else
-    ans = rep_funcall (rep_CAR(callback_trampoline),
-		       Fcons (fun, Fcons (real_args, Qnil)), rep_FALSE);
+#if rep_INTERFACE >= 8
+  rep_call_with_barrier (inner_callback_marshal,
+			 rep_VAL(&info), rep_TRUE, 0, 0, 0);
+#else
+  inner_callback_marshal (rep_VAL(&info));
+#endif
 
   sgtk_callback_postfix ();
-
-  if (ans && args[n_args].type != GTK_TYPE_NONE)
-    sgtk_rep_to_ret (args + n_args, ans);
 }
 
 void
@@ -2321,13 +2348,35 @@ sgtk_signal_emit (GtkObject *obj, char *name, repv scm_args)
    table really.. */
 static GHashTable *input_tags, *input_callbacks;
 
+struct input_callback_data {
+    void (*func)(int);
+    int fd;
+};
+
+static repv
+inner_input_callback (repv data_)
+{
+    struct input_callback_data *data
+	= (struct input_callback_data *) rep_PTR (data_);
+    (*data->func) (data->fd);
+    return Qnil;
+}
+
 static void
 sgtk_input_callback (gpointer data, gint fd, GdkInputCondition cond)
 {
-    void (*func)(int fd) = g_hash_table_lookup (input_callbacks,
-						(gpointer) fd);
-    if (func != 0)
-	(*func) (fd);
+    struct input_callback_data d;
+    d.func = g_hash_table_lookup (input_callbacks, (gpointer) fd);
+    d.fd = fd;
+    if (d.func != 0)
+    {
+#if rep_INTERFACE >= 8
+	rep_call_with_barrier (inner_input_callback, rep_VAL(&d),
+			       rep_TRUE, 0, 0, 0);
+#else
+	inner_input_callback (rep_VAL(&d));
+#endif
+    }
     sgtk_callback_postfix ();
 }
 
@@ -2368,11 +2417,25 @@ sgtk_deregister_input_fd (int fd)
    after each callback/event. */
 static int idle_timeout_set = 0, idle_timeout_counter = 0, idle_timeout_tag;
 
+static repv
+inner_idle_callback (repv data)
+{
+    rep_proc_periodically ();
+    rep_on_idle (rep_INT (data));
+    return Qnil;
+}
+
 static gint
 idle_timeout_callback (gpointer data)
 {
-    rep_proc_periodically ();
-    rep_on_idle (idle_timeout_counter++);
+#if rep_INTERFACE >= 8
+    rep_call_with_barrier (inner_idle_callback,
+			   rep_MAKE_INT (idle_timeout_counter),
+			   rep_TRUE, 0, 0, 0);
+#else
+    inner_idle_callback (rep_MAKE_INT (idle_timeout_counter));
+#endif
+    idle_timeout_counter++;
     if (rep_INTERRUPTP && gtk_main_level () > 0)
 	gtk_main_quit ();
     else if (rep_redisplay_fun != 0)
