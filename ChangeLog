@@ -1,3 +1,9 @@
+2002-07-11  John Harper  <jsh@unfactored.org>
+
+	* gtk-compat.c (gtk_color_selection_set_color_interp,
+	gtk_color_selection_get_color_interp): Include space for alpha
+	in calls to gtk_color_selection_{get,set}_color. Fixes #87959
+
 2002-06-22  John Harper  <jsh@unfactored.org>
 
 	* configure.in: version 0.16
