@@ -1,3 +1,16 @@
+2000-04-09  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c, libglade-support.c, gnomeui-support.c,
+	gnomelib-support.c, gnome-canvas-support.c: put all subroutines
+	into suitably named modules if rep supports them; remove all
+	direct references to symbols' `value' fields
+
+2000-04-07  John Harper  <john@dcs.warwick.ac.uk>
+
+	* build-gtk.jl (output-footer): emit code to define the
+	subroutines in a module of the correct name (suitably ifdef'ed
+	by rep version)
+
 2000-03-26  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gnomelib-support.c (rep_dl_init): provide `gnomelib' not `gnome'
