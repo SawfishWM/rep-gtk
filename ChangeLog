@@ -1,3 +1,8 @@
+1999-05-29  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c: only call gtk_main_quit () if gtk_main_level ()
+	returns non-zero
+
 1999-05-19  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c: should have solved the SIGCHLD problem under Linux
