@@ -1,3 +1,9 @@
+2000-03-06  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.9.1
+
+	* rep-gtk.h: include config.h
+
 2000-03-05  John Harper  <john@dcs.warwick.ac.uk>
 
 	* version 0.9
