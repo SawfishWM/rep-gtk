@@ -1,5 +1,9 @@
 2000-02-29  John Harper  <john@dcs.warwick.ac.uk>
 
+	* rep-gtk.c (timeout_callback): only propagate the timeout if
+	it's from the innermost event loop
+	(sgtk_event_loop): call set_timeout () before exiting
+
 	* gtk-compat.c (menu_popup_position): ensure that the chosen
 	position always leaves the menu totally on-screen (using code
 	borrowed from gtk/gtkmenu.c)
