@@ -1357,6 +1357,11 @@
   ((GtkWindow window)
    (GtkWindowPosition position)))
 
+(define-func gtk_window_position
+  none
+  ((GtkWindow window)
+   (GtkWindowPosition position)))
+
 (define-func gtk_window_activate_focus
   int
   ((GtkWindow window)))
