@@ -1,0 +1,67 @@
+# Makefile.in -- input for rep-gtk Makefile
+# Copyright (C) 1998 John Harper <john@dcs.warwick.ac.uk>
+# $Id$
+
+SRCS = rep-gtk.c gtk-support.c gtk-compat.c gtk-glue.c
+OBJS = $(SRCS:.c=.lo)
+OUT  = libgtk.la
+
+version=@version@
+version_major=@version_major@
+version_minor=@version_minor@
+rep_version=@rep_version@
+SHELL=/bin/sh
+
+repexecdir=@repexecdir@
+host_type=@host@
+
+CC=@CC@
+LIBTOOL=@LIBTOOL@
+CPPFLAGS=-DHAVE_CONFIG_H -I. @CPPFLAGS@
+CFLAGS=@CFLAGS@ @GTK_CFLAGS@
+LDFLAGS=@LDFLAGS@
+LIBS=@LIBS@ @GTK_LIBS@
+
+INSTALL=@INSTALL@
+INSTALL_DATA=@INSTALL_DATA@
+INSTALL_PROGRAM=@INSTALL_PROGRAM@
+
+top_builddir=.
+VPATH=@top_srcdir@:.
+
+.PHONY: clean realclean install
+
+# Rule for libtool controlled C objects
+%.lo : %.c
+	$(LIBTOOL) $(CC) -c $(CPPFLAGS) $(CFLAGS) $<
+
+all : $(OUT)
+
+$(OUT) : $(OBJS)
+	$(LIBTOOL) gcc -export-dynamic $(CPPFLAGS) $(CFLAGS) -o $@ $^ \
+	  $(LIBS) -rpath $(repexecdir)
+
+gtk-glue.c : gtk-1.2.defs.jl gdk-1.2.defs.jl build-gtk.jl
+	rep --batch -l build-gtk -f build-gtk-batch $< $@
+
+%.defs.jl : %.defs
+	sed -f sed-fix-defs $< >$@
+
+build-gtk.jlc : build-gtk.jl
+	rep --batch -l compiler -f compile-batch $<
+
+install : all
+	$(LIBTOOL) $(INSTALL) $(OUT) $(repexecdir)
+
+uninstall :
+	$(LIBTOOL) rm $(repexecdir)/$(OUT)
+
+clean :
+	rm -f *.defs.jl gtk-glue.c *~ core *.jlc *.o *.lo *.la
+	rm -rf .libs
+
+realclean : clean
+	rm -f Makefile config.cache config.log config.status config.h libtool
+
+cvsclean : realclean
+	rm -f aclocal.m4 configure

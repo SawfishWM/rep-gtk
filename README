@@ -1,0 +1,51 @@
+[ this is -*-Text-*- ]
+
+This is rep-gtk 0.0, a binding of GTK+ for my rep Lisp interpreter. It
+is based on Marius Vollmer's guile-gtk package (initially version
+0.15), with a new glue-code generator.
+
+This package can be downloaded from:
+
+	ftp://ftp.dcs.warwick.ac.uk/people/John.Harper/librep
+
+Browse the CVS history at:
+
+	http://tizer.dcs.warwick.ac.uk:8080/cgi-bin/cvsweb
+
+
+Installation
+============
+
+Basically, `./configure ; make ; make install'. If you're building from
+the CVS sources, execute `aclocal ; autoconf' first.
+
+Currently it only works with GTK 1.2.
+
+Note that you get no choice where the library is installed, it always
+goes into the rep exec-directory. This should be changed.
+
+
+Usage
+=====
+
+Do `(require 'gtk)' to load the library, then call functions as in
+guile-gtk. The only difference is that Lisp conventions are used for
+booleans, i.e. nil for #f, and non-nil for #t.
+
+I changed the names of three functions:
+
+	gtk-idle-add-full => gtk-idle-add
+	gtk-container-foreach-full => gtk-container-foreach
+	gtk-signal-set-class-function-full => gtk-signal-set-class-function
+
+
+Caveats
+=======
+
+rep doesn't have floating-point types, or even full 32-bit integers.
+Floating point values are truncated to integers, any integers that are
+too big or small will trigger a run-time assertion.
+
+Their's currently no way to wrap more than a single set of functions,
+thus the gtk.defs and gdk.defs are both parsed in one go.
+

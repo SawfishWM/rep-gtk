@@ -1,0 +1,82 @@
+dnl  Process this file with autoconf to produce a configure script.
+dnl  Copyright (C) 1998 John Harper <john@dcs.warwick.ac.uk>
+dnl  $Id$
+dnl
+dnl  This file is part of Jade.
+dnl
+dnl  Jade is free software; you can redistribute it and/or modify it
+dnl  under the terms of the GNU General Public License as published by
+dnl  the Free Software Foundation; either version 2, or (at your option)
+dnl  any later version.
+dnl
+dnl  Jade is distributed in the hope that it will be useful, but
+dnl  WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+dnl  GNU General Public License for more details.
+dnl
+dnl  You should have received a copy of the GNU General Public License
+dnl  along with Jade; see the file COPYING.  If not, write to
+dnl  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+
+AC_REVISION($Revision$)
+
+AC_INIT(rep-gtk.h)
+AC_CONFIG_HEADER(config.h)
+
+version="0.0"
+version_major=0
+version_minor=0
+
+dnl Find the system type; this isn't crucial
+AC_CANONICAL_HOST
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_GCC_TRADITIONAL
+AM_PROG_LIBTOOL
+
+dnl Check for librep
+AC_MSG_CHECKING([for librep]);
+rep_version=`rep-config --version`
+if test $? -eq 0; then
+  CFLAGS="$CFLAGS `rep-config --cflags`"
+  dnl LIBS="$LIBS `rep-config --libs`"
+  repexecdir="`rep-config --execdir`"
+  AC_MSG_RESULT([version ${rep_version}])
+else
+  AC_MSG_ERROR([Can't find librep. Is it installed?])
+fi
+
+dnl Check for GTK
+AM_PATH_GTK(1.2.0,,AC_ERROR(need at least Gtk+ version 1.2))
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_SIZE_T
+
+dnl Check for cutting edge Gtk functions
+saved_LIBS="$LIBS"
+LIBS="$GTK_LIBS $saved_LIBS"
+AC_CHECK_FUNCS(gdk_color_copy gtk_widget_peek_colormap gtk_type_get_info gtk_signal_set_class_function_full)
+LIBS="$saved_LIBS"
+
+dnl Nonstandard exported symbols
+AC_SUBST(version)
+AC_SUBST(version_minor)
+AC_SUBST(version_major)
+AC_SUBST(rep_version)
+AC_SUBST(repexecdir)
+AC_SUBST(CPPFLAGS)
+AC_SUBST(CFLAGS)
+AC_SUBST(LIBS)
+
+AC_OUTPUT(Makefile)
+
+dnl Local variables:
+dnl major-mode: sh-mode
+dnl End:

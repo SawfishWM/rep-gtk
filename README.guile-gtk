@@ -1,0 +1,412 @@
+README for guile-gtk version 0.15
+*********************************
+
+This is some glue code to make Gtk accessible from Guile.  New
+versions of this package will be available from
+
+    http://www.ping.de/sites/zagadka/guile-gtk/
+
+You can also get at the most recent development sources thru the Gnome
+CVS repository.  Guile-gtk is contained in the gnome-guile module.
+See www.gnome.org for details.
+
+I tried hard to make this as generic as possible.  As a result, it
+should be easy to extend it to new widgets and other Gtk extensions.
+It might even be possible to use some of this code for wrapping
+completely different C libraries, but that was not my goal.
+
+To somewhat unify the different high-level language bindings (such as
+the ones for Perl, Python, Objective C, maybe Java, etc.) I tried to
+collect the salient bits of the Gtk API into a formal description.
+You should be able to generate large parts of the language specific
+glue code from it.  Unfortunately, this formal description hasn't
+stabilized yet and I'm currently more interested in completeness than
+in generality.
+
+
+Acknowledgements
+----------------
+
+Many people have contributed to guile-gtk by now.  Many thanks to all
+of them!  Please refer to the ChangeLog for details.
+
+
+Bugs
+----
+
+My main aim still is robustness, with an eye towards completeness.  It
+should not be possible to crash your program from Scheme.  Guile-gtk
+has to cope with anything.  So if you find that your program crashes
+and you think it is due to a bug in your Scheme code, you have
+actually found a bug in guile-gtk or Gtk.
+
+Please report these bugs to me <mvo@zagadka.ping.de>.
+
+
+Gtk versions
+------------
+
+[ Whoa, can anyone put this into more simple words?  Seems like I can't
+  see the forest for all the trees. ]
+
+There are two lines of Gtk versions in active development, modeled
+after the Linux kernel scheme, I think.  One is the stable branch that
+will maintain binary compatability, and the other is the development
+branch, where new features are tried out.  The stable branch has
+version numbers like 1.2.x; the development branch is labeled 1.3.x
+and the absolutely latest version is made available thru CVS.
+
+Guile-gtk can be built for both gtk-1.2 and gtk-1.3.  It is possible
+to have these two versions of guile-gtk installed and in use
+simultanously, but the sources can only be configured for one of them
+at any one time.  That is, when you want to switch between Gtk
+versions, be sure to make distclean and re-configure.
+
+The version number of gtk that guile-gtk has been built for will be
+reflected in the names of the installed programs and libraries.  When
+you are building for gtk-1.2, for example, you will get guile-gtk-1.2
+and libguilegtk-1.2.
+
+Likewise, the guile modules include the version of gtk in their
+prefix.  The modules for gtk-1.2 are named `(gtk-1.2 <suffix>)', for
+example.  When you want to use a specific version of gtk, you thus
+just have to use the right module names.  You can't mix gtk-1.2 and
+gtk-1.3 modules and you will receive an error when you try to do so.
+
+This package will also install generic aliases for both the modules
+and the guile-gtk programs that refer to the gtk version that has been
+used while building it.  In addition to "guile-gtk-1.2" or
+"guile-gtk-1.3" there will also be a symlink from plain "guile-gtk" to
+one of them.  There will also be modules called `(gtk <suffix>)' that
+will dispatch to the `appropriate' version of gtk.  What is
+`appropriate' is determined in two steps: when one of the specific
+modules has already been activated, the generic modules will just
+refer to them.  When no specific gtk module has been used before, they
+will refer to the version of gtk that has been used for building the
+package.
+
+Both guile-gtk-1.2 and guile-gtk-1.3 will activate their specific
+versions of the gtk modules at startup.  Thus, the generic modules
+`(gtk <suffix>)' always refer to gtk version used by the guile-gtk
+executable used to run them.
+
+Guile-gtk should always target the latest released versions of Gtk in
+both lines of development.  There is no reason to use anything else
+than the latest `bug-fixing' gtk-1.2, and everybody who is using the
+unstable gtk-1.3 series can be expected to be up-to-date, right?
+
+
+Related Stuff
+-------------
+
+Jeff Dike is writing a layer of macros/functions on top of guile-gtk
+that makes it simpler and fairly uniform to create widgets within
+Guile.  It is available here
+
+     http://www.mv.com/ipusers/karaya/simple-gtk/simple-gtk.scm
+
+David Lutterkort is writing a tool that makes it easy to give command
+line programs with too many options a nice GUI.  Available here
+
+     http://www.cs.purdue.edu/homes/lutterdc/software/wickel.html
+
+
+Contents
+--------
+
+ guile-gtk.c
+ guile-gtk.h     Support for converting between Scheme types and Gtk types
+                 and the basic machine for making it all happen.
+
+ gtk-support.c   Some handwritten glue code.
+ guile-compat.c  Code to adapt to different versions of Guile.
+ gtk-compat.c    Code to adapt to different versions of Gtk.
+
+ gdk-1.2.defs    The formal description of the Gdk API for gtk-1.2.
+ gtk-1.2.defs    The formal description of the Gtk API for gtk-1.2.
+
+ gdk-1.3.defs    The formal description of the Gdk API for gtk-1.3.
+ gtk-1.3.defs    The formal description of the Gtk API for gtk-1.3.
+ 
+ build-guile-gtk A Scheme program to generate much of the glue code.
+
+ gtk/gtk.scm     The Scheme part of the (gtk gtk) module.
+ gtk/gdk.scm     The Scheme part of the (gtk gdk) module.
+ gtk/dynlink.scm Alternative dlopening that works better than the
+                 one in Guile.
+ gtk/event-repl.scm 
+                 Support for event driven read-eval-print loops.
+ gtk-1.2/        Scheme modules for Gtk-1.2
+ gtk-1.3/        Scheme modules for Gtk-1.3
+
+ examples/       Some example programs.
+
+The rest is the usual configuration and building cruft.
+
+
+Installing
+----------
+
+See INSTALL for generic installation instructions.
+
+This package will build a new program, "guile-gtk" that is a regular
+Guile interpreter with the Gtk support already linked in.  It accepts
+the usual "guile" command line options and in addition to that, it
+also understands the Gtk options.
+
+On a few systems, this package is also able to arrange things so that
+you can just use the (gtk gtk) module from a vanilla "guile".  In
+fact, "guile-gtk" is only a kludge until dynamic linking works well
+enough.
+
+The package will also install "build-guile-gtk", a program for
+generating glue code for arbitrary *.defs files.  It can also produce
+new executables that are variants of guile-gtk, with a different set
+of glue code pre-linked.
+
+NOTE: This package installs its Scheme code in a location determined
+by the prefix given to the configure script.  It does not pay
+attention to where your Guile is installed.  When Guile and this
+package are installed under the same prefix, everything is fine.  When
+you use a different prefix for this package, you need to make sure
+that Guile knows about this location.  For example, when you install
+this package under /usr/local/stuff/guile-gtk, you may want to add
+GUILE_LOAD_PATH=/usr/local/stuff/guile-gtk/share/guile to your
+environment.  Or you might want to make some symlinks.  This package
+does not try to be clever about these issues, as there are too many
+variations and potential solutions.
+
+Testing
+-------
+
+    % cd examples/
+    % ../guile-gtk -s test-gtk.scm
+
+should pop up a familiar pile of buttons.  Not every test has been
+implemented, tho.  All unexpected behaviour is probably a bug and I
+would be glad if you would tell me about it.
+
+
+Dynamic Linking
+---------------
+
+Guile-gtk uses its own approach to dynamic linking of compiled code
+modules.  The experimental mechanism provided by Guile itself proved
+to be troublesome in the real world.
+
+As long as you build your shared libraries with libtool, and you have
+the dlopen function, everything should just work.  At least in theory.
+Please refer to gtk/dynlink.scm for the implementation and gtk/gdk.scm
+for a simple application.
+
+The code in gtk/dynlink.scm parses the *.la files installed by libtool
+and uses the information contained therein to resolve inter-library
+dependencies on its own.  When a library is requested that has no
+associated *.la file, it simply calls dlopen with a ".so" suffix.
+When this ".so" library can't be opened it is simply ignored (with a
+warning).
+
+So the rule is: you must make sure that you have correct inter-library
+dependencies.  Either use libtool, which will put these dependencies
+into its *.la files where we can find them; or build your shared
+libraries `by hand', so that dlopen can resolve the dependencies.  In
+either case, do not include static libraries in the inter-library
+dependencies.
+
+As an exception, you do not need to include the Guile libraries
+(-lguile, -lqthreads, etc) in your dependencies, because they are
+always there.  You *do* need -lguilegtk and the Gtk libraries, tho.
+
+We need to use the RTLD_GLOBAL flag to make all this happen, but
+unfortunately, Guile calls dlopen without this flag.  This is why we
+have a very simple libguiledlopenhelper.
+
+The code in gtk/dynlink.scm tries to emulate the way the linker
+searches for libraries: First, each directory in LD_LIBRARY_PATH is
+tried, then "/usr/local/lib", "/usr/lib", "/lib", in that order.
+
+I expect things to change for the better in the future, of course, but
+shared libraries and dlopening are a very effective time-sink, it
+seems.
+
+UPDATE: when configure detects a recent version of libtool that looks
+like it can handle inter-library dependencies on its own,
+gtk/dynlink.scm just opens the library and does not try to be clever
+about *.la files.  Libtool 1.2e works for me in this way.
+
+
+Wrapping Your Own Widgets
+-------------------------
+
+There is a complete autoconfed/automade example for this.
+
+After installing the guile-gtk package, change to the examples/
+directory:
+
+  % cd examples
+  % ./configure
+  % make
+
+Again: you need to have guile-gtk installed for this to work!
+
+Now you should have a new executable `guile-foo' that has glue code
+for the function `foo-new' in the `(gtk foo)' module.  You can test it
+thus:
+
+  % ./guile-foo -s test-foo.scm
+
+Here is the general procedure:
+
+When you have some Gtk widgets that are not described in gtk.defs or
+gdk.defs, you can use build-guile-gtk to automatically generate glue
+code for them.  Here is how to wrap the hypothetical GtkFoo widget and
+its related function gtk-foo-new.  They are assumed to live in gtkfoo.h
+and libfoo.
+
+- Write the foo.defs file
+
+  ;; We use the types defined in gtk-1.2.defs
+
+  (import "gtk-1.2.defs")
+
+  (define-object GtkFoo (GtkWidget))
+
+  (define-func gtk_foo_new
+    GtkFoo
+    ())
+
+  (options
+    ;; Includes needed to compile code that uses GtkFoo.
+    (includes "#include <gtkfoo.h>")
+    ;; The name of the generated initialization function.
+    (init-func "foo_init_glue")
+    ;; Libraries needed to link. libguilefoo will contain
+    ;; the glue code and libfoo contains the widget itself.
+    (libs "-lguilefoo -lfoo"))
+
+- Write the foo.scm file
+
+  (define-module (gtk foo)
+    :use-module (gtk dynlink))
+
+  ;; Call the init function, either using a pre-linked -lguilefoo or
+  ;; dynamically linking it.
+  (merge-compiled-code "foo_init_glue" "libguilefoo")
+
+- Generate the glue code
+
+  % build-guile-gtk glue foo.defs >foo-glue.c
+
+- Compile the glue code into a shared library, using libtool
+
+  [This will be simplified and then explained.  Right now, keep in
+   mind to use gtk-config and build-guile to get all necessary flags and
+   libraries.]
+
+  % libtool --mode=link ... -o libguilefoo.la ...
+
+- Install the shared library, again using libtool.
+
+  % libtool --mode=install cp libguilefoo.la <exec_prefix>/lib/
+
+- Install the foo.scm file
+
+  % cp foo.scm <prefix>/share/guile/gtk/foo.scm
+
+- Install the *.defs files for other people to use.
+
+  % cp foo.defs foo.defs.guile <prefix>/share/guile-gtk/
+
+Now you should be able to just (use-modules (gtk foo)).  When dynamic
+linking does not work for you, you might want to try
+
+  % build-guile-gtk link foo.defs -o guile-foo
+
+This will link a new executable named guile-foo that will have the
+libguilefoo library pre-linked into it so that you do not need
+dynamic-link.  This will work with any number of *.defs files.
+
+
+Documentation
+-------------
+
+Nothing available yet, but the Scheme interface to Gtk is very similar
+to the C one.  Almost all functions take the same arguments as their C
+counterparts.  Exceptions are:
+
+- To access the Gtk functions, you need to use the `(gtk gtk)'
+  module.  You can do this with
+
+    (use-modules (gtk gtk))
+
+  or
+
+    (define-module (your module)
+      :use-modules (gtk gtk))
+
+  Likewise, you need to use the `(gtk gdk)' module if you want to use
+  functions from Gdk.
+
+- Booleans are expressed with Scheme's real boolean values #f and #t.
+
+- Enumerations are expressed with symbols.  For example
+  GTK_WINDOW_TOPLEVEL is written as 'toplevel.  The symbols should be
+  easy to guess from their C counterparts, but they are not completely
+  systematic.  See gtk.defs for the definite details.
+
+- Flags (or bitmasks) are expressed as lists of symbols.  For example
+  GTK_EXPAND|GTK_FILL is '(expand fill).
+
+- Callbacks don't take a client-data argument, so you don't have to
+  specify one to gtk_signal_connect, or gtk_timeout_add, etc.
+
+- Signal handlers don't get the Object as their first argument.  In my
+  view, this would be more often annoying than helpful.
+
+- NULL pointers are expressed as #f.
+
+- Some parameters are optional and get a default value when left
+  unspecified.
+
+- Each type that is derived from GtkObject has an associated predicate
+  function to test whether a Scheme value is of that type.  The
+  predicate for GtkObject is called `gtk-object?', the one for
+  GtkRadioButton `gtk-radio-button?', etc.
+
+- gtk-radio-button-new and gtk-radio-button-new-with-label don't take
+  a list as their group argument but a GtkWidget whose group is used
+  instead.
+
+- Likewise for gtk-radio-menu-item.
+
+- Colors and fonts can be specified with strings, like "red" or
+  "fixed".  If you want to convert from these strings to the real
+  values (for efficiency reasons, say) you can use the functions
+  `gdk-color-intern' and `gdk-font-intern'.
+
+- It might be that your code is loaded into an application that
+  already has an event loop running (or will run one after
+  initialization is complete).  You should then restrain from calling
+  `gtk-main' yourself (except maybe for modal dialog boxes) and you
+  should not terminate the program.
+
+  You can use the function `gtk-standalone?' to find out whether your
+  code is `standalone', i.e. whether you should call `gtk-main'
+  yourself.
+
+  For convenience you can also use
+
+     gtk-standalone-main TOPLEVEL
+
+  This will arrange things so that the program is terminated with
+  `gtk-exit' when the TOPLEVEL widget is destroyed and will call
+  `gtk-main'.  All these things will only happen when
+  `gtk-standalone?' returns true.
+
+
+And all the things I forgot about.  Be sure to read the NEWS file as
+it is currently the only place that documents most details.
+"examples/calc.scm" is quite heavily commented, but does not explain
+Gtk programming.  It is more an example about extensibility.
+
+Have fun!

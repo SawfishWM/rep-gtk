@@ -1,0 +1,130 @@
+-*-Indented-Text-*-
+
+These notes pertain to the g[dt]k.defs files distributed with guile-gtk-0.15
+
+It would probably be a good idea to s/#t/t/ to make it Lisp-readable
+
+
+(import "DEFS-FILE")
+
+
+
+(define-enum ENUM-TYPEDEF-NAME
+  (LISP-SYM CPP-MACRO)
+  ...)
+
+
+
+(define-flags FLAGS-TYPEDEF-NAME
+  (LISP-SYM CPP-MACRO)
+  ...)
+
+
+
+(define-boxed BOXED-TYPEDEF-NAME
+  ATTR ...)
+
+where each ATTR is one of:
+
+      (copy C-COPY-FUN)
+      (free C-FREE-FUN)
+      (size "C sizeof expression")
+      (fields FIELD ...)
+
+      where each FIELD is (TYPE-SYM NAME-SYM)
+
+
+
+(define-object OBJECT-TYPEDEF-NAME (SUPER-CLASS-TYPEDEF)
+  ATTR ...)
+
+where each ATTR is one of:
+
+      (fields FIELD ...)		[as above]
+
+
+
+(define-func C-FUNC-NAME
+  RETURN-VALUE [RET-OPTIONS...]
+  (ARG ...)
+  OPTIONS...)
+
+where each ARG is (TYPE NAME-SYM [ARG-OPTIONS...)
+and each OPTION may be one of:
+
+  (scm-name ACTUAL-NAME-STRING)
+  (protection ARG)			; gc protect callback for life of ARG
+  (protection #t)			; gc protect callback always
+  (undeferred #t)			; no scm interrupt protection?
+  (rest-arg #t)				; last arg is &rest
+
+and each ARG-OPTION may be one of:
+
+  (= "default expression")
+
+and each RET-OPTION may be one of:
+
+  (copy nil)
+
+
+
+(options OPTION ...)
+
+where each OPTION can be:
+
+      (includes "#include expression")
+      (init-func "name of C function")
+      (other-inits "name of C function" ... )
+      (extra-init-code "code string")
+
+
+
+GTK fundamental types seem to include:
+
+	invalid, none, char, bool, int, uint, long, ulong, float,
+	string, enum, flags, boxed, foreign, callback, args, pointer,
+	signal, c-callback, object
+
+The guile-gtk .defs files seem to add the following:
+
+	static_string, full_callback, file-descriptor, list, slist,
+	double, SCM, cvec, cvecr, fvec, ret, tvec
+
+static_string:
+  a static string returned from a function
+
+full_callback:
+  a callback function used by the _full function variants (i.e.
+  gtk_signal_connect_full). 
+
+file-descriptor:
+  an integer file descriptor
+
+list:
+  a glib GList* (doubly-linked)
+
+slist:
+  a glib GSList* (singly-linked)
+
+double:
+  a double-precision float
+
+SCM:
+  a scheme object
+
+cvec:
+  a counter vector, stored in sgtk_cvec struct, in gtk_ function calls,
+  it expands ``cvec.data, cvec.len''
+
+cvecr:
+  similar to cvec but expands ``cvec.len, cvec.data''
+
+fvec:
+  similar to cvec but fixed length
+
+ret:
+  similar to fvec but length is always one. used to mimic the C ``&foo''
+  idiom of returning multiple values
+
+tvec:
+  zero-terminated vector??
