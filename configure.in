@@ -24,7 +24,7 @@ AC_INIT(rep-gtk.h)
 AC_CONFIG_HEADER(config.h)
 
 dnl Release versioning info
-version="0.1"
+version="0.2"
 
 dnl Find the system type; this isn't crucial
 AC_CANONICAL_HOST
@@ -45,16 +45,7 @@ if test "x${GCC}" = "xyes" -a "x$CFLAGS" = "x-g -O2"; then
 fi
 
 dnl Check for librep
-AC_MSG_CHECKING([for librep]);
-rep_version=`rep-config --version`
-if test $? -eq 0; then
-  CFLAGS="$CFLAGS `rep-config --cflags`"
-  dnl LIBS="$LIBS `rep-config --libs`"
-  repexecdir="`rep-config --execdir`"
-  AC_MSG_RESULT([version ${rep_version}])
-else
-  AC_MSG_ERROR([Can't find librep. Is it installed?])
-fi
+AM_PATH_REP
 
 dnl Check for GTK
 AM_PATH_GTK(1.2.0,,AC_ERROR(need at least Gtk+ version 1.2))
@@ -72,9 +63,6 @@ LIBS="$saved_LIBS"
 
 dnl Nonstandard exported symbols
 AC_SUBST(version)
-AC_SUBST(version_minor)
-AC_SUBST(version_major)
-AC_SUBST(rep_version)
 AC_SUBST(repexecdir)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(CFLAGS)

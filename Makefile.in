@@ -10,14 +10,14 @@ version=@version@
 host_type=@host@
 SHELL=/bin/sh
 
-repexecdir=@repexecdir@
+repexecdir=@REP_EXECDIR@
 include $(repexecdir)/rules.mk
 
 CC=@CC@
 CPPFLAGS=-DHAVE_CONFIG_H -I. @CPPFLAGS@
-CFLAGS=@GTK_CFLAGS@ @CFLAGS@
+CFLAGS=@GTK_CFLAGS@ @REP_CFLAGS@ @CFLAGS@
 LDFLAGS=@LDFLAGS@
-LIBS=@GTK_LIBS@ @LIBS@
+LIBS=@GTK_LIBS@ @REP_LIBS@ @LIBS@
 
 INSTALL=@INSTALL@
 INSTALL_DATA=@INSTALL_DATA@
