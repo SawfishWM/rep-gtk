@@ -15,3 +15,5 @@ aclocal.m4
 *.jlc
 rep-gtk.spec
 gdk-glue.c
+libglade-glue.c
+libglade.defs.jl

@@ -1,0 +1,19 @@
+#!/bin/sh
+exec rep "$0" "$@"
+!#
+
+(require 'gtk)
+(require 'libglade)
+
+(let
+    ((xml (or (glade-xml-new (car command-line-args))
+	      (error "something bad happened while creating the interface"))))
+
+  (glade-xml-signal-autoconnect xml)
+  (gtk-main))
+
+(throw 'quit 0)
+
+;; Local variables:
+;; major-mode: lisp-mode
+;; End:

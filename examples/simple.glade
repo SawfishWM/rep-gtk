@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<GTK-Interface>
+
+
+<widget>
+  <class>GtkWindow</class>
+  <name>HelloWindow</name>
+  <border_width>5</border_width>
+  <Signal>
+    <name>destroy</name>
+    <handler>gtk-main-quit</handler>
+  </Signal>
+  <title>Hello</title>
+  <type>GTK_WINDOW_TOPLEVEL</type>
+  <position>GTK_WIN_POS_NONE</position>
+  <allow_shrink>True</allow_shrink>
+  <allow_grow>True</allow_grow>
+  <auto_shrink>False</auto_shrink>
+
+  <widget>
+    <class>GtkButton</class>
+    <name>Hello World</name>
+    <can_focus>True</can_focus>
+    <Signal>
+      <name>clicked</name>
+      <handler>gtk-widget-destroy</handler>
+      <object>HelloWindow</object>
+    </Signal>
+    <label>Hello World</label>
+  </widget>
+</widget>
+
+</GTK-Interface>

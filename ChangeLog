@@ -1,3 +1,13 @@
+1999-12-16  John Harper  <john@dcs.warwick.ac.uk>
+
+	* libglade.defs: API definition for libglade (constructs widget
+	trees from Glade-created XML files)
+
+	* libglade-support.c: signal connection code, and dl stubs
+
+	* configure.in, Makefile.in: recognize and build libglade
+	wrapper when available
+
 1999-12-15  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gtk-support.c (gdk_event_visibility_state): removed //
