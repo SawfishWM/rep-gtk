@@ -1,5 +1,13 @@
 2001-11-17  John Harper  <jsh@unfactored.org>
 
+	* rep-libglade.h, rep-gtk.c, libglade.defs, libglade-support.c,
+	gtk.defs, configure.in, config.h.in, README.gtk-defs: 
+
+	More porting. Libglade now compiles. Haven't tested it (don't
+	have a new enough glade), but it _should_ work..
+
+2001-11-17  John Harper  <jsh@unfactored.org>
+
 	* rep-gtk.h, rep-gtk.c, gtk.defs, glib.defs, gdk.defs,
 	build-gtk.jl, Makefile.in:
 
