@@ -129,6 +129,10 @@ int sgtk_valid_point (repv obj);
 GdkPoint sgtk_rep_to_point (repv obj);
 repv sgtk_point_to_rep (GdkPoint p);
 
+int sgtk_valid_rect (repv obj);
+GdkRectangle sgtk_rep_to_rect (repv obj);
+repv sgtk_rect_to_rep (GdkRectangle p);
+
 int sgtk_valid_type (repv obj);
 GtkType sgtk_rep_to_type (repv obj);
 repv sgtk_type_to_rep (GtkType t);
@@ -152,8 +156,10 @@ typedef struct {
 sgtk_cvec sgtk_rep_to_cvec (repv obj, void (*fromrep)(repv, void*), size_t sz);
 void sgtk_cvec_finish (sgtk_cvec *, repv obj, repv (*torep)(void*), size_t sz);
 
-repv sgtk_protect (repv protector, repv obj);
-void sgtk_unprotect (repv obj);
+typedef struct sgtk_protshell sgtk_protshell;
+
+sgtk_protshell *sgtk_protect (repv protector, repv obj);
+void sgtk_unprotect (sgtk_protshell *);
 
 void sgtk_callback_marshal (GtkObject *,
 			    gpointer data,
