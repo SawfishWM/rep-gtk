@@ -69,8 +69,8 @@ if test "$with_gnome" != "no"; then
     GNOME_CFLAGS="`pkg-config --cflags libgnome-2.0`"
     GNOMEUI_LIBS="`pkg-config --libs libgnomeui-2.0`"
     GNOMEUI_CFLAGS="`pkg-config --cflags libgnomeui-2.0`"
-    GNOME_CANVAS_LIBS=`pkg-config --libs libgnomecanvas-2.0`"
-    GNOME_CANVAS_CFLAGS=`pkg-config --cflags libgnomecanvas-2.0`"
+    GNOME_CANVAS_LIBS="`pkg-config --libs libgnomecanvas-2.0`"
+    GNOME_CANVAS_CFLAGS="`pkg-config --cflags libgnomecanvas-2.0`"
     AC_MSG_RESULT([$GNOME_VERSION])
     OUT="$OUT gtk-2/gnome-lib.la gtk-2/gnome-ui.la gtk-2/gnome-canvas.la"
     with_gnome=yes

@@ -20,6 +20,8 @@
 ;;; 02111-1307, USA.  */
 
 (import "gtk.defs")
+(import "gdk-pixbuf.defs")
+(import "gnome-canvas.defs")
 
 (define-enum GnomePreferencesType
   (never GNOME_PREFERENCES_NEVER)
@@ -248,16 +250,18 @@
 
 ;; GnomeAbout
 
-(define-object GnomeAbout (GnomeDialog))
+(define-object GnomeAbout (GtkDialog))
 
 (define-func gnome_about_new
   GtkWidget
-  ((string title)
+  ((string name)
    (string version)
    (string copyright)
-   ((tvec string) authors)
    (string comments)
-   (string logo (null-ok))))
+   ((tvec string) authors)
+   ((tvec string) documentors)
+   (string translator_credits)
+   (GdkPixbuf logo (null-ok))))
 
 
 ;; GnomeApp
@@ -351,29 +355,6 @@
   ((GnomeAppBar appbar)))
 
 
-;; GnomeCalculator
-
-(define-object GnomeCalculator (GtkVBox))
-
-(define-func gnome_calculator_new
-  GnomeCalculator
-  ())
-
-(define-func gnome_calculator_clear
-  none
-  ((GnomeCalculator gc)
-   (bool reset)))
-
-(define-func gnome_calculator_set
-  none
-  ((GnomeCalculator gc)
-   (double result)))
-
-(define-func gnome_calculator_get_result
-  double
-  ((GnomeCalculator gc)))
-
-
 ;; GnomeClient
 
 ;; FIXME: Some functions still live in client.c, until argc/argv supported.
@@ -408,10 +389,6 @@
   GnomeClient
   ())
 
-(define-func gnome_cloned_client
-  GnomeClient
-  ())
-
 (define-func gnome_client_new
   GnomeClient
   ())
@@ -438,7 +415,7 @@
    (string id)))
 
 (define-func gnome_client_get_config_prefix
-  string
+  static_string
   ((GnomeClient client)))
 
 ; gnome_client_set_clone_command
@@ -522,10 +499,10 @@
 (define-func gnome_color_picker_get_i16
   none
   ((GnomeColorPicker cp)
-   ((ret char) r)
-   ((ret char) g)
-   ((ret char) b)
-   ((ret char) a)))
+   ((ret ushort) r)
+   ((ret ushort) g)
+   ((ret ushort) b)
+   ((ret ushort) a)))
 
 (define-func gnome_color_picker_set_dither
   none
@@ -768,16 +745,16 @@
   ((GnomeHRef href)
    (string url)))
 
-(define-func gnome_href_set_label
+(define-func gnome_href_set_text
   none
   ((GnomeHRef href)
    (string label)))
 
 (define-func gnome_href_get_url
-  string
+  static_string
   ((GnomeHRef href)))
 
-(define-func gnome_href_get_label
+(define-func gnome_href_get_text
   string
   ((GnomeHRef href)))
 
@@ -855,72 +832,6 @@
    (string filename)))
 
 
-;; GnomeLess
-
-(define-object GnomeLess (GtkVBox))
-
-(define-func gnome_less_new
-  GtkWidget
-  ())
-
-(define-func gnome_less_clear
-  none
-  ((GnomeLess gl)))
-
-(define-func gnome_less_show_file
-  bool
-  ((GnomeLess gl)
-   (string path)))
-
-(define-func gnome_less_show_command
-  bool
-  ((GnomeLess gl)
-   (string command_line)))
-
-(define-func gnome_less_show_string
-  none
-  ((GnomeLess gl)
-   (string s)))
-
-(define-func gnome_less_show_fd
-  bool
-  ((GnomeLess gl)
-   (file-descriptor fd)))
-
-(define-func gnome_less_write_file
-  bool
-  ((GnomeLess gl)
-   (string path)))
-
-(define-func gnome_less_write_fd
-  bool
-  ((GnomeLess gl)
-   (file-descriptor fd)))
-
-(define-func gnome_less_set_font
-  none
-  ((GnomeLess gl)
-   (GdkFont font)))
-
-(define-func gnome_less_set_fixed_font
-  none
-  ((GnomeLess gl)
-   (bool fixed)))
-
-(define-func gnome_less_reshow
-  none
-  ((GnomeLess gl)))
-
-(define-func gnome_less_fixed_font
-  none
-  ((GnomeLess gl)))
-
-
-;; GnomeMDIChild
-;; GnomeMDIGenericChild
-;; GnomeMDI
-
-
 ;; GnomeMessageBox
 
 (define-object GnomeMessageBox (GnomeDialog))
@@ -930,79 +841,6 @@
   ((string message)
    (string messagebox_type)
    ((tvec string) buttons)))
-
-(define-func gnome_message_box_set_modal
-  none
-  ((GnomeMessageBox messagebox)))
-
-(define-func gnome_message_box_set_default
-  none
-  ((GnomeMessageBox messagebox)
-   (int button)))
-
-
-;; GnomeNumberEntry
-
-(define-object GnomeNumberEntry (GtkHBox))
-
-(define-func gnome_number_entry_new
-  GtkWidget
-  ((string history_id)
-   (string calc_dialog_title)))
-
-(define-func gnome_number_entry_gnome_entry
-  GtkWidget
-  ((GnomeNumberEntry ne)))
-
-(define-func gnome_number_entry_gtk_entry
-  GtkWidget
-  ((GnomeNumberEntry ne)))
-
-(define-func gnome_number_entry_set_title
-  none
-  ((GnomeNumberEntry ne)
-   (string calc_dialog_title)))
-
-(define-func gnome_number_entry_get_number
-  double
-  ((GnomeNumberEntry ne)))
-
-
-;; GnomePaperSelector
-
-(define-object GnomePaperSelector (GtkVBox))
-
-(define-func gnome_paper_selector_new
-  GtkWidget
-  ())
-
-(define-func gnome_paper_selector_get_name
-  string
-  ((GnomePaperSelector ps)))
-
-(define-func gnome_paper_selector_get_width
-  float
-  ((GnomePaperSelector ps)))
-
-(define-func gnome_paper_selector_get_height
-  float
-  ((GnomePaperSelector ps)))
-
-(define-func gnome_paper_selector_get_left_margin
-  float
-  ((GnomePaperSelector ps)))
-
-(define-func gnome_paper_selector_get_right_margin
-  float
-  ((GnomePaperSelector ps)))
-
-(define-func gnome_paper_selector_get_top_margin
-  float
-  ((GnomePaperSelector ps)))
-
-(define-func gnome_paper_selector_get_bottom_margin
-  float
-  ((GnomePaperSelector ps)))
 
 
 ;; GnomePixmapEntry
@@ -1231,245 +1069,180 @@
   (table-borders GNOME_STOCK_PIXMAP_TABLE_BORDERS)
   (table-fill GNOME_STOCK_PIXMAP_TABLE_FILL)
   (text-bulleted-list GNOME_STOCK_PIXMAP_TEXT_BULLETED_LIST)
-  (text-numbered-list GNOME_STOCK_PIXMAP_TEXT_NUMBERED_LIST)
-  (regular GNOME_STOCK_PIXMAP_REGULAR)
-  (disabled GNOME_STOCK_PIXMAP_DISABLED)
-  (focused GNOME_STOCK_PIXMAP_FOCUSED))
+  (text-numbered-list GNOME_STOCK_PIXMAP_TEXT_NUMBERED_LIST))
 
-(define-func gnome_stock_pixmap_widget
-  GtkWidget
-  ((GtkWidget window (null-ok))
-   (string icon)))
+
+;; GnomeIconTextItem
 
-(define-func gnome_stock_pixmap_widget_at_size
-  GtkWidget
-  ((GtkWidget window (null-ok))
-   (string icon)
-   (uint width)
-   (uint height)))
+(define-object GnomeIconTextItem (GnomeCanvasItem))
 
-(define-func gnome_pixmap_button
+(define-func gnome_icon_text_item_configure
+  none
+  ((GnomeIconTextItem iti)
+   (int x)
+   (int y)
+   (int width)
+   (string fontname)
+   (string text)
+   (bool is_editable)
+   (bool is_static)))
+
+(define-func gnome_icon_text_item_setxy
+  none
+  ((GnomeIconTextItem iti)
+   (int x)
+   (int y)))
+
+(define-func gnome_icon_text_item_select
+  none
+  ((GnomeIconTextItem iti)
+   (bool sel)))
+
+(define-func gnome_icon_text_item_get_text
+  string
+  ((GnomeIconTextItem iti)))
+
+(define-func gnome_icon_text_item_stop_editing
+  none
+  ((GnomeIconTextItem iti)
+   (bool accept)))
+
+
+;; GnomeIconList
+
+(define-object GnomeIconList (GnomeCanvas))
+
+(define-enum GnomeIconListMode
+  (icons GNOME_ICON_LIST_ICONS)
+  (text-below GNOME_ICON_LIST_TEXT_BELOW)
+  (text-right GNOME_ICON_LIST_TEXT_RIGHT))
+
+(define-func gnome_icon_list_new
   GtkWidget
-  ((GtkWidget pixmap)
+  ((uint icon_width)
+   (GtkAdjustment adj)
+   (int flags)))
+
+(define-func gnome_icon_list_set_hadjustment
+  none
+  ((GnomeIconList gil)
+   (GtkAdjustment hadj)))
+
+(define-func gnome_icon_list_set_vadjustment
+  none
+  ((GnomeIconList gil)
+   (GtkAdjustment vadj)))
+
+(define-func gnome_icon_list_freeze
+  none
+  ((GnomeIconList gil)))
+
+(define-func gnome_icon_list_thaw
+  none
+  ((GnomeIconList gil)))
+
+(define-func gnome_icon_list_insert
+  none
+  ((GnomeIconList gil)
+   (int pos)
+   (string icon_filename)
    (string text)))
 
-(define-func gnome_button_can_default
+;(define-func gnome_icon_list_insert_imlib
+;  none
+;  ((GnomeIconList gil)
+;   (int pos)
+;   (GdkImlibImage im)
+;   (string text)))
+
+(define-func gnome_icon_list_append
   none
-  ((GtkButton button)
-   (bool can_default)))
-
-(define-func gnome_stock_button
-  GtkWidget
-  ((GnomeStockButtonNameType type)))
-
-(define-func gnome_stock_or_ordinary_button
-  GtkWidget
-  ((GnomeStockButtonNameType type)))
-
-(define-func gnome_stock_menu_item
-  GtkWidget
-  ((GnomeStockMenuNameType type)
+  ((GnomeIconList gil)
+   (string icon_filename)
    (string text)))
 
-(define-func gnome_stock_transparent_window
-  GtkWidget
-  ((string icon)
-   (string subtype)))
+;(define-func gnome_icon_list_append_imlib
+;  none
+;  ((GnomeIconList gil)
+;   (GdkImlibImage im)
+;   (string text)))
 
-
-;; gnome-winhints
-
-(define-enum GnomeWinLayer
-  (desktop WIN_LAYER_DESKTOP)
-  (below WIN_LAYER_BELOW)
-  (normal WIN_LAYER_NORMAL)
-  (on-top WIN_LAYER_ONTOP)
-  (dock WIN_LAYER_DOCK)
-  (above-dock WIN_LAYER_ABOVE_DOCK))
-
-(define-flags GnomeWinState
-  (sticky WIN_STATE_STICKY)
-  (minimized WIN_STATE_MINIMIZED)
-  (maximized-vert WIN_STATE_MAXIMIZED_VERT)
-  (maximized-horiz WIN_STATE_MAXIMIZED_HORIZ)
-  (hidden WIN_STATE_HIDDEN)
-  (shaded WIN_STATE_SHADED)
-  (hid-workspace WIN_STATE_HID_WORKSPACE)
-  (hid-transient WIN_STATE_HID_TRANSIENT)
-  (fixed-position WIN_STATE_FIXED_POSITION)
-  (arrange-ignore WIN_STATE_ARRANGE_IGNORE))
-
-(define-flags GnomeWinHints
-  (skip-focus WIN_HINTS_SKIP_FOCUS)
-  (skip-winlist WIN_HINTS_SKIP_WINLIST)
-  (skip-taskbar WIN_HINTS_SKIP_TASKBAR)
-  (group-transient WIN_HINTS_GROUP_TRANSIENT)
-  (focus-on-click WIN_HINTS_FOCUS_ON_CLICK)
-  (do-not-cover WIN_HINTS_DO_NOT_COVER))
-
-(define-func gnome_win_hints_set_layer
+(define-func gnome_icon_list_clear
   none
-  ((GtkWidget window)
-   (GnomeWinLayer layer)))
+  ((GnomeIconList gil)))
 
-(define-func gnome_win_hints_get_layer
-  GnomeWinLayer
-  ((GtkWidget window)))
-
-(define-func gnome_win_hints_set_state
+(define-func gnome_icon_list_remove
   none
-  ((GtkWidget window)
-   (GnomeWinState state)))
+  ((GnomeIconList gil)
+   (int pos)))
 
-(define-func gnome_win_hints_get_state
-  GnomeWinState
-  ((GtkWidget window)))
-
-(define-func gnome_win_hints_set_hints
+(define-func gnome_icon_list_set_selection_mode
   none
-  ((GtkWidget window)
-   (GnomeWinHints state)))
+  ((GnomeIconList gil)
+   (GtkSelectionMode mode)))
 
-(define-func gnome_win_hints_get_hints
-  GnomeWinHints
-  ((GtkWidget window)))
-
-(define-func gnome_win_hints_set_workspace
+(define-func gnome_icon_list_select_icon
   none
-  ((GtkWidget window)
-   (int workspace)))
+  ((GnomeIconList gil)
+   (int idx)))
 
-(define-func gnome_win_hints_get_workspace
+(define-func gnome_icon_list_unselect_icon
+  none
+  ((GnomeIconList gil)
+   (int pos)))
+
+(define-func gnome_icon_list_unselect_all
+  none
+  ((GnomeIconList gil)))
+
+(define-func gnome_icon_list_set_row_spacing
+  none
+  ((GnomeIconList gil)
+   (int pixels)))
+
+(define-func gnome_icon_list_set_col_spacing
+  none
+  ((GnomeIconList gil)
+   (int pixels)))
+
+(define-func gnome_icon_list_set_text_spacing
+  none
+  ((GnomeIconList gil)
+   (int pixels)))
+
+(define-func gnome_icon_list_set_icon_border
+  none
+  ((GnomeIconList gil)
+   (int pixels)))
+
+(define-func gnome_icon_list_set_separators
+  none
+  ((GnomeIconList gil)
+   (string sep)))
+
+(define-func gnome_icon_list_moveto
+  none
+  ((GnomeIconList gil)
+   (int pos)
+   (double yalign (= "0.5"))))
+
+(define-func gnome_icon_list_icon_is_visible
+  GtkVisibility
+  ((GnomeIconList gil)
+   (int pos)))
+
+(define-func gnome_icon_list_get_icon_at
   int
-  ((GtkWidget window)))
+  ((GnomeIconList gil)
+   (int x)
+   (int y)))
 
-(define-func gnome_win_hints_set_current_workspace
-  none
-  ((int workspace)))
-
-(define-func gnome_win_hints_get_current_workspace
+(define-func gnome_icon_list_get_items_per_line
   int
-  ())
-
-(define-func gnome_win_hints_get_workspace_names
-  (list string)
-  ())
-
-(define-func gnome_win_hints_get_workspace_count
-  int
-  ())
-
-;; XXX missed out a load of pointless functions
-
-(define-func gnome_win_hints_wm_exists
-  bool
-  ())
-
-
-;; GtkClock
-
-(define-object GtkClock (GtkLabel))
-
-(define-enum GtkClockType
-  (increasing GTK_CLOCK_INCREASING)
-  (decreasing GTK_CLOCK_DECREASING)
-  (realtime GTK_CLOCK_REALTIME))
-
-(define-func gtk_clock_new
-  GtkWidget
-  ((GtkClockType type)))
-
-(define-func gtk_clock_set_format
-  none
-  ((GtkClock clock)
-   (string fmt)))
-
-(define-func gtk_clock_set_seconds
-  none
-  ((GtkClock clock)
-   (ulong seconds)))			;time_t
-
-(define-func gtk_clock_start
-  none
-  ((GtkClock clock)))
-
-(define-func gtk_clock_stop
-  none
-  ((GtkClock clock)))
-
-
-;; GtkDial
-
-(define-object GtkDial (GtkWidget))
-
-(define-func gtk_dial_new 
-  GtkWidget
-  ((GtkAdjustment adj)))
-
-(define-func gtk_dial_get_adjustment
-  GtkAdjustment
-  ((GtkDial dial)))
-
-(define-func gtk_dial_set_update_policy
-  none
-  ((GtkDial dial)
-   (GtkUpdateType policy)))
-
-(define-func gtk_dial_set_adjustment
-  none
-  ((GtkDial dial)
-   (GtkAdjustment adj)))
-
-(define-func gtk_dial_set_percentage
-  none
-  ((GtkDial dial)
-   (float percent)))
-
-(define-func gtk_dial_get_percentage
-  float
-  ((GtkDial dial)))
-
-(define-func gtk_dial_set_value
-  none
-  ((GtkDial dial)
-   (float value)))
-
-(define-func gtk_dial_get_value
-  float
-  ((GtkDial dial)))
-
-(define-func gtk_dial_set_view_only
-  none
-  ((GtkDial dial)
-   (bool view_only)))
-
-
-;; GtkPixmapMenuItem
-
-(define-object GtkPixmapMenuItem (GtkMenuItem))
-
-(define-func gtk_pixmap_menu_item_new
-  GtkWidget
-  ())
-
-(define-func gtk_pixmap_menu_item_set_pixmap
-  none
-  ((GtkPixmapMenuItem item)
-   (GtkWidget pixmap)))
-
-
-;; GnomeProcBar
+  ((GnomeIconList gil)))
 
 
 ;; misc
-
-(define-func gdk_imlib_get_visual
-  GdkVisual
-  ())
-
-(define-func gdk_imlib_get_colormap
-  GdkColormap
-  ())
 
 (define-func sgtk_gnome_init
   bool

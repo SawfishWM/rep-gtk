@@ -1,3 +1,16 @@
+2002-01-30  John Harper  <jsh@unfactored.org>
+
+	All modules now compile and link. Though the gnome example
+	scripts crash immediately. I'll leave that adventure for
+	another day..
+
+	* rep-gtk.h, rep-gtk.c, gnomeui.defs, gnome-canvas.defs,
+	gnome-canvas-support.c: whacked until it compiles
+
+	* configure.in: fixed canvas configuration
+
+	* build-gtk.jl: bodged support for short and ushort types
+
 2002-01-29  John Harper  <jsh@unfactored.org>
 
 	* rep-types.c, rep-gtk.spec.in, rep-gtk.h, rep-gtk.c,

@@ -19,6 +19,7 @@ DEFUN ("gnome-canvas-item-new", Fgnome_canvas_item_new,
        Sgnome_canvas_item_new, (repv p_group, repv type_sym, repv scm_args),
        rep_Subr3)
 {
+#ifdef XXX_FINISHED_PORTING
     /* from guile-gnome/gnomeg.c */
 
   GnomeCanvasItem* cr_ret;
@@ -26,7 +27,8 @@ DEFUN ("gnome-canvas-item-new", Fgnome_canvas_item_new,
 
   int n_args;
   sgtk_object_info *info;
-  GtkArg *args;
+  GParameter *args;
+  GObjectClass *objclass;
 
   rep_DECLARE (1, p_group, sgtk_is_a_gtkobj (gnome_canvas_group_get_type (), p_group));
   rep_DECLARE (2, type_sym, rep_SYMBOLP(type_sym));
@@ -38,23 +40,32 @@ DEFUN ("gnome-canvas-item-new", Fgnome_canvas_item_new,
   rep_DECLARE (2, type_sym, info != NULL);
 
   c_group = (GnomeCanvasGroup*)sgtk_get_gtkobj (p_group);
-  args = sgtk_build_args (info, &n_args, scm_args, Qnil,
+  objclass = g_type_class_ref (info->header.type);
+  args = sgtk_build_args (objclass, &n_args, scm_args,
 			  (char *) &Sgnome_canvas_item_new);
-  cr_ret = gnome_canvas_item_newv (c_group, info->header.type, n_args, args);
-  g_free (args);
+  cr_ret = gnome_canvas_item_new (c_group, info->header.type, NULL);
+  gnome_canvas_item_construct (c_group, info->header.type, 
+n_args, args);
+  sgtk_free_args (args, n_args);
+  g_type_class_unref (objclass);
 
   return sgtk_wrap_gtkobj ((GtkObject*)cr_ret);
+#else
+  return Qnil;
+#endif
 }
 
 DEFUN ("gnome-canvas-item-set", Fgnome_canvas_item_set,
        Sgnome_canvas_item_set, (repv p_item, repv scm_args), rep_Subr2)
 {
+#ifdef XXX_FINISHED_PORTING
     /* from guile-gnome/gnomeg.c */
 
   GnomeCanvasItem* c_item;
   int n_args;
   sgtk_object_info *info;
-  GtkArg *args;
+  GParameter *args;
+  GObjectClass *objclass;
 
   rep_DECLARE (1, p_item, sgtk_is_a_gtkobj (gnome_canvas_item_get_type (), p_item));
   n_args = list_length (scm_args);
@@ -65,11 +76,13 @@ DEFUN ("gnome-canvas-item-set", Fgnome_canvas_item_set,
   info = sgtk_find_object_info_from_type (GTK_OBJECT_TYPE(c_item));
   rep_DECLARE (1, p_item, info != NULL);
   
-  args = sgtk_build_args (info, &n_args, scm_args, p_item,
+  objclass = g_type_class_ref (info->header.type);
+  args = sgtk_build_args (objclass, &n_args, scm_args, /* XXX p_item, */
 			  (char *) &Sgnome_canvas_item_set);
   gnome_canvas_item_setv (c_item, n_args, args);
-  g_free (args);
-
+  sgtk_free_args (args, n_args);
+  g_type_class_unref (objclass);
+#endif
   return Qnil;
 }
 

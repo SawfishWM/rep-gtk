@@ -1780,7 +1780,7 @@ sgtk_find_object_info (const char *name)
 
       info = (sgtk_object_info *)rep_alloc (sizeof(sgtk_object_info));
       info->header.type = type;
-      info->header.name = name;
+      info->header.name = (char *) name;
       info->init_func = NULL;
       enter_type_info ((sgtk_type_info*)info);
     }
@@ -1799,7 +1799,7 @@ sgtk_find_object_info (const char *name)
   return info;
 }
 
-static void
+void
 sgtk_free_args (GParameter *args, int n_args)
 {
   int i;

@@ -215,6 +215,7 @@ void sgtk_rep_to_gvalue (GValue *a, repv obj);
 
 sgtk_object_info *sgtk_find_object_info_from_type (GType type);
 sgtk_object_info *sgtk_find_object_info (const char *name);
+void sgtk_free_args (GParameter *args, int n_args);
 GParameter *sgtk_build_args (GObjectClass *objclass, int *n_argsp,
 			     repv rep_args, char *subr);
 

@@ -1241,6 +1241,12 @@
 
 (define-type 'bool "int" "sgtk_rep_to_bool" "sgtk_bool_to_rep" nil)
 
+;; XXX fix the validation functions
+(define-type 'short "short" "sgtk_rep_to_int" "sgtk_int_to_rep"
+	     "sgtk_valid_int" '(listable . t))
+(define-type 'ushort "gushort" "sgtk_rep_to_uint" "sgtk_uint_to_rep"
+	     "sgtk_valid_uint" '(listable . t))
+
 (define-type 'int "gint" "sgtk_rep_to_int" "sgtk_int_to_rep"
 	     "sgtk_valid_int" '(listable . t))
 
