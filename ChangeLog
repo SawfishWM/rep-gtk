@@ -1,3 +1,7 @@
+1999-11-28  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.6
+
 1999-11-25  John Harper  <john@dcs.warwick.ac.uk>
 
 	* build-gtk.jl: updated for single namespace etc
