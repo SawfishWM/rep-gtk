@@ -1,3 +1,11 @@
+2000-07-20  John Harper  <john@dcs.warwick.ac.uk>
+
+	* Makefile.in: include --mode argument to libtool (from David
+	Kaelbling <drk@sgi.com>)
+
+	* rep-gtk.c: remove ^M that got into a macro definition somehow
+	(from David Kaelbling <drk@sgi.com>)
+
 2000-07-12  John Harper  <john@dcs.warwick.ac.uk>
 
 	* configure.in: version 0.13a
