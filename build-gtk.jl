@@ -315,10 +315,14 @@
   (let*
       ((feature (gtk-get-option 'provide gtk-options))
        (c-feature (and feature (gtk-unhyphenate-name (symbol-name feature))))
+       (aliases (gtk-get-options 'alias gtk-options))
        (init (gtk-get-option 'init-func gtk-options)))
     (when feature
       (@ "\nrepv\nrep_dl_init \(void\)\n{\n")
       (@ "  repv s = rep_push_structure \(\"%s\"\);\n" feature)
+      (mapc (lambda (a)
+	      (@ "  /* ::alias:%s %s:: */\n" a feature)
+	      (@ "  rep_alias_structure \(\"%s\"\);\n" a)) aliases)
       (when init
 	(@ "\n  %s \(\);\n\n" init))
       (@ "  return rep_pop_structure \(s\);\n")
