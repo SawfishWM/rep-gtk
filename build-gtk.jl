@@ -25,7 +25,8 @@
 ;;
 ;; Todo:
 ;;  * make the `import' directive work as in guile-gtk?
-;;  * doesn't check for `listable' type property
+;;  * doesn't check for `listable' type-property
+;;  * output type predicates for boxed and object types
 ;;
 ;; WARNING: This makes some pretty gruesome assumptions. [where?]
 
@@ -119,6 +120,9 @@
 (defvar gtk-options nil
   "List of (OPTION VALUE)")
 
+(defvar gtk-subrs nil
+  "List of C-NAME.")
+
 (defmacro gtk-get-options (name options)
   `(cdr (assq ,name ,options)))
 
@@ -158,6 +162,7 @@
        (gtk-objects nil)
        (gtk-functions nil)
        (gtk-options nil)
+       (gtk-subrs nil)
        (gtk-emitted-composite-helpers nil))
     (let
 	((defs-file (open-file defs-file-name 'read)))
@@ -238,7 +243,7 @@
 		   (attrs (nthcdr 3 def))
 		   (cell (assq name gtk-objects)))
 		(when (car super)
-		  (setq attrs (cons (cons 'super (car super))) attrs))
+		  (setq attrs (cons (cons 'super (car super)) attrs)))
 		(if cell
 		    (rplacd cell attrs)
 		  (setq gtk-objects (cons (cons name attrs) gtk-objects)))))
@@ -383,13 +388,8 @@
 (defun output-subrs (output)
   (@ "\f\n/* Vector of all subrs */\n\n")
   (@ "rep_xsubr *sgtk_subrs[] = \{\n")
-  (mapc #'(lambda (fun)
-	    (let*
-		((fname (symbol-name (car fun)))
-		 (rname (or (gtk-get-option 'scm-name (nthcdr 3 fun))
-			    (gtk-hyphenate-name fname)))
-		 (cname (gtk-unhyphenate-name rname)))
-	      (@ "  &S%s,\n" cname))) gtk-functions)
+  (mapc #'(lambda (cname)
+	    (@ "  &S%s,\n" cname)) (nreverse gtk-subrs))
   (@ "  0\n\};\n"))
 
 (defun output-gtk (output)
@@ -399,6 +399,8 @@
   (output-boxed output)
   (output-objects output)
   (output-functions output)
+  (output-field-functions gtk-boxed output)
+  (output-field-functions gtk-objects output)
   (output-type-info output)
   (output-subrs output)
   (output-footer output))
@@ -461,12 +463,11 @@
 
 ;; Function arg helpers
 
+(defmacro gtk-get-arg-options (option arg)
+  `(assq ,option (nthcdr 2 ,arg)))
+
 (defun gtk-arg-optional-p (arg)
-  (catch 'exit
-    (mapc #'(lambda (opt)
-	      (when (eq (car opt) '=)
-		(throw 'exit (nth 1 opt)))) (nthcdr 2 arg))
-    nil))
+  (nth 1 (gtk-get-arg-options '= arg)))
 
 (defmacro gtk-arg-type (arg)
   `(car ,arg))
@@ -645,7 +646,7 @@
 
 ;; Function generation
 
-(defun output-function (def output)
+(defun output-function (def output &optional function-callback)
   (let*
       ((ret (nth 1 def))
        (args (nth 2 def))
@@ -658,6 +659,7 @@
 			 (gtk-get-option 'rest-arg options))
 		     'n
 		   (length args))))
+    (setq gtk-subrs (cons cname gtk-subrs))
 
     ;; output header
     (@ "DEFUN\(\"%s\", F%s, S%s, \(" rname cname cname)
@@ -743,6 +745,8 @@
 	       (gtk-get-option 'conversion type-options)
 	       (gtk-arg-name (car tem))))
 	  (unless (or optional (null pred))
+	    (when (gtk-get-arg-options 'null-ok (car tem))
+	      (@ "  if (p_%s != Qnil)\n  " (gtk-arg-name (car tem))))
 	    (@ "  rep_DECLARE \(%d, p_%s, " i (gtk-arg-name (car tem)))
 	    (cond ((stringp pred)
 		   (@ "%s \(p_%s\)" pred (gtk-arg-name (car tem))))
@@ -771,6 +775,9 @@
 		   (typage (gtk-type-info type))
 		   (from (gtk-type-fromrep typage))
 		   (optional (gtk-arg-optional-p arg)))
+		(when (gtk-get-arg-options 'null-ok arg)
+		  (@ "  if (p_%s == Qnil)\n    c_%s = 0; \n  else\n  "
+		     (gtk-arg-name arg) (gtk-arg-name arg)))
 		(when optional
 		  (@ "  if \(p_%s == Qnil\)\n    c_%s = %s;\n  else\n  "
 		     (gtk-arg-name arg) (gtk-arg-name arg) optional))
@@ -788,26 +795,28 @@
     (when args
       (@ "\n"))
     
-    ;; output call
-    (@ "  ")
-    (unless (eq ret 'none)
-      (@ "cr_ret = "))
-    (@ "%s \(" fname)
-    (let
-	((tem args))
-      (while tem
-	(let
-	    ((opt (gtk-type-prop (gtk-arg-type (car tem)) 'c2args)))
-	  (if opt
-	      (if (functionp opt)
-		  (funcall opt output (gtk-arg-type (car tem))
-			   (concat "c_" (gtk-arg-name (car tem)))
-			   options)
-		(gtk-warning "c2args function %s undefined" opt))
-	    (@ "c_%s" (gtk-arg-name (car tem)))))
-	(@ (if (cdr tem) ", " ""))
-	(setq tem (cdr tem))))
-    (@ "\);\n\n")
+    (if function-callback
+	(funcall function-callback output)
+      ;; output call
+      (@ "  ")
+      (unless (eq ret 'none)
+	(@ "cr_ret = "))
+      (@ "%s \(" fname)
+      (let
+	  ((tem args))
+	(while tem
+	  (let
+	      ((opt (gtk-type-prop (gtk-arg-type (car tem)) 'c2args)))
+	    (if opt
+		(if (functionp opt)
+		    (funcall opt output (gtk-arg-type (car tem))
+			     (concat "c_" (gtk-arg-name (car tem)))
+			     options)
+		  (gtk-warning "c2args function %s undefined" opt))
+	      (@ "c_%s" (gtk-arg-name (car tem)))))
+	  (@ (if (cdr tem) ", " ""))
+	  (setq tem (cdr tem))))
+      (@ "\);\n\n"))
 
     ;; output `finish' options
     (mapc #'(lambda (arg)
@@ -849,6 +858,41 @@
 
     ;; footer
     (@ "}\n\n")))
+
+
+;; Field access functions
+
+(defun output-field-functions (type-list output)
+  (mapc #'(lambda (def)
+	    (let
+		((fields (cdr (assq 'fields (cdr def)))))
+	      (when fields
+		(mapc #'(lambda (field)
+			  (output-field-accessors
+			   (car def) field output
+			   (car (cdr (assq 'setter (nthcdr 2 field))))))
+		      fields))))
+	type-list))
+
+(defun output-field-accessors (datatype field output &optional settable)
+  (let*
+      ((type (car field))
+       (rdatatype (gtk-canonical-name (symbol-name datatype)))
+       (cdatatype (gtk-unhyphenate-name rdatatype))
+       (cfieldname (symbol-name (nth 1 field))))
+    (output-function (list (intern (format nil "%s_%s" cdatatype cfieldname))
+			   type (list (list datatype 'obj)))
+		     output
+		     `(lambda (output)
+			(@ "  cr_ret = c_obj->%s;\n" ,cfieldname)))
+    (when settable
+      (output-function (list (intern (format nil "%s_%s_set"
+					     cdatatype cfieldname))
+			     'none (list (list datatype 'obj)
+					 (list type 'data)))
+		       output
+		       `(lambda (output)
+			  (@ "  c_obj->%s = c_data;\n" ,cfieldname))))))
 
 
 ;; Composite type helper functions
