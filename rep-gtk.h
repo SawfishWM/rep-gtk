@@ -276,6 +276,7 @@ void gtk_signal_set_class_function_full (GtkType            type,
 
 void gtk_color_selection_set_color_interp (GtkColorSelection *sel, GdkColor *color);
 GdkColor *gtk_color_selection_get_color_interp (GtkColorSelection *sel);
+extern void gtk_widget_draw_interp (GtkWidget *widget);
 
 extern rep_xsubr *sgtk_subrs[];
 extern sgtk_type_info *sgtk_type_infos[];
