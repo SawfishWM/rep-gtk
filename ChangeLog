@@ -1,5 +1,19 @@
 1999-12-16  John Harper  <john@dcs.warwick.ac.uk>
 
+	* rep-gtk.spec.in: added new package, rep-gtk-libglade
+
+	* libglade-support.c (sgtk_glade_xml_new_from_string): new
+	function, calls glade_xml_new_from_memory
+	* libglade.defs (glade-xml-new-from-string): added
+
+	* libglade-support.c (rep_dl_init): look for
+	REP_GTK_DONT_INITIALIZE environment setting
+
+	* configure.in: added --with[out]-libglade options
+
+	* build-gtk.jl: use `const char *' for static_string types, not
+	just `char *'
+
 	* libglade.defs: API definition for libglade (constructs widget
 	trees from Glade-created XML files)
 

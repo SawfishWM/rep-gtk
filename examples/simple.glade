@@ -23,7 +23,7 @@
     <can_focus>True</can_focus>
     <Signal>
       <name>clicked</name>
-      <handler>gtk-widget-destroy</handler>
+      <handler>gtk-main-quit</handler>
       <object>HelloWindow</object>
     </Signal>
     <label>Hello World</label>
