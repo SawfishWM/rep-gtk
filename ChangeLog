@@ -1,3 +1,9 @@
+2000-09-11  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk.defs (gtk_editable_get_chars): changed return type from
+	`none' to `string'. Pointed out by Gregory Merchan
+	<merchan@baton.phys.lsu.edu>
+
 2000-09-04  John Harper  <john@dcs.warwick.ac.uk>
 
 	* configure.in: version 0.14pre1
