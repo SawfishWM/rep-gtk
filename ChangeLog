@@ -1,5 +1,8 @@
 2000-02-27  John Harper  <john@dcs.warwick.ac.uk>
 
+	* Makefile.in: don't link against REP_LIBS, it's not necessary
+	and may cause problems when there's static libraries there
+
 	* rep-gtk.h: put #ifndef's around GTK compatibility functions
 	decls
 
