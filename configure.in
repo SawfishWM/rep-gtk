@@ -24,7 +24,7 @@ AC_INIT(rep-gtk.h)
 AC_CONFIG_HEADER(config.h)
 
 dnl Release versioning info
-version="0.7"
+version="0.8"
 
 OUT=libgtk.la
 AC_SUBST(OUT)
@@ -48,7 +48,7 @@ if test "x${GCC}" = "xyes" -a "x$CFLAGS" = "x-g -O2"; then
 fi
 
 dnl Check for librep
-AM_PATH_REP(0.8)
+AM_PATH_REP(0.10)
 
 dnl Check for GTK
 AM_PATH_GTK(1.2.0,,AC_ERROR(need at least Gtk+ version 1.2))
