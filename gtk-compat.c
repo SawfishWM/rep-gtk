@@ -16,11 +16,25 @@ gtk_label_get_interp (GtkLabel *label)
 /* cheap cop-out. */
 
 static void
-menu_popup_position (GtkMenu *menu, gint *x, gint *y, gpointer data)
+menu_popup_position (GtkMenu *menu, gint *xp, gint *yp, gpointer data)
 {
     gulong coded = (gulong) data;
-    *x = coded & 0xffff;
-    *y = coded >> 16;
+    gint x = coded & 0xffff;
+    gint y = coded >> 16;
+
+    /* copied from gtkmenu.c:gtk_menu_position () */
+
+    GtkRequisition requisition;
+    gint screen_width = gdk_screen_width ();
+    gint screen_height = gdk_screen_height ();
+
+    gtk_widget_size_request (GTK_WIDGET (menu), &requisition);
+
+    x = CLAMP (x - 2, 0, MAX (0, screen_width - requisition.width));
+    y = CLAMP (y - 2, 0, MAX (0, screen_height - requisition.height));
+
+    *xp = x;
+    *yp = y;
 }
 
 void
