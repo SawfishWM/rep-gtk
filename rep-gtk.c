@@ -1927,13 +1927,11 @@ timeout_callback (gpointer data)
     struct timeout_data *d = data;
 
     d->gtk_tag = 0;
+    d->timed_out = 1;
 
     /* Only quit if we'd return to the correct event loop */
     if (context == d)
-    {
-	d->timed_out = 1;
 	gtk_main_quit ();
-    }
 
     return FALSE;
 }
