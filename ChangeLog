@@ -1,3 +1,8 @@
+2000-02-25  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-types.c, rep-gtk.c: use non-fixnum numeric types where
+	appropriate
+
 2000-02-23  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (sgtk_event_loop): fix the idle handling
