@@ -985,12 +985,13 @@
 	      (mapc #'(lambda (field)
 			(output-field-accessors
 			 (car def) field output
-			 (car (cdr (assq 'setter (nthcdr 2 field))))))
+			 (car (cdr (assq 'setter (nthcdr 2 field))))
+			 (car (cdr (assq 'getter (nthcdr 2 field))))))
 		    fields))
 	    (output-type-predicate (car def) output)))
 	type-list))
 
-(defun output-field-accessors (datatype field output &optional settable)
+(defun output-field-accessors (datatype field output &optional settable getter)
   (let*
       ((type (car field))
        (cdatatype (gtk-canonical-name (symbol-name datatype)))
@@ -999,7 +1000,9 @@
 			   type (list (list datatype 'obj)))
 		     output
 		     (lambda (output)
-		       (@ "  cr_ret = c_obj->%s;\n" cfieldname)))
+		       (if getter
+			   (@ "  cr_ret = %s (c_obj);\n" getter)
+			 (@ "  cr_ret = c_obj->%s;\n" cfieldname))))
     (when settable
       (output-function (list (intern (format nil "%s_%s_set"
 					     cdatatype cfieldname))
