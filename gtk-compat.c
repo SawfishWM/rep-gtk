@@ -233,3 +233,9 @@ gtk_color_selection_get_color_interp (GtkColorSelection *selection)
 
   return color;
 }
+
+void
+gtk_widget_draw_interp (GtkWidget *widget)
+{
+    gtk_widget_draw (widget, NULL);
+}
