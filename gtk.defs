@@ -2796,7 +2796,7 @@
    (int end_pos)))
 
 (define-func gtk_editable_get_chars
-  none
+  string
   ((GtkEditable editable)
    (int start_pos)
    (int end_pos)))
