@@ -1,3 +1,15 @@
+2000-05-26  John Harper  <john@dcs.warwick.ac.uk>
+
+	* libglade.defs (GladeXML): specify a custom getter for
+	textdomain field
+
+	* libglade-support.c (sgtk_glade_xml_textdomain): getter for
+	glade-xml-textdomain
+
+	* configure.in, config.h.in: check <glade/glade-xml.h> to test
+	if the `textdomain' field of the GladeXML structure has been
+	renamed to `txtdomain'. Define LIBGLADE_XML_TXTDOMAIN if so
+
 2000-05-09  John Harper  <john@dcs.warwick.ac.uk>
 
 	* version 0.10

@@ -33,6 +33,8 @@ extern void sgtk_glade_xml_signal_autoconnect (GladeXML *self);
 extern GladeXML *sgtk_glade_xml_new_from_string (repv text, const char *root,
 						 const char *domain);
 
+extern char *sgtk_glade_xml_textdomain (GladeXML *xml);
+
 extern void sgtk_init_gtk_libglade_glue (void);
 
 #endif /* REP_LIBGLADE_H */
