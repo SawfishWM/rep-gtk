@@ -1,3 +1,7 @@
+1999-11-21  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.6
+
 1999-11-17  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (sgtk_init_with_args): if REP_GTK_DONT_INITIALIZE
