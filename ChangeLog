@@ -1,3 +1,7 @@
+1999-10-24  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.5
+
 1999-10-22  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gtk-compat.c, gtk-1.2.defs (gtk_menu_popup_interp): added an
