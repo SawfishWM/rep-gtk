@@ -10,6 +10,10 @@
 
 DEFSYM(gnomeui, "gnomeui");
 
+DEFSYM(_gnome_app_id_, "*gnome-app-id*");
+DEFSYM(_gnome_app_version_, "*gnome-app-version*");
+DEFSYM(rep_version, "rep-version");
+
 static int sgtk_gnomeui_inited;
 
 /* grr.. */
@@ -198,14 +202,20 @@ sgtk_gnome_init (const char *app_id, const char *app_version)
     return 0;
 
   tem = getenv ("REP_GTK_DONT_INITIALIZE");
-  if (tem != 0 && atoi (tem) == 0)
+  if (tem != 0 && atoi (tem) != 0)
       return 0;
 
+#if 0
   make_argv (Fcons (Fsymbol_value (Qprogram_name, Qt),
 		    Fsymbol_value (Qcommand_line_args, Qt)), &argc, &argv);
+#else
+  /* fucking gnome gives error if it sees option it doesn't understand.. */
+  make_argv (Fcons (Fsymbol_value (Qprogram_name, Qt), Qnil), &argc, &argv);
+#endif
 
   gnome_init (app_id, app_version, argc, argv);
 
+#if 0
   argc--; argv++;
   head = Qnil;
   last = &head;
@@ -217,6 +227,7 @@ sgtk_gnome_init (const char *app_id, const char *app_version)
       argv++;
   }
   Fset (Qcommand_line_args, head);
+#endif
 
   sgtk_gnomeui_inited = TRUE;
   return 1;
@@ -231,6 +242,7 @@ rep_dl_init (void)
 #if rep_INTERFACE >= 9
     repv s = rep_push_structure ("gnomeui");
 #endif
+    repv id, version;
 
     sgtk_gnome_init_gnomeui_glue ();
     rep_ADD_SUBR (Sgnome_client_set_clone_command);
@@ -238,6 +250,21 @@ rep_dl_init (void)
     rep_ADD_SUBR (Sgnome_client_set_resign_command);
     rep_ADD_SUBR (Sgnome_client_set_restart_command);
     rep_ADD_SUBR (Sgnome_client_set_shutdown_command);
+
+    rep_INTERN_SPECIAL(_gnome_app_id_);
+    rep_INTERN_SPECIAL(_gnome_app_version_);
+    id = Fsymbol_value (Q_gnome_app_id_, Qt);
+    version = Fsymbol_value (Q_gnome_app_version_, Qt);
+
+    if (rep_STRINGP (id) && rep_STRINGP (version))
+	sgtk_gnome_init (rep_STR (id), rep_STR (version));
+    else
+    {
+	rep_INTERN(rep_version);
+	version = Fsymbol_value (Qrep_version, Qt);
+	sgtk_gnome_init ("rep", rep_STRINGP (version)
+			 ? (char *) rep_STR (version) : "0");
+    }
 
 #if rep_INTERFACE >= 9
     return rep_pop_structure (s);
