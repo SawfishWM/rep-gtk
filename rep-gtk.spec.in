@@ -19,6 +19,16 @@ This is a binding of GTK+ for the librep Lisp interpreter. It is based
 on Marius Vollmer's guile-gtk package (initially version 0.15, updated
 to 0.16), with a new glue-code generator.
 
+%package libglade
+Summary: librep binding for the libglade library for loading user interfaces.
+Group: Development/Languages
+Requires: %{nam} libglade
+
+%description libglade
+This is a binding of libglade for the librep Lisp interpreter. libglade
+allows applications to dynamically load XML descriptions of GTK+ widget
+hierarchies. These hierarchies may be created by the GLADE GUI builder.
+
 %prep
 %setup
 
@@ -38,6 +48,11 @@ rm -rf $RPM_BUILD_ROOT
 %doc README README.guile-gtk ChangeLog gtk-1.2.defs gdk-1.2.defs
 %{_prefix}/libexec/rep/%{_host}/libgtk.so*
 %{_prefix}/libexec/rep/%{_host}/libgtk.la
+
+%files libglade
+%doc libglade.defs examples/test-libglade examples/simple.glade
+%{_prefix}/libexec/rep/%{_host}/libglade.so*
+%{_prefix}/libexec/rep/%{_host}/libglade.la
 
 %changelog
 * Fri Sep 17 1999 John Harper <john@dcs.warwick.ac.uk>
