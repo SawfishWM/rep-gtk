@@ -2,7 +2,7 @@
 
 This is rep-gtk 0.0, a binding of GTK+ for my rep Lisp interpreter. It
 is based on Marius Vollmer's guile-gtk package (initially version
-0.15), with a new glue-code generator.
+0.15, updated to 0.16), with a new glue-code generator.
 
 This package can be downloaded from:
 
@@ -49,4 +49,4 @@ too big or small will trigger a run-time assertion.
 There's currently no way to wrap more than a single set of functions,
 thus the gtk.defs and gdk.defs are both parsed in one go.
 
-It's a bit flaky..
+It's _very_ easy to crash the Lisp interpreter through invalid use of GTK..

@@ -12,3 +12,4 @@ configure
 aclocal.m4
 *.lo
 *.la
+*.jlc

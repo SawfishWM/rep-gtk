@@ -1,3 +1,12 @@
+1999-04-28  John Harper  <john@dcs.warwick.ac.uk>
+
+	* build-gtk.jl: some fixes, support null helper_valid functions
+
+	* README.guile-gtk, rep-gtk.h, rep-gtk.c, gtk-support.c,
+	gdk-1.2.defs: synchronised with release 0.16 of guile-gtk
+
+	* Makefile.in: compile build-gtk before executing it
+
 1999-04-18  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (reset_idle_timeout): always reset
