@@ -1,3 +1,16 @@
+1999-06-06  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (sgtk_init_substrate): use rep_map_inputs to add
+	all existing registered input fds to the GTK scheme of things
+	(rep_dl_kill): new function, try to unhook as many of the GTK
+	functions as possible
+
+1999-06-04  John Harper  <john@dcs.warwick.ac.uk>
+
+	* build-gtk.jl (output-function): when splitting arguments from
+	a list, don't signal errors if some don't exist; just set them
+	to nil
+
 1999-05-29  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c: only call gtk_main_quit () if gtk_main_level ()
