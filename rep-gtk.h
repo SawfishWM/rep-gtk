@@ -21,6 +21,10 @@
 #ifndef REP_GTK_H
 #define REP_GTK_H
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <rep.h>
 #include <gtk/gtk.h>
 
