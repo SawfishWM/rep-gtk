@@ -115,21 +115,6 @@
 ;; XXX can't handle structure conversion currently
 
 
-;; gnome-fileconvert
-
-(define-func gnome_file_convert_fd
-  file-descriptor
-  ((file-descriptor fd)
-   (string fromtype)
-   (string totype)))
-
-(define-func gnome_file_convert
-  file-descriptor
-  ((string filename)
-   (string fromtype)
-   (string totype)))
-
-
 ;; gnome-help
 
 (define-func gnome_help_file_find_file
@@ -394,7 +379,6 @@
 
 (options
  (includes "#include <gnome.h>")
- (includes "#include <libgnome/gnome-fileconvert.h>")
  (includes "#include <libgnome/gnome-help.h>")
  (includes "#include \"rep-gnome.h\"")
  (init-func "sgtk_gnome_init_gnome_glue"))

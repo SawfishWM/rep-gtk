@@ -70,14 +70,10 @@ typedef struct _sgtk_object_info {
   GType (*init_func) ();
 
   struct _sgtk_object_info *parent;
-  guint n_args;
-  GtkArg *args;				/* XXX */
-  guint *args_flags;
-  char **args_short_names;
 } sgtk_object_info;
 
 void sgtk_register_type_infos (sgtk_type_info **infos);
-sgtk_type_info *sgtk_get_type_info (guint type_seqno);
+sgtk_type_info *sgtk_get_type_info (GType type_seqno);
 void sgtk_register_type_infos_gtk (GTypeInfo **infos);
 sgtk_type_info* sgtk_maybe_find_type_info (GType type);
 sgtk_type_info *sgtk_find_type_info (GType type);
@@ -203,7 +199,7 @@ void sgtk_callback_destroy (gpointer data);
 repv sgtk_callback_trampoline (repv new_trampoline);
 void sgtk_callback_postfix (void);
 
-int sgtk_valid_arg (GtkArg *, repv val);
+int sgtk_valid_arg_type (GType, repv val);
 repv sgtk_arg_to_rep (GtkArg *a, int free_mem);
 void sgtk_rep_to_arg (GtkArg *a, repv obj, repv protector);
 void sgtk_rep_to_ret (GtkArg *a, repv obj);
@@ -214,8 +210,8 @@ void sgtk_rep_to_gvalue (GValue *a, repv obj);
 
 sgtk_object_info *sgtk_find_object_info_from_type (GType type);
 sgtk_object_info *sgtk_find_object_info (const char *name);
-GtkArg *sgtk_build_args (sgtk_object_info *info, int *n_argsp,
-			 repv rep_args, repv protector, char *subr);
+GParameter *sgtk_build_args (GObjectClass *objclass, int *n_argsp,
+			     repv rep_args, char *subr);
 
 repv sgtk_color_conversion (repv color);
 repv sgtk_font_conversion (repv color);

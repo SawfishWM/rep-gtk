@@ -1,4 +1,4 @@
-;; gdk-pixbuf.defs    -*- lisp -*-
+; gdk-pixbuf.defs    -*- lisp -*-
 
 (import "gdk.defs")
 

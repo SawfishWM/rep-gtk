@@ -18,7 +18,7 @@
 
 #include "rep-gtk.h"
 #include <string.h>
-#include <gdk/gdkprivate.h>
+#include <gdk/gdkx.h>
 
 /* It is not strictly correct to have Gdk support functions here.  But
    as long as we do not want to have some SCM_PROCs for the (gdk gdk)

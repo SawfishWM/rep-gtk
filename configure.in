@@ -95,7 +95,7 @@ AC_ARG_WITH(gdk-pixbuf,
  [  --with-gdk-pixbuf	  Build gdk-pixbuf wrappers],
  [], [with_gdk_pixbuf=maybe])
 if test "$with_gdk_pixbuf" != "no"; then
-  PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= 2.0,
+  PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= 1.3.11,
     [with_gdk_pixbuf="yes"; OUT="$OUT gtk/gdk-pixbuf.la"],
     [with_gdk_pixbuf=no])
 fi

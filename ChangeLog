@@ -1,3 +1,35 @@
+Sat Dec  1 13:57:17 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* gnomelib.defs (includes): Remove references
+	to now gone gnome_file_convert().
+
+	* rep-gtk.[ch]: Remove unneeded args information
+	from sgtk_object_info().
+
+	* rep-gtk.c (sgtk_find_arg_info): Remove unused function.
+
+	* rep-gtk.c (gtk_signal_new_generic): Remove 
+	unnecessary call to gtk_object_class_add_signals.
+
+	* rep-gtk.[ch] (sgtk_build_args): Rework to use GObject
+	introspection instead of sgtk_object_info.
+
+	* rep-gtk.[ch]: (sgtk_valid_arg_type): Rename from
+	valid_arg(), take GType instead of GtkArg.
+
+	* rep-gtk.c: Make gtk_object_new/set/get use GObject/
+	GParamSpec instead of obsolete GtkObject equivalents.
+
+	* rep-gtk.c (sgtk_get_type_info): Use type "qdata"
+	rather than a hash table.
+
+	* rep-gtk.c (sgtk_find_object_info): Use %lu when
+	printing out types.
+
+	* gtk-support.c: Include gdkx.h not gdkprivate.h.
+
+	* rep-gtk.h: Fix guint => GType.
+
 2001-11-17  John Harper  <jsh@unfactored.org>
 
 	* rep-libglade.h, rep-gtk.c, libglade.defs, libglade-support.c,
