@@ -68,6 +68,9 @@
 (defvar gtk-enums nil
   "List of (ENUM-NAME . ENUM-DEF) for all parsed enums defs")
 
+(defvar gtk-string-enums nil
+  "List of (ENUM-NAME . ENUM-DEF) for all parsed enums defs")
+
 (defvar gtk-flags nil
   "List of (ENUM-NAME . ENUM-DEF) for all parsed flags defs")
 
@@ -88,6 +91,7 @@
 
 ;; similar for imported files
 (defvar gtk-imported-enums nil)
+(defvar gtk-imported-string-enums nil)
 (defvar gtk-imported-flags nil)
 (defvar gtk-imported-boxed nil)
 (defvar gtk-imported-objects nil)
@@ -129,6 +133,7 @@
 (defun build-gtk (defs-file-name output-file-name)
   (let
       ((gtk-enums nil)
+       (gtk-string-enums nil)
        (gtk-flags nil)
        (gtk-boxed nil)
        (gtk-objects nil)
@@ -136,6 +141,7 @@
        (gtk-options nil)
        (gtk-subrs nil)
        (gtk-imported-enums nil)
+       (gtk-imported-string-enums nil)
        (gtk-imported-flags nil)
        (gtk-imported-boxed nil)
        (gtk-imported-objects nil)
@@ -148,6 +154,7 @@
 	  (parse-gtk defs-file)
 	(close-file defs-file)))
     (setq gtk-enums (nreverse gtk-enums))
+    (setq gtk-string-enums (nreverse gtk-string-enums))
     (setq gtk-flags (nreverse gtk-flags))
     (setq gtk-boxed (nreverse gtk-boxed))
     (setq gtk-objects (nreverse gtk-objects))
@@ -177,7 +184,7 @@
       (while t
 	(let
 	    ((def (read input)))
-	  ;(format standard-error "read: %S\n" def)
+	  ;;(format standard-error "read: %S\n" def)
 	  (when def
 	    (or (consp def) (error "Definition isn't a list"))
 	    (cond
@@ -207,6 +214,20 @@
 		      (setq gtk-enums (cons (cons name body) gtk-enums))
 		    (setq gtk-imported-enums
 			  (cons (cons name body) gtk-imported-enums))))))
+	     ((eq (car def) 'define-string-enum)
+	      (let*
+		  ((name (nth 1 def))
+		   (body (nthcdr 2 def))
+		   (cell (or (assq name gtk-string-enums)
+			     (assq name gtk-imported-string-enums))))
+		(if cell
+		    (rplacd cell body)
+		  (if (not gtk-importing)
+		      (setq gtk-string-enums (cons (cons name body)
+						   gtk-string-enums))
+		    (setq gtk-imported-string-enums
+			  (cons (cons name body)
+				gtk-imported-string-enums))))))
 	     ((eq (car def) 'define-flags)
 	      (let*
 		  ((name (nth 1 def))
@@ -296,22 +317,11 @@
        (c-feature (and feature (gtk-unhyphenate-name (symbol-name feature))))
        (init (gtk-get-option 'init-func gtk-options)))
     (when feature
-      (@ "\n#if rep_INTERFACE >= 9\n")
-      (@ "DEFSYM \(%s, \"%s\"\);\n" c-feature feature)
-      (@ "#endif\n")
       (@ "\nrepv\nrep_dl_init \(void\)\n{\n")
-      (@ "#if rep_INTERFACE >= 9\n")
-      (@ "  repv s = rep_push_structure \(\"%s\"\);\n" c-feature)
-      (@ "#else\n")
-      (@ "  rep_INTERN \(%s\);\n" c-feature)
-      (@ "#endif\n")
+      (@ "  repv s = rep_push_structure \(\"%s\"\);\n" feature)
       (when init
 	(@ "\n  %s \(\);\n\n" init))
-      (@ "#if rep_INTERFACE >= 9\n")
       (@ "  return rep_pop_structure \(s\);\n")
-      (@ "#else\n")
-      (@ "  return Q%s;\n" c-feature)
-      (@ "#endif\n")
       (@ "}\n"))))
 
 (defun output-imported-enums (output)
@@ -325,24 +335,58 @@
     (@ "\n")))
 
 (defun output-enums (output)
-  (@ "\f\n/* Enums definitions */\n\n")
-  (mapc (lambda (enum)
-	  (let*
-	      ((name (car enum))
-	       (cname (gtk-canonical-name (symbol-name name)))
-	       (values (cdr enum)))
-	    ;; write literal names
-	    (@ "static sgtk_enum_literal _%s_literals[%d] = {\n"
-	       cname (length values))
-	    (mapc (lambda (cell)
-		    (@ "  { \"%s\", %s },\n" (car cell) (nth 1 cell))) values)
-	    (@ "};\n")
-	    ;; write type info struct
-	    (@ "sgtk_enum_info sgtk_%s_info = {\n" cname)
-	    (@ "  { \"%s\", GTK_TYPE_ENUM }, %d, _%s_literals,\n"
-	       name (length values) cname)
-	    (@ "};\n\n")))
-	gtk-enums))
+  (when gtk-enums
+    (@ "\f\n/* Enums definitions */\n\n")
+    (mapc (lambda (enum)
+	    (let*
+		((name (car enum))
+		 (cname (gtk-canonical-name (symbol-name name)))
+		 (values (cdr enum)))
+	      ;; write literal names
+	      (@ "static sgtk_enum_literal _%s_literals[%d] = {\n"
+		 cname (length values))
+	      (mapc (lambda (cell)
+		      (@ "  { \"%s\", %s },\n" (car cell) (nth 1 cell)))
+		    values)
+	      (@ "};\n")
+	      ;; write type info struct
+	      (@ "sgtk_enum_info sgtk_%s_info = {\n" cname)
+	      (@ "  { \"%s\", GTK_TYPE_ENUM }, %d, _%s_literals,\n"
+		 name (length values) cname)
+	      (@ "};\n\n")))
+	  gtk-enums)))
+
+(defun output-imported-string-enums (output)
+  (when gtk-imported-string-enums
+    (@ "\f\n/* Imported string enums */\n\n")
+    (mapc (lambda (enum)
+	    (let*
+		((cname (gtk-canonical-name (symbol-name (car enum)))))
+	      (@ "extern sgtk_string_enum_info sgtk_%s_info;\n" cname)))
+	  gtk-imported-string-enums)
+    (@ "\n")))
+
+(defun output-string-enums (output)
+  (when gtk-string-enums
+    (@ "\f\n/* String enums definitions */\n\n")
+    (mapc (lambda (enum)
+	    (let*
+		((name (car enum))
+		 (cname (gtk-canonical-name (symbol-name name)))
+		 (values (cdr enum)))
+	      ;; write literal names
+	      (@ "static sgtk_senum_literal _%s_literals[%d] = {\n"
+		 cname (length values))
+	      (mapc (lambda (cell)
+		      (@ "  { \"%s\", %s },\n" (car cell) (nth 1 cell)))
+		    values)
+	      (@ "};\n")
+	      ;; write type info struct
+	      (@ "sgtk_senum_info sgtk_%s_info = {\n" cname)
+	      (@ "  { \"%s\", GTK_TYPE_INVALID }, %d, _%s_literals,\n"
+		 name (length values) cname)
+	      (@ "};\n\n")))
+	  gtk-string-enums)))
 
 (defun output-imported-flags (output)
   (when gtk-imported-flags
@@ -355,24 +399,26 @@
     (@ "\n")))
 
 (defun output-flags (output)
-  (@ "\f\n/* Flags definitions */\n\n")
-  (mapc (lambda (flag)
-	  (let*
-	      ((name (car flag))
-	       (cname (gtk-canonical-name (symbol-name name)))
-	       (values (cdr flag)))
-	    ;; write literal names
-	    (@ "static sgtk_enum_literal _%s_literals[%d] = {\n"
-	       cname (length values))
-	    (mapc (lambda (cell)
-		    (@ "  { \"%s\", %s },\n" (car cell) (nth 1 cell))) values)
-	    (@ "};\n")
-	    ;; write type info struct
-	    (@ "sgtk_enum_info sgtk_%s_info = {\n" cname)
-	    (@ "  { \"%s\", GTK_TYPE_FLAGS }, %d, _%s_literals,\n"
-	       name (length values) cname)
-	    (@ "};\n\n")))
-	gtk-flags))
+  (when gtk-flags
+    (@ "\f\n/* Flags definitions */\n\n")
+    (mapc (lambda (flag)
+	    (let*
+		((name (car flag))
+		 (cname (gtk-canonical-name (symbol-name name)))
+		 (values (cdr flag)))
+	      ;; write literal names
+	      (@ "static sgtk_enum_literal _%s_literals[%d] = {\n"
+		 cname (length values))
+	      (mapc (lambda (cell)
+		      (@ "  { \"%s\", %s },\n" (car cell) (nth 1 cell)))
+		    values)
+	      (@ "};\n")
+	      ;; write type info struct
+	      (@ "sgtk_enum_info sgtk_%s_info = {\n" cname)
+	      (@ "  { \"%s\", GTK_TYPE_FLAGS }, %d, _%s_literals,\n"
+		 name (length values) cname)
+	      (@ "};\n\n")))
+	  gtk-flags)))
 
 (defun output-imported-boxed (output)
   (when gtk-imported-boxed
@@ -385,25 +431,26 @@
     (@ "\n")))
 
 (defun output-boxed (output)
-  (@ "\f\n/* Boxed structure definitions */\n\n")
-  (mapc (lambda (boxed)
-	  (let*
-	      ((name (car boxed))
-	       (cname (gtk-canonical-name (symbol-name name)))
-	       (attrs (cdr boxed))
-	       (conv (car (cdr (assq 'conversion attrs)))))
-	    (when conv
-	      (@ "repv %s (repv);\n" conv))
-	    (@ "sgtk_boxed_info sgtk_%s_info = {\n" cname)
-	    (@ "  { \"%s\", GTK_TYPE_BOXED, %s },\n" name (or conv "NULL"))
-	    (@ "  (void *(*)(void*))%s,\n"
-	       (or (car (cdr (assq 'copy attrs))) "NULL"))
-	    (@ "  (void (*)(void*))%s,\n"
-	       (or (car (cdr (assq 'free attrs))) "NULL"))
-	    (@ "  %s\n"
-	       (or (car (cdr (assq 'size attrs))) 0))
-	    (@ "};\n\n")))
-	gtk-boxed))
+  (when gtk-boxed
+    (@ "\f\n/* Boxed structure definitions */\n\n")
+    (mapc (lambda (boxed)
+	    (let*
+		((name (car boxed))
+		 (cname (gtk-canonical-name (symbol-name name)))
+		 (attrs (cdr boxed))
+		 (conv (car (cdr (assq 'conversion attrs)))))
+	      (when conv
+		(@ "repv %s (repv);\n" conv))
+	      (@ "sgtk_boxed_info sgtk_%s_info = {\n" cname)
+	      (@ "  { \"%s\", GTK_TYPE_BOXED, %s },\n" name (or conv "NULL"))
+	      (@ "  (void *(*)(void*))%s,\n"
+		 (or (car (cdr (assq 'copy attrs))) "NULL"))
+	      (@ "  (void (*)(void*))%s,\n"
+		 (or (car (cdr (assq 'free attrs))) "NULL"))
+	      (@ "  %s\n"
+		 (or (car (cdr (assq 'size attrs))) 0))
+	      (@ "};\n\n")))
+	  gtk-boxed)))
 
 (defun output-imported-objects (output)
   (when gtk-imported-objects
@@ -416,14 +463,15 @@
     (@ "\n")))
 
 (defun output-objects (output)
-  (@ "\f\n/* GTK object definitions */\n\n")
-  (mapc (lambda (obj)
-	  (let*
-	      ((name (car obj))
-	       (cname (gtk-canonical-name (symbol-name name))))
-	    (@ "sgtk_object_info sgtk_%s_info = {\n" cname)
-	    (@ "  { \"%s\", GTK_TYPE_OBJECT }, %s_get_type\n" name cname)
-	    (@ "};\n\n"))) gtk-objects))
+  (when gtk-objects
+    (@ "\f\n/* GTK object definitions */\n\n")
+    (mapc (lambda (obj)
+	    (let*
+		((name (car obj))
+		 (cname (gtk-canonical-name (symbol-name name))))
+	      (@ "sgtk_object_info sgtk_%s_info = {\n" cname)
+	      (@ "  { \"%s\", GTK_TYPE_OBJECT }, %s_get_type\n" name cname)
+	      (@ "};\n\n"))) gtk-objects)))
 
 (defun output-type-info (output)
   (when (or gtk-enums gtk-flags gtk-boxed gtk-objects)
@@ -434,7 +482,7 @@
 		    (@ "  (sgtk_type_info*)&sgtk_%s_info,\n"
 		       (gtk-canonical-name (symbol-name (car type)))))
 		  lst))
-	  (list gtk-enums gtk-flags gtk-boxed gtk-objects))
+	  (list gtk-enums gtk-string-enums gtk-flags gtk-boxed gtk-objects))
     (@ "  NULL\n};\n\n")))
 
 (defun output-functions (output)
@@ -454,28 +502,39 @@
   (let
       ((init-func (gtk-get-option 'init-func gtk-options))
        (other-inits (gtk-get-options 'other-inits gtk-options))
-       (extra-init (gtk-get-options 'extra-init-code gtk-options)))
+       (extra-init (gtk-get-options 'extra-init-code gtk-options))
+       (system-init (gtk-get-options 'system-init-code gtk-options)))
     (when init-func
       (@ "void\n%s (void)\n{\n" init-func)
       (@ "  static int done;\n  if (!done)\n    {\n")
       (@ "      done = 1;\n")
       (mapc (lambda (func)
 	      (@ "      %s ();\n" func)) other-inits)
-      (when (or gtk-enums gtk-flags gtk-boxed gtk-objects)
+      (when (or gtk-enums gtk-string-enums gtk-flags gtk-boxed gtk-objects)
 	(@ "      sgtk_register_type_infos (_type_infos);\n"))
       (mapc (lambda (cname)
 	      (@ "      rep_ADD_SUBR(S%s);\n" cname)) (nreverse gtk-subrs))
       (mapc (lambda (code)
-	      (@ "      %s\n" code)) extra-init)
+	      (@ "      %s\n")) extra-init)
+      (when system-init
+	(@ "      {\n")
+	(@ "        char *tem = getenv (\"REP_GTK_DONT_INITIALIZE\");\n")
+	(@ "        if (tem == 0 || atoi (tem) == 0) {\n")
+	(mapc (lambda (code)
+		(@ "          %s\n" code)) system-init)
+	(@ "        }\n")
+	(@ "      }\n"))
       (@ "    \}\n\}\n"))))
 
 (defun output-gtk (output)
   (output-header output)
   (output-imported-enums output)
+  (output-imported-string-enums output)
   (output-imported-flags output)
   (output-imported-boxed output)
   (output-imported-objects output)
   (output-enums output)
+  (output-string-enums output)
   (output-flags output)
   (output-boxed output)
   (output-objects output)
@@ -521,6 +580,9 @@
        (typage (cond ((or (assq actual-type gtk-enums)
 			  (assq actual-type gtk-imported-enums))
 		      (assq 'enum gtk-type-alist))
+		     ((or (assq actual-type gtk-string-enums)
+			  (assq actual-type gtk-imported-string-enums))
+		      (assq 'senum gtk-type-alist))
 		     ((or (assq actual-type gtk-flags)
 			  (assq actual-type gtk-imported-flags))
 		      (assq 'flags gtk-type-alist))
@@ -581,37 +643,35 @@
       (symbol-name type)
     (format nil "%s*" type)))
 
-(defun output-rep-to-enum (output type rep-var typage)
-  (setq type (gtk-outer-type type))
-  (let
-      ((name (gtk-canonical-name (symbol-name type))))
-    (@ "\(%s\) sgtk_rep_to_enum \(%s, &sgtk_%s_info\)" type rep-var name)))
+(define (output-rep-to-static x)
+  (lambda (output type rep-var typage)
+    (setq type (gtk-outer-type type))
+    (let ((name (gtk-canonical-name (symbol-name type))))
+      (@ "\(%s\) sgtk_rep_to_%s \(%s, &sgtk_%s_info\)"
+	 (gtk-type-decl type typage) x rep-var name))))
 
-(defun output-enum-to-rep (output type gtk-var typage)
-  (setq type (gtk-outer-type type))
-  (let
-      ((name (gtk-canonical-name (symbol-name type))))
-    (@ "sgtk_enum_to_rep \(%s, &sgtk_%s_info\)" gtk-var name)))
+(define (output-static-to-rep x)
+  (lambda (output type gtk-var typage)
+    (setq type (gtk-outer-type type))
+    (let ((name (gtk-canonical-name (symbol-name type))))
+      (@ "sgtk_%s_to_rep \(%s, &sgtk_%s_info\)" x gtk-var name))))
 
-(defun output-enum-pred (output type rep-var typage)
-  (@ "sgtk_valid_enum \(%s, &sgtk_%s_info\)"
-     rep-var (gtk-canonical-name (symbol-name type))))
+(define (output-static-pred x)
+  (lambda (output type rep-var typage)
+    (@ "sgtk_valid_%s \(%s, &sgtk_%s_info\)"
+       x rep-var (gtk-canonical-name (symbol-name type)))))
 
-(defun output-rep-to-flags (output type rep-var typage)
-  (setq type (gtk-outer-type type))
-  (let
-      ((name (gtk-canonical-name (symbol-name type))))
-    (@ "\(%s\) sgtk_rep_to_flags \(%s, &sgtk_%s_info\)" type rep-var name)))
+(define output-rep-to-enum (output-rep-to-static 'enum))
+(define output-enum-to-rep (output-static-to-rep 'enum))
+(define output-enum-pred (output-static-pred 'enum))
 
-(defun output-flags-to-rep (output type gtk-var typage)
-  (setq type (gtk-outer-type type))
-  (let
-      ((name (gtk-canonical-name (symbol-name type))))
-    (@ "sgtk_flags_to_rep \(%s, &sgtk_%s_info\)" gtk-var name)))
+(define output-rep-to-senum (output-rep-to-static 'senum))
+(define output-senum-to-rep (output-static-to-rep 'senum))
+(define output-senum-pred (output-static-pred 'senum))
 
-(defun output-flags-pred (output type rep-var typage)
-  (@ "sgtk_valid_flags \(%s, &sgtk_%s_info\)"
-     rep-var (gtk-canonical-name (symbol-name type))))
+(define output-rep-to-flags (output-rep-to-static 'flags))
+(define output-flags-to-rep (output-static-to-rep 'flags))
+(define output-flags-pred (output-static-pred 'flags))
 
 (defun output-rep-to-boxed (output type rep-var typage)
   (setq type (gtk-outer-type type))
@@ -1163,6 +1223,9 @@
 
 (define-type 'enum output-complex-type output-rep-to-enum
 	     output-enum-to-rep output-enum-pred)
+
+(define-type 'senum "char*" output-rep-to-senum
+	     output-senum-to-rep output-senum-pred)
 
 (define-type 'flags output-complex-type output-rep-to-flags
 	      output-flags-to-rep output-flags-pred)
