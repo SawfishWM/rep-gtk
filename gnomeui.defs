@@ -580,7 +580,7 @@
   GtkWidget
   ((string title)
    ((tvec string) buttons))
-  (scm-name "gnome-dialg-new"))
+  (scm-name "gnome-dialog-new"))
 
 (define-func gnome_dialog_set_parent
   none
