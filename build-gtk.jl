@@ -365,9 +365,9 @@
   (@ "\f\n/* Vector of all type information */\n\n")
   (@ "sgtk_type_info *sgtk_type_infos[] = {\n")
   (mapc #'(lambda (list)
-	    (mapc #'(lambda (t)
+	    (mapc #'(lambda (type)
 		      (@ "  (sgtk_type_info*)&sgtk_%s_info,\n"
-			 (gtk-canonical-name (symbol-name (car t)))))
+			 (gtk-canonical-name (symbol-name (car type)))))
 		  list))
 	(list gtk-enums gtk-flags gtk-boxed gtk-objects))
   (@ "  NULL\n};\n\n"))
@@ -578,6 +578,7 @@
        (inner-typage (gtk-type-info inner-type)))
     (output-helper inner-type standard-output)
     (cond ((memq outer-type '(cvec cvecr list slist))
+	   ;; XXX assumes `in' or `inout' types
 	   (@ "sgtk_valid_composite \(%s, _sgtk_helper_valid_%s\)"
 	      rep-var inner-type))
 	  ((memq outer-type '(fvec ret))
@@ -585,8 +586,12 @@
 	       ((length (if (eq outer-type 'ret)
 			    1
 			  (car (gtk-inner-type-options type)))))
-	     (@ "sgtk_valid_complen \(%s, _sgtk_helper_valid_%s, %s\)"
-		rep-var inner-type length)))
+	     (@ "sgtk_valid_complen \(%s, %s, %s\)"
+		rep-var (if (eq outer-type 'ret)
+			    ;; ret is `out', so don't check inner validity
+			    "NULL"
+			  (concat "_sgtk_helper_valid_"
+				  (symbol-name inner-type))) length)))
 	  (t
 	   (gtk-warning "Don't know type predicate of %s" type)))))
 
