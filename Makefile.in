@@ -113,10 +113,8 @@ install : all installdirs
 	      printf "\nrep_requires='sgtk-types'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
 	    libglade*.la|gnomeui.la|gdk-pixbuf.la) \
 	      printf "\nrep_requires='gtk'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
-	    gnome-canvas.la) \
+	    gnome-canvas*.la) \
 	      printf "\nrep_requires='gnomeui'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
-	    gnome-canvas-pixbuf.la) \
-	      printf "\nrep_requires='gnome-canvas'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
 	  esac; \
 	done
 	for f in $(OUT); do \
