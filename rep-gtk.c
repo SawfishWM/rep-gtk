@@ -24,6 +24,7 @@
 #include <gdk/gdkprivate.h>
 #include "rep-gtk.h"
 #include <string.h>
+#include <limits.h>
 
 /* Define this to enable some output during GC and other interesting
    actions. */
@@ -2413,46 +2414,6 @@ sgtk_deregister_input_fd (int fd)
     }
 }
 
-/* Mimic the rep idle stuff (every second) using a timeout that is reset
-   after each callback/event. */
-static int idle_timeout_set = 0, idle_timeout_counter = 0, idle_timeout_tag;
-
-static repv
-inner_idle_callback (repv data)
-{
-    rep_proc_periodically ();
-    rep_on_idle (rep_INT (data));
-    return Qnil;
-}
-
-static gint
-idle_timeout_callback (gpointer data)
-{
-#if rep_INTERFACE >= 8
-    rep_call_with_barrier (inner_idle_callback,
-			   rep_MAKE_INT (idle_timeout_counter),
-			   rep_TRUE, 0, 0, 0);
-#else
-    inner_idle_callback (rep_MAKE_INT (idle_timeout_counter));
-#endif
-    idle_timeout_counter++;
-    if (rep_INTERRUPTP && gtk_main_level () > 0)
-	gtk_main_quit ();
-    else if (rep_redisplay_fun != 0)
-	(*rep_redisplay_fun)();
-    return 1;
-}
-
-static void
-reset_idle_timeout (void)
-{
-    if (idle_timeout_set)
-	gtk_timeout_remove (idle_timeout_tag);
-    idle_timeout_counter = 0;
-    idle_timeout_tag = gtk_timeout_add (1000, idle_timeout_callback, 0);
-    idle_timeout_set = TRUE;
-}
-
 /* Call this after executing any callbacks that could invoke Lisp code */
 void
 sgtk_callback_postfix (void)
@@ -2461,35 +2422,67 @@ sgtk_callback_postfix (void)
 	gtk_main_quit ();
     else if (rep_redisplay_fun != 0)
 	(*rep_redisplay_fun)();
-    reset_idle_timeout ();
+}
+
+static gboolean
+timeout_callback (gpointer data)
+{
+    int *timed_out = data;
+    *timed_out = 1;
+    gtk_main_quit ();
+    return FALSE;
 }
 
 /* This function replaces the standard rep event loop. */
 static repv
 sgtk_event_loop (void)
 {
+    int idle_counter = 0;
     while (1)
     {
+	u_long max_sleep;
 #if rep_INTERFACE >= 8
-	rep_bool threaded = rep_INT (Fthread_queue_length (Qnil)) > 0;
+	max_sleep = rep_max_sleep_for ();
+#else
+	max_sleep = ULONG_MAX;
 #endif
 	if (rep_redisplay_fun != 0)
 	    (*rep_redisplay_fun)();
 
-	reset_idle_timeout ();
-
 #if rep_INTERFACE >= 8
-	if (threaded)
+	if (max_sleep == 0)
 	{
 	    while (gtk_events_pending ())
 		gtk_main_iteration_do (FALSE);
 	    Fthread_yield ();
 	}
 	else
-	    gtk_main ();
-#else
-	gtk_main ();
 #endif
+	{
+	    int timed_out = 0;
+	    u_long this_timeout_msecs = rep_input_timeout_secs * 1000;
+	    u_long actual_timeout_msecs = MIN (this_timeout_msecs, max_sleep);
+	    int timeout_tag = gtk_timeout_add (actual_timeout_msecs,
+					       timeout_callback,
+					       (gpointer) &timed_out);
+	    gtk_main ();
+	    gtk_timeout_remove (timeout_tag);
+	    if (timed_out)
+	    {
+#if rep_INTERFACE >= 8
+		if (actual_timeout_msecs < this_timeout_msecs)
+		{
+		    Fthread_suspend (Qnil,
+				     rep_MAKE_INT (this_timeout_msecs
+						   - actual_timeout_msecs));
+		}
+		else
+#endif
+		    rep_on_idle (idle_counter++);
+	    }
+	    else
+		idle_counter = 0;
+	}
 
 	rep_proc_periodically ();
 
