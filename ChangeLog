@@ -1,3 +1,7 @@
+1999-09-12  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.4
+
 1999-09-08  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gtk-1.2.defs: added the GtkPlug and GtkSocket widgets
