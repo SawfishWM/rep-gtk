@@ -454,6 +454,10 @@
   (GdkFont (copy #f))
   ((string name)))
 
+(define-func gdk_fontset_load
+  (GdkFont (copy #f))
+  ((string name)))
+
 (define-func gdk_flush
   none
   ())

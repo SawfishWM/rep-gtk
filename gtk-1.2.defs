@@ -283,6 +283,10 @@
   int
   ())
 
+(define-func gtk_set_locale
+  static_string
+  ())
+
 (define-func gtk_timeout_add_full
   int
   ((int interval)

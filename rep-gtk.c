@@ -1805,7 +1805,7 @@ sgtk_color_conversion (repv color)
   return color;
 }
 
-extern repv Fgdk_font_load (repv font);
+extern repv Fgdk_fontset_load (repv font);
 
 repv
 sgtk_font_conversion (repv font)
@@ -1814,7 +1814,7 @@ sgtk_font_conversion (repv font)
 
   if (rep_STRINGP (font))
     {
-      font = Fgdk_font_load (font);
+      font = Fgdk_fontset_load (font);
       if (font == Qnil)
 	Fsignal (Qerror, rep_list_2 (rep_string_dup ("no such font: "),
 				     orig_font));
