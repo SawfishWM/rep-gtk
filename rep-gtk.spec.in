@@ -3,14 +3,14 @@ Name: rep-gtk
 Version: @version@
 Release: 1
 Summary: GTK+ binding for librep Lisp environment
-Requires: librep >= 0.12, gtk+ >= 1.2
+Requires: librep >= 0.13, gtk+ >= 1.2
 Copyright: GPL
 Group: Development/Languages
 Source: http://download.sourceforge.net/rep-gtk/rep-gtk-%{version}.tar.gz
 URL: http://rep-gtk.sourceforge.net/
 Packager: John Harper <john@dcs.warwick.ac.uk>
 Buildroot: /var/tmp/%{name}-root
-BuildPrereq: libglade-devel gnome-libs-devel gdk-pixbuf-devel
+BuildPrereq: librep-devel libglade-devel gnome-libs-devel gdk-pixbuf-devel
 
 %description
 This is a binding of GTK+ for the librep Lisp interpreter. It is based
@@ -57,9 +57,12 @@ make install \
 %files
 %defattr(-,root,root)
 %doc README README.guile-gtk BUGS ChangeLog gtk.defs gdk.defs
-%{_libexecdir}/rep/%{_target_platform}/sgtk-types.so*
+%{_libexecdir}/rep/%{_target_platform}/gui/gtk
+%{_libexecdir}/rep/%{_target_platform}/gui/gtk.so
+%{_libexecdir}/rep/%{_target_platform}/gui/gtk.la
+%{_libexecdir}/rep/%{_target_platform}/sgtk-types.so
 %{_libexecdir}/rep/%{_target_platform}/sgtk-types.la
-%{_libexecdir}/rep/%{_target_platform}/gtk.so*
+%{_libexecdir}/rep/%{_target_platform}/gtk.so
 %{_libexecdir}/rep/%{_target_platform}/gtk.la
 
 %files libglade
@@ -73,11 +76,14 @@ make install \
 %defattr(-,root,root)
 %doc gnome*.defs gdk-pixbuf.defs libglade.defs
 %doc examples/gnome-test examples/canvas-test
-%{_libexecdir}/rep/%{_target_platform}/gnome*.so*
+%{_libexecdir}/rep/%{_target_platform}/gui/gnome
+%{_libexecdir}/rep/%{_target_platform}/gui/gnome.so
+%{_libexecdir}/rep/%{_target_platform}/gui/gnome.la
+%{_libexecdir}/rep/%{_target_platform}/gnome*.so
 %{_libexecdir}/rep/%{_target_platform}/gnome*.la
-%{_libexecdir}/rep/%{_target_platform}/libglade-gnome.so*
+%{_libexecdir}/rep/%{_target_platform}/libglade-gnome.so
 %{_libexecdir}/rep/%{_target_platform}/libglade-gnome.la
-%{_libexecdir}/rep/%{_target_platform}/gdk-pixbuf.so*
+%{_libexecdir}/rep/%{_target_platform}/gdk-pixbuf.so
 %{_libexecdir}/rep/%{_target_platform}/gdk-pixbuf.la
 
 %changelog
