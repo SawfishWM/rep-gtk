@@ -1,3 +1,24 @@
+2000-07-09  John Harper  <john@dcs.warwick.ac.uk>
+
+	* configure.in: version 0.13
+
+	* Makefile.in: gnome-canvas-pixbuf requires gnomeui, not
+	gnome-canvas
+
+	* gnomeui-support.c (sgtk_gnome_init): preserve rep's fatal
+	signal handlers, they're more useful than the gnome handler
+
+	* gnomeui-support.c (sgtk_gnome_string_callback): handle a null
+	string being passed in
+
+	* configure.in: require rep 0.12+
+
+	* rep-gtk.h, rep-gtk.c, libglade-support.c, gnomelib-support.c,
+	gnome-canvas-support.c: removed rep < 0.12 compatibility junk
+
+	* rep-types.c (rep_dl_init): create a proper (but empty)
+	module, instead of just returning a symbol
+
 2000-07-06  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gnomeui.defs (GnomeDialog): cleaned up

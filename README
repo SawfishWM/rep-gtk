@@ -71,32 +71,35 @@ GNOME
 =====
 
 There's also now reasonably complete bindings of gnome and gnomeui.
-Three extra modules will get built and installed:
+These extra modules will get built and installed:
 
-	gnomelib	Non-UI GNOME functions, doesn't require GTK
-	gnomeui		GNOME UI widgets and utilities
-	gnome-canvas	GNOME Canvas widgets and utilities
+	gnomelib		Non-UI GNOME functions, doesn't require GTK
+	gnomeui			GNOME UI widgets and utilities
+	gnome-canvas		GNOME Canvas widgets and utilities
+	gdk-pixbuf		Image loading and rendering
+	gnome-canvas-pixbuf	CanvasItem for displaying GdkPixbuf's
 
 see the .defs files for the gruesome details about what goes in what.
-You only need to require the most high-level if more than one module is
-being used. The dependence tree is something like:
+The dependence tree is something like:
 
+			       gdk-pixbuf
+			     /
 	sgtk-types -+- gtk -+- libglade
 		     \	     \
-		      \	       gnomeui -- gnome-canvas
-		       \
-			 gnomelib
+		      \	       gnomeui -+- gnome-canvas
+		       \		 \
+			 gnomelib	   gnome-canvas-pixbuf
 
 sgtk-types provides conversions for the basic C types (and GLIB's GList
 and GSList types).
 
-If, when `gnomeui' is loaded, the special variables `*gnome-app-id*'
-and `*gnome-app-version*' are bound to strings, then the gnome-init
-function is called automatically with these values.
+When `gnomeui' is loaded the gnome-init function is called
+automatically. If the special variables `*gnome-app-id*' and
+`*gnome-app-version*' are bound to strings, then these values will be
+used, otherwise something will be fabricated.
 
-Otherwise before using any `gnomeui' functions, you _must_ call
-`gnome-init'. Likewise, if using `gnomelib' without `gnomeui', you
-_must_ call `gnomelib-init'
+However, if using `gnomelib' without `gnomeui', you should call
+`gnomelib-init' manually.
 
 To use libglade with the GNOME widgets, require the `libglade-gnome'
 module instead of `libglade'
