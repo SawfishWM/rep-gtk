@@ -1,3 +1,12 @@
+2000-07-11  John Harper  <john@dcs.warwick.ac.uk>
+
+	* configure.in: make the various permutations of libraries work
+	correctly. Only compile gnome-canvas-pixbuf if both gnomeui and
+	gdk-pixbuf libraries are being built. Also, don't error out if
+	a library FOO can't be found, unless --with-FOO was specified
+
+	[ some of this is from a patch by Ceri Storey ]
+
 2000-07-10  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.spec.in: remembered that g[td]k-1.2.defs is now
