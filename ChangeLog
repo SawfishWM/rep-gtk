@@ -1,3 +1,8 @@
+2002-03-13  jacob berkman  <jacob@ximian.com>
+
+	* rep-gtk.c (sgtk_try_missing_type): add GtkTextIter (from jsh,
+	fixes #74528)
+
 2002-03-03  John Harper  <jsh@pixelslut.com>
 
 	* gtktext.defs: added some default values

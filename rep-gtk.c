@@ -173,6 +173,7 @@ sgtk_try_missing_type (char *name)
   static sgtk_type_info missing[] = {
     { "GdkGC", G_TYPE_BOXED },
     { "GdkPixbuf", G_TYPE_BOXED },	/* XXX okay? */
+    { "GtkTextIter", G_TYPE_BOXED },
     { "GtkToolbarStyle", G_TYPE_ENUM },
     { "GtkToolbarChildType", G_TYPE_ENUM },
     { "GtkTreeViewMode", G_TYPE_ENUM },
