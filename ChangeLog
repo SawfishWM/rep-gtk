@@ -1,3 +1,9 @@
+2000-09-26  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gnome-canvas.defs (gnome_canvas_item_scale,
+	gnome_canvas_item_rotate): commented out, these functions are
+	apparently MIA in recent gnome-libs
+
 2000-09-20  John Harper  <john@dcs.warwick.ac.uk>
 
 	* configure.in: version 0.14
