@@ -1,3 +1,11 @@
+1999-08-10  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk-1.2.defs (gtk_label_set_justify,
+	gtk_label_set_line_wrap): define these functions
+	(gtk_signal_connect, gtk_box_pack_start, gtk_box_pack_start):
+	remove optional boolean parameters, since there's no way of
+	telling a non-specified option from a specified-as-nil option
+
 1999-08-03  John Harper  <john@dcs.warwick.ac.uk>
 
 	* version 0.1
