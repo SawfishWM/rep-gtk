@@ -1,3 +1,11 @@
+1999-03-28  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (idle_timeout_callback): ensure that the first time
+	rep_on_idle is called each idle period, it's passed zero
+	(sgtk_callback_postfix, idle_timeout_callback): call
+	rep_proc_periodically to ensure no subprocess deaths are
+	overlooked
+
 1999-03-23  John Harper  <john@dcs.warwick.ac.uk>
 
 	* build-gtk.jl (output-type-predicate): outputs type
