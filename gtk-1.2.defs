@@ -3165,5 +3165,4 @@
 (options
  (includes "#include <gtk/gtk.h>")
  (init-func "sgtk_init_gtk_gtk_glue")
- (extra-init-code "sgtk_init_gtk_support ();")
  (other-inits "sgtk_init_gtk_gdk_glue"))

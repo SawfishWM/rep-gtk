@@ -1,3 +1,36 @@
+2000-02-13  John Harper  <john@dcs.warwick.ac.uk>
+
+	* build-gtk.jl: support `in', `out' and `inout' modes for
+	composite types. Support the `extra-init-code' option. Add a
+	new option `(provide FEATURE)' for generating rep dl stubs
+
+	* gtk-1.2.defs: define enum GtkAnchorType (for canvas), and
+	object GtkProgress
+
+	* rep-types.c: new file, the rep conversions for basic C/GLIB
+	types. This is built into it's own dl module `sgtk-types'
+
+	* rep-gtk.c (sgtk_set_protect, sgtk_get_protect,
+	sgtk_new_protect): functions for manipulating the gc protection
+	shells
+
+	* build-gtk.jl: new directive `include', like `import' but for
+	the same module; new directive `define-type', the same as the
+	function of the same name. Only add type info structures if
+	they're non-null. New protection type `*result*' for callbacks,
+	protect function for lifetime of result object. Implemented
+	cvec-to-rep conversion, and `tvec' types. New argument option
+	`protect-during', add gc protection for the lifetime of the
+	function call. Output finish options _after_ converting result
+
+	* rep-gnome.h, gnomelib.defs, gnomelib-support.c, gnomeui.defs,
+	gnomeui-support.c, gnome-canvas.defs, gnome-canvas-support.c,
+	gnome-canvas-glue.c: initial GNOME binding. Lots of this was
+	grabbed from guile-gnome
+
+	* rep-gtk.spec.in, configure.in, Makefile.in: updated for GNOME
+	bindings
+
 2000-02-08  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (sgtk_event_loop): rewritten to use

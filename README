@@ -1,8 +1,8 @@
-[ this is -*-Text-*- ]
+-*- text -*-
 
-This is rep-gtk 0.0, a binding of GTK+ for my rep Lisp interpreter. It
-is based on Marius Vollmer's guile-gtk package (initially version
-0.15, updated to 0.17), with a new glue-code generator.
+This is rep-gtk 0.0, a binding of GTK+/GNOME/libglade for the rep Lisp
+system. It is based on Marius Vollmer's guile-gtk binding (initially
+version 0.15, updated to 0.17), with a new glue-code generator.
 
 For more details see:
 
@@ -17,12 +17,9 @@ Installation
 ============
 
 Basically, `./configure ; make ; make install'. If you're building from
-the CVS sources, execute `aclocal ; autoconf' first.
+the CVS repository, execute `aclocal ; autoconf' first.
 
 Currently it only works with GTK 1.2.
-
-Note that you get no choice where the library is installed, it always
-goes into the rep exec-directory. This should be changed.
 
 
 Usage
@@ -68,6 +65,36 @@ hierarchy. glade-xml-signal-autoconnect connects all signal handlers to
 the lisp functions named in the GLADE file. You can also use the
 glade-xml-signal-connect function to connect individually named
 handlers. (see libglade.defs for the complete function list)
+
+
+GNOME
+=====
+
+There's also now reasonably complete bindings of gnome and gnomeui.
+Three extra modules will get built and installed:
+
+	gnomelib	Non-UI GNOME functions, doesn't require GTK
+	gnomeui		GNOME UI widgets and utilities
+	gnome-canvas	GNOME Canvas widgets and utilities
+
+see the .defs files for the gruesome details about what goes in what.
+You only need to require the most high-level if more than one module is
+being used. The dependence tree is something like:
+
+	sgtk-types -+- gtk -+- libglade
+		     \	     \
+		      \	       gnomeui -- gnome-canvas
+		       \
+			 gnomelib
+
+sgtk-types provides conversions for the basic C types (and GLIB's GList
+and GSList types).
+
+There will shortly be support for using libglade with GNOME.
+
+*Note* that before using any `gnomeui' functions, you _must_ call
+`gnome-init'. Likewise, if using `gnomelib' without `gnomeui', you
+_must_ call `gnomelib-init'
 
 
 Caveats

@@ -1,11 +1,10 @@
 -*-Indented-Text-*-
 
-These notes pertain to the g[dt]k.defs files distributed with guile-gtk-0.15
-
-It would probably be a good idea to s/#t/t/ to make it Lisp-readable
+These notes describe the format of the .defs files
 
 
 (import "DEFS-FILE")
+(include "DEFS-FILE")
 
 
 
@@ -57,6 +56,7 @@ and each OPTION may be one of:
   (scm-name ACTUAL-NAME-STRING)
   (protection ARG)			; gc protect callback for life of ARG
   (protection #t)			; gc protect callback always
+  (protection *result*)			; gc protect for life of RETURN-VALUE
   (undeferred #t)			; no scm interrupt protection?
   (rest-arg #t)				; last arg is &rest
 
@@ -64,6 +64,7 @@ and each ARG-OPTION may be one of:
 
   (= "default expression")
   (null-ok)				; allow nil
+  (protect-during)
 
 and each RET-OPTION may be one of:
 
@@ -79,6 +80,10 @@ where each OPTION can be:
       (init-func "name of C function")
       (other-inits "name of C function" ... )
       (extra-init-code "code string")
+      (provide FEATURE)
+
+the `provide' option generates the rep dl stub required to provide
+FEATURE and call the init-func when loaded
 
 
 
@@ -103,31 +108,34 @@ full_callback:
 file-descriptor:
   an integer file descriptor
 
-list:
-  a glib GList* (doubly-linked)
-
-slist:
-  a glib GSList* (singly-linked)
-
 double:
   a double-precision float
 
 SCM:
   a scheme object
 
-cvec:
-  a counter vector, stored in sgtk_cvec struct, in gtk_ function calls,
+(list TYPE [MODE]):
+  a glib GList* (doubly-linked)
+
+(slist TYPE [MODE]):
+  a glib GSList* (singly-linked)
+
+(cvec TYPE [MODE]):
+  a counted-vector, stored in sgtk_cvec struct, in gtk_ function calls,
   it expands ``cvec.data, cvec.len''
 
-cvecr:
+(cvecr TYPE [MODE]):
   similar to cvec but expands ``cvec.len, cvec.data''
 
-fvec:
+(fvec TYPE LEN [MODE]):
   similar to cvec but fixed length
 
-ret:
+(ret TYPE):
   similar to fvec but length is always one. used to mimic the C ``&foo''
   idiom of returning multiple values
 
-tvec:
-  zero-terminated vector??
+(tvec TYPE [MODE]):
+  zero-terminated vector
+
+[ in the above, MODE is one of `in', `out' or `inout'. Defaults to `in' ]
+

@@ -3,6 +3,8 @@
 TODO
 ====
 
+ * support GNOME widgets in libglade
+
  * merge in the .defs changes from guile-gtk 0.17
 
    [ I think I've got everything else, except some related functions
@@ -11,9 +13,4 @@ TODO
  * fix the signal_connect_object stuff in libglade-support.c
 
  * support the `define-struct' and `define-ptype' defs
-
- * [sup]port the GNOME bindings
-
- * implement `output-cvec-to-rep' in build-gtk.jl, support is in
-   rep-gtk.c now
 

@@ -1,7 +1,6 @@
 .libs
-gtk-glue.c
-gdk-1.2.defs.jl
-gtk-1.2.defs.jl
+*-glue.c
+*.defs.jl
 Makefile
 config.status
 libtool
@@ -14,6 +13,3 @@ aclocal.m4
 *.la
 *.jlc
 rep-gtk.spec
-gdk-glue.c
-libglade-glue.c
-libglade.defs.jl

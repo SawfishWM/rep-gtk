@@ -89,6 +89,8 @@ int sgtk_valid_ulong (repv obj);
 int sgtk_valid_char (repv obj);
 repv sgtk_uint_to_rep (u_long x);
 repv sgtk_int_to_rep (long x);
+repv sgtk_long_to_rep (long x);
+repv sgtk_ulong_to_rep (u_long x);
 guint sgtk_rep_to_uint (repv obj);
 gint sgtk_rep_to_int (repv obj);
 gulong sgtk_rep_to_ulong (repv obj);
@@ -103,6 +105,7 @@ int sgtk_rep_to_bool (repv obj);
 int sgtk_valid_function (repv obj);
 int sgtk_valid_fd (repv obj);
 int sgtk_rep_to_fd (repv obj);
+repv sgtk_fd_to_rep (int fd);
 
 repv sgtk_wrap_gtkobj (GtkObject *obj);
 int sgtk_is_a_gtkobj (guint type, repv obj);
@@ -131,6 +134,10 @@ repv sgtk_float_to_rep (gfloat f);
 int sgtk_valid_double (repv obj);
 double sgtk_rep_to_double (repv obj);
 repv sgtk_double_to_rep (double f);
+
+int sgtk_valid_pointer (repv obj);
+void *sgtk_rep_to_pointer (repv obj);
+repv sgtk_pointer_to_rep (void *ptr);
 
 int sgtk_valid_point (repv obj);
 GdkPoint sgtk_rep_to_point (repv obj);
@@ -167,8 +174,11 @@ repv sgtk_cvec_to_rep (sgtk_cvec *cvec, repv (*toscm)(void *), size_t sz);
 
 typedef struct sgtk_protshell sgtk_protshell;
 
+void sgtk_set_protect (repv protector, sgtk_protshell *prot);
+sgtk_protshell *sgtk_new_protect (repv obj);
 sgtk_protshell *sgtk_protect (repv protector, repv obj);
 void sgtk_unprotect (sgtk_protshell *);
+repv sgtk_get_protect (sgtk_protshell *prot);
 
 void sgtk_callback_marshal (GtkObject *,
 			    gpointer data,
