@@ -2262,7 +2262,7 @@ idle_timeout_callback (gpointer data)
 {
     rep_proc_periodically ();
     rep_on_idle (idle_timeout_counter++);
-    if (rep_INTERRUPTP)
+    if (rep_INTERRUPTP && gtk_main_level () > 0)
 	gtk_main_quit ();
     else if (rep_redisplay_fun != 0)
 	(*rep_redisplay_fun)();
@@ -2283,7 +2283,7 @@ reset_idle_timeout (void)
 void
 sgtk_callback_postfix (void)
 {
-    if (rep_INTERRUPTP)
+    if (rep_INTERRUPTP && gtk_main_level () > 0)
 	gtk_main_quit ();
     else if (rep_redisplay_fun != 0)
 	(*rep_redisplay_fun)();
@@ -2327,7 +2327,8 @@ sgtk_sigchld_callback (void)
 {
     /* XXX I'm hoping that this is safe to call from a signal handler... */
 
-    gtk_main_quit ();
+    if (gtk_main_level () > 0)
+	gtk_main_quit ();
 }
 
 
