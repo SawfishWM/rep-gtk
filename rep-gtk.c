@@ -549,7 +549,6 @@ typedef struct _sgtk_object_proxy {
   struct sgtk_protshell *protects;
   int traced_refs;
   struct _sgtk_object_proxy *next;
-  struct _sgtk_object_proxy **prevp;
 } sgtk_object_proxy;
 
 /* The list of all existing proxies. */
@@ -664,8 +663,6 @@ gtkobj_free (repv obj)
 
   forget_proxy (proxy->obj);
   gtk_object_unref (proxy->obj);
-  if ((*proxy->prevp = proxy->next) != 0)
-    proxy->next->prevp = proxy->prevp;
   sgtk_move_prots_to_global (proxy->protects);
   rep_FREE_CELL ((char *)proxy);
 }
@@ -754,8 +751,12 @@ gtkobj_marker_hook (void)
 	  fprintf (stderr, "hooking %p %s\n",
 		   proxy->obj, gtk_type_name (GTK_OBJECT_TYPE (proxy->obj)));
 #endif
-	  sgtk_mark_protects (proxy->protects);
+	  /* mark the proxy itself */
+	  rep_MARKVAL (rep_VAL (proxy));
 	}
+      /* always mark the protected objects, since they're moved to
+         the global_protects list if the object is freed */
+      sgtk_mark_protects (proxy->protects);
       proxy->traced_refs = 0;
     }
   sgtk_mark_protects (global_protects);
@@ -783,9 +784,6 @@ make_gtkobj (GtkObject *obj)
 
   proxy->car = tc16_gtkobj;
   enter_proxy (obj, rep_VAL(proxy));
-
-  sgtk_protect (rep_VAL(proxy),
-		rep_VAL(proxy));	/* this one is never removed */
 
   return rep_VAL(proxy);
 }
