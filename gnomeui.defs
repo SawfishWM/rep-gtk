@@ -574,12 +574,14 @@
 
 ;; GnomeDialog
 
-(define-object GnomeDialog (GtkWindow))
+(define-object GnomeDialog (GtkWindow)
+  (fields
+   (GtkWidget vbox)))
 
 (define-func gnome_dialog_newv
   GtkWidget
   ((string title)
-   ((tvec string) buttons))
+   ((tvec GnomeStockButtonNameType) buttons))
   (scm-name "gnome-dialog-new"))
 
 (define-func gnome_dialog_set_parent
@@ -635,24 +637,24 @@
 (define-func gnome_dialog_append_button
   none
   ((GnomeDialog d)
-   (string name)))
+   (GnomeStockButtonNameType name)))
 
 (define-func gnome_dialog_append_buttonsv
   none
   ((GnomeDialog d)
-   ((tvec string) buttons))
+   ((tvec GnomeStockButtonNameType) buttons))
   (scm-name "gnome-dialog-append-buttons"))
 
 (define-func gnome_dialog_append_button_with_pixmap
   none
   ((GnomeDialog d)
-   (string name)
+   (GnomeStockButtonNameType name)
    (string pixmap)))
 
 (define-func gnome_dialog_append_buttons_with_pixmaps
   none
   ((GnomeDialog d)
-   ((tvec string) names)
+   ((tvec GnomeStockButtonNameType) names)
    ((tvec string) pixmaps)))
 
 
@@ -1148,6 +1150,91 @@
   (trash-full GNOME_STOCK_MENU_TRASH_FULL)
   ;; This is an alias for Quit for now.
   (exit GNOME_STOCK_MENU_QUIT))
+
+(define-string-enum GnomeStockPixmapNameType
+  (new GNOME_STOCK_PIXMAP_NEW)
+  (open GNOME_STOCK_PIXMAP_OPEN)
+  (close GNOME_STOCK_PIXMAP_CLOSE)
+  (revert GNOME_STOCK_PIXMAP_REVERT)
+  (save GNOME_STOCK_PIXMAP_SAVE)
+  (save-as GNOME_STOCK_PIXMAP_SAVE_AS)
+  (cut GNOME_STOCK_PIXMAP_CUT)
+  (copy GNOME_STOCK_PIXMAP_COPY)
+  (paste GNOME_STOCK_PIXMAP_PASTE)
+  (clear GNOME_STOCK_PIXMAP_CLEAR)
+  (properties GNOME_STOCK_PIXMAP_PROPERTIES)
+  (preferences GNOME_STOCK_PIXMAP_PREFERENCES)
+  (help GNOME_STOCK_PIXMAP_HELP)
+  (scores GNOME_STOCK_PIXMAP_SCORES)
+  (print GNOME_STOCK_PIXMAP_PRINT)
+  (search GNOME_STOCK_PIXMAP_SEARCH)
+  (search/Replace GNOME_STOCK_PIXMAP_SRCHRPL)
+  (back GNOME_STOCK_PIXMAP_BACK)
+  (forward GNOME_STOCK_PIXMAP_FORWARD)
+  (first GNOME_STOCK_PIXMAP_FIRST)
+  (last GNOME_STOCK_PIXMAP_LAST)
+  (home GNOME_STOCK_PIXMAP_HOME)
+  (stop GNOME_STOCK_PIXMAP_STOP)
+  (refresh GNOME_STOCK_PIXMAP_REFRESH)
+  (undo GNOME_STOCK_PIXMAP_UNDO)
+  (redo GNOME_STOCK_PIXMAP_REDO)
+  (timer GNOME_STOCK_PIXMAP_TIMER)
+  (timer-stopped GNOME_STOCK_PIXMAP_TIMER_STOP)
+  (mail GNOME_STOCK_PIXMAP_MAIL	)
+  (receive-mail GNOME_STOCK_PIXMAP_MAIL_RCV)
+  (send-mail GNOME_STOCK_PIXMAP_MAIL_SND)
+  (reply-to-mail GNOME_STOCK_PIXMAP_MAIL_RPL)
+  (forward-mail GNOME_STOCK_PIXMAP_MAIL_FWD)
+  (new-mail GNOME_STOCK_PIXMAP_MAIL_NEW)
+  (trash GNOME_STOCK_PIXMAP_TRASH)
+  (trash-full GNOME_STOCK_PIXMAP_TRASH_FULL)
+  (undelete GNOME_STOCK_PIXMAP_UNDELETE)
+  (spellchecker GNOME_STOCK_PIXMAP_SPELLCHECK)
+  (microphone GNOME_STOCK_PIXMAP_MIC)
+  (line-in GNOME_STOCK_PIXMAP_LINE_IN)
+  (cdrom GNOME_STOCK_PIXMAP_CDROM)
+  (volume GNOME_STOCK_PIXMAP_VOLUME)
+  (midi GNOME_STOCK_PIXMAP_MIDI)
+  (book-red GNOME_STOCK_PIXMAP_BOOK_RED)
+  (book-green GNOME_STOCK_PIXMAP_BOOK_GREEN)
+  (book-blue GNOME_STOCK_PIXMAP_BOOK_BLUE)
+  (book-yellow GNOME_STOCK_PIXMAP_BOOK_YELLOW)
+  (book-open GNOME_STOCK_PIXMAP_BOOK_OPEN)
+  (about GNOME_STOCK_PIXMAP_ABOUT)
+  (quit GNOME_STOCK_PIXMAP_QUIT)
+  (exit GNOME_STOCK_PIXMAP_QUIT)
+  (multiple GNOME_STOCK_PIXMAP_MULTIPLE)
+  (not GNOME_STOCK_PIXMAP_NOT)
+  (convert GNOME_STOCK_PIXMAP_CONVERT)
+  (jump-to GNOME_STOCK_PIXMAP_JUMP_TO)
+  (up GNOME_STOCK_PIXMAP_UP)
+  (down GNOME_STOCK_PIXMAP_DOWN)
+  (top GNOME_STOCK_PIXMAP_TOP)
+  (bottom GNOME_STOCK_PIXMAP_BOTTOM)
+  (attach GNOME_STOCK_PIXMAP_ATTACH)
+  (index GNOME_STOCK_PIXMAP_INDEX)
+  (font GNOME_STOCK_PIXMAP_FONT)
+  (exec GNOME_STOCK_PIXMAP_EXEC)
+  (left GNOME_STOCK_PIXMAP_ALIGN_LEFT)
+  (right GNOME_STOCK_PIXMAP_ALIGN_RIGHT)
+  (center GNOME_STOCK_PIXMAP_ALIGN_CENTER)
+  (justify GNOME_STOCK_PIXMAP_ALIGN_JUSTIFY)
+  (bold GNOME_STOCK_PIXMAP_TEXT_BOLD)
+  (italic GNOME_STOCK_PIXMAP_TEXT_ITALIC)
+  (underline GNOME_STOCK_PIXMAP_TEXT_UNDERLINE)
+  (strikeout GNOME_STOCK_PIXMAP_TEXT_STRIKEOUT)
+  (text-indent GNOME_STOCK_PIXMAP_TEXT_INDENT)
+  (text-unindent GNOME_STOCK_PIXMAP_TEXT_UNINDENT)
+  (color-select GNOME_STOCK_PIXMAP_COLORSELECTOR)
+  (add GNOME_STOCK_PIXMAP_ADD)
+  (remove GNOME_STOCK_PIXMAP_REMOVE)
+  (table-borders GNOME_STOCK_PIXMAP_TABLE_BORDERS)
+  (table-fill GNOME_STOCK_PIXMAP_TABLE_FILL)
+  (text-bulleted-list GNOME_STOCK_PIXMAP_TEXT_BULLETED_LIST)
+  (text-numbered-list GNOME_STOCK_PIXMAP_TEXT_NUMBERED_LIST)
+  (regular GNOME_STOCK_PIXMAP_REGULAR)
+  (disabled GNOME_STOCK_PIXMAP_DISABLED)
+  (focused GNOME_STOCK_PIXMAP_FOCUSED))
 
 (define-func gnome_stock_pixmap_widget
   GtkWidget
