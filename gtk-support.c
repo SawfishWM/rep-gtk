@@ -445,3 +445,14 @@ gdk_window_xid (GdkWindow *win)
     GdkWindowPrivate *pri = (GdkWindowPrivate *)win;
     return pri->xwindow;
 }
+
+
+
+repv
+sgtk_gtk_widget_get_allocation (GtkWidget *w)
+{
+    return Fcons (Fcons (rep_MAKE_INT (w->allocation.x),
+			 rep_MAKE_INT (w->allocation.y)),
+		  Fcons (rep_MAKE_INT (w->allocation.width),
+			 rep_MAKE_INT (w->allocation.height)));
+}
