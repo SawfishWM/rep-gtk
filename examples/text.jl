@@ -10,7 +10,7 @@ exec rep --batch "$0" "$@"
        (view (gtk-text-view-new))
        (buffer (gtk-text-view-get-buffer view)))
   (gtk-text-buffer-set-text buffer "Hello, this is some text" -1)
-  (gtk-signal-connect window "delete_event" (lambda () (throw 'quit 0)))
+  (g-signal-connect window "delete_event" (lambda () (throw 'quit 0)))
   (gtk-container-add window view)
   (gtk-window-set-default-size window 300 200)
   (gtk-widget-show-all window)

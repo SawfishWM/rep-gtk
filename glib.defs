@@ -7,6 +7,21 @@
 ;; g-object-new, g-object-set, g-object-get, g-object-list etc are
 ;; hand implemented in rep-gtk.c
 
+(define-func g_signal_connect_closure
+  int
+  ((GObject object)
+   (string name)
+   (gclosure func)
+   (bool after (= "0")))
+  (scm-name "g-signal-connect")
+  (protection object))
+
+(define-func g_signal_handler_disconnect
+  none
+  ((GObject object)
+   (int id))
+  (scm-name "g-signal-disconnect"))
+
 ;; Options
 
 (options

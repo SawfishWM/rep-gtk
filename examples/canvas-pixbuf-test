@@ -24,7 +24,7 @@ exec rep "$0" "$@"
 (gtk-container-add window canvas)
 (gtk-widget-show-all window)
 
-(gtk-signal-connect window "delete_event" (lambda () (throw 'quit 0)))
+(g-signal-connect window "delete_event" (lambda () (throw 'quit 0)))
 
 (setq interrupt-mode 'exit)
 (recursive-edit)

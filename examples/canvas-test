@@ -44,7 +44,7 @@ exec rep "$0" "$@"
   (gnome-app-set-contents app frame)
   (gtk-widget-show-all app)
 
-  (gtk-signal-connect app "delete_event" (lambda () (throw 'quit 0)))
+  (g-signal-connect app "delete_event" (lambda () (throw 'quit 0)))
 
   (setq interrupt-mode 'exit)
   (recursive-edit))

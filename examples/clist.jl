@@ -14,7 +14,7 @@ exec rep --batch "$0" "$@"
   (gtk-container-add scrolled-window clist)
   (gtk-scrolled-window-set-policy scrolled-window 'automatic 'automatic)
   (gtk-window-set-default-size window 400 200)
-  (gtk-signal-connect
+  (g-signal-connect
    window "delete_event"
    #'(lambda (w) (if (gtk-standalone-p)
 		     (throw 'quit 0)
@@ -39,9 +39,9 @@ exec rep --batch "$0" "$@"
       (gtk-clist-set-column-auto-resize clist i t)
       (setq i (1+ i))))
 
-  (gtk-signal-connect clist "select_row" #'(lambda args
-					     (format standard-error
-						     "select: %S\n" args)))
+  (g-signal-connect clist "select_row" #'(lambda args
+					   (format standard-error
+						   "select: %S\n" args)))
 
   (gtk-widget-show-all window)
   (when (gtk-standalone-p)

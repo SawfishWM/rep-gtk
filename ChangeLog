@@ -1,3 +1,13 @@
+2002-04-01  John Harper  <jsh@unfactored.org>
+
+	* gtk.defs, glib.defs (g-signal-connect, g-signal-disconnect):
+	moved to glib.defs file, take GObject arg, and named g-foo not
+	gtk-foo
+
+	* examples/text.jl, examples/hello.jl, examples/gnome-test,
+	examples/clist.jl, examples/canvas-test,
+	examples/canvas-pixbuf-test: changed for signal functions
+
 2002-03-31  John Harper  <jsh@unfactored.org>
 
 	* configure.in: don't use gnome-config to check if gnome is

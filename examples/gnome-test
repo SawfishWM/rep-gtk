@@ -10,7 +10,7 @@ exec rep "$0" "$@"
 	   "Testing" "0.0" "(C) 2000 John Harper"
 	   '("John Harper (john@dcs.warwick.ac.uk)" "Marius Vollmer")
 	   "This is a test!")))
-  (gtk-signal-connect req "destroy" gtk-main-quit)
+  (g-signal-connect req "destroy" gtk-main-quit)
   (gtk-widget-show req)
   (gtk-main))
 
