@@ -295,11 +295,6 @@
 
 ;; GnomeCanvasGroup
 
-(define-func gnome_canvas_group_child_bounds
-  none
-  ((GnomeCanvasGroup group)
-   (GnomeCanvasItem item)))
-
 
 ;; gnome-canvas-util
 
