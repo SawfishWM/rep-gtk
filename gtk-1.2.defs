@@ -1244,16 +1244,6 @@
    (string wmclass_class)
    (string wmclass_name)))
 
-(define-func gtk_window_set_focus
-  none
-  ((GtkWindow window)
-   (GtkWidget focus)))
-
-(define-func gtk_window_set_default
-  none
-  ((GtkWindow window)
-   (GtkWidget default)))
-
 (define-func gtk_window_set_policy
   none
   ((GtkWindow window)
@@ -1261,17 +1251,22 @@
    (bool allow_grow)
    (bool auto_shrink)))
 
-;;(define-func gtk_window_add_accelerator_table
-;;  none
-;;  ((GtkWindow window)
-;;   (GtkAcceleratorTable table)))
+(define-func gtk_window_set_default
+  none
+  ((GtkWindow window)
+   (GtkWidget default)))
 
-;;(define-func gtk_window_remove_accelerator_table
-;;  none
-;;  ((GtkWindow window)
-;;   (GtkAcceleratorTable table)))
+(define-func gtk_window_add_accel_group
+  none
+  ((GtkWindow window)
+   (GtkAccelGroup accel_gruop)))
 
-(define-func gtk_window_position
+(define-func gtk_window_remove_accel_group
+  none
+  ((GtkWindow window)
+   (GtkAccelGroup accel_group)))
+
+(define-func gtk_window_set_position
   none
   ((GtkWindow window)
    (GtkWindowPosition position)))
@@ -1284,6 +1279,29 @@
   int
   ((GtkWindow window)))
 
+(define-func gtk_window_set_transient_for
+  none
+  ((GtkWindow window)
+   (GtkWindow parent)))
+
+(define-func gtk_window_set_default_size
+  none
+  ((GtkWindow window)
+   (int width)
+   (int height)))
+
+;; XXX gtk_window_set_geometry_hints
+
+(define-func gtk_window_set_modal
+  none
+  ((GtkWindow window)
+   (bool modal)))
+
+;; XXX marked as internal
+(define-func gtk_window_set_focus
+  none
+  ((GtkWindow window)
+   (GtkWidget focus)))
 
 ;;; HandleBox
 
