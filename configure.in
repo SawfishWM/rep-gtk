@@ -64,7 +64,7 @@ AC_ARG_WITH(gnome,
  [  --with-gnome            Build GNOME wrappers
   --without-gnome         Don't wrap GNOME], [], [with_gnome=no])
 if test "$with_gnome" != "no"; then
-  GNOME_VERSION="`gnome-config --version`"
+  GNOME_VERSION="`pkg-config --modversion libgnome-2.0`"
   if test $? -eq 0; then
     dnl XXX FIXME properly
     GNOME_LIBS="`pkg-config --libs libgnome-2.0`"
@@ -77,7 +77,7 @@ if test "$with_gnome" != "no"; then
     OUT="$OUT gtk-2/gnome-lib.la gtk-2/gnome-ui.la gtk-2/gnome-canvas.la"
     with_gnome=yes
   elif test "$with_gnome" = "yes"; then
-    AC_MSG_ERROR([can't run gnome-config]);
+    AC_MSG_ERROR([can't run pkg-config]);
   else
     with_gnome=no
   fi

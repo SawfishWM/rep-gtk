@@ -1,3 +1,8 @@
+2002-03-31  John Harper  <jsh@unfactored.org>
+
+	* configure.in: don't use gnome-config to check if gnome is
+	installed or not, use "pkg-config libgnome-2.0"
+
 2002-03-14  John Harper  <jsh@pixelslut.com>
 
 	* rep-gtk.c (sgtk_build_args, Fg_object_new, Fg_object_get,
