@@ -49,7 +49,7 @@ install : all installdirs
 	$(rep_DL_INSTALL) $(OUT) $(repexecdir)
 
 installdirs : $(top_srcdir)/mkinstalldirs
-        $(SHELL) $(top_srcdir)/mkinstalldirs $(repexecdir)
+	$(SHELL) $(top_srcdir)/mkinstalldirs $(repexecdir)
 
 uninstall :
 	$(rep_DL_UNINSTALL) $(repexecdir)/$(OUT)
