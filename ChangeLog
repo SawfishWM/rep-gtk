@@ -1,4 +1,12 @@
+2000-07-06  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk.defs (gtk_clist_select_row, gtk_clist_unselect_row):
+	column parameters default to zero
+
 2000-07-05  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk.defs (gtk_window_position): reinstated this pseudonym for
+	gtk_window_set_position
 
 	* examples/canvas-test: connected `delete_event' signal
 
