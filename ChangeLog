@@ -1,3 +1,11 @@
+1999-11-10  John Harper  <john@dcs.warwick.ac.uk>
+
+	* configure.in: require rep 0.8+ (lexical scope), bump rep-gtk
+	version to 0.6
+
+	* build-gtk.jl (output-field-accessors): fixed for lexical
+	scoping
+
 1999-10-29  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gtk-1.2.defs (gtk_widget_lock_accelerators,
