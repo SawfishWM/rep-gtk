@@ -890,16 +890,16 @@
     (output-function (list (intern (format nil "%s_%s" cdatatype cfieldname))
 			   type (list (list datatype 'obj)))
 		     output
-		     `(lambda (output)
-			(@ "  cr_ret = c_obj->%s;\n" ,cfieldname)))
+		     #'(lambda (output)
+			 (@ "  cr_ret = c_obj->%s;\n" cfieldname)))
     (when settable
       (output-function (list (intern (format nil "%s_%s_set"
 					     cdatatype cfieldname))
 			     'none (list (list datatype 'obj)
 					 (list type 'data)))
 		       output
-		       `(lambda (output)
-			  (@ "  c_obj->%s = c_data;\n" ,cfieldname))))))
+		       #'(lambda (output)
+			   (@ "  c_obj->%s = c_data;\n" cfieldname))))))
 
 (defun output-type-predicate (type output)
   (let*
