@@ -94,6 +94,14 @@ if test "$with_libglade" = "yes" -a "$with_gnome" = "yes"; then
     GNOME_LIBGLADE_LIBS=`$LIBGLADE_CONFIG --libs gnome`
     AC_SUBST(GNOME_LIBGLADE_LIBS)
     AC_SUBST(GNOME_LIBGLADE_CFLAGS)
+    AC_MSG_CHECKING([whether <glade/glade-xml.h> has "txtdomain" field])
+    _cppflags=${CPPFLAGS}
+    CPPFLAGS="${CPPFLAGS} ${LIBGLADE_CFLAGS}"
+    AC_EGREP_HEADER([char \*txtdomain;], [glade/glade-xml.h],
+		    [AC_MSG_RESULT(yes)
+		     AC_DEFINE(LIBGLADE_XML_TXTDOMAIN,1)],
+		    [AC_MSG_RESULT(no)])
+    CPPFLAGS="${_cppflags}"
     OUT="$OUT libglade-gnome.la"
   else
     AC_MSG_ERROR([libglade wasn't compiled with GNOME support])
