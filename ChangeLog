@@ -1,3 +1,7 @@
+2000-02-23  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (sgtk_event_loop): fix the idle handling
+
 2000-02-13  John Harper  <john@dcs.warwick.ac.uk>
 
 	* build-gtk.jl: support `in', `out' and `inout' modes for
