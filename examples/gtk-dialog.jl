@@ -17,19 +17,19 @@
 	    (gtk-window-position window gtk-dialog-position)
 	    (gtk-container-border-width window 6)
 	    (gtk-signal-connect window "delete_event"
-				#'(lambda ()
-				   (throw 'exit nil)))
+				(lambda ()
+				  (throw 'exit nil)))
 	    (gtk-container-add window vbox)
 	    (gtk-box-pack-start vbox label)
 	    (gtk-box-pack-end vbox bbox)
-	    (mapc #'(lambda (cell)
-		      (let
-			  ((button (gtk-button-new-with-label (car cell))))
-			(GTK-WIDGET-SET-FLAGS button '(can-default))
-			(gtk-box-pack-start bbox button nil nil)
-			(gtk-signal-connect button "clicked"
-					    `(lambda ()
-					       (throw 'exit ',(cdr cell))))))
+	    (mapc (lambda (cell)
+		    (let
+			((button (gtk-button-new-with-label (car cell))))
+		      (GTK-WIDGET-SET-FLAGS button '(can-default))
+		      (gtk-box-pack-start bbox button nil nil)
+		      (gtk-signal-connect button "clicked"
+					  (lambda ()
+					    (throw 'exit (cdr cell))))))
 		  buttons)
 	    (gtk-widget-show-all window)
 	    (gtk-main))
@@ -41,7 +41,8 @@
 (defun yes-or-no-p (question)
   (gtk-dialog question '("Yes" . t) '("No" . nil)))
 
-(fset 'y-or-n-p (symbol-function 'yes-or-no-p))
+(defun y-or-n-p (q)
+  (yes-or-no-p q))
 
 (defun map-y-or-n-p (question inputs callback)
   (let
@@ -51,7 +52,7 @@
 			 (let*
 			     ((q (if (stringp question)
 				     (format nil question (car inputs))
-				   (funcall question (car inputs))))
+				   (question (car inputs))))
 			      (a (gtk-dialog q
 					     '("Yes" . t) '("No" . nil)
 					     '("Yes to all" . all-t)
@@ -59,12 +60,12 @@
 			   (cond ((or (eq a 'all-t) (eq a 'quit))
 				  (throw 'map a))
 				 (a
-				  (funcall callback (car inputs)))
+				  (callback (car inputs)))
 				 (t
 				  (setq all-t nil)))
 			   (setq inputs (cdr inputs))))))
       ;; User answered with "!", so loop over all remaining inputs
       (while inputs
-	(funcall callback (car inputs))
+	(callback (car inputs))
 	(setq inputs (cdr inputs))))
     all-t))
