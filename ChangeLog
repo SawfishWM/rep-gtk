@@ -2,6 +2,7 @@
 
 	* rep-gtk.c (timeout_callback): set timed_out even if not going
 	to break out of gtk-main
+	(set_timeout): only create timeout if one doesn't already exist
 
 2000-03-06  John Harper  <john@dcs.warwick.ac.uk>
 
