@@ -26,6 +26,7 @@
 ;; Todo:
 ;;  * doesn't check for `listable' type-property
 ;;  * guile-gtk `struct' and `ptype' types
+;;  * not possible to wrap functions returning vector types
 
 ;; WARNING: This makes some pretty gruesome assumptions. [where?]
 
@@ -180,7 +181,7 @@
 	  (when def
 	    (or (consp def) (error "Definition isn't a list"))
 	    (cond
-	     ((eq (car def) 'import)
+	     ((memq (car def) '(include import))
 	      (let
 		  ((file (open-file (expand-file-name (nth 1 def)
 						      (file-name-directory
@@ -188,8 +189,10 @@
 				    'read)))
 		(or file (error "Can't open input file: %s" (nth 1 def)))
 		(unwind-protect
-		    (let
-			((gtk-importing t))
+		    (if (eq (car def) 'import)
+			(let
+			    ((gtk-importing t))
+			  (parse-gtk file))
 		      (parse-gtk file))
 		  (close-file file))))
 	     ((eq (car def) 'define-enum)
@@ -249,6 +252,8 @@
 		  (if cell
 		      (rplacd cell (nthcdr 2 def))
 		    (setq gtk-functions (cons (cdr def) gtk-functions))))))
+	     ((eq (car def) 'define-type)
+	      (eval def))
 	     ((eq (car def) 'options)
 	      (unless gtk-importing
 		(mapc (lambda (cell)
@@ -399,15 +404,16 @@
 	    (@ "};\n\n"))) gtk-objects))
 
 (defun output-type-info (output)
-  (@ "\f\n/* Vector of all type information */\n\n")
-  (@ "static sgtk_type_info *_type_infos[] = {\n")
-  (mapc (lambda (lst)
-	  (mapc (lambda (type)
-		  (@ "  (sgtk_type_info*)&sgtk_%s_info,\n"
-		     (gtk-canonical-name (symbol-name (car type)))))
-		lst))
-	(list gtk-enums gtk-flags gtk-boxed gtk-objects))
-  (@ "  NULL\n};\n\n"))
+  (when (or gtk-enums gtk-flags gtk-boxed gtk-objects)
+    (@ "\f\n/* Vector of all type information */\n\n")
+    (@ "static sgtk_type_info *_type_infos[] = {\n")
+    (mapc (lambda (lst)
+	    (mapc (lambda (type)
+		    (@ "  (sgtk_type_info*)&sgtk_%s_info,\n"
+		       (gtk-canonical-name (symbol-name (car type)))))
+		  lst))
+	  (list gtk-enums gtk-flags gtk-boxed gtk-objects))
+    (@ "  NULL\n};\n\n")))
 
 (defun output-functions (output)
   (@ "\f\n/* Defuns */\n\n")
@@ -431,7 +437,8 @@
     (@ "      done = 1;\n")
     (mapc (lambda (func)
 	    (@ "      %s ();\n" func)) other-inits)
-    (@ "      sgtk_register_type_infos (_type_infos);\n")
+    (when (or gtk-enums gtk-flags gtk-boxed gtk-objects)
+      (@ "      sgtk_register_type_infos (_type_infos);\n"))
     (mapc (lambda (cname)
 	    (@ "      rep_ADD_SUBR(S%s);\n" cname)) (nreverse gtk-subrs))
     (@ "    \}\n\}\n")))
@@ -602,13 +609,22 @@
 (defun output-rep-to-full-callback (output type rep-var typage options)
   (let
       ((protect (gtk-get-option 'protection options)))
-    (if (and (not (eq protect t))
-	     (not (eq protect nil)))
-	(@ "sgtk_protect \(p_%s, %s\)" protect rep-var)
-      (@ "sgtk_protect \(Qt, %s\)" rep-var))))
+    (cond ((eq protect '*result*)
+	   (@ "sgtk_new_protect \(%s\)" rep-var))
+	  ((and (not (eq protect t))
+		(not (eq protect nil)))
+	   (@ "sgtk_protect \(p_%s, %s\)" protect rep-var))
+	  (t
+	   (@ "sgtk_protect \(Qt, %s\)" rep-var)))))
 
 (defun output-full-callback-args (output type var options)
   (@ "0, sgtk_callback_marshal, (gpointer)%s, sgtk_callback_destroy" var))
+
+(defun output-full-callback-finish (output type g-var r-var options)
+  (let
+      ((protect (gtk-get-option 'protection options)))
+    (when (eq protect '*result*)
+      (@ "  sgtk_set_protect \(pr_ret, %s\);\n" g-var))))
 
 (defun output-rep-to-cvec (output type rep-var typage)
   (let*
@@ -625,8 +641,15 @@
 	 (format nil "_sgtk_helper_fromrep_%s" inner-type))
        decl)))
 
-(defun output-cvec-to-rep ()
-  (error "output-rep-to-cvec is unimplemented"))
+(defun output-cvec-to-rep (output type gtk-var typage)
+  (let*
+      ((outer-type (gtk-outer-type type))
+       (inner-type (gtk-inner-type type))
+       (inner-typage (gtk-type-info inner-type))
+       (decl (gtk-type-decl inner-type inner-typage)))
+    (output-helper inner-type standard-output)
+    (@ "sgtk_cvec_to_rep \(&%s, _sgtk_helper_torep_copy_%s, sizeof \(%s\)\)"
+       gtk-var inner-type decl)))
 
 (defun output-cvec-pred (output type rep-var typage)
   (let*
@@ -634,7 +657,7 @@
        (inner-type (gtk-inner-type type))
        (inner-typage (gtk-type-info inner-type)))
     (output-helper inner-type standard-output)
-    (cond ((memq outer-type '(cvec cvecr list slist))
+    (cond ((memq outer-type '(cvec cvecr list slist tvec))
 	   ;; XXX assumes `in' or `inout' types
 	   (@ "sgtk_valid_composite \(%s, _sgtk_helper_valid_%s\)"
 	      rep-var inner-type))
@@ -662,9 +685,7 @@
 	   (@ "%s.count, \(%s*\) %s.vec" var decl var))
 	  ((eq outer-type 'cvecr)
 	   (@ "\(%s*\) %s.vec, %s.count" decl var var))
-	  ((eq outer-type 'fvec)
-	   (@ "\(%s*\) %s.vec" decl var))
-	  ((eq outer-type 'ret)
+	  ((memq outer-type '(fvec ret tvec))
 	   (@ "\(%s*\) %s.vec" decl var))
 	  (t
 	   (gtk-warning "Don't know how to pass type %s" type)))))
@@ -746,7 +767,8 @@
 
     ;; output any gc roots required
     (mapc (lambda (arg)
-	    (when (gtk-type-prop (gtk-arg-type arg) 'finish)
+	    (when (or (gtk-get-arg-options 'protect-during arg)
+		      (gtk-type-prop (gtk-arg-type arg) 'finish))
 	      (@ "  rep_GC_root gc_%s;\n" (gtk-arg-name arg)))) args)
 
     ;; output arg/ret decls
@@ -828,7 +850,8 @@
 
     ;; initialise gc roots
     (mapc (lambda (arg)
-	    (when (gtk-type-prop (gtk-arg-type arg) 'finish)
+	    (when (or (gtk-get-arg-options 'protect-during arg)
+		      (gtk-type-prop (gtk-arg-type arg) 'finish))
 	      (@ "  rep_PUSHGC \(gc_%s, p_%s\);\n"
 		 (gtk-arg-name arg) (gtk-arg-name arg)))) args)
 
@@ -882,19 +905,7 @@
 	  (setq tem (cdr tem))))
       (@ "\);\n\n"))
 
-    ;; output `finish' options
-    (mapc (lambda (arg)
-	    (let
-		((opt (gtk-type-prop (gtk-arg-type arg) 'finish)))
-	      (when opt
-		(if (functionp opt)
-		    (funcall opt output (gtk-arg-type arg)
-			     (concat "c_" (gtk-arg-name arg))
-			     (concat "p_" (gtk-arg-name arg))
-			     options)
-		  (gtk-warning "finish function %s undefined" opt))))) args)
-
-    ;; output ret conversion & return
+    ;; output ret conversion
     (unless (eq ret 'none)
       (let*
 	  ((typage (gtk-type-info ret))
@@ -909,9 +920,22 @@
 		"Don't know how to convert %s to repv" ret)))
 	(@ ";\n")))
 
+    ;; output `finish' options
+    (mapc (lambda (arg)
+	    (let
+		((opt (gtk-type-prop (gtk-arg-type arg) 'finish)))
+	      (when opt
+		(if (functionp opt)
+		    (funcall opt output (gtk-arg-type arg)
+			     (concat "c_" (gtk-arg-name arg))
+			     (concat "p_" (gtk-arg-name arg))
+			     options)
+		  (gtk-warning "finish function %s undefined" opt))))) args)
+
     ;; pop gc roots
     (mapc (lambda (arg)
-	    (when (gtk-type-prop (gtk-arg-type arg) 'finish)
+	    (when (or (gtk-get-arg-options 'protect-during arg)
+		      (gtk-type-prop (gtk-arg-type arg) 'finish))
 	      (@ "  rep_POPGC;\n"
 		 (gtk-arg-name arg) (gtk-arg-name arg)))) args)
 
@@ -1106,7 +1130,7 @@
 	     output-boxed-to-rep output-boxed-pred '(listable . t))
 
 (define-type 'pointer "gpointer" "sgtk_rep_to_pointer"
-	     "sgtk_pointer_to_rep" "sgtk_pointerp")
+	     "sgtk_pointer_to_rep" "sgtk_valid_pointer")
 
 (define-type 'object output-complex-type output-rep-to-object
 	     output-object-to-rep output-object-pred '(listable . t))
@@ -1115,9 +1139,11 @@
 	     "sgtk_static_string_to_rep" nil '(listable . t))
 
 (define-type 'full-callback "sgtk_protshell*" output-rep-to-full-callback nil
-	     "sgtk_valid_function" (cons 'c2args output-full-callback-args))
+	     "sgtk_valid_function" (cons 'c2args output-full-callback-args)
+	     (cons 'finish output-full-callback-finish))
 
-(define-type 'file-descriptor "int" "sgtk_rep_to_fd" nil "sgtk_valid_fd")
+(define-type 'file-descriptor "int" "sgtk_rep_to_fd"
+	     "sgtk_fd_to_rep" "sgtk_valid_fd")
 
 (define-type 'list "GList*" output-rep-to-list output-list-to-rep
 	     output-cvec-pred (cons 'finish output-list-finish))
@@ -1137,12 +1163,16 @@
 	     output-cvec-pred (cons 'finish output-cvec-finish)
 	     (cons 'c2args output-cvec-args))
 
+(define-type 'tvec "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep
+	     output-cvec-pred (cons 'finish output-cvec-finish)
+	     (cons 'c2args output-cvec-args))
+
 (define-type 'ret "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep
 	     output-cvec-pred (cons 'finish output-cvec-finish)
 	     (cons 'c2args output-cvec-args))
 
-;;(define-type 'double "gdouble" "sgtk_rep_to_double"
-;;	     "sgtk_double_to_rep" "sgtk_doublep")
+(define-type 'double "gdouble" "sgtk_rep_to_double"
+	     "sgtk_double_to_rep" "sgtk_valid_double")
 
 (define-type 'point "GdkPoint" "sgtk_rep_to_point"
 	     "sgtk_point_to_rep" "sgtk_valid_point")
