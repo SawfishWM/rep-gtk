@@ -1666,6 +1666,10 @@ sgtk_rep_to_ret (GtkArg *a, repv obj)
    the Gtk documentation.  They do not, however, receive the GtkObject
    that has initiated the callback.
 
+   [ actually, they do receive the GtkObject. For rep, there are no
+     closures, so without the invoking object it's usually necessary
+     to build ad hoc closures through backquoting..  --jsh ]
+
    When callback_trampoline is non-#f, we treat it as a procedure and
    call it as
 
@@ -1676,11 +1680,8 @@ sgtk_rep_to_ret (GtkArg *a, repv obj)
 
 static repv callback_trampoline;
 
-/* The SCM_PROC for gtk-callback-trampoline is in gtk-support.c to
-   have it be snarfed for sgtk_init_support */
-
-repv
-sgtk_callback_trampoline (repv new)
+DEFUN ("gtk-callback-trampoline", Fgtk_callback_trampoline,
+       Sgtk_callback_trampoline, (repv new), rep_Subr1)
 {
   repv old = rep_CAR (callback_trampoline);
   if (new != Qnil)
@@ -1712,16 +1713,17 @@ sgtk_callback_marshal (GtkObject *obj,
   for (i = n_args - 1; i >= 0; i--)
     real_args = Fcons (sgtk_arg_to_rep (args + i, 0), real_args);
 
+  real_args = Fcons (sgtk_wrap_gtkobj (obj), real_args);
+
   if (rep_CAR(callback_trampoline) == Qnil)
     ans = rep_funcall ((repv)data, real_args, rep_FALSE);
   else
     ans = rep_funcall (rep_CAR(callback_trampoline),
 		       Fcons ((repv)data, Fcons (real_args, Qnil)), rep_FALSE);
 
-  if (rep_INTERRUPTP)
-    gtk_main_quit ();
+  sgtk_callback_postfix ();
 
-  if (args[n_args].type != GTK_TYPE_NONE)
+  if (ans && args[n_args].type != GTK_TYPE_NONE)
     sgtk_rep_to_ret (args + n_args, ans);
 }
 
@@ -2187,27 +2189,90 @@ sgtk_signal_emit (GtkObject *obj, char *name, repv scm_args)
    XXX really need to add all _previously_ registered rep inputs
    XXX on initialisation.. */
 
-static int registered_input_tags [FD_SETSIZE];
+/* The input_tags table hashes fds to gdk tags; the input_callbacks
+   table hashes fds to rep callback function. These should be a single
+   table really.. */
+static GHashTable *input_tags, *input_callbacks;
+
+static void
+sgtk_input_callback (gpointer data, gint fd, GdkInputCondition cond)
+{
+    void (*func)(int fd) = g_hash_table_lookup (input_callbacks,
+						(gpointer) fd);
+    if (func != 0)
+	(*func) (fd);
+    sgtk_callback_postfix ();
+}
 
 static void
 sgtk_register_input_fd (int fd, void (*callback)(int fd))
 {
     if (callback != 0)
     {
-	registered_input_tags[fd] = gdk_input_add (fd, GDK_INPUT_READ,
-						   (GdkInputFunction)callback,
-						   (gpointer)fd);
+	int tag;
+	if (input_tags == 0)
+	{
+	    input_tags = g_hash_table_new ((GHashFunc) gpointer_hash,
+					   (GCompareFunc) gpointer_compare);
+	    input_callbacks = g_hash_table_new ((GHashFunc) gpointer_hash,
+						(GCompareFunc) gpointer_compare);
+	}
+	tag = gdk_input_add (fd, GDK_INPUT_READ,
+			     (GdkInputFunction) sgtk_input_callback, 0);
+	g_hash_table_insert (input_tags, (gpointer) fd, (gpointer) tag);
+	g_hash_table_insert (input_callbacks,
+			     (gpointer) fd, (gpointer) callback);
     }
 }
 
 static void
 sgtk_deregister_input_fd (int fd)
 {
-    if (registered_input_tags[fd] != 0)
+    if (input_tags != 0)
     {
-	gdk_input_remove (registered_input_tags[fd]);
-	registered_input_tags[fd] = 0;
+	int tag = (int) g_hash_table_lookup (input_tags, (gpointer) fd);
+	gdk_input_remove (tag);
+	g_hash_table_remove (input_tags, (gpointer) fd);
+	g_hash_table_remove (input_callbacks, (gpointer) fd);
     }
+}
+
+/* Mimic the rep idle stuff (every second) using a timeout that is reset
+   after each callback/event. */
+static int idle_timeout_set = 0, idle_timeout_counter = 0, idle_timeout_tag;
+
+static gint
+idle_timeout_callback (gpointer data)
+{
+    idle_timeout_counter++;
+    rep_on_idle (idle_timeout_counter);
+    if (rep_INTERRUPTP)
+	gtk_main_quit ();
+    else if (rep_redisplay_fun != 0)
+	(*rep_redisplay_fun)();
+    return 1;
+}
+
+static void
+reset_idle_timeout (void)
+{
+    if (idle_timeout_set)
+	gtk_timeout_remove (idle_timeout_tag);
+    else
+	idle_timeout_counter = 0;
+    idle_timeout_tag = gtk_timeout_add (1000, idle_timeout_callback, 0);
+    idle_timeout_set = TRUE;
+}
+
+/* Call this after executing any callbacks that could invoke Lisp code */
+void
+sgtk_callback_postfix (void)
+{
+    if (rep_INTERRUPTP)
+	gtk_main_quit ();
+    else if (rep_redisplay_fun != 0)
+	(*rep_redisplay_fun)();
+    reset_idle_timeout ();
 }
 
 static repv
@@ -2218,13 +2283,16 @@ sgtk_event_loop (void)
 	if (rep_redisplay_fun != 0)
 	    (*rep_redisplay_fun)();
 
+	reset_idle_timeout ();
 	gtk_main ();
+
+	rep_proc_periodically ();
 
 	/* Check for exceptional conditions. */
 	if(rep_throw_value != rep_NULL)
 	{
 	    repv result;
-	    if(rep_handle_input_exception(&result))
+	    if(rep_handle_input_exception (&result))
 		return result;
 	}
 
@@ -2234,6 +2302,13 @@ sgtk_event_loop (void)
 	alloca(0);
 #endif
     }
+}
+
+static void
+sgtk_sigchld_callback (void)
+{
+    /* XXX I'm hoping that this is safe to call from a signal handler... */
+    gtk_main_quit ();
 }
 
 
@@ -2254,10 +2329,10 @@ sgtk_is_standalone ()
   return standalone_p;
 }
 
-repv
-sgtk_standalone_p ()
+DEFUN ("gtk-standalone-p", Fgtk_standalone_p,
+       Sgtk_standalone_p, (void), rep_Subr0)
 {
-  return standalone_p? Qt : Qnil;
+  return standalone_p ? Qt : Qnil;
 }
 
 DEFSYM (gtk_major_version, "gtk-major-version");
@@ -2287,10 +2362,13 @@ sgtk_init_substrate (void)
   rep_register_input_fd_fun = sgtk_register_input_fd;
   rep_deregister_input_fd_fun = sgtk_deregister_input_fd;
   rep_event_loop_fun = sgtk_event_loop;
+  rep_sigchld_fun = sgtk_sigchld_callback;
 
   /* Need this in case sit-for is called. */
   rep_register_input_fd (ConnectionNumber (gdk_display), 0);
 
+  rep_ADD_SUBR (Sgtk_callback_trampoline);
+  rep_ADD_SUBR (Sgtk_standalone_p);
   rep_INTERN (gtk_major_version);
   rep_INTERN (gtk_minor_version);
   rep_INTERN (gtk_micro_version);
@@ -2298,7 +2376,6 @@ sgtk_init_substrate (void)
   rep_SYM (Qgtk_major_version)->value = rep_MAKE_INT (GTK_MAJOR_VERSION);
   rep_SYM (Qgtk_minor_version)->value = rep_MAKE_INT (GTK_MINOR_VERSION);
   rep_SYM (Qgtk_micro_version)->value = rep_MAKE_INT (GTK_MICRO_VERSION);
-  Fprovide (Qgtk);
 }
 
 static int sgtk_inited = 0;
@@ -2311,10 +2388,16 @@ sgtk_init_with_args (int *argcp, char ***argvp)
 
   /* XXX - Initialize Gtk only once.  We assume that Gtk has already
      been initialized when Gdk has.  That is not completely correct,
-     but the best I can do. */
+     but the best I can do.
+
+     Actually it shouldn't matter, gtk_init () won't initialise more
+     than once.. --jsh */
 
   if (gdk_display == NULL)
     gtk_init (argcp, argvp);
+  else
+    standalone_p = 0;			/* a reasonable assumption? --jsh */
+
   sgtk_init_substrate ();
   sgtk_inited = 1;
 }
@@ -2390,7 +2473,9 @@ sgtk_init ()
 
 /* DL hooks */
 
-void
+repv rep_dl_feature;
+
+repv
 rep_dl_init (void)
 {
   rep_xsubr **x;
@@ -2400,5 +2485,6 @@ rep_dl_init (void)
   for (x = sgtk_subrs; *x != 0; x++)
       rep_add_subr (*x);
 
+  rep_dl_feature = Qgtk;
   return Qt;
 }
