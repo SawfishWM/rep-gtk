@@ -2094,10 +2094,13 @@ DEFUN ("gtk-standalone-p", Fgtk_standalone_p,
 DEFSYM (gtk_major_version, "gtk-major-version");
 DEFSYM (gtk_minor_version, "gtk-minor-version");
 DEFSYM (gtk_micro_version, "gtk-micro-version");
+DEFSYM (rep_gtk_version, "rep-gtk-version");
 
 static void
 sgtk_init_substrate (void)
 {
+  DEFSTRING (ver, REP_GTK_VERSION);
+
   tc16_gtkobj = rep_register_new_type ("gtk-object", 0,
 				       gtkobj_print, gtkobj_print,
 				       gtkobj_sweep, gtkobj_mark,
@@ -2134,9 +2137,15 @@ sgtk_init_substrate (void)
   rep_INTERN (gtk_major_version);
   rep_INTERN (gtk_minor_version);
   rep_INTERN (gtk_micro_version);
+  rep_INTERN (rep_gtk_version);
   Fset (Qgtk_major_version, rep_MAKE_INT (GTK_MAJOR_VERSION));
   Fset (Qgtk_minor_version, rep_MAKE_INT (GTK_MINOR_VERSION));
   Fset (Qgtk_micro_version, rep_MAKE_INT (GTK_MICRO_VERSION));
+  Fset (Qrep_gtk_version, rep_VAL (&ver));
+  Fexport_bindings (rep_list_4 (Qgtk_major_version,
+				Qgtk_minor_version,
+				Qgtk_micro_version,
+				Qrep_gtk_version));
 }
 
 static int sgtk_inited = 0;
@@ -2250,7 +2259,11 @@ extern void sgtk_init_gtk_gtk_glue (void);
 repv
 rep_dl_init (void)
 {
-  repv tem = rep_push_structure ("gtk");
+  repv tem = rep_push_structure ("gui.gtk.gtk");
+  /* ::alias:gui.gtk gui.gtk.gtk::
+     ::alias:gtk gui.gtk.gtk:: */
+  rep_alias_structure ("gui.gtk");
+  rep_alias_structure ("gtk");
   sgtk_init_gtk_gtk_glue ();
   return rep_pop_structure (tem);
 }
