@@ -1,3 +1,7 @@
+1999-08-31  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.3G
+
 1999-08-29  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gtk-1.2.defs (GtkCheckMenuItem): changed type of `active'
