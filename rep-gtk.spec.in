@@ -34,12 +34,13 @@ hierarchies. These hierarchies may be created by the GLADE GUI builder.
 %package gnome
 Summary: GNOME binding for librep
 Group: Development/Languages
-Requires: %{nam}, gnome-libs
+Requires: %{nam}, gnome-libs, libglade
 
 %description gnome
 This is a binding of the various GNOME libraries for the librep Lisp
 interpreter. It include support for the basic GNOME functions, the
-GNOME user interface widgets, and the GNOME Canvas architecture.
+GNOME user interface widgets, the GNOME Canvas architecture, and the
+GNOME version of libglade.
 
 %prep
 %setup
@@ -76,6 +77,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc gnome*.defs examples/gnome-test examples/canvas-test
 %{_prefix}/libexec/rep/%{_host}/gnome*.so*
 %{_prefix}/libexec/rep/%{_host}/gnome*.la
+%{_prefix}/libexec/rep/%{_host}/libglade-gnome.so*
+%{_prefix}/libexec/rep/%{_host}/libglade-gnome.la
 
 %changelog
 * Fri Sep 17 1999 John Harper <john@dcs.warwick.ac.uk>
