@@ -1,3 +1,18 @@
+2000-04-16  John Harper  <john@dcs.warwick.ac.uk>
+
+	Added support for using libglade with GNOME widgets
+
+	* libglade-support.c (GLADE_INIT_FUNC): macro naming the
+	function to call to initialize libglade, defaults to glade_init
+
+	* configure.in, Makefile.in: if wrapping both GNOME and
+	libglade, build an extra module `libglade-gnome' which is
+	exactly the same as `libglade' but linked against the GNOME
+	libs and calls glade_gnome_init () instead of glade_init ()
+
+	* examples/test-libglade: pass `--gnome' option to use GNOME
+	version of libglade wrappers
+
 2000-04-14  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gtk-1.2.defs (GtkAccelGroup): new boxed type
