@@ -1,5 +1,8 @@
 1999-03-23  John Harper  <john@dcs.warwick.ac.uk>
 
+	* build-gtk.jl (output-type-predicate): outputs type
+	predicates, TYPE-p for each boxed or object type
+
 	* rep-gtk.c (sgtk_callback_marshal): pass the object invoking
 	the callback as the first argument to the function
 	(Fgtk_callback_trampoline): now a Lisp DEFUN
