@@ -296,12 +296,23 @@
        (c-feature (and feature (gtk-unhyphenate-name (symbol-name feature))))
        (init (gtk-get-option 'init-func gtk-options)))
     (when feature
-      (@ "\nDEFSYM \(%s, \"%s\"\);\n" c-feature feature)
+      (@ "\n#if rep_INTERFACE >= 9\n")
+      (@ "DEFSYM \(%s, \"%s\"\);\n" c-feature feature)
+      (@ "#endif\n")
       (@ "\nrepv\nrep_dl_init \(void\)\n{\n")
+      (@ "#if rep_INTERFACE >= 9\n")
+      (@ "  repv s = rep_push_structure \(\"%s\"\);\n" c-feature)
+      (@ "#else\n")
       (@ "  rep_INTERN \(%s\);\n" c-feature)
+      (@ "#endif\n")
       (when init
-	(@ "  %s \(\);\n" init))
-      (@ "  return Q%s;\n}\n" c-feature))))
+	(@ "\n  %s \(\);\n\n" init))
+      (@ "#if rep_INTERFACE >= 9\n")
+      (@ "  return rep_pop_structure \(s\);\n")
+      (@ "#else\n")
+      (@ "  return Q%s;\n" c-feature)
+      (@ "#endif\n")
+      (@ "}\n"))))
 
 (defun output-imported-enums (output)
   (when gtk-imported-enums
