@@ -1,3 +1,7 @@
+2000-07-24  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.spec.in: updated
+
 2000-07-23  John Harper  <john@dcs.warwick.ac.uk>
 
 	Changed the module hierarchy, now:
