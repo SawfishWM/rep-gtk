@@ -28,10 +28,6 @@
 #include <rep.h>
 #include <gtk/gtk.h>
 
-#ifndef rep_INTERFACE
-# define rep_INTERFACE 7
-#endif
-
 typedef struct _sgtk_type_info {
   char *name;
   GtkType type;

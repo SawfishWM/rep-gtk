@@ -2094,7 +2094,6 @@ DEFUN ("gtk-standalone-p", Fgtk_standalone_p,
 DEFSYM (gtk_major_version, "gtk-major-version");
 DEFSYM (gtk_minor_version, "gtk-minor-version");
 DEFSYM (gtk_micro_version, "gtk-micro-version");
-DEFSYM (gtk, "gtk");
 
 static void
 sgtk_init_substrate (void)
@@ -2135,7 +2134,6 @@ sgtk_init_substrate (void)
   rep_INTERN (gtk_major_version);
   rep_INTERN (gtk_minor_version);
   rep_INTERN (gtk_micro_version);
-  rep_INTERN (gtk);
   Fset (Qgtk_major_version, rep_MAKE_INT (GTK_MAJOR_VERSION));
   Fset (Qgtk_minor_version, rep_MAKE_INT (GTK_MINOR_VERSION));
   Fset (Qgtk_micro_version, rep_MAKE_INT (GTK_MICRO_VERSION));
@@ -2252,17 +2250,9 @@ extern void sgtk_init_gtk_gtk_glue (void);
 repv
 rep_dl_init (void)
 {
-#if rep_INTERFACE >= 9
   repv tem = rep_push_structure ("gtk");
-#endif
-
   sgtk_init_gtk_gtk_glue ();
-
-#if rep_INTERFACE >= 9
   return rep_pop_structure (tem);
-#else
-  return Qgtk;
-#endif
 }
 
 /* This is required mainly since other dls may try to unregister

@@ -26,8 +26,6 @@
 #include "rep-libglade.h"
 #include <string.h>
 
-DEFSYM(libglade, "libglade");
-
 #ifndef GLADE_INIT_FUNC
 # define GLADE_INIT_FUNC glade_init
 #endif
@@ -116,16 +114,7 @@ rep_dl_init (void)
     if (tem == 0 || atoi (tem) == 0)
 	GLADE_INIT_FUNC ();
 
-#if rep_INTERFACE >= 9
     s = rep_push_structure ("libglade");
-#endif
-
     sgtk_init_gtk_libglade_glue ();
-
-#if rep_INTERFACE >= 9
     return rep_pop_structure (s);
-#else
-    rep_INTERN(libglade);
-    return Qlibglade;
-#endif
 }
