@@ -7,7 +7,7 @@ Summary: GTK+ binding for librep Lisp environment
 Name: %{nam}
 Version: %{ver}
 Release: %{rel}
-Requires: librep >= 0.10, gtk+ >= 1.2
+Requires: librep >= 0.11, gtk+ >= 1.2
 Copyright: GPL
 Group: Development/Languages
 Source: ftp.dcs.warwick.ac.uk:/people/John.Harper/librep/rep-gtk-%{ver}.tar.gz
@@ -30,6 +30,16 @@ This is a binding of libglade for the librep Lisp interpreter. libglade
 allows applications to dynamically load XML descriptions of GTK+ widget
 hierarchies. These hierarchies may be created by the GLADE GUI builder.
 
+%package gnome
+Summary: GNOME binding for librep
+Group: Development/Languages
+Requires: %{nam}, gnome-libs
+
+%description gnome
+This is a binding of the various GNOME libraries for the librep Lisp
+interpreter. It include support for the basic GNOME functions, the
+GNOME user interface widgets, and the GNOME Canvas architecture.
+
 %prep
 %setup
 
@@ -48,15 +58,23 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 %doc README README.guile-gtk ChangeLog gtk-1.2.defs gdk-1.2.defs
-%{_prefix}/libexec/rep/%{_host}/libgtk.so*
-%{_prefix}/libexec/rep/%{_host}/libgtk.la
+%{_prefix}/libexec/rep/%{_host}/sgtk-types.so*
+%{_prefix}/libexec/rep/%{_host}/sgtk-types.la
+%{_prefix}/libexec/rep/%{_host}/gtk.so*
+%{_prefix}/libexec/rep/%{_host}/gtk.la
 
 %files libglade
 %defattr(-,root,root)
 %doc libglade.defs examples/test-libglade examples/simple.glade
 %doc examples/rep-ui examples/rep-ui.glade
-%{_prefix}/libexec/rep/%{_host}/liblibglade.so*
-%{_prefix}/libexec/rep/%{_host}/liblibglade.la
+%{_prefix}/libexec/rep/%{_host}/libglade.so*
+%{_prefix}/libexec/rep/%{_host}/libglade.la
+
+%files gnome
+%defattr(-,root,root)
+%doc gnome*.defs examples/gnome-test examples/canvas-test
+%{_prefix}/libexec/rep/%{_host}/gnome*.so*
+%{_prefix}/libexec/rep/%{_host}/gnome*.la
 
 %changelog
 * Fri Sep 17 1999 John Harper <john@dcs.warwick.ac.uk>
