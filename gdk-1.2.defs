@@ -462,6 +462,14 @@
   none
   ())
 
+(define-func gdk_screen_width
+  int
+  ())
+
+(define-func gdk_screen_height
+  int
+  ())
+
 ;; Color
 
 ;; XXX lots missing
