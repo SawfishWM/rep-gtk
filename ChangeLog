@@ -1,3 +1,9 @@
+1999-12-15  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk-support.c (gdk_event_visibility_state): removed //
+	comment (pointed out by Daniel Burrows
+	<Daniel_Burrows@brown.edu>)
+
 1999-12-06  John Harper  <john@dcs.warwick.ac.uk>
 
 	* Makefile.in: include LDFLAGS when linking (from Ralf Fassel
