@@ -24,7 +24,7 @@ AC_INIT(rep-gtk.h)
 AC_CONFIG_HEADER(config.h)
 
 dnl Release versioning info
-version="0.8"
+version="0.9"
 
 OUT="sgtk-types.la gtk.la"
 AC_SUBST(OUT)
