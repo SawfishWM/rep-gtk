@@ -1,3 +1,13 @@
+1999-11-30  John Harper  <john@dcs.warwick.ac.uk>
+
+	* build-gtk.jl: make separate glue for each set of definitions
+
+	* rep-gtk.c (rep_dl_init): just call sgtk_init_gtk_gtk_glue ()
+	instead of initialising everything manually
+
+	* rep-gtk.c (sgtk_init_with_args): not running stand-a-lone if
+	rep_recurse_depth >= 0, not < 0 (why did this work before?)
+
 1999-11-28  John Harper  <john@dcs.warwick.ac.uk>
 
 	* version 0.6
