@@ -1,3 +1,8 @@
+2000-06-18  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c: various cleanups to help 64-bit targets, from
+	George Lebl <jirka@5z.com>
+
 2000-06-16  John Harper  <john@dcs.warwick.ac.uk>
 
 	* version 0.11
