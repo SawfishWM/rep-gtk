@@ -4,18 +4,8 @@
 
 (define-object GObject ())
 
-;(define-func sgtk_g_object_set_property
-;  none
-;  ((GObject object)
-;   (string property_name)
-;   (SCM value))
-;  (scm-name "g-object-set-property"))
-
-;(define-func sgtk_g_object_get_property
-;  SCM
-;  ((GObject object)
-;   (string property_name))
-;  (scm-name "g-object-get-property"))
+;; g-object-new, g-object-set, g-object-get, g-object-list etc are
+;; hand implemented in rep-gtk.c
 
 ;; Options
 

@@ -1,3 +1,16 @@
+2002-03-14  John Harper  <jsh@pixelslut.com>
+
+	* rep-gtk.c (sgtk_build_args, Fg_object_new, Fg_object_get,
+	Fg_object_list): made this stuff actually work! g-object-list
+	is a new function, it lists all properties of an object.
+	g-object-new and g-object-set have a new calling format:
+
+	(g-object-new TYPE PROP1 VALUE1 PROP2 VALUE2 ...)
+	(g-object-set OBJECT PROP1 VALUE1 PROP2 VALUE2 ...)
+
+	* rep-gtk.c (sgtk_gvalue_to_rep): gracefully handle GValue's
+	containing null pointers (return Qnil instead of crashing)
+
 2002-03-13  jacob berkman  <jacob@ximian.com>
 
 	* rep-gtk.c (sgtk_try_missing_type): add GtkTextIter (from jsh,

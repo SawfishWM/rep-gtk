@@ -7,3 +7,5 @@ TODO
 
  * support the `define-struct' and `define-ptype' defs
 
+ * add/fix support for implementing new GObject classes in lisp
+
