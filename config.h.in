@@ -19,3 +19,10 @@
 #undef LIBGLADE_XML_TXTDOMAIN
 
 #undef REP_GTK_VERSION
+
+/* Define if you have the <locale.h> header file.  */
+#undef HAVE_LOCALE_H
+
+/* Define if you have the setlocale function.  */
+#undef HAVE_SETLOCALE
+

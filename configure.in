@@ -153,6 +153,10 @@ LIBS="$GTK_LIBS $saved_LIBS"
 AC_CHECK_FUNCS(gdk_color_copy gtk_widget_peek_colormap gtk_type_get_info gtk_signal_set_class_function_full)
 LIBS="$saved_LIBS"
 
+dnl locale checks
+AC_CHECK_FUNCS(setlocale)
+AC_CHECK_HEADERS(locale.h)
+
 dnl Nonstandard exported symbols
 AC_SUBST(version)
 AC_SUBST(repexecdir)
