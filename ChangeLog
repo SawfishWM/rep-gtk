@@ -1,5 +1,7 @@
 2000-08-03  John Harper  <john@dcs.warwick.ac.uk>
 
+	* gtk.defs (gtk_menu_get_attach_widget): added missing arg-name
+
 	* autogen.sh: added
 
 2000-07-24  John Harper  <john@dcs.warwick.ac.uk>
