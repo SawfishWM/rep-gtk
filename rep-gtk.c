@@ -929,7 +929,7 @@ sgtk_rep_to_flags (repv obj, sgtk_enum_info *info)
 {
   int ans = 0;
 
-  while (obj != Qnil)
+  while (rep_CONSP(obj) && !rep_INTERRUPTP)
     {
       int i;
       repv sym = rep_CAR (obj);
@@ -942,6 +942,7 @@ sgtk_rep_to_flags (repv obj, sgtk_enum_info *info)
 	    break;
 	  }
       obj = rep_CDR (obj);
+      rep_TEST_INT;
     }
   
   return ans;
