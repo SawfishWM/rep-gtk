@@ -32,7 +32,8 @@ where each ATTR is one of:
 
       where each FIELD is (TYPE-SYM NAME-SYM OPTIONS...)
       each OPTION may be `(setter t)' denoting that the field
-      is settable
+      is settable. Also `(getter FUNCTION-NAME)' defining a custom
+      method of retrieving the value
 
 
 

@@ -313,6 +313,8 @@ void gtk_color_selection_set_color_interp (GtkColorSelection *sel, GdkColor *col
 GdkColor *gtk_color_selection_get_color_interp (GtkColorSelection *sel);
 extern void gtk_widget_draw_interp (GtkWidget *widget);
 
+repv sgtk_gtk_widget_get_allocation (GtkWidget *w);
+
 extern rep_xsubr *sgtk_subrs[];
 extern sgtk_type_info *sgtk_type_infos[];
 

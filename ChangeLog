@@ -1,3 +1,17 @@
+2000-02-29  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk-compat.c (menu_popup_position): ensure that the chosen
+	position always leaves the menu totally on-screen (using code
+	borrowed from gtk/gtkmenu.c)
+
+	* gdk-1.2.defs: added gdk_screen_width and gdk_screen_height
+	functions
+
+	* gtk-1.2.defs: added field `allocation' to GtkWidget
+	* gtk-support.c (sgtk_gtk_widget_get_allocation): new function
+
+	* build-gtk.jl: new option in object fields, (getter FUNCTION)
+
 2000-02-27  John Harper  <john@dcs.warwick.ac.uk>
 
 	* Makefile.in: don't link against REP_LIBS, it's not necessary
