@@ -1,3 +1,7 @@
+2000-09-20  John Harper  <john@dcs.warwick.ac.uk>
+
+	* configure.in: version 0.14
+
 2000-09-18  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (sgtk_init_with_args): after calling gtk_set_locale
