@@ -760,6 +760,18 @@
   ((GtkWidget widget)
    (GtkDirectionType direction)))
 
+(define-func gtk_widget_set_size_request
+  none
+  ((GtkWidget widget)
+   (int width)
+   (int height)))
+
+(define-func gtk_widget_get_size_request
+  none
+  ((GtkWidget widget)
+   ((ret int) width)
+   ((ret int) height)))
+
 (define-func gtk_widget_set_events
   none
   ((GtkWidget widget)

@@ -1,3 +1,8 @@
+2002-11-03  John Harper  <jsh@unfactored.org>
+
+	* gtk.defs (gtk_widget_set_size_request,
+	gtk_widget_get_size_request): added these two functions
+
 2002-10-24  John Harper  <jsh@unfactored.org>
 
 	* examples/text.jl, examples/hello.jl, examples/clist.jl:
