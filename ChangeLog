@@ -1,3 +1,8 @@
+2002-10-24  John Harper  <jsh@unfactored.org>
+
+	* gdk.defs (GdkSelection): cast items to integers to avoid
+	generating compiler errors on IRIX
+
 2002-07-11  John Harper  <jsh@unfactored.org>
 
 	* gtk-compat.c (gtk_color_selection_set_color_interp,

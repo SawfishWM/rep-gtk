@@ -188,8 +188,9 @@
   (join-style GDK_GC_JOIN_STYLE))
 
 (define-enum GdkSelection
-  (primary GDK_SELECTION_PRIMARY)
-  (secondary GDK_SELECTION_SECONDARY))
+  ;; FIXME: these are atoms (pointers) not integers
+  (primary "(int) GDK_SELECTION_PRIMARY")
+  (secondary "(int) GDK_SELECTION_SECONDARY"))
 
 (define-enum GdkPropertyState
   (new-value GDK_PROPERTY_NEW_VALUE)
