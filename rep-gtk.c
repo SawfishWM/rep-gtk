@@ -685,7 +685,7 @@ sgtk_wrap_gobj (GObject *obj)
 }
 
 int
-sgtk_is_a_gobj (guint type, repv obj)
+sgtk_is_a_gobj (GType type, repv obj)
 {
   if (!GOBJP (obj) || !G_IS_OBJECT (GOBJ_PROXY(obj)->obj))
     {
@@ -711,7 +711,7 @@ repv sgtk_wrap_gtkobj (GtkObject *obj)
   return sgtk_wrap_gobj (G_OBJECT (obj));
 }
 
-int sgtk_is_a_gtkobj (guint type, repv obj)
+int sgtk_is_a_gtkobj (GType type, repv obj)
 {
   return sgtk_is_a_gobj (type, obj) && GTK_IS_OBJECT (GOBJ_PROXY (obj)->obj);
 }
@@ -1921,7 +1921,6 @@ DEFUN("g-object-set", Fg_object_set, Sg_object_set, (repv scm_args), rep_SubrN)
   int n_args, i;
   GParameter *args;
   GObject *obj;
-  GObjectClass *objclass;
 
   if (!rep_CONSP (scm_args))
     return rep_signal_missing_arg (1);
@@ -1983,7 +1982,6 @@ DEFUN ("g-object-list", Fg_object_list,
   GObject *obj;
   GParamSpec **props;
   int nprops;
-  GValue value = {0,};
 
   rep_DECLARE (1, scm_obj, GOBJP(scm_obj));
 

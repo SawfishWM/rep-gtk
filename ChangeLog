@@ -1,3 +1,8 @@
+2003-02-12  John Harper  <jsh@unfactored.org>
+
+	* rep-gtk.h, rep-gtk.c: changed guint's to GTypes. Adapted from
+	a patch by Aron Griffis <agriffis@gentoo.org> in #105848
+
 2002-11-09  John Harper  <jsh@unfactored.org>
 
 	* configure.in: version 0.17

@@ -105,12 +105,12 @@ int sgtk_rep_to_fd (repv obj);
 repv sgtk_fd_to_rep (int fd);
 
 repv sgtk_wrap_gobj (GObject *obj);
-int sgtk_is_a_gobj (guint type, repv obj);
+int sgtk_is_a_gobj (GType type, repv obj);
 GObject *sgtk_get_gobj (repv obj);
 
 /* compatibility */
 repv sgtk_wrap_gtkobj (GtkObject *obj);
-int sgtk_is_a_gtkobj (guint type, repv obj);
+int sgtk_is_a_gtkobj (GType type, repv obj);
 GtkObject *sgtk_get_gtkobj (repv obj);
 
 int sgtk_valid_enum (repv obj, sgtk_enum_info*);
