@@ -25,6 +25,7 @@ INSTALL=@INSTALL@
 INSTALL_DATA=@INSTALL_DATA@
 INSTALL_PROGRAM=@INSTALL_PROGRAM@
 
+DESTDIR=
 installdir=$(repexecdir)
 
 top_srcdir=@top_srcdir@
@@ -48,13 +49,13 @@ build-gtk.jlc : build-gtk.jl
 	rep --batch -l compiler -f compile-batch $<
 
 install : all installdirs
-	$(rep_DL_INSTALL) $(OUT) $(installdir)
+	$(rep_DL_INSTALL) $(OUT) $(DESTDIR)$(installdir)
 
 installdirs : $(top_srcdir)/mkinstalldirs
-	$(SHELL) $(top_srcdir)/mkinstalldirs $(installdir)
+	$(SHELL) $(top_srcdir)/mkinstalldirs $(DESTDIR)$(installdir)
 
 uninstall :
-	$(rep_DL_UNINSTALL) $(installdir)/$(OUT)
+	$(rep_DL_UNINSTALL) $(DESTDIR)$(installdir)/$(OUT)
 
 clean :
 	rm -f *.defs.jl gtk-glue.c *~ core *.jlc *.o *.lo *.la
