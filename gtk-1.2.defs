@@ -375,7 +375,8 @@
   (fields
    (GtkStyle style)
    (GdkWindow window)
-   (GtkWidget parent)))
+   (GtkWidget parent)
+   (SCM allocation (getter sgtk_gtk_widget_get_allocation))))
 
 (define-func gtk_grab_add
   none
