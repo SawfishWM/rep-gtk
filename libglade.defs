@@ -5,7 +5,7 @@
 (define-object GladeXML (GtkData)
   (fields
    (string filename)
-   (string textdomain)))
+   (string textdomain (getter sgtk_glade_xml_textdomain))))
 
 (define-func glade_xml_new
   GladeXML
