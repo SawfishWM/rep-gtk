@@ -9,14 +9,13 @@ OUT  = libgtk.la
 version=@version@
 version_major=@version_major@
 version_minor=@version_minor@
-rep_version=@rep_version@
+host_type=@host@
 SHELL=/bin/sh
 
 repexecdir=@repexecdir@
-host_type=@host@
+include $(repexecdir)/rules.mk
 
 CC=@CC@
-LIBTOOL=@LIBTOOL@
 CPPFLAGS=-DHAVE_CONFIG_H -I. @CPPFLAGS@
 CFLAGS=@GTK_CFLAGS@ @CFLAGS@
 LDFLAGS=@LDFLAGS@
@@ -31,15 +30,10 @@ VPATH=@top_srcdir@:.
 
 .PHONY: clean realclean install
 
-# Rule for libtool controlled C objects
-%.lo : %.c
-	$(LIBTOOL) $(CC) -c $(CPPFLAGS) $(CFLAGS) $<
-
 all : $(OUT)
 
 $(OUT) : $(OBJS)
-	$(LIBTOOL) gcc -export-dynamic $(CPPFLAGS) $(CFLAGS) -o $@ $^ \
-	  $(LIBS) -rpath $(repexecdir)
+	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LIBS)
 
 gtk-glue.c : gtk-1.2.defs.jl gdk-1.2.defs.jl build-gtk.jlc
 	rep --batch -l build-gtk -f build-gtk-batch $< $@
@@ -51,10 +45,10 @@ build-gtk.jlc : build-gtk.jl
 	rep --batch -l compiler -f compile-batch $<
 
 install : all
-	$(LIBTOOL) $(INSTALL) $(OUT) $(repexecdir)
+	$(rep_DL_INSTALL) $(OUT) $(repexecdir)
 
 uninstall :
-	$(LIBTOOL) rm $(repexecdir)/$(OUT)
+	$(rep_DL_UNINSTALL) $(repexecdir) $(OUT)
 
 clean :
 	rm -f *.defs.jl gtk-glue.c *~ core *.jlc *.o *.lo *.la
