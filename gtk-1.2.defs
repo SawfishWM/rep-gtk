@@ -344,8 +344,8 @@
   ((GtkObject object)
    (string name)
    (full-callback func)
-   (bool object_signal (= "0"))
-   (bool after (= "0")))
+   (bool object_signal)
+   (bool after))
   (scm-name "gtk-signal-connect")
   (protection object))
 
@@ -1238,16 +1238,16 @@
   none
   ((GtkBox box)
    (GtkWidget child)
-   (bool expand (= "TRUE"))
-   (bool fill (= "TRUE"))
+   (bool expand)
+   (bool fill)
    (int padding (= "0"))))
 
 (define-func gtk_box_pack_end
   none
   ((GtkBox box)
    (GtkWidget child)
-   (bool expand (= "TRUE"))
-   (bool fill (= "TRUE"))
+   (bool expand)
+   (bool fill)
    (int padding (= "0"))))
 
 (define-func gtk_box_pack_start_defaults
@@ -1667,6 +1667,16 @@
 (define-func gtk_label_get_interp
   static_string
   ((GtkLabel label)))
+
+(define-func gtk_label_set_justify
+  none
+  ((GtkLabel label)
+   (GtkJustification jtype)))
+
+(define-func gtk_label_set_line_wrap
+  none
+  ((GtkLabel label)
+   (bool wrap)))
 
 ;;;;
 
