@@ -46,11 +46,13 @@ make install \
 rm -rf $RPM_BUILD_ROOT
 
 %files
+%defattr(-,root,root)
 %doc README README.guile-gtk ChangeLog gtk-1.2.defs gdk-1.2.defs
 %{_prefix}/libexec/rep/%{_host}/libgtk.so*
 %{_prefix}/libexec/rep/%{_host}/libgtk.la
 
 %files libglade
+%defattr(-,root,root)
 %doc libglade.defs examples/test-libglade examples/simple.glade
 %doc examples/rep-ui examples/rep-ui.glade
 %{_prefix}/libexec/rep/%{_host}/liblibglade.so*
