@@ -1,3 +1,9 @@
+1999-04-18  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (reset_idle_timeout): always reset
+	idle_timeout_counter to zero, not just when there's no timeout
+	already set
+
 1999-03-28  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (idle_timeout_callback): ensure that the first time
