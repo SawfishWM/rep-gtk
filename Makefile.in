@@ -25,6 +25,7 @@ INSTALL=@INSTALL@
 INSTALL_DATA=@INSTALL_DATA@
 INSTALL_PROGRAM=@INSTALL_PROGRAM@
 
+top_srcdir=@top_srcdir@
 top_builddir=.
 VPATH=@top_srcdir@:.
 
@@ -44,8 +45,11 @@ gtk-glue.c : gtk-1.2.defs.jl gdk-1.2.defs.jl build-gtk.jlc
 build-gtk.jlc : build-gtk.jl
 	rep --batch -l compiler -f compile-batch $<
 
-install : all
+install : all installdirs
 	$(rep_DL_INSTALL) $(OUT) $(repexecdir)
+
+installdirs : $(top_srcdir)/mkinstalldirs
+        $(SHELL) $(top_srcdir)/mkinstalldirs $(repexecdir)
 
 uninstall :
 	$(rep_DL_UNINSTALL) $(repexecdir)/$(OUT)
