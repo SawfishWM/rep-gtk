@@ -1,8 +1,6 @@
-2002-06-21  Federico Mena Quintero  <federico@ximian.com>
+2002-06-21  John Harper  <jsh@unfactored.org>
 
-	Released 0.16.
-
-	* configure.in (version): Bumped version number to 0.16.
+	* configure.in: version 0.16
 
 2002-04-01  John Harper  <jsh@unfactored.org>
 

@@ -19,28 +19,25 @@ Installation
 Basically, `./configure ; make ; make install'. If you're building from
 the CVS repository, execute `aclocal ; autoconf' first.
 
-Currently it only works with GTK 1.2.
+It requires Gtk+ version 2.
+
+WARNING: The libglade and GNOME bindings are currently untested and
+probably broken since the port to Gtk2, use at your own risk.
 
 
 Usage
 =====
 
-Do `(require 'gui.gtk-2.gtk)' to load the library, then call functions
-as in guile-gtk. The only difference is that Lisp conventions are used
-for booleans, i.e. nil for #f, and non-nil for #t.
+Import the module gui.gtk-2.gtk to load the library, then call
+functions as in guile-gtk. The only difference is that Lisp conventions
+are used for booleans, i.e. nil for #f, and non-nil for #t.
 
-I changed the names of three functions:
-
-	gtk-idle-add-full => gtk-idle-add
-	gtk-container-foreach-full => gtk-container-foreach
-	gtk-signal-set-class-function-full => gtk-signal-set-class-function
+See the included *.defs files for the details of how the library maps
+to lisp functions.
 
 
 libglade
 ========
-
-Also included is a binding of James Henstridge's excellent libglade
-(http://www.daa.com.au/~james/gnome/)
 
 From the libglade README file:
 
@@ -101,3 +98,4 @@ Caveats
 
 It's still too easy to crash the Lisp interpreter through invalid use
 of GTK..
+
