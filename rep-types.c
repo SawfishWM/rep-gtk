@@ -527,7 +527,7 @@ sgtk_rep_to_cvec (repv obj, void (*fromscm)(repv, void*), size_t sz)
 	memset (res.vec, 0, res.count * sz);
     }
   /* make all vectors zero terminated, makes `tvec' easier to implement */
-  memset (res.vec + res.count * sz, 0, sz);
+  memset (((char *)res.vec) + res.count * sz, 0, sz);
   return res;
 }
 
