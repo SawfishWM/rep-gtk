@@ -195,20 +195,21 @@
   ((GnomeCanvasItem item)
    ((fvec double 6) affine)))
 
-(define-func gnome_canvas_item_scale
-  none
-  ((GnomeCanvasItem item)
-   (double x)
-   (double y)
-   (double scale_x)
-   (double scale_y)))
-
-(define-func gnome_canvas_item_rotate
-  none
-  ((GnomeCanvasItem item)
-   (double x)
-   (double y)
-   (double angle)))
+;XXX these functions have apparently gone missing
+;(define-func gnome_canvas_item_scale
+;  none
+;  ((GnomeCanvasItem item)
+;   (double x)
+;   (double y)
+;   (double scale_x)
+;   (double scale_y)))
+;
+;(define-func gnome_canvas_item_rotate
+;  none
+;  ((GnomeCanvasItem item)
+;   (double x)
+;   (double y)
+;   (double angle)))
 
 (define-func gnome_canvas_item_raise
   none
