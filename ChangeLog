@@ -1,3 +1,13 @@
+1999-12-05  John Harper  <john@dcs.warwick.ac.uk>
+
+	* version 0.7
+
+	* gtk-compat.c (gtk_widget_draw_interp): new function, calls
+	gtk_widget_draw () with a null second argument
+
+	* gtk-1.2.defs (gtk_widget_draw_interp, gtk_preview_put,
+	gtk_preview_draw_row): defined these functions
+
 1999-12-02  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c, gtk-1.2.defs, gdk-1.2.defs: i18n changes from
