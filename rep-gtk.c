@@ -2200,10 +2200,7 @@ sgtk_signal_emit (GtkObject *obj, char *name, repv scm_args)
 }
 
 
-/* Support rep input handling through gtk_main
-
-   XXX really need to add all _previously_ registered rep inputs
-   XXX on initialisation.. */
+/* Support rep input handling through gtk_main */
 
 /* The input_tags table hashes fds to gdk tags; the input_callbacks
    table hashes fds to rep callback function. These should be a single
@@ -2381,6 +2378,7 @@ sgtk_init_substrate (void)
 
   rep_register_input_fd_fun = sgtk_register_input_fd;
   rep_deregister_input_fd_fun = sgtk_deregister_input_fd;
+  rep_map_inputs (sgtk_register_input_fd);
   rep_event_loop_fun = sgtk_event_loop;
   rep_sigchld_fun = sgtk_sigchld_callback;
 
@@ -2415,7 +2413,7 @@ sgtk_init_with_args (int *argcp, char ***argvp)
 
   if (gdk_display == NULL)
     gtk_init (argcp, argvp);
-  else
+  else if (rep_recurse_depth < 0)
     standalone_p = 0;			/* a reasonable assumption? --jsh */
 
   sgtk_init_substrate ();
@@ -2507,4 +2505,20 @@ rep_dl_init (void)
 
   rep_dl_feature = Qgtk;
   return Qt;
+}
+
+/* This is required mainly since other dls may try to unregister
+   inputs as they're being deleted. */
+void
+rep_dl_kill (void)
+{
+    if (rep_register_input_fd_fun == sgtk_register_input_fd)
+	rep_register_input_fd_fun = 0;
+    if (rep_deregister_input_fd_fun == sgtk_deregister_input_fd)
+	rep_deregister_input_fd_fun = 0;
+    if (rep_event_loop_fun == sgtk_event_loop)
+	rep_event_loop_fun = 0;
+    if (rep_sigchld_fun == sgtk_sigchld_callback)
+	rep_sigchld_fun = 0;
+    rep_deregister_input_fd (ConnectionNumber (gdk_display));
 }
