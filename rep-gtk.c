@@ -81,28 +81,34 @@ forget_proxy (gpointer obj)
 
 /* Hacking the basic types --jsh */
 
+static inline int
+valid_int_type (repv obj)
+{
+    return rep_INTP (obj) || rep_LONG_INTP (obj);
+}
+
 int
 sgtk_valid_int (repv obj)
 {
-    return rep_INTP (obj);
+    return valid_int_type (obj);
 }
 
 int
 sgtk_valid_uint (repv obj)
 {
-    return rep_INTP (obj);
+    return valid_int_type (obj);
 }
 
 int
 sgtk_valid_long (repv obj)
 {
-    return rep_INTP (obj);
+    return valid_int_type (obj);
 }
 
 int
 sgtk_valid_ulong (repv obj)
 {
-    return rep_INTP (obj);
+    return valid_int_type (obj);
 }
 
 int
@@ -114,39 +120,55 @@ sgtk_valid_char (repv obj)
 repv
 sgtk_uint_to_rep (u_long x)
 {
-    assert (x <= rep_LISP_MAX_INT);
-    return rep_MAKE_INT (x);
+    if (x <= rep_LISP_MAX_INT)
+	return rep_MAKE_INT (x);
+    else
+	return rep_MAKE_LONG_INT (x);
 }
 
 repv
 sgtk_int_to_rep (long x)
 {
-    assert (x <= rep_LISP_MAX_INT && x >= rep_LISP_MIN_INT);
-    return rep_MAKE_INT (x);
+    if (x <= rep_LISP_MAX_INT && x >= rep_LISP_MIN_INT)
+	return rep_MAKE_INT (x);
+    else
+	return rep_MAKE_LONG_INT (x);
 }
 
 guint
 sgtk_rep_to_uint (repv obj)
 {
-    return rep_INT (obj);
+    if (rep_INTP (obj))
+	return rep_INT (obj);
+    else
+	return rep_LONG_INT (obj);
 }
 
 gint
 sgtk_rep_to_int (repv obj)
 {
-    return rep_INT (obj);
+    if (rep_INTP (obj))
+	return rep_INT (obj);
+    else
+	return rep_LONG_INT (obj);
 }
 
 gulong
 sgtk_rep_to_ulong (repv obj)
 {
-    return rep_INT (obj);
+    if (rep_INTP (obj))
+	return rep_INT (obj);
+    else
+	return rep_LONG_INT (obj);
 }
 
 glong
 sgtk_rep_to_long (repv obj)
 {
-    return rep_INT (obj);
+    if (rep_INTP (obj))
+	return rep_INT (obj);
+    else
+	return rep_LONG_INT (obj);
 }
 
 gchar
