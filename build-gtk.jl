@@ -19,14 +19,14 @@
 (provide 'build-gtk)
 
 ;; Notes:
-;;
+
 ;; This assumes that the `sed-fix-defs' sed script has been run over all
 ;; input files (to convert schemey things to their lispy equivalents)
-;;
+
 ;; Todo:
-;;  * make the `import' directive work as in guile-gtk?
 ;;  * doesn't check for `listable' type-property
-;;
+;;  * guile-gtk `struct' and `ptype' types
+
 ;; WARNING: This makes some pretty gruesome assumptions. [where?]
 
 
@@ -35,26 +35,31 @@
 ;; Alist of (TYPE ["C-TYPE" | DECL-FUNC] ["REP2GTK" | FROM-REP-FUNC]
 ;;           ["GTK2REP" | TO-REP-FUNC] ["PRED-NAME" | PRED-FUNC]
 ;;	     . OPTION-ALIST)
-;;
+
 ;; The required functions are called as:
-;;
+
 ;;   (DECL-FUNC TYPE TYPE-INFO)
 ;;   (FROM-REP-FUNC OUTPUT-STREAM TYPE "REP-VAR" TYPE-INFO OPTIONS)
 ;;   (TO-REP-FUNC OUTPUT-STREAM TYPE "GTK-VAR" TYPE-INFO OPTIONS)
 ;;   (PRED-FUNC OUTPUT-STREAM TYPE "REP-VAR" TYPE-INFO OPTIONS)
-;;
+
 ;; The options in the OPTION-ALIST may be:
-;;
+
 ;;   (c2args . EMIT-ARG-FUNC)
 ;;   (finish . FINISH-ARG-FUNC)
 ;;   (listable . BOOLEAN)
-;;
+
 ;; with:
-;;
+
 ;;   (EMIT-ARG-FUNC OUTPUT TYPE "GTK-VAR" OPTIONS)
 ;;   (FINISH-ARG-FUNC OUTPUT TYPE "GTK-VAR" "REP-VAR" OPTIONS)
-;;
+
 (defvar gtk-type-alist nil)
+
+(defun define-type (type c-type rep-to-gtk gtk-to-rep type-pred &rest options)
+  (setq gtk-type-alist (cons (list* type c-type rep-to-gtk
+				    gtk-to-rep type-pred options)
+			     gtk-type-alist)))
 
 
 ;; Work variables
@@ -1065,57 +1070,84 @@
 
 ;; initialisation
 
-(setq gtk-type-alist
-  (list (list 'type "GtkType" "sgtk_rep_to_type" "sgtk_type_to_rep"
-	      "sgtk_valid_type")
-	(list 'char "gchar" "sgtk_rep_to_char" "sgtk_char_to_rep"
-	      "sgtk_valid_char")
-	(list 'bool "int" "sgtk_rep_to_bool" "sgtk_bool_to_rep" nil)
-	(list 'int "gint" "sgtk_rep_to_int" "sgtk_int_to_rep"
-	      "sgtk_valid_int" '(listable . t))
-	(list 'uint "guint" "sgtk_rep_to_uint" "sgtk_uint_to_rep"
-	      "sgtk_valid_uint" '(listable . t))
-	(list 'long "glong" "sgtk_rep_to_long" "sgtk_long_to_rep"
-	      "sgtk_valid_long")
-	(list 'ulong "gulong" "sgtk_rep_to_ulong" "sgtk_ulong_to_rep"
-	      "sgtk_valid_ulong")
-	(list 'float "gfloat" "sgtk_rep_to_float" "sgtk_float_to_rep"
-	      "sgtk_valid_float")
-	(list 'string "char*" "sgtk_rep_to_string" "sgtk_string_to_rep"
-	      "sgtk_valid_string" '(listable . t))
-	(list 'enum output-complex-type output-rep-to-enum output-enum-to-rep
-	      output-enum-pred)
-	(list 'flags output-complex-type output-rep-to-flags
+(define-type 'type "GtkType" "sgtk_rep_to_type"
+	     "sgtk_type_to_rep" "sgtk_valid_type")
+
+(define-type 'char "gchar" "sgtk_rep_to_char"
+	     "sgtk_char_to_rep" "sgtk_valid_char")
+
+(define-type 'bool "int" "sgtk_rep_to_bool" "sgtk_bool_to_rep" nil)
+
+(define-type 'int "gint" "sgtk_rep_to_int" "sgtk_int_to_rep"
+	     "sgtk_valid_int" '(listable . t))
+
+(define-type 'uint "guint" "sgtk_rep_to_uint" "sgtk_uint_to_rep"
+	     "sgtk_valid_uint" '(listable . t))
+
+(define-type 'long "glong" "sgtk_rep_to_long"
+	     "sgtk_long_to_rep" "sgtk_valid_long")
+
+(define-type 'ulong "gulong" "sgtk_rep_to_ulong"
+	     "sgtk_ulong_to_rep" "sgtk_valid_ulong")
+
+(define-type 'float "gfloat" "sgtk_rep_to_float"
+	     "sgtk_float_to_rep" "sgtk_valid_float")
+
+(define-type 'string "char*" "sgtk_rep_to_string"
+	     "sgtk_string_to_rep" "sgtk_valid_string" '(listable . t))
+
+(define-type 'enum output-complex-type output-rep-to-enum
+	     output-enum-to-rep output-enum-pred)
+
+(define-type 'flags output-complex-type output-rep-to-flags
 	      output-flags-to-rep output-flags-pred)
-	(list 'boxed output-complex-type output-rep-to-boxed
-	      output-boxed-to-rep output-boxed-pred '(listable . t))
-	(list 'pointer "gpointer" "sgtk_rep_to_pointer" "sgtk_pointer_to_rep"
-	      "sgtk_pointerp")
-	(list 'object output-complex-type output-rep-to-object
-	      output-object-to-rep output-object-pred '(listable . t))
-	(list 'static_string "const char*" nil "sgtk_static_string_to_rep" nil
-	      '(listable . t))
-	(list 'full-callback "repv" output-rep-to-full-callback nil
-	      "sgtk_valid_function" (cons 'c2args output-full-callback-args))
-	(list 'file-descriptor "int" "sgtk_rep_to_fd" nil "sgtk_valid_fd")
-	(list 'list "GList*" output-rep-to-list output-list-to-rep
-	      output-cvec-pred (cons 'finish output-list-finish))
-	(list 'slist "GSList*" output-rep-to-list output-list-to-rep
-	      output-cvec-pred (cons 'finish output-list-finish))
-	(list 'cvec "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep
-	      output-cvec-pred (cons 'finish output-cvec-finish)
-	      (cons 'c2args output-cvec-args))
-	(list 'cvecr "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep
-	      output-cvec-pred (cons 'finish output-cvec-finish)
-	      (cons 'c2args output-cvec-args))
-	(list 'fvec "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep
-	      output-cvec-pred (cons 'finish output-cvec-finish)
-	      (cons 'c2args output-cvec-args))
-	(list 'ret "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep
-	      output-cvec-pred (cons 'finish output-cvec-finish)
-	      (cons 'c2args output-cvec-args))
-	;;(list 'double "gdouble" "sgtk_rep_to_double" "sgtk_double_to_rep"
-	;;      "sgtk_doublep")
-	(list 'point "GdkPoint" "sgtk_rep_to_point" "sgtk_point_to_rep"
-	      "sgtk_valid_point")
-	(list 'SCM "repv" "" "" nil)))
+
+(define-type 'boxed output-complex-type output-rep-to-boxed
+	     output-boxed-to-rep output-boxed-pred '(listable . t))
+
+(define-type 'pointer "gpointer" "sgtk_rep_to_pointer"
+	     "sgtk_pointer_to_rep" "sgtk_pointerp")
+
+(define-type 'object output-complex-type output-rep-to-object
+	     output-object-to-rep output-object-pred '(listable . t))
+
+(define-type 'static_string "const char*" nil
+	     "sgtk_static_string_to_rep" nil '(listable . t))
+
+(define-type 'full-callback "sgtk_protshell*" output-rep-to-full-callback nil
+	     "sgtk_valid_function" (cons 'c2args output-full-callback-args))
+
+(define-type 'file-descriptor "int" "sgtk_rep_to_fd" nil "sgtk_valid_fd")
+
+(define-type 'list "GList*" output-rep-to-list output-list-to-rep
+	     output-cvec-pred (cons 'finish output-list-finish))
+
+(define-type 'slist "GSList*" output-rep-to-list output-list-to-rep
+	     output-cvec-pred (cons 'finish output-list-finish))
+
+(define-type 'cvec "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep
+	     output-cvec-pred (cons 'finish output-cvec-finish)
+	     (cons 'c2args output-cvec-args))
+
+(define-type 'cvecr "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep
+	     output-cvec-pred (cons 'finish output-cvec-finish)
+	     (cons 'c2args output-cvec-args))
+
+(define-type 'fvec "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep
+	     output-cvec-pred (cons 'finish output-cvec-finish)
+	     (cons 'c2args output-cvec-args))
+
+(define-type 'ret "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep
+	     output-cvec-pred (cons 'finish output-cvec-finish)
+	     (cons 'c2args output-cvec-args))
+
+;;(define-type 'double "gdouble" "sgtk_rep_to_double"
+;;	     "sgtk_double_to_rep" "sgtk_doublep")
+
+(define-type 'point "GdkPoint" "sgtk_rep_to_point"
+	     "sgtk_point_to_rep" "sgtk_valid_point")
+
+(define-type 'rect "GdkRectangle" "sgtk_rep_to_rect"
+	     "sgtk_rect_to_rep" "sgtk_valid_rect")
+
+(define-type 'SCM "repv" "" "" nil)

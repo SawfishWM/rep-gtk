@@ -50,11 +50,10 @@ connector (const gchar *handler_name, GtkObject *object,
     if (Ffunctionp (func) != Qnil)
     {
 	/* Looks like we've got something callable */
-	func = sgtk_protect (sgtk_wrap_gtkobj (object), func);
+	sgtk_protshell *data = sgtk_protect (sgtk_wrap_gtkobj (object), func);
 	gtk_signal_connect_full (object, signal_name, 0,
 				 sgtk_callback_marshal,
-				 (gpointer) func,
-				 sgtk_callback_destroy,
+				 (gpointer) data, sgtk_callback_destroy,
 				 connect_object != 0, after);
     }
 }
