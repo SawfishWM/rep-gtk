@@ -290,7 +290,18 @@
   (@ "#include <rep.h>\n")
   (@ "#include \"rep-gtk.h\"\n\n"))
 
-(defun output-footer (output))
+(defun output-footer (output)
+  (let*
+      ((feature (gtk-get-option 'provide gtk-options))
+       (c-feature (and feature (gtk-unhyphenate-name (symbol-name feature))))
+       (init (gtk-get-option 'init-func gtk-options)))
+    (when feature
+      (@ "\nDEFSYM \(%s, \"%s\"\);\n" c-feature feature)
+      (@ "\nrepv\nrep_dl_init \(void\)\n{\n")
+      (@ "  rep_INTERN \(%s\);\n" c-feature)
+      (when init
+	(@ "  %s \(\);\n" init))
+      (@ "  return Q%s;\n}\n" c-feature))))
 
 (defun output-imported-enums (output)
   (when gtk-imported-enums
@@ -431,17 +442,21 @@
   (@ "\f\n/* Initialisation */\n\n")
   (let
       ((init-func (gtk-get-option 'init-func gtk-options))
-       (other-inits (gtk-get-options 'other-inits gtk-options)))
-    (@ "void\n%s (void)\n{\n" init-func)
-    (@ "  static int done;\n  if (!done)\n    {\n")
-    (@ "      done = 1;\n")
-    (mapc (lambda (func)
-	    (@ "      %s ();\n" func)) other-inits)
-    (when (or gtk-enums gtk-flags gtk-boxed gtk-objects)
-      (@ "      sgtk_register_type_infos (_type_infos);\n"))
-    (mapc (lambda (cname)
-	    (@ "      rep_ADD_SUBR(S%s);\n" cname)) (nreverse gtk-subrs))
-    (@ "    \}\n\}\n")))
+       (other-inits (gtk-get-options 'other-inits gtk-options))
+       (extra-init (gtk-get-options 'extra-init-code gtk-options)))
+    (when init-func
+      (@ "void\n%s (void)\n{\n" init-func)
+      (@ "  static int done;\n  if (!done)\n    {\n")
+      (@ "      done = 1;\n")
+      (mapc (lambda (func)
+	      (@ "      %s ();\n" func)) other-inits)
+      (when (or gtk-enums gtk-flags gtk-boxed gtk-objects)
+	(@ "      sgtk_register_type_infos (_type_infos);\n"))
+      (mapc (lambda (cname)
+	      (@ "      rep_ADD_SUBR(S%s);\n" cname)) (nreverse gtk-subrs))
+      (mapc (lambda (code)
+	      (@ "      %s\n" code)) extra-init)
+      (@ "    \}\n\}\n"))))
 
 (defun output-gtk (output)
   (output-header output)
@@ -473,10 +488,21 @@
     (setq type (car type)))
   (nth 1 type))
 
-(defun gtk-inner-type-options (type)
+(defun gtk-composite-type-mode (type)
   (while (consp (car type))
     (setq type (car type)))
-  (nthcdr 2 type))
+  (case (car type)
+    ((ret) 'out)
+    ((fvec) (or (nth 3 type) 'in))
+    (t (or (nth 2 type) 'in))))
+
+(defun gtk-composite-type-len (type)
+  (while (consp (car type))
+    (setq type (car type)))
+  (case (car type)
+    ((ret) 1)
+    ((fvec) (nth 2 type))
+    (t nil)))
 
 (defun gtk-type-info (type)
   (let*
@@ -631,13 +657,13 @@
       ((outer-type (gtk-outer-type type))
        (inner-type (gtk-inner-type type))
        (inner-typage (gtk-type-info inner-type))
-       (decl (gtk-type-decl inner-type inner-typage)))
+       (decl (gtk-type-decl inner-type inner-typage))
+       (mode (gtk-composite-type-mode type)))
     (output-helper inner-type standard-output)
     (@ "sgtk_rep_to_cvec \(%s, %s, sizeof \(%s\)\)"
        rep-var
-       (if (eq outer-type 'ret)
+       (if (eq mode 'out)
 	   "0"
-	 ;; all but `ret' args are `in'
 	 (format nil "_sgtk_helper_fromrep_%s" inner-type))
        decl)))
 
@@ -655,25 +681,20 @@
   (let*
       ((outer-type (gtk-outer-type type))
        (inner-type (gtk-inner-type type))
-       (inner-typage (gtk-type-info inner-type)))
+       (inner-typage (gtk-type-info inner-type))
+       (mode (gtk-composite-type-mode type))
+       (len (gtk-composite-type-len type)))
     (output-helper inner-type standard-output)
-    (cond ((memq outer-type '(cvec cvecr list slist tvec))
-	   ;; XXX assumes `in' or `inout' types
-	   (@ "sgtk_valid_composite \(%s, _sgtk_helper_valid_%s\)"
-	      rep-var inner-type))
-	  ((memq outer-type '(fvec ret))
-	   (let
-	       ((len (if (eq outer-type 'ret)
-			 1
-		       (car (gtk-inner-type-options type)))))
-	     (@ "sgtk_valid_complen \(%s, %s, %s\)"
-		rep-var (if (eq outer-type 'ret)
-			    ;; ret is `out', so don't check inner validity
-			    "NULL"
-			  (concat "_sgtk_helper_valid_"
-				  (symbol-name inner-type))) len)))
-	  (t
-	   (gtk-warning "Don't know type predicate of %s" type)))))
+    (if len
+	(@ "sgtk_valid_complen \(%s, %s, %s\)"
+	   rep-var
+	   (if (eq mode 'out)
+	       ;; `out', so don't check inner validity
+	       "NULL"
+	     (concat "_sgtk_helper_valid_" (symbol-name inner-type)))
+	   len)
+      (@ "sgtk_valid_composite \(%s, _sgtk_helper_valid_%s\)"
+	 rep-var inner-type))))
 
 (defun output-cvec-args (output type var options)
   (let*
@@ -695,13 +716,13 @@
       ((outer-type (gtk-outer-type type))
        (inner-type (gtk-inner-type type))
        (inner-typage (gtk-type-info inner-type))
-       (decl (gtk-type-decl inner-type inner-typage)))
+       (decl (gtk-type-decl inner-type inner-typage))
+       (mode (gtk-composite-type-mode type)))
     (@ "  sgtk_cvec_finish \(&%s, %s, %s, sizeof \(%s\)\);\n"
        gtk-var rep-var
-       (if (eq outer-type 'ret)
-	   ;; only `ret' args are `out'
-	   (format nil "_sgtk_helper_torep_nocopy_%s" inner-type)
-	 "0")
+       (if (eq mode 'in)
+	   "0"
+	 (format nil "_sgtk_helper_torep_nocopy_%s" inner-type))
        decl)))
 
 (defun output-rep-to-list (output type rep-var typage)
@@ -722,8 +743,14 @@
 
 (defun output-list-finish (output type gtk-var rep-var options)
   (let
-      ((outer-type (gtk-outer-type type)))
-    (@ "  sgtk_%s_finish \(%s, %s, 0\);\n" outer-type gtk-var rep-var)))
+      ((outer-type (gtk-outer-type type))
+       (inner-type (gtk-inner-type type))
+       (mode (gtk-composite-type-mode type)))
+    (@ "  sgtk_%s_finish \(%s, %s, %s\);\n"
+       outer-type gtk-var rep-var
+       (if (eq mode 'in)
+	   "0"
+	 (format nil "_sgtk_helper_torep_nocopy_%s" inner-type)))))
 
 
 ;; Function generation
