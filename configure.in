@@ -24,7 +24,7 @@ AC_INIT(rep-gtk.h)
 AC_CONFIG_HEADER(config.h)
 
 dnl Release versioning info
-version="0.12"
+version="0.13"
 
 OUT="sgtk-types.la gtk.la"
 AC_SUBST(OUT)
@@ -48,7 +48,7 @@ if test "x${GCC}" = "xyes" -a "x$CFLAGS" = "x-g -O2"; then
 fi
 
 dnl Check for librep
-AM_PATH_REP(0.11)
+AM_PATH_REP(0.12)
 
 dnl Check for glib
 AM_PATH_GLIB
