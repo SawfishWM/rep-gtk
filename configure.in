@@ -39,6 +39,13 @@ AC_PROG_MAKE_SET
 AC_PROG_GCC_TRADITIONAL
 AM_PROG_LIBTOOL
 
+dnl If using GCC and it doesn't look as though the cflags have been
+dnl set explicitly, add some warning options. Turn off implicit-int
+dnl warnings since the X11 includes on Solaris generate a lot of these
+if test "x${GCC}" = "xyes" -a "x$CFLAGS" = "x-g -O2"; then
+  CFLAGS="${CFLAGS} -Wall -Wmissing-prototypes -Wno-implicit-int"
+fi
+
 dnl Check for librep
 AC_MSG_CHECKING([for librep]);
 rep_version=`rep-config --version`
