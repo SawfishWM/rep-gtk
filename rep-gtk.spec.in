@@ -42,6 +42,12 @@ GNOME version of libglade.
 %setup
 
 %build
+
+LC_ALL=""
+LINGUAS=""
+LANG=""
+export LC_ALL LINGUAS LANG
+
 %configure
 make host_type=%{_target_platform}
 

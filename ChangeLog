@@ -1,3 +1,8 @@
+2001-01-17  John Harper  <jsh@eazel.com>
+
+	* rep-gtk.spec.in: unset LC_ALL, LINGUAS and LANG before
+	building
+
 2000-12-04  John Harper  <jsh@eazel.com>
 
 	* configure.in: version 0.15
