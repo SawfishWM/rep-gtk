@@ -1,3 +1,11 @@
+2000-09-18  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (sgtk_init_with_args): after calling gtk_set_locale
+	() call setlocale (LC_NUMERIC, "C") for rep's benefit (floating
+	point lameness)
+
+	* configure.in, config.h.in: check for <locale.h> and setlocale ()
+
 2000-09-11  John Harper  <john@dcs.warwick.ac.uk>
 
 	* gtk.defs (gtk_editable_get_chars): changed return type from
