@@ -96,7 +96,7 @@ gdk_event_visibility_state (GdkEvent *event)
     case GDK_VISIBILITY_NOTIFY:
       return event->visibility.state;
     default:
-      return GDK_VISIBILITY_UNOBSCURED; // XXX
+      return GDK_VISIBILITY_UNOBSCURED; /* XXX */
     }
 }
 
