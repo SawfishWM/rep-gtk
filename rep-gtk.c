@@ -2244,8 +2244,8 @@ static int idle_timeout_set = 0, idle_timeout_counter = 0, idle_timeout_tag;
 static gint
 idle_timeout_callback (gpointer data)
 {
-    idle_timeout_counter++;
-    rep_on_idle (idle_timeout_counter);
+    rep_proc_periodically ();
+    rep_on_idle (idle_timeout_counter++);
     if (rep_INTERRUPTP)
 	gtk_main_quit ();
     else if (rep_redisplay_fun != 0)
@@ -2268,6 +2268,7 @@ reset_idle_timeout (void)
 void
 sgtk_callback_postfix (void)
 {
+    rep_proc_periodically ();
     if (rep_INTERRUPTP)
 	gtk_main_quit ();
     else if (rep_redisplay_fun != 0)
@@ -2275,6 +2276,7 @@ sgtk_callback_postfix (void)
     reset_idle_timeout ();
 }
 
+/* This function replaces the standard rep event loop. */
 static repv
 sgtk_event_loop (void)
 {
@@ -2304,10 +2306,20 @@ sgtk_event_loop (void)
     }
 }
 
+/* Called by librep/src/unix_processes.c whenever SIGCHLD is received
+   (from the signal handler) */
 static void
 sgtk_sigchld_callback (void)
 {
     /* XXX I'm hoping that this is safe to call from a signal handler... */
+
+    /* The other problem is that (as noted in unix_processes.c) SIGCHLD
+       seems to be somewhat unreliable under Linux. I'm probably fucking
+       something up but if the ppid of the parent is 1 (init), then
+       SIGCHLD doesn't arrive!? This is why both the callback_postfix
+       and the timeout_callback call proc_periodically--overkill, but it's
+       the only solution for now... */
+
     gtk_main_quit ();
 }
 
