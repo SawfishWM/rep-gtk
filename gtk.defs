@@ -2344,7 +2344,7 @@
 
 (define-func gtk_menu_get_attach_widget
   GtkWidget
-  ((GtkMenu)))
+  ((GtkMenu menu)))
 
 (define-func gtk_menu_set_tearoff_state
   none
