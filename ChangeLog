@@ -1,3 +1,9 @@
+2000-02-06  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c: invoke callbacks within dynamic roots
+
+	* rep-gtk.h: define rep_INTERFACE if not already
+
 2000-01-11  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (sgtk_init_with_args): call gtk_set_locale ()
