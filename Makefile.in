@@ -28,6 +28,10 @@ GNOME_CANVAS_PIXBUF_SRCS = gnome-canvas-pixbuf-glue.c
 GNOME_CANVAS_PIXBUF_OBJS = $(GNOME_CANVAS_PIXBUF_SRCS:.c=.lo)
 
 OUT = @OUT@
+OUT_DESTS = $(foreach x, $(OUT), gui/$(x))
+
+# include ::alias directives
+INSTALL_GLUE = gdk-pixbuf-glue.c gnome-canvas-pixbuf-glue.c
 
 version=@version@
 host_type=@host@
@@ -64,33 +68,33 @@ VPATH=@top_srcdir@:.
 
 .PHONY: clean realclean install
 
-all : $(OUT)
+all : build_dirs $(OUT)
 
-sgtk-types.la : $(SGTK_OBJS)
+gtk/types.la : $(SGTK_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_SGTK_LIBS)
 
-gtk.la : $(OBJS)
+gtk/gtk.la : $(OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GTK_LIBS)
 
-libglade.la : $(LIBGLADE_OBJS)
+gtk/libglade.la : $(LIBGLADE_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_LIBGLADE_LIBS)
 
-libglade-gnome.la : $(GNOME_LIBGLADE_OBJS)
+gnome/libglade.la : $(GNOME_LIBGLADE_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOME_LIBGLADE_LIBS)
 
-gnomelib.la : $(GNOMELIB_OBJS)
+gnome/lib.la : $(GNOMELIB_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOMELIB_LIBS)
 
-gnomeui.la : $(GNOMEUI_OBJS)
+gnome/ui.la : $(GNOMEUI_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOMEUI_LIBS)
 
-gnome-canvas.la : $(GNOME_CANVAS_OBJS)
+gnome/canvas.la : $(GNOME_CANVAS_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOMEUI_LIBS)
 
-gdk-pixbuf.la : $(GDK_PIXBUF_OBJS)
+gtk/gdk-pixbuf.la : $(GDK_PIXBUF_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GDK_PIXBUF_LIBS)
 
-gnome-canvas-pixbuf.la : $(GNOME_CANVAS_PIXBUF_OBJS)
+gnome/canvas-pixbuf.la : $(GNOME_CANVAS_PIXBUF_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOME_CANVAS_PIXBUF_LIBS)
 
 %-glue.c : %.defs build-gtk.jlc
@@ -101,35 +105,37 @@ build-gtk.jlc : build-gtk.jl
 
 libglade-gnome-support.lo : libglade-support.c
 	$(rep_LIBTOOL) --mode=compile $(CC) -c $(CPPFLAGS) $(CFLAGS) \
-	 @GNOME_LIBGLADE_CFLAGS@ -DGLADE_INIT_FUNC=glade_gnome_init $< -o $@
+	 @GNOME_LIBGLADE_CFLAGS@ -DGLADE_GNOME=1 $< -o $@
 
-install : all installdirs
+install : all installdirs $(INSTALL_GLUE)
 	set -e; for f in $(OUT); do \
-	  $(rep_DL_INSTALL) $$f $(DESTDIR)$(installdir); \
+	  $(rep_DL_INSTALL) $$f $(DESTDIR)$(installdir)/gui/`dirname $$f`; \
 	done
-	set -e; for f in $(OUT); do \
+	set -e; for f in $(OUT_DESTS); do \
 	  case $$f in \
-	    gtk.la|gnomelib.la) \
-	      printf "\nrep_requires='sgtk-types'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
-	    libglade*.la|gnomeui.la|gdk-pixbuf.la) \
-	      printf "\nrep_requires='gtk'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
-	    gnome-canvas*.la) \
-	      printf "\nrep_requires='gnomeui'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
+	    gui/gtk/gtk.la|gui/gnome/lib.la) \
+	      printf "\nrep_requires='gui.gtk.types'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
+	    gui/*/libglade.la|gui/gnome/ui.la|gui/gtk/gdk-pixbuf.la) \
+	      printf "\nrep_requires='gui.gtk.gtk'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
+	    gui/gnome/canvas*.la) \
+	      printf "\nrep_requires='gui.gnome.ui'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
 	  esac; \
 	done
-	for f in $(OUT); do \
+	for f in $(OUT_DESTS); do \
 	  printf "\nrep_open_globally=yes\n" >>$(DESTDIR)$(installdir)/$$f; \
 	done
+	$(rep_INSTALL_ALIASES) -c . $(DESTDIR)$(installdir)
 
 installdirs : $(top_srcdir)/mkinstalldirs
-	$(SHELL) $(top_srcdir)/mkinstalldirs $(DESTDIR)$(installdir)
+	$(SHELL) $(top_srcdir)/mkinstalldirs $(DESTDIR)$(installdir)/gui/gtk \
+	  $(DESTDIR)$(installdir)/gui/gnome
 
 uninstall :
 	$(rep_DL_UNINSTALL) $(DESTDIR)$(installdir)/$(OUT)
 
 clean :
 	rm -f *-glue.c *~ core *.jlc *.o *.lo *.la
-	rm -rf .libs
+	rm -rf gtk gnome
 
 realclean : clean
 	rm -f Makefile config.cache config.log config.status config.h
@@ -137,3 +143,11 @@ realclean : clean
 
 cvsclean : realclean
 	rm -f aclocal.m4 configure
+
+build_dirs : gnome gtk
+
+gnome :
+	mkdir gnome
+
+gtk :
+	mkdir gtk
