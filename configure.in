@@ -68,7 +68,7 @@ AC_SUBST(CPPFLAGS)
 AC_SUBST(CFLAGS)
 AC_SUBST(LIBS)
 
-AC_OUTPUT(Makefile)
+AC_OUTPUT(Makefile rep-gtk.spec)
 
 dnl Local variables:
 dnl major-mode: sh-mode

@@ -13,3 +13,4 @@ aclocal.m4
 *.lo
 *.la
 *.jlc
+rep-gtk.spec

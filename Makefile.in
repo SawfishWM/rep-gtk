@@ -61,7 +61,8 @@ clean :
 	rm -rf .libs
 
 realclean : clean
-	rm -f Makefile config.cache config.log config.status config.h libtool
+	rm -f Makefile config.cache config.log config.status config.h
+	rm -f rep-gtk.spec
 
 cvsclean : realclean
 	rm -f aclocal.m4 configure
