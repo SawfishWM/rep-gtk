@@ -6,8 +6,8 @@ Summary: GTK+ binding for librep Lisp environment
 Requires: librep >= 0.11, gtk+ >= 1.2
 Copyright: GPL
 Group: Development/Languages
-Source: ftp.dcs.warwick.ac.uk:/people/John.Harper/librep/rep-gtk-%{version}.tar.gz
-URL: http://www.dcs.warwick.ac.uk/~john/sw/rep-gtk.html
+Source: http://download.sourceforge.net/rep-gtk/rep-gtk-%{version}.tar.gz
+URL: http://rep-gtk.sourceforge.net/
 Packager: John Harper <john@dcs.warwick.ac.uk>
 Buildroot: /var/tmp/%{name}-root
 BuildPrereq: libglade-devel gnome-libs-devel
@@ -42,41 +42,45 @@ GNOME version of libglade.
 %setup
 
 %build
-./configure --prefix %{_prefix} %{_host}
-make CFLAGS="$RPM_OPT_FLAGS"
+%configure
+make host_type=%{_target_platform}
 
 %install
-rm -rf $RPM_BUILD_ROOT
+[ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
 make install \
-    installdir=$RPM_BUILD_ROOT%{_prefix}/libexec/rep/%{_host}
+    host_type=%{_target_platform} \
+    installdir=$RPM_BUILD_ROOT%{_libexecdir}/rep/%{_target_platform}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+[ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
 %doc README README.guile-gtk BUGS ChangeLog gtk-1.2.defs gdk-1.2.defs
-%{_prefix}/libexec/rep/%{_host}/sgtk-types.so*
-%{_prefix}/libexec/rep/%{_host}/sgtk-types.la
-%{_prefix}/libexec/rep/%{_host}/gtk.so*
-%{_prefix}/libexec/rep/%{_host}/gtk.la
+%{_libexecdir}/rep/%{_target_platform}/sgtk-types.so*
+%{_libexecdir}/rep/%{_target_platform}/sgtk-types.la
+%{_libexecdir}/rep/%{_target_platform}/gtk.so*
+%{_libexecdir}/rep/%{_target_platform}/gtk.la
 
 %files libglade
 %defattr(-,root,root)
 %doc libglade.defs examples/test-libglade examples/simple.glade
 %doc examples/rep-ui examples/rep-ui.glade
-%{_prefix}/libexec/rep/%{_host}/libglade.so*
-%{_prefix}/libexec/rep/%{_host}/libglade.la
+%{_libexecdir}/rep/%{_target_platform}/libglade.so*
+%{_libexecdir}/rep/%{_target_platform}/libglade.la
 
 %files gnome
 %defattr(-,root,root)
 %doc gnome*.defs examples/gnome-test examples/canvas-test
-%{_prefix}/libexec/rep/%{_host}/gnome*.so*
-%{_prefix}/libexec/rep/%{_host}/gnome*.la
-%{_prefix}/libexec/rep/%{_host}/libglade-gnome.so*
-%{_prefix}/libexec/rep/%{_host}/libglade-gnome.la
+%{_libexecdir}/rep/%{_target_platform}/gnome*.so*
+%{_libexecdir}/rep/%{_target_platform}/gnome*.la
+%{_libexecdir}/rep/%{_target_platform}/libglade-gnome.so*
+%{_libexecdir}/rep/%{_target_platform}/libglade-gnome.la
 
 %changelog
+* Tue Jun 13 2000 John Harper <john@dcs.warwick.ac.uk>
+- use better macros
+
 * Fri Sep 17 1999 John Harper <john@dcs.warwick.ac.uk>
 - specify installdir when installing
 
