@@ -487,7 +487,6 @@ typedef struct _sgtk_object_proxy {
   repv protects;
   int traced_refs;
   struct _sgtk_object_proxy *next;
-  struct _sgtk_object_proxy **prevp;
 } sgtk_object_proxy;
 
 /* The list of all existing proxies. */
@@ -563,20 +562,26 @@ gtkobj_free (repv obj)
 
   forget_proxy (proxy->obj);
   gtk_object_unref (proxy->obj);
-  if ((*proxy->prevp = proxy->next))
-      proxy->next->prevp = proxy->prevp;
   rep_FREE_CELL ((char *)proxy);
 }
 
 static void
 gtkobj_sweep (void)
 {
-  sgtk_object_proxy *proxy, *next;
-
-  for (proxy = all_proxies; proxy; proxy = next) {
-      next = proxy->next;
+  sgtk_object_proxy *proxy = all_proxies;
+  all_proxies = 0;
+  while (proxy != 0)
+  {
+      sgtk_object_proxy *next = proxy->next;
       if (! rep_GC_CELL_MARKEDP(rep_VAL(proxy)))
 	  gtkobj_free (rep_VAL(proxy));
+      else
+      {
+	  rep_GC_CLR_CELL (rep_VAL(proxy));
+	  proxy->next = all_proxies;
+	  all_proxies = proxy;
+      }
+      proxy = next;
   }
 }
 
@@ -717,9 +722,6 @@ make_gtkobj (GtkObject *obj)
   proxy->traced_refs = 0;
   proxy->next = all_proxies;
   all_proxies = proxy;
-  proxy->prevp = &all_proxies;
-  if (proxy->next)
-    proxy->next->prevp = &proxy->next;
 
   proxy->car = tc16_gtkobj;
   enter_proxy (obj, rep_VAL(proxy));
@@ -990,12 +992,20 @@ boxed_print (repv stream, repv exp)
 static void
 boxed_sweep (void)
 {
-  sgtk_boxed_proxy *proxy, *next;
-
-  for (proxy = all_boxed; proxy; proxy = next) {
-      next = proxy->next;
+  sgtk_boxed_proxy *proxy = all_boxed;
+  all_boxed = 0;
+  while (proxy != 0)
+  {
+      sgtk_boxed_proxy *next = proxy->next;
       if (! rep_GC_CELL_MARKEDP(rep_VAL(proxy)))
 	  boxed_free (rep_VAL(proxy));
+      else
+      {
+	  rep_GC_CLR_CELL (rep_VAL(proxy));
+	  proxy->next = all_boxed;
+	  all_boxed = proxy;
+      }
+      proxy = next;
   }
 }
 
@@ -1707,6 +1717,9 @@ sgtk_callback_marshal (GtkObject *obj,
   else
     ans = rep_funcall (rep_CAR(callback_trampoline),
 		       Fcons ((repv)data, Fcons (real_args, Qnil)), rep_FALSE);
+
+  if (rep_INTERRUPTP)
+    gtk_main_quit ();
 
   if (args[n_args].type != GTK_TYPE_NONE)
     sgtk_rep_to_ret (args + n_args, ans);
