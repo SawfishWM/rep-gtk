@@ -19,7 +19,7 @@
 ;;; Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 ;;; 02111-1307, USA.  */
 
-(import "gtk-1.2.defs")
+(import "gtk.defs")
 
 (define-enum GnomePreferencesType
   (never GNOME_PREFERENCES_NEVER)
@@ -794,6 +794,11 @@
   ((GnomeIconEntry ie)
    (string subdir)))
 
+(define-func gnome_icon_entry_set_icon
+  none
+  ((GnomeIconEntry ie)
+   (string filename)))
+
 (define-func gnome_icon_entry_gnome_file_entry
   GtkWidget
   ((GnomeIconEntry ie)))
@@ -1105,44 +1110,44 @@
 
 ;; GnomeStock
 
-;(define-string-enum GnomeStockButtonNameType
-;  (ok GNOME_STOCK_BUTTON_OK)
-;  (cancel GNOME_STOCK_BUTTON_CANCEL)
-;  (yes GNOME_STOCK_BUTTON_YES)
-;  (no GNOME_STOCK_BUTTON_NO)
-;  (close GNOME_STOCK_BUTTON_CLOSE)
-;  (apply GNOME_STOCK_BUTTON_APPLY)
-;  (help GNOME_STOCK_BUTTON_HELP))
+(define-string-enum GnomeStockButtonNameType
+  (ok GNOME_STOCK_BUTTON_OK)
+  (cancel GNOME_STOCK_BUTTON_CANCEL)
+  (yes GNOME_STOCK_BUTTON_YES)
+  (no GNOME_STOCK_BUTTON_NO)
+  (close GNOME_STOCK_BUTTON_CLOSE)
+  (apply GNOME_STOCK_BUTTON_APPLY)
+  (help GNOME_STOCK_BUTTON_HELP))
 
-;(define-string-enum GnomeStockMenuNameType
-;  (blank GNOME_STOCK_MENU_BLANK)
-;  (new GNOME_STOCK_MENU_NEW)
-;  (save GNOME_STOCK_MENU_SAVE)
-;  (save-as GNOME_STOCK_MENU_SAVE_AS)
-;  (open GNOME_STOCK_MENU_OPEN)
-;  (quit GNOME_STOCK_MENU_QUIT)
-;  (cut GNOME_STOCK_MENU_CUT)
-;  (copy GNOME_STOCK_MENU_COPY)
-;  (paste GNOME_STOCK_MENU_PASTE)
-;  (prop GNOME_STOCK_MENU_PROP)
-;  (pref GNOME_STOCK_MENU_PREF)
-;  (about GNOME_STOCK_MENU_ABOUT)
-;  (scores GNOME_STOCK_MENU_SCORES)
-;  (undo GNOME_STOCK_MENU_UNDO)
-;  (print GNOME_STOCK_MENU_PRINT)
-;  (search GNOME_STOCK_MENU_SEARCH)
-;  (back GNOME_STOCK_MENU_BACK)
-;  (forward GNOME_STOCK_MENU_FORWARD)
-;  (home GNOME_STOCK_MENU_HOME)
-;  (stop GNOME_STOCK_MENU_STOP)
-;  (refresh GNOME_STOCK_MENU_REFRESH)
-;  (mail GNOME_STOCK_MENU_MAIL)
-;  (mail-receive GNOME_STOCK_MENU_MAIL_RCV)
-;  (mail-send GNOME_STOCK_MENU_MAIL_SND)
-;  (trash GNOME_STOCK_MENU_TRASH)
-;  (trash-full GNOME_STOCK_MENU_TRASH_FULL)
-;  ;; This is an alias for Quit for now.
-;  (exit GNOME_STOCK_MENU_QUIT))
+(define-string-enum GnomeStockMenuNameType
+  (blank GNOME_STOCK_MENU_BLANK)
+  (new GNOME_STOCK_MENU_NEW)
+  (save GNOME_STOCK_MENU_SAVE)
+  (save-as GNOME_STOCK_MENU_SAVE_AS)
+  (open GNOME_STOCK_MENU_OPEN)
+  (quit GNOME_STOCK_MENU_QUIT)
+  (cut GNOME_STOCK_MENU_CUT)
+  (copy GNOME_STOCK_MENU_COPY)
+  (paste GNOME_STOCK_MENU_PASTE)
+  (prop GNOME_STOCK_MENU_PROP)
+  (pref GNOME_STOCK_MENU_PREF)
+  (about GNOME_STOCK_MENU_ABOUT)
+  (scores GNOME_STOCK_MENU_SCORES)
+  (undo GNOME_STOCK_MENU_UNDO)
+  (print GNOME_STOCK_MENU_PRINT)
+  (search GNOME_STOCK_MENU_SEARCH)
+  (back GNOME_STOCK_MENU_BACK)
+  (forward GNOME_STOCK_MENU_FORWARD)
+  (home GNOME_STOCK_MENU_HOME)
+  (stop GNOME_STOCK_MENU_STOP)
+  (refresh GNOME_STOCK_MENU_REFRESH)
+  (mail GNOME_STOCK_MENU_MAIL)
+  (mail-receive GNOME_STOCK_MENU_MAIL_RCV)
+  (mail-send GNOME_STOCK_MENU_MAIL_SND)
+  (trash GNOME_STOCK_MENU_TRASH)
+  (trash-full GNOME_STOCK_MENU_TRASH_FULL)
+  ;; This is an alias for Quit for now.
+  (exit GNOME_STOCK_MENU_QUIT))
 
 (define-func gnome_stock_pixmap_widget
   GtkWidget
@@ -1168,15 +1173,15 @@
 
 (define-func gnome_stock_button
   GtkWidget
-  ((string type)))			;actually GnomeStockButtonNameType
+  ((GnomeStockButtonNameType type)))
 
 (define-func gnome_stock_or_ordinary_button
   GtkWidget
-  ((string type)))			;actually GnomeStockButtonNameType
+  ((GnomeStockButtonNameType type)))
 
 (define-func gnome_stock_menu_item
   GtkWidget
-  ((string type)			;actually GnomeStockMenuNameType
+  ((GnomeStockMenuNameType type)
    (string text)))
 
 (define-func gnome_stock_transparent_window
