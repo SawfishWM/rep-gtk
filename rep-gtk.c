@@ -195,7 +195,7 @@ sgtk_string_to_rep (char *x)
 }
 
 repv
-sgtk_static_string_to_rep (char *x)
+sgtk_static_string_to_rep (const char *x)
 {
     repv obj;
     if (x == 0)

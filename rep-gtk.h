@@ -89,7 +89,7 @@ glong sgtk_rep_to_long (repv obj);
 gchar sgtk_rep_to_char (repv obj);
 char *sgtk_rep_to_string (repv obj);
 repv sgtk_string_to_rep (char *x);
-repv sgtk_static_string_to_rep (char *x);
+repv sgtk_static_string_to_rep (const char *x);
 int sgtk_valid_string (repv obj);
 repv sgtk_bool_to_rep (int x);
 int sgtk_rep_to_bool (repv obj);
