@@ -161,6 +161,7 @@ gdk_event_y (GdkEvent *event)
 gdouble
 gdk_event_pressure (GdkEvent *event)
 {
+#ifdef XXX
   switch (event->any.type)
     {
     case GDK_MOTION_NOTIFY:
@@ -171,11 +172,15 @@ gdk_event_pressure (GdkEvent *event)
     default:
       return 0;
     }
+#else
+    return 0;
+#endif
 }
 
 gdouble
 gdk_event_xtilt (GdkEvent *event)
 {
+#ifdef XXX
   switch (event->any.type)
     {
     case GDK_MOTION_NOTIFY:
@@ -186,11 +191,15 @@ gdk_event_xtilt (GdkEvent *event)
     default:
       return 0;
     }
+#else
+    return 0;
+#endif
 }
 
 gdouble
 gdk_event_ytilt (GdkEvent *event)
 {
+#ifdef XXX
   switch (event->any.type)
     {
     case GDK_MOTION_NOTIFY:
@@ -201,6 +210,9 @@ gdk_event_ytilt (GdkEvent *event)
     default:
       return 0;
     }
+#else
+    return 0;
+#endif
 }
 
 gint
@@ -246,6 +258,7 @@ gdk_event_is_hint (GdkEvent *event)
 GdkInputSource
 gdk_event_source (GdkEvent *event)
 {
+#ifdef XXX
   switch (event->any.type)
     {
     case GDK_MOTION_NOTIFY:
@@ -256,11 +269,15 @@ gdk_event_source (GdkEvent *event)
     default:
       return GDK_SOURCE_MOUSE; /* XXX */
     }
+#else
+    return GDK_SOURCE_MOUSE;
+#endif
 }
 
 guint32
 gdk_event_deviceid (GdkEvent *event)
 {
+#ifdef XXX
   switch (event->any.type)
     {
     case GDK_MOTION_NOTIFY:
@@ -271,6 +288,9 @@ gdk_event_deviceid (GdkEvent *event)
     default:
       return 0;
     }
+#else
+    return 0;
+#endif
 }
 
 gdouble
@@ -424,7 +444,11 @@ gdk_event_configure_width (GdkEvent *event)
 guint32
 gdk_get_leader_window_id ()
 {
+#ifdef XXX
   return (guint32) gdk_leader_window;
+#else
+  return 0;
+#endif
 }
 
 gint16
@@ -442,8 +466,7 @@ gdk_event_configure_height (GdkEvent *event)
 guint32
 gdk_window_xid (GdkWindow *win)
 {
-    GdkWindowPrivate *pri = (GdkWindowPrivate *)win;
-    return pri->xwindow;
+    return GDK_WINDOW_XID (win);
 }
 
 

@@ -30,7 +30,7 @@
 
 typedef struct _sgtk_type_info {
   char *name;
-  GtkType type;
+  GType type;
   repv (*conversion) (repv);
 } sgtk_type_info;
 
@@ -67,11 +67,11 @@ typedef struct _sgtk_boxed_info {
 
 typedef struct _sgtk_object_info {
   sgtk_type_info header;
-  GtkType (*init_func) ();
+  GType (*init_func) ();
 
   struct _sgtk_object_info *parent;
   guint n_args;
-  GtkArg *args;
+  GtkArg *args;				/* XXX */
   guint *args_flags;
   char **args_short_names;
 } sgtk_object_info;
@@ -79,7 +79,7 @@ typedef struct _sgtk_object_info {
 void sgtk_register_type_infos (sgtk_type_info **infos);
 sgtk_type_info *sgtk_get_type_info (guint type_seqno);
 void sgtk_register_type_infos_gtk (GtkTypeInfo **infos);
-sgtk_type_info* sgtk_maybe_find_type_info (GtkType type);
+sgtk_type_info* sgtk_maybe_find_type_info (GType type);
 sgtk_type_info *sgtk_find_type_info (GtkType type);
 
 int sgtk_valid_int (repv obj);
@@ -108,6 +108,11 @@ int sgtk_valid_fd (repv obj);
 int sgtk_rep_to_fd (repv obj);
 repv sgtk_fd_to_rep (int fd);
 
+repv sgtk_wrap_gobj (GObject *obj);
+int sgtk_is_a_gobj (guint type, repv obj);
+GObject *sgtk_get_gobj (repv obj);
+
+/* compatibility */
 repv sgtk_wrap_gtkobj (GtkObject *obj);
 int sgtk_is_a_gtkobj (guint type, repv obj);
 GtkObject *sgtk_get_gtkobj (repv obj);
@@ -148,10 +153,10 @@ int sgtk_valid_rect (repv obj);
 GdkRectangle sgtk_rep_to_rect (repv obj);
 repv sgtk_rect_to_rep (GdkRectangle p);
 
-GtkType sgtk_type_from_name (char *name);
+GType sgtk_type_from_name (char *name);
 int sgtk_valid_type (repv obj);
-GtkType sgtk_rep_to_type (repv obj);
-repv sgtk_type_to_rep (GtkType t);
+GType sgtk_rep_to_type (repv obj);
+repv sgtk_type_to_rep (GType t);
 
 int sgtk_valid_composite (repv obj, int (*predicate)(repv));
 int sgtk_valid_complen (repv obj, int (*predicate)(repv), int len);
@@ -181,11 +186,11 @@ sgtk_protshell *sgtk_protect (repv protector, repv obj);
 void sgtk_unprotect (sgtk_protshell *);
 repv sgtk_get_protect (sgtk_protshell *prot);
 
-void sgtk_callback_marshal (GtkObject *,
-			    gpointer data,
-			    guint n_args,
-			    GtkArg *args);
-void sgtk_callback_destroy (gpointer data);
+void sgtk_callback_marshal (GClosure *closure,
+			    GValue *return_value,
+			    guint n_param_values, const GValue *param_values,
+			    gpointer invocation_hint, gpointer marshal_data);
+void sgtk_callback_destroy (gpointer data, GClosure *closure);
 repv sgtk_callback_trampoline (repv new_trampoline);
 void sgtk_callback_postfix (void);
 
@@ -194,8 +199,12 @@ repv sgtk_arg_to_rep (GtkArg *a, int free_mem);
 void sgtk_rep_to_arg (GtkArg *a, repv obj, repv protector);
 void sgtk_rep_to_ret (GtkArg *a, repv obj);
 
-sgtk_object_info *sgtk_find_object_info_from_type (GtkType type);
-sgtk_object_info *sgtk_find_object_info (char *name);
+repv sgtk_gvalue_to_rep (const GValue *a);
+int sgtk_valid_gvalue (const GValue *a, repv obj);
+void sgtk_rep_to_gvalue (GValue *a, repv obj);
+
+sgtk_object_info *sgtk_find_object_info_from_type (GType type);
+sgtk_object_info *sgtk_find_object_info (const char *name);
 GtkArg *sgtk_build_args (sgtk_object_info *info, int *n_argsp,
 			 repv rep_args, repv protector, char *subr);
 

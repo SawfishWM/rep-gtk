@@ -8,7 +8,7 @@
   (child GDK_WINDOW_CHILD)
   (dialog GDK_WINDOW_DIALOG)
   (temp GDK_WINDOW_TEMP)
-  (pixmap GDK_WINDOW_PIXMAP))
+  (pixmap GDK_WINDOW_FOREIGN))
 
 (define-enum GdkWindowClass
   (input-output GDK_INPUT_OUTPUT)
@@ -241,9 +241,10 @@
   (copy gdk_colormap_ref)
   (free gdk_colormap_unref))
 
+;;; XXX FIXME
 (define-boxed GdkVisual
-  (copy gdk_visual_ref)
-  (free gdk_visual_unref))
+  (copy g_object_ref)
+  (free g_object_unref))
 
 (define-boxed GdkFont
   (copy gdk_font_ref)

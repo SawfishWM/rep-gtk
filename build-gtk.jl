@@ -474,7 +474,7 @@
 		((name (car obj))
 		 (cname (gtk-canonical-name (symbol-name name))))
 	      (@ "sgtk_object_info sgtk_%s_info = {\n" cname)
-	      (@ "  { \"%s\", GTK_TYPE_OBJECT }, %s_get_type\n" name cname)
+	      (@ "  { \"%s\", G_TYPE_OBJECT }, %s_get_type\n" name cname)
 	      (@ "};\n\n"))) gtk-objects)))
 
 (defun output-type-info (output)
@@ -726,6 +726,23 @@
       ((protect (gtk-get-option 'protection options)))
     (when (eq protect '*result*)
       (@ "  sgtk_set_protect \(pr_ret, %s\);\n" g-var))))
+
+(defun output-rep-to-gclosure (output type rep-var typage options)
+  (let
+      ((protect (gtk-get-option 'protection options)))
+    (cond ((eq protect '*result*)
+	   (@ "sgtk_new_gclosure \(%s\)" rep-var))
+	  ((and (not (eq protect t))
+		(not (eq protect nil)))
+	   (@ "sgtk_gclosure \(p_%s, %s\)" protect rep-var))
+	  (t
+	   (@ "sgtk_gclosure \(Qt, %s\)" rep-var)))))
+
+(defun output-gclosure-finish (output type g-var r-var options)
+  (let
+      ((protect (gtk-get-option 'protection options)))
+    (when (eq protect '*result*)
+      (@ "  sgtk_set_gclosure \(pr_ret, %s\);\n" g-var))))
 
 (defun output-rep-to-cvec (output type rep-var typage)
   (let*
@@ -1249,6 +1266,9 @@
 (define-type 'full-callback "sgtk_protshell*" output-rep-to-full-callback nil
 	     "sgtk_valid_function" (cons 'c2args output-full-callback-args)
 	     (cons 'finish output-full-callback-finish))
+
+(define-type 'gclosure "GClosure*" output-rep-to-gclosure nil
+	     "sgtk_valid_function" (cons 'finish output-full-callback-finish))
 
 (define-type 'file-descriptor "int" "sgtk_rep_to_fd"
 	     "sgtk_fd_to_rep" "sgtk_valid_fd")

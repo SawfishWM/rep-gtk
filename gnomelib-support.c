@@ -11,6 +11,8 @@
 
 /* metadata */
 
+#ifdef XXX
+
 GnomeMetadataError_t
 sgtk_gnome_metadata_set (const char *file, const char *name, repv data)
 {
@@ -72,6 +74,8 @@ sgtk_gnome_metadata_type_add (const char *regex, const char *key, repv data)
 				 rep_STRING_LEN (data), rep_STR (data));
     }
 }
+
+#endif /* XXX */
 
 
 /* dl hooks / init */

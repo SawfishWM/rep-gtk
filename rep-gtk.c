@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkprivate.h>
+#include <gdk/gdkx.h>
 #include "rep-gtk.h"
 #include <string.h>
 #include <limits.h>
@@ -92,7 +93,7 @@ static guint n_type_info_tab = 0;
 static void
 enter_type_info (sgtk_type_info *info)
 {
-  guint seqno = GTK_TYPE_SEQNO (info->type);
+  guint seqno = G_TYPE_BRANCH_SEQNO (info->type);
 
   if (seqno >= n_type_info_tab)
     {
@@ -248,9 +249,9 @@ sgtk_maybe_find_type_info (GtkType type)
 {
   sgtk_type_info *info;
   type_infos *infos;
-  char *name;
+  const char *name;
 
-  info = sgtk_get_type_info (GTK_TYPE_SEQNO(type));
+  info = sgtk_get_type_info (G_TYPE_BRANCH_SEQNO(type));
   if (info)
     return info;
 
@@ -454,6 +455,40 @@ sgtk_protect (repv protector, repv obj)
   return prot;
 }
 
+void
+sgtk_set_gclosure (repv protector, GClosure *closure)
+{
+  sgtk_protshell *prot = closure->data;
+  g_assert (prot != NULL);
+  sgtk_set_protect (protector, prot);
+}
+
+repv
+sgtk_get_gclosure (GClosure *closure)
+{
+  sgtk_protshell *prot = closure->data;
+  g_assert (prot != NULL);
+  return sgtk_get_protect (prot);
+}
+
+GClosure *
+sgtk_new_gclosure (repv obj)
+{
+  sgtk_protshell *prot = sgtk_new_protect (obj);
+  GClosure *closure = g_closure_new_simple (sizeof (GClosure), prot);
+  g_closure_add_finalize_notifier (closure, prot, sgtk_callback_destroy);
+  g_closure_set_marshal (closure, sgtk_callback_marshal);
+  return closure;
+}
+
+GClosure *
+sgtk_gclosure (repv protector, repv obj)
+{
+  GClosure *prot = sgtk_new_gclosure (obj);
+  sgtk_set_gclosure (protector, prot);
+  return prot;
+}
+
 static void
 mark_traced_ref (GtkWidget *obj, void *data)
 {
@@ -490,9 +525,9 @@ gtkobj_print (repv stream, repv obj)
     char buf[32];
   sgtk_object_proxy *proxy = GTKOBJ_PROXY (obj);
   GtkType tid = GTK_OBJECT_TYPE (proxy->obj);
-  char *type = gtk_type_name (tid);
+  const char *type = gtk_type_name (tid);
   rep_stream_puts (stream, "#<", -1, rep_FALSE);
-  rep_stream_puts (stream, type ? type : "Gtk???", -1, rep_FALSE);
+  rep_stream_puts (stream, type ? (char *) type : "Gtk???", -1, rep_FALSE);
   rep_stream_puts (stream, " ", -1, rep_FALSE);
   if (GTK_OBJECT_DESTROYED (proxy->obj))
       rep_stream_puts (stream, "destroyed", -1, rep_FALSE);
@@ -598,7 +633,7 @@ gtkobj_marker_hook (void)
   /* Second pass. */
   for (proxy = all_proxies; proxy; proxy = proxy->next)
     {
-      if (proxy->obj->ref_count > proxy->traced_refs + 1)
+      if (proxy->obj->parent_instance.ref_count > proxy->traced_refs + 1)
 	{
 #ifdef DEBUG_PRINT
 	  fprintf (stderr, "hooking %p %s\n",
@@ -622,7 +657,7 @@ make_gtkobj (GtkObject *obj)
 {
   sgtk_object_proxy *proxy;
 
-  g_assert (obj->ref_count > 0);
+  g_assert (obj->parent_instance.ref_count > 0);
 
   proxy = (sgtk_object_proxy *)rep_ALLOC_CELL (sizeof(sgtk_object_proxy));
   gtk_object_ref (obj);
@@ -945,12 +980,12 @@ sgtk_boxed_to_rep (gpointer ptr, sgtk_boxed_info *info, int copyp)
       sgtk_boxed_proxy *p = rep_ALLOC_CELL (sizeof (sgtk_boxed_proxy));
       if (copyp)
 	  ptr = info->copy (ptr);
-      if (GTK_TYPE_SEQNO(info->header.type) > 0xFFFF)
+      if (G_TYPE_BRANCH_SEQNO(info->header.type) > 0xFFFF)
 	  abort ();
       p->car = tc16_boxed;
       p->next = all_boxed;
       all_boxed = p;
-      p->seqno = GTK_TYPE_SEQNO(info->header.type);
+      p->seqno = G_TYPE_BRANCH_SEQNO(info->header.type);
       p->ptr = ptr;
       handle = rep_VAL(p);
   }
@@ -1089,6 +1124,11 @@ sgtk_type_to_rep (GtkType t)
 repv
 sgtk_arg_to_rep (GtkArg *a, int free_mem)
 {
+  if (GTK_TYPE_IS_OBJECT (a->type))
+  {
+    return sgtk_wrap_gtkobj (GTK_VALUE_OBJECT(*a));
+  }
+
   switch (GTK_FUNDAMENTAL_TYPE (a->type))
     {
     case GTK_TYPE_NONE:
@@ -1128,8 +1168,6 @@ sgtk_arg_to_rep (GtkArg *a, int free_mem)
 				TRUE);
     case GTK_TYPE_POINTER:
       return sgtk_pointer_to_rep (GTK_VALUE_POINTER(*a));
-    case GTK_TYPE_OBJECT:
-      return sgtk_wrap_gtkobj (GTK_VALUE_OBJECT(*a));
     default:
       fprintf (stderr, "illegal type %s in arg\n", 
 	       gtk_type_name (a->type));
@@ -1140,6 +1178,10 @@ sgtk_arg_to_rep (GtkArg *a, int free_mem)
 int
 sgtk_valid_arg (GtkArg *a, repv obj)
 {
+  if (GTK_TYPE_IS_OBJECT (a->type))
+  {
+    return sgtk_is_a_gtkobj (a->type, obj);
+  }
   switch (GTK_FUNDAMENTAL_TYPE (a->type))
     {
     case GTK_TYPE_NONE:
@@ -1171,10 +1213,6 @@ sgtk_valid_arg (GtkArg *a, repv obj)
     case GTK_TYPE_POINTER:
       return BOXED_P (obj) || GTKOBJP (obj) || sgtk_valid_pointer (obj);
       break;
-    case GTK_TYPE_CALLBACK:
-      return sgtk_valid_function (obj);
-    case GTK_TYPE_OBJECT:
-      return sgtk_is_a_gtkobj (a->type, obj);
     default:
       fprintf (stderr, "unhandled arg type %s\n", gtk_type_name (a->type));
       return FALSE;
@@ -1184,6 +1222,11 @@ sgtk_valid_arg (GtkArg *a, repv obj)
 void
 sgtk_rep_to_arg (GtkArg *a, repv obj, repv protector)
 {
+  if (GTK_TYPE_IS_OBJECT (a->type))
+  {
+    GTK_VALUE_OBJECT(*a) = sgtk_get_gtkobj (obj);
+    return;
+  }
   switch (GTK_FUNDAMENTAL_TYPE (a->type))
     {
     case GTK_TYPE_NONE:
@@ -1234,15 +1277,6 @@ sgtk_rep_to_arg (GtkArg *a, repv obj, repv protector)
       else
 	  GTK_VALUE_POINTER(*a) = sgtk_rep_to_pointer (obj);
       break;
-    case GTK_TYPE_CALLBACK:
-      sgtk_protect (protector, obj);
-      GTK_VALUE_CALLBACK(*a).marshal = sgtk_callback_marshal;
-      GTK_VALUE_CALLBACK(*a).data = (gpointer)obj;
-      GTK_VALUE_CALLBACK(*a).notify = sgtk_callback_destroy;
-      break;
-    case GTK_TYPE_OBJECT:
-      GTK_VALUE_OBJECT(*a) = sgtk_get_gtkobj (obj);
-      break;
     default:
       fprintf (stderr, "unhandled arg type %s\n", gtk_type_name (a->type));
       break;
@@ -1252,6 +1286,14 @@ sgtk_rep_to_arg (GtkArg *a, repv obj, repv protector)
 void
 sgtk_rep_to_ret (GtkArg *a, repv obj)
 {
+  if (GTK_TYPE_IS_OBJECT (a->type))
+  {
+    if (sgtk_is_a_gtkobj (a->type, obj))
+      *GTK_RETLOC_OBJECT(*a) = sgtk_get_gtkobj (obj);
+    else
+      *GTK_RETLOC_OBJECT(*a) = NULL;
+    return;
+  }
   switch (GTK_FUNDAMENTAL_TYPE (a->type))
     {
     case GTK_TYPE_NONE:
@@ -1293,12 +1335,6 @@ sgtk_rep_to_ret (GtkArg *a, repv obj)
       break;
     case GTK_TYPE_BOXED:
       *GTK_RETLOC_BOXED(*a) = sgtk_rep_to_boxed (obj);
-      break;
-    case GTK_TYPE_OBJECT:
-      if (sgtk_is_a_gtkobj (a->type, obj))
-	  *GTK_RETLOC_OBJECT(*a) = sgtk_get_gtkobj (obj);
-      else
-	  *GTK_RETLOC_OBJECT(*a) = NULL;
       break;
     default:
       fprintf (stderr, "unhandled return type %s\n", gtk_type_name (a->type));
@@ -1342,15 +1378,11 @@ DEFUN ("gtk-callback-trampoline", Fgtk_callback_trampoline,
   return old;
 }
 
-/* Be carefull when this macro is true.
-   scm_gc_heap_lock is set during gc.  */
-#define rep_GC_P (rep_in_gc)
-
 struct callback_info {
-  GtkObject *obj;
   repv proc;
-  gint n_args;
-  GtkArg *args;
+  guint n_params;
+  const GValue *params;
+  GValue *ret;
 };
 
 static repv
@@ -1360,9 +1392,10 @@ inner_callback_marshal (repv data)
   int i;
   repv args = Qnil, ans;
 
-  for (i = info->n_args-1; i >= 0; i--)
-    args = Fcons (sgtk_arg_to_rep (info->args+i, 0), args);
-  args = Fcons (sgtk_wrap_gtkobj (info->obj), args);
+  for (i = info->n_params-1; i >= 0; i--)
+    args = Fcons (sgtk_gvalue_to_rep (info->params+i), args);
+
+/*  args = Fcons (sgtk_wrap_gtkobj (info->obj), args); XXX */
 
   if (rep_CAR(callback_trampoline) == Qnil)
     ans = rep_funcall (info->proc, args, rep_FALSE);
@@ -1370,21 +1403,22 @@ inner_callback_marshal (repv data)
     ans = rep_funcall (rep_CAR(callback_trampoline),
 		       Fcons (info->proc, Fcons (args, Qnil)), rep_FALSE);
 
-  if (info->args[info->n_args].type != GTK_TYPE_NONE)
-    sgtk_rep_to_ret (info->args+info->n_args, ans);
+  if (info->ret != NULL)
+    sgtk_rep_to_gvalue (info->ret, ans);
 
   return Qnil;
 }
 
 void
-sgtk_callback_marshal (GtkObject *obj,
-		       gpointer data,
-		       guint n_args,
-		       GtkArg *args)
+sgtk_callback_marshal (GClosure *closure,
+		       GValue *return_value,
+		       guint n_param_values, const GValue *param_values,
+		       gpointer invocation_hint, gpointer marshal_data)
 {
   struct callback_info info;
+  sgtk_protshell *prot = closure->data;
 
-  if (rep_GC_P)
+  if (rep_in_gc)
     {
       /* This should only happen for the "destroy" signal and is then
          harmless. */
@@ -1392,10 +1426,10 @@ sgtk_callback_marshal (GtkObject *obj,
       return;
     }
   
-  info.obj = obj;
-  info.proc = ((sgtk_protshell *)data)->object;
-  info.n_args = n_args;
-  info.args = args;
+  info.proc = prot->object;
+  info.n_params = n_param_values;
+  info.params = param_values;
+  info.ret = return_value;
 
   rep_call_with_barrier (inner_callback_marshal,
 			 rep_VAL(&info), rep_TRUE, 0, 0, 0);
@@ -1404,9 +1438,160 @@ sgtk_callback_marshal (GtkObject *obj,
 }
 
 void
-sgtk_callback_destroy (gpointer data)
+sgtk_callback_destroy (gpointer data, GClosure *closure)
 {
   sgtk_unprotect ((sgtk_protshell *)data);
+}
+
+
+/* converting between SCM and GValue */
+
+repv
+sgtk_gvalue_to_rep (const GValue *a)
+{
+  switch (G_TYPE_FUNDAMENTAL (a->g_type))
+    {
+    case G_TYPE_NONE:
+      return Qnil;
+    case G_TYPE_CHAR:
+      return rep_MAKE_INT (g_value_get_char (a));
+    case G_TYPE_BOOLEAN:
+      return g_value_get_boolean (a) ? Qt : Qnil;
+    case G_TYPE_INT:
+      return sgtk_int_to_rep (g_value_get_int (a));
+    case G_TYPE_UINT:
+      return sgtk_uint_to_rep (g_value_get_uint (a));
+    case G_TYPE_LONG:
+      return sgtk_int_to_rep (g_value_get_long (a));
+    case G_TYPE_ULONG:
+      return sgtk_uint_to_rep (g_value_get_ulong (a));
+    case G_TYPE_FLOAT:
+      return sgtk_float_to_rep (g_value_get_float (a));
+    case G_TYPE_DOUBLE:
+      return sgtk_double_to_rep (g_value_get_double (a));
+    case G_TYPE_STRING:
+      return rep_string_dup (g_value_get_string (a));
+    case G_TYPE_ENUM:
+      return sgtk_enum_to_rep (g_value_get_enum (a),
+			       (sgtk_enum_info *)sgtk_find_type_info (a->g_type));
+    case G_TYPE_FLAGS:
+      return sgtk_flags_to_rep (g_value_get_flags (a),
+				(sgtk_enum_info *)sgtk_find_type_info (a->g_type));
+    case G_TYPE_BOXED:
+      return sgtk_boxed_to_rep (g_value_get_boxed (a),
+				(sgtk_boxed_info *)sgtk_find_type_info (a->g_type),
+				TRUE);
+    case G_TYPE_POINTER:
+      return sgtk_pointer_to_rep (g_value_get_pointer (a));
+    case G_TYPE_OBJECT:
+      return sgtk_wrap_gtkobj (g_value_get_object (a));
+    default:
+      fprintf (stderr, "illegal type %s in arg\n", 
+	       gtk_type_name (a->g_type));
+      return Qnil;
+    }
+}
+
+int
+sgtk_valid_gvalue (const GValue *a, repv obj)
+{
+  switch (G_TYPE_FUNDAMENTAL (a->g_type))
+    {
+    case G_TYPE_NONE:
+      return TRUE;
+    case G_TYPE_CHAR:
+      return sgtk_valid_char(obj);
+    case G_TYPE_BOOLEAN:
+      return TRUE;
+    case G_TYPE_INT:
+    case G_TYPE_UINT:
+    case G_TYPE_LONG:
+    case G_TYPE_ULONG:
+      return sgtk_valid_int (obj);
+    case G_TYPE_FLOAT:
+    case G_TYPE_DOUBLE:
+      return sgtk_valid_float (obj);
+    case G_TYPE_STRING:
+      return rep_STRINGP (obj);
+    case G_TYPE_ENUM:
+      return sgtk_valid_enum (obj, ((sgtk_enum_info *)
+				    sgtk_find_type_info (a->g_type)));
+    case G_TYPE_FLAGS:
+      return sgtk_valid_flags (obj, ((sgtk_enum_info *)
+				     sgtk_find_type_info (a->g_type)));
+    case G_TYPE_BOXED:
+      return sgtk_valid_boxed (obj, ((sgtk_boxed_info *)
+				     sgtk_find_type_info (a->g_type)));
+      break;
+    case G_TYPE_POINTER:
+      return BOXED_P (obj) || GTKOBJP (obj) || sgtk_valid_pointer (obj);
+      break;
+    case G_TYPE_OBJECT:
+      return sgtk_is_a_gtkobj (a->g_type, obj);
+    default:
+      fprintf (stderr, "unhandled arg type %s\n", gtk_type_name (a->g_type));
+      return FALSE;
+    }
+}
+
+void
+sgtk_rep_to_gvalue (GValue *a, repv obj)
+{
+  switch (G_TYPE_FUNDAMENTAL (a->g_type))
+    {
+    case G_TYPE_NONE:
+      return;
+    case G_TYPE_CHAR:
+      g_value_set_char (a, rep_INT (obj));
+      break;
+    case G_TYPE_BOOLEAN:
+      g_value_set_boolean (a, obj != Qnil);
+      break;
+    case G_TYPE_INT:
+      g_value_set_int (a, sgtk_rep_to_int (obj));
+      break;
+    case G_TYPE_UINT:
+      g_value_set_uint (a, sgtk_rep_to_uint (obj));
+      break;
+    case G_TYPE_LONG:
+      g_value_set_long (a, sgtk_rep_to_long (obj));
+      break;
+    case G_TYPE_ULONG:
+      g_value_set_ulong (a, sgtk_rep_to_ulong (obj));
+      break;
+    case G_TYPE_FLOAT:
+      g_value_set_float (a, sgtk_rep_to_float (obj));
+      break;
+    case G_TYPE_DOUBLE:
+      g_value_set_double (a, sgtk_rep_to_double (obj));
+      break;
+    case G_TYPE_STRING:
+      g_value_set_string (a, sgtk_rep_to_string (obj));
+      break;
+    case G_TYPE_ENUM:			/* XXX */
+      g_value_set_enum (a, sgtk_rep_to_enum (obj, (sgtk_enum_info *)sgtk_find_type_info (a->g_type)));
+      break;
+    case G_TYPE_FLAGS:
+      g_value_set_flags (a, sgtk_rep_to_flags (obj, (sgtk_enum_info *)sgtk_find_type_info (a->g_type)));
+      break;
+    case G_TYPE_BOXED:
+      g_value_set_boxed (a, sgtk_rep_to_boxed (obj));
+      break;
+    case G_TYPE_POINTER:
+      if (BOXED_P (obj))
+	  g_value_set_pointer (a, BOXED_PTR (obj));
+      else if (GTKOBJP (obj))
+	  g_value_set_pointer (a, GTKOBJ_PROXY (obj)->obj);
+      else
+	  g_value_set_pointer (a, sgtk_rep_to_pointer (obj));
+      break;
+    case G_TYPE_OBJECT:
+      g_value_set_object (a, sgtk_get_gtkobj (obj));
+      break;
+    default:
+      fprintf (stderr, "unhandled arg type %s\n", gtk_type_name (a->g_type));
+      break;
+    }
 }
 
 
@@ -1467,15 +1652,13 @@ sgtk_font_conversion (repv font)
 /* The SCM_PROC for the exported functions is in gtk-support.c to have
    it be snarfed for sgtk_init_gtk_support. */
 
-sgtk_object_info *sgtk_find_object_info (char *name);
-
 sgtk_object_info *
 sgtk_find_object_info_from_type (GtkType type)
 {
   sgtk_object_info *info;
   if (type == GTK_TYPE_INVALID)
     return NULL;
-  info = (sgtk_object_info *)sgtk_get_type_info (GTK_TYPE_SEQNO(type));
+  info = (sgtk_object_info *)sgtk_get_type_info (G_TYPE_BRANCH_SEQNO(type));
   if (info)
     return info;
   
@@ -1483,7 +1666,7 @@ sgtk_find_object_info_from_type (GtkType type)
 }
 
 sgtk_object_info *
-sgtk_find_object_info (char *name)
+sgtk_find_object_info (const char *name)
 {
   GtkType type, parent;
   sgtk_object_info *info;
@@ -1493,7 +1676,7 @@ sgtk_find_object_info (char *name)
   type = gtk_type_from_name (name);
   if (type != GTK_TYPE_INVALID)
     {
-      info = (sgtk_object_info *)sgtk_get_type_info (GTK_TYPE_SEQNO(type));
+      info = (sgtk_object_info *)sgtk_get_type_info (G_TYPE_BRANCH_SEQNO(type));
       if (info)
 	return info;
     }
@@ -1504,7 +1687,7 @@ sgtk_find_object_info (char *name)
       for (ip = infos->infos; *ip; ip++)
 	if (!strcmp ((*ip)->name, name))
 	  {
-	    if (GTK_FUNDAMENTAL_TYPE((*ip)->type) != GTK_TYPE_OBJECT)
+	    if (!GTK_TYPE_IS_OBJECT ((*ip)->type))
 	      return NULL;
 
 	    info = (sgtk_object_info *)*ip;
@@ -1532,10 +1715,14 @@ sgtk_find_object_info (char *name)
 
  query_args:
   gtk_type_class (info->header.type);
+#ifdef XXX
   info->args = gtk_object_query_args (info->header.type,
 				      &info->args_flags,
 				      &info->n_args);
   info->args_short_names = (char **)rep_alloc (info->n_args*(sizeof(char*)));
+#else
+  info->n_args = 0;
+#endif
   for (i = 0; i < info->n_args; i++)
     {
       char *l = info->args[i].name;
@@ -1793,7 +1980,7 @@ gtk_signal_new_generic (const gchar     *name,
 {
   guint signal_id;
 
-  if (GTK_FUNDAMENTAL_TYPE (type) != GTK_TYPE_OBJECT)
+  if (!GTK_TYPE_IS_OBJECT (type))
     return 0;
 
   signal_id = gtk_signal_newv (name, signal_flags, type,
@@ -1809,11 +1996,11 @@ gtk_signal_new_generic (const gchar     *name,
 void
 sgtk_signal_emit (GtkObject *obj, char *name, repv scm_args)
 {
-  GtkSignalQuery *info;
+  GSignalQuery info;
   guint signal_id, i;
   GtkArg *args;
 
-  signal_id = gtk_signal_lookup (name, GTK_OBJECT_TYPE (obj));
+  signal_id = g_signal_lookup (name, GTK_OBJECT_TYPE (obj));
   if (signal_id == 0)
     {
       Fsignal (Qerror, rep_list_2 (rep_string_dup ("no such signal"),
@@ -1821,20 +2008,19 @@ sgtk_signal_emit (GtkObject *obj, char *name, repv scm_args)
       return;
     }
 
-  info = gtk_signal_query (signal_id);
-  if (!rep_CONSP(scm_args) || list_length (scm_args) != info->nparams)
+  g_signal_query (signal_id, &info);
+  if (!rep_CONSP(scm_args) || list_length (scm_args) != info.n_params)
     {
-      g_free (info);
       Fsignal (Qerror, Fcons (rep_string_dup ("wrong number of signal arguments"), Qnil));
       return;
     }
 
-  args = g_new (GtkArg, info->nparams+1);
+  args = g_new (GtkArg, info.n_params+1);
   i = 0;
   while (rep_CONSP (scm_args))
     {
       args[i].name = NULL;
-      args[i].type = info->params[i];
+      args[i].type = info.param_types[i];
 
       if (!sgtk_valid_arg (&args[i], rep_CAR (scm_args)))
 	{
@@ -1856,7 +2042,6 @@ sgtk_signal_emit (GtkObject *obj, char *name, repv scm_args)
   gtk_signal_emitv (obj, signal_id, args);
 
   g_free (args);
-  g_free (info);
 }
 
 
@@ -2130,8 +2315,8 @@ sgtk_init_substrate (void)
   rep_sigchld_fun = sgtk_sigchld_callback;
 
   /* Need this in case sit-for is called. */
-  if (gdk_display != 0)
-      rep_register_input_fd (ConnectionNumber (gdk_display), 0);
+  if (GDK_DISPLAY () != 0)
+      rep_register_input_fd (ConnectionNumber (GDK_DISPLAY ()), 0);
 
   rep_ADD_SUBR (Sgtk_callback_trampoline);
   rep_ADD_SUBR (Sgtk_standalone_p);
@@ -2167,7 +2352,7 @@ sgtk_init_with_args (int *argcp, char ***argvp)
      Actually it shouldn't matter, gtk_init () won't initialise more
      than once.. --jsh */
 
-  if (gdk_display == NULL)
+  if (GDK_DISPLAY () == 0)
     {
       char *tem = getenv ("REP_GTK_DONT_INITIALIZE");
       if (tem == 0 || atoi (tem) == 0)
@@ -2290,6 +2475,6 @@ rep_dl_kill (void)
 	rep_event_loop_fun = 0;
     if (rep_sigchld_fun == sgtk_sigchld_callback)
 	rep_sigchld_fun = 0;
-    if (gdk_display != 0)
-	rep_deregister_input_fd (ConnectionNumber (gdk_display));
+    if (GDK_DISPLAY () != 0)
+	rep_deregister_input_fd (ConnectionNumber (GDK_DISPLAY ()));
 }

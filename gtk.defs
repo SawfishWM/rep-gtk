@@ -6,7 +6,6 @@
 
 (define-enum GtkWindowType
   (toplevel GTK_WINDOW_TOPLEVEL)
-  (dialog GTK_WINDOW_DIALOG)
   (popup GTK_WINDOW_POPUP))
 
 (define-enum GtkStateType
@@ -81,10 +80,10 @@
   (top-bottom GTK_TOP_BOTTOM)
   (left-right GTK_LEFT_RIGHT))
 
-(define-enum GtkMenuFactoryType
-  (menu GTK_MENU_FACTORY_MENU)
-  (menu-bar GTK_MENU_FACTORY_MENU_BAR)
-  (option-menu GTK_MENU_FACTORY_OPTION_MENU))
+;(define-enum GtkMenuFactoryType
+;  (menu GTK_MENU_FACTORY_MENU)
+;  (menu-bar GTK_MENU_FACTORY_MENU_BAR)
+;  (option-menu GTK_MENU_FACTORY_OPTION_MENU))
 
 (define-enum GtkMetricType
   (pixels GTK_PIXELS)
@@ -98,10 +97,10 @@
   (page-backward GTK_SCROLL_PAGE_BACKWARD)
   (page-forward GTK_SCROLL_PAGE_FORWARD))
 
-(define-enum GtkTroughType
-  (none GTK_TROUGH_NONE)
-  (start GTK_TROUGH_START)
-  (end GTK_TROUGH_END))
+;(define-enum GtkTroughType
+;  (none GTK_TROUGH_NONE)
+;  (start GTK_TROUGH_START)
+;  (end GTK_TROUGH_END))
 
 (define-enum GtkPositionType
   (left GTK_POS_LEFT)
@@ -178,9 +177,9 @@
   (start GTK_BUTTONBOX_START)
   (end GTK_BUTTONBOX_END))
 
-(define-enum GtkTreeViewMode
-  (line GTK_TREE_VIEW_LINE)
-  (item GTK_TREE_VIEW_ITEM))
+;(define-enum GtkTreeViewMode
+;  (line GTK_TREE_VIEW_LINE)
+;  (item GTK_TREE_VIEW_ITEM))
 
 (define-enum GtkCurveType
   (linear GTK_CURVE_TYPE_LINEAR)
@@ -201,13 +200,14 @@
   (enum GTK_TYPE_ENUM)
   (flags GTK_TYPE_FLAGS)
   (boxed GTK_TYPE_BOXED)
-  (foreign GTK_TYPE_FOREIGN)
-  (callback GTK_TYPE_CALLBACK)
-  (args GTK_TYPE_ARGS)
+;  (foreign GTK_TYPE_FOREIGN)
+;  (callback GTK_TYPE_CALLBACK)
+;  (args GTK_TYPE_ARGS)
   (pointer GTK_TYPE_POINTER)
-  (signal GTK_TYPE_SIGNAL)
-  (c-callback GTK_TYPE_C_CALLBACK)
-  (object GTK_TYPE_OBJECT))
+;  (signal GTK_TYPE_SIGNAL)
+;  (c-callback GTK_TYPE_C_CALLBACK)
+;  (object GTK_TYPE_OBJECT)
+)
 
 (define-enum GtkJustification
   (left GTK_JUSTIFY_LEFT)
@@ -260,7 +260,7 @@
 
 (define-flags GtkAccelFlags
   (visible GTK_ACCEL_VISIBLE)
-  (signal-visible GTK_ACCEL_SIGNAL_VISIBLE)
+;  (signal-visible GTK_ACCEL_SIGNAL_VISIBLE)
   (locked GTK_ACCEL_LOCKED))
  
 ;;; Gtk boxed types
@@ -393,20 +393,20 @@
 
 ;; Signals
 
-(define-func gtk_signal_connect_full
+(define-func g_signal_connect_closure
   int
   ((GtkObject object)
    (string name)
-   (full-callback func)
-   (bool object_signal (= "0"))
+   (gclosure func)
    (bool after (= "0")))
   (scm-name "gtk-signal-connect")
   (protection object))
 
-(define-func gtk_signal_disconnect
+(define-func g_signal_handler_disconnect
   none
   ((GtkObject object)
-   (int id)))
+   (int id))
+  (scm-name "gtk-signal-disconnect"))
 
 ;; GtkWidget
 
@@ -829,7 +829,7 @@
   none
   ((GtkTreeItem tree_item)))
 
-;;; Tree
+;; Tree
 
 (define-object GtkTree (GtkContainer))
 
@@ -897,10 +897,10 @@
   ((GtkTree tree)
    (GtkSelectionMode mode)))
 
-(define-func gtk_tree_set_view_mode
-  none
-  ((GtkTree tree)
-   (GtkTreeViewMode mode)))
+;(define-func gtk_tree_set_view_mode
+;  none
+;  ((GtkTree tree)
+;   (GtkTreeViewMode mode)))
 
 (define-func gtk_tree_set_view_lines
   none
@@ -909,11 +909,11 @@
 
 ;; Data
 
-(define-object GtkData (GtkObject))
+;(define-object GtkData (GtkObject))
 
 ;; Adjustment
 
-(define-object GtkAdjustment (GtkData)
+(define-object GtkAdjustment (GtkObject)
   (fields
    (float value)
    (float lower)
@@ -1585,8 +1585,7 @@
 
 (define-func gtk_toolbar_new
   GtkWidget
-  ((GtkOrientation orientation)
-   (GtkToolbarStyle style)))
+  ())
 
 ;; XXX - blech, need interp versions of these
 ;; (define-func gtk_toolbar_append_item)
@@ -1712,7 +1711,7 @@
 
 (define-object GtkButton (GtkContainer)
   (fields
-   (GtkWidget child)
+;   (GtkWidget child)
    (bool in_button)
    (bool button_down)))
 
@@ -2173,7 +2172,7 @@
 
 ;; Tooltips
 
-(define-object GtkTooltips (GtkData))
+(define-object GtkTooltips (GtkObject))
 
 (define-func gtk_tooltips_new
   GtkTooltips
@@ -2323,13 +2322,13 @@
   GtkAccelGroup
   ((GtkMenu menu)))
 
-(define-func gtk_menu_get_uline_accel_group
-  GtkAccelGroup
-  ((GtkMenu menu)))
+;(define-func gtk_menu_get_uline_accel_group
+;  GtkAccelGroup
+;  ((GtkMenu menu)))
 
-(define-func gtk_menu_ensure_uline_accel_group
-  GtkAccelGroup
-  ((GtkMenu menu)))
+;(define-func gtk_menu_ensure_uline_accel_group
+;  GtkAccelGroup
+;  ((GtkMenu menu)))
 
 ;; XXX - probably needs _interp version
 ;; gtk_menu_attach_to_widget
@@ -3204,9 +3203,9 @@
 (define-object GtkColorSelectionDialog (GtkWindow)
   (fields
    (GtkWidget colorsel)
-   (GtkWidget main_vbox)
+;   (GtkWidget main_vbox)
    (GtkWidget ok_button)
-   (GtkWidget reset_button)
+;   (GtkWidget reset_button)
    (GtkWidget cancel_button)
    (GtkWidget help_button)))
 
@@ -3455,26 +3454,26 @@
   type
   ((string name)))
 
-(define-func gtk_class_new
-  type
-  ((type parent)
-   (string name)))
-
-(define-func gtk_signal_new_generic
-  int
-  ((string name)
-   (GtkSignalRunType signal_flags)
-   (type class_type)
-   (type return_type)
-   ((cvec type) params)))
-
-(define-func sgtk_signal_emit
-  none
-  ((GtkObject object)
-   (string signal)
-   (SCM args))
-  (scm-name "gtk-signal-emit")
-  (rest-arg t))
+;(define-func gtk_class_new
+;  type
+;  ((type parent)
+;   (string name)))
+;
+;(define-func gtk_signal_new_generic
+;  int
+;  ((string name)
+;   (GtkSignalRunType signal_flags)
+;   (type class_type)
+;   (type return_type)
+;   ((cvec type) params)))
+;
+;(define-func sgtk_signal_emit
+;  none
+;  ((GtkObject object)
+;   (string signal)
+;   (SCM args))
+;  (scm-name "gtk-signal-emit")
+;  (rest-arg t))
 
 (define-func gtk_signal_set_class_function_full
   none
@@ -3527,6 +3526,6 @@
 ;; Options
 
 (options
- (includes "#include <gtk/gtk.h>")
+ (includes "#define GTK_ENABLE_BROKEN\n#include <gtk/gtk.h>")
  (init-func "sgtk_init_gtk_gtk_glue")
  (other-inits "sgtk_init_gtk_gdk_glue"))

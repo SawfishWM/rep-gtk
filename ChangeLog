@@ -1,3 +1,25 @@
+2001-11-16  John Harper  <jsh@unfactored.org>
+
+	* rep-gtk.h, rep-gtk.c, rep-gnome.h, gtk.defs, gtk-support.c,
+	gnomelib.defs, gnomelib-support.c, gdk.defs, configure.in,
+	build-gtk.jl:
+
+	Many hacks (some extremely dubious) to get to first stage of
+	Gtk-2 port.
+
+	Current status: gtk/gdk wrappers compile (i.e. you must specify
+	--without-gnome --without-libglade --without-gdk-pixbuf to
+	configure) and they mostly work
+
+	I basically did the minimum necessary to make it compile. Then
+	added support for GClosure's and GValue's so that signal
+	handling works. The hello.jl and clist.jl example programs run
+	correctly without modification
+
+	Next step: remove the GtkArg crap, random cleanup, use
+	GObject's instead of GtkObject's, and various gtk_ -> g_
+	changes..
+
 2001-01-17  John Harper  <jsh@eazel.com>
 
 	* rep-gtk.spec.in: unset LC_ALL, LINGUAS and LANG before

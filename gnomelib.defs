@@ -200,80 +200,80 @@
 
 ;; should really handle the error typedef
 
-(define-func sgtk_gnome_metadata_set
-  int
-  ((string file)
-   (string name)
-   (SCM data))
-  (scm-name "gnome-metadata-set"))
-
-(define-func gnome_metadata_remove
-  int
-  ((string file)
-   (string name)))
-
+;(define-func sgtk_gnome_metadata_set
+;  int
+;  ((string file)
+;   (string name)
+;   (SCM data))
+;  (scm-name "gnome-metadata-set"))
+;
+;(define-func gnome_metadata_remove
+;  int
+;  ((string file)
+;   (string name)))
+;
 ;XXX can't return vectors currently
 ;(define-func gnome_metadata_list
 ;  (tvec string)
 ;  ((string file)))
-
-(define-func sgtk_gnome_metadata_get
-  SCM
-  ((string file)
-   (string name))
-  (scm-name "gnome-metadata-get"))
-
-(define-func sgtk_gnome_metadata_get_fast
-  SCM
-  ((string file)
-   (string name))
-  (scm-name "gnome-metadata-get-fast"))
-
-(define-func gnome_metadata_rename
-  int
-  ((string from)
-   (string to)))
-
-(define-func gnome_metadata_copy
-  int
-  ((string from)
-   (string to)))
-
-(define-func gnome_metadata_delete
-  int
-  ((string file)))
-
-(define-func sgtk_gnome_metadata_regex_add
-  none
-  ((string regex)
-   (string key)
-   (SCM data))
-  (scm-name "gnome-metadata-regex-add"))
-
-(define-func gnome_metadata_regex_remove
-  none
-  ((string regex)
-   (string key)))
-
-(define-func sgtk_gnome_metadata_type_add
-  none
-  ((string regex)
-   (string key)
-   (SCM data))
-  (scm-name "gnome-metadata-type-add"))
-
-(define-func gnome_metadata_type_remove
-  none
-  ((string regex)
-   (string key)))
-
-(define-func gnome_metadata_lock
-  none
-  ())
-
-(define-func gnome_metadata_unlock
-  none
-  ())
+;
+;(define-func sgtk_gnome_metadata_get
+;  SCM
+;  ((string file)
+;   (string name))
+;  (scm-name "gnome-metadata-get"))
+;
+;(define-func sgtk_gnome_metadata_get_fast
+;  SCM
+;  ((string file)
+;   (string name))
+;  (scm-name "gnome-metadata-get-fast"))
+;
+;(define-func gnome_metadata_rename
+;  int
+;  ((string from)
+;   (string to)))
+;
+;(define-func gnome_metadata_copy
+;  int
+;  ((string from)
+;   (string to)))
+;
+;(define-func gnome_metadata_delete
+;  int
+;  ((string file)))
+;
+;(define-func sgtk_gnome_metadata_regex_add
+;  none
+;  ((string regex)
+;   (string key)
+;   (SCM data))
+;  (scm-name "gnome-metadata-regex-add"))
+;
+;(define-func gnome_metadata_regex_remove
+;  none
+;  ((string regex)
+;   (string key)))
+;
+;(define-func sgtk_gnome_metadata_type_add
+;  none
+;  ((string regex)
+;   (string key)
+;   (SCM data))
+;  (scm-name "gnome-metadata-type-add"))
+;
+;(define-func gnome_metadata_type_remove
+;  none
+;  ((string regex)
+;   (string key)))
+;
+;(define-func gnome_metadata_lock
+;  none
+;  ())
+;
+;(define-func gnome_metadata_unlock
+;  none
+;  ())
 
 
 ;; gnome-mime-info
