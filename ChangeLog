@@ -1,3 +1,9 @@
+1999-11-17  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (sgtk_init_with_args): if REP_GTK_DONT_INITIALIZE
+	is defined non-zero in the environment, then don't call
+	gtk_init (), this helps when compiling scripts
+
 1999-11-10  John Harper  <john@dcs.warwick.ac.uk>
 
 	* configure.in: require rep 0.8+ (lexical scope), bump rep-gtk
