@@ -1,3 +1,10 @@
+1999-03-19  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c: hijack the rep event loop and input registering
+	functions
+
+	* rep-gtk.c (rep_dl_init): return t
+
 1999-03-18  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (sgtk_object_proxy): removed the `prevp' field,
