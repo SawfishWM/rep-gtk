@@ -1,3 +1,9 @@
+1999-10-22  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk-compat.c, gtk-1.2.defs (gtk_menu_popup_interp): added an
+	extra (optional) argument, a cons cell defining the position at
+	which to show the menu
+
 1999-10-20  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c: accept long integers for all but character types,
