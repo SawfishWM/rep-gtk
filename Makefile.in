@@ -48,7 +48,7 @@ install : all
 	$(rep_DL_INSTALL) $(OUT) $(repexecdir)
 
 uninstall :
-	$(rep_DL_UNINSTALL) $(repexecdir) $(OUT)
+	$(rep_DL_UNINSTALL) $(repexecdir)/$(OUT)
 
 clean :
 	rm -f *.defs.jl gtk-glue.c *~ core *.jlc *.o *.lo *.la
