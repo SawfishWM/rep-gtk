@@ -1,0 +1,14 @@
+.libs
+gtk-glue.c
+gdk-1.2.defs.jl
+gtk-1.2.defs.jl
+Makefile
+config.status
+libtool
+config.cache
+config.h
+config.log
+configure
+aclocal.m4
+*.lo
+*.la
