@@ -453,34 +453,34 @@
   none
   ((GtkTextBuffer buffer)
    (string text)
-   (int len)))
+   (int len (= "-1"))))
 
 (define-func gtk_text_buffer_insert
   none
   ((GtkTextBuffer buffer)
    (GtkTextIter iter)
    (string text)
-   (int len)))
+   (int len (= "-1"))))
 
 (define-func gtk_text_buffer_insert_at_cursor
   none
   ((GtkTextBuffer buffer)
    (string text)
-   (int len)))
+   (int len (= "-1"))))
 
 (define-func gtk_text_buffer_insert_interactive
   bool
   ((GtkTextBuffer buffer)
    (GtkTextIter iter)
    (string text)
-   (int len)
+   (int len (= "-1"))
    (bool default_editable)))
 
 (define-func gtk_text_buffer_insert_interactive_at_cursor
   bool
   ((GtkTextBuffer buffer)
    (string text)
-   (int len)
+   (int len (= "-1"))
    (bool default_editable)))
 
 (define-func gtk_text_buffer_insert_range

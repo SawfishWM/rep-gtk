@@ -1,3 +1,10 @@
+2002-03-03  John Harper  <jsh@pixelslut.com>
+
+	* gtktext.defs: added some default values
+
+	* rep-gtk.c (sgtk_gvalue_to_rep): accept G_TYPE_INVALID to
+	silence error messages
+
 2002-02-13  Sander Vesik <Sander.Vesik@sun.com>
 
 	* gtk-compat.c: update menu_popup_position to reflect API

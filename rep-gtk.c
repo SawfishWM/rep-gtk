@@ -1236,6 +1236,7 @@ sgtk_gvalue_to_rep (const GValue *a)
   switch (G_TYPE_FUNDAMENTAL (a->g_type))
     {
     case G_TYPE_NONE:
+    case G_TYPE_INVALID:
       return Qnil;
     case G_TYPE_CHAR:
       return rep_MAKE_INT (g_value_get_char (a));
