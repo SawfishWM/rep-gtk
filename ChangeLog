@@ -1,3 +1,7 @@
+1999-08-26  John Harper  <john@dcs.warwick.ac.uk>
+
+	* gtk-1.2.defs (GtkCheckMenuItem): define the `active' field
+
 1999-08-16  John Harper  <john@dcs.warwick.ac.uk>
 
 	* version 0.2
