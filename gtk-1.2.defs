@@ -230,6 +230,17 @@
   (ascending GTK_SORT_ASCENDING)
   (descending GTK_SORT_DESCENDING))
 
+(define-enum GtkAnchorType
+  (center GTK_ANCHOR_CENTER)
+  (north GTK_ANCHOR_NORTH)
+  (south GTK_ANCHOR_SOUTH)
+  (east GTK_ANCHOR_EAST)
+  (west GTK_ANCHOR_WEST)
+  (north-west GTK_ANCHOR_NORTH_WEST)
+  (north-east GTK_ANCHOR_NORTH_EAST)
+  (south-west GTK_ANCHOR_SOUTH_WEST)
+  (south-east GTK_ANCHOR_SOUTH_EAST))
+
 ;;; Gtk boxed types
 
 ;;(define-boxed GtkAcceleratorTable
@@ -660,9 +671,8 @@
 (define-func gtk_container_foreach_full 
   none
   ((GtkContainer container)
-   (full-callback function))
-  (scm-name "gtk-container-foreach")
-  (protection #t))
+   (full-callback function (protect-during)))
+  (scm-name "gtk-container-foreach"))
 
 (define-func gtk_container_children
   ((list GtkWidget))
@@ -1919,6 +1929,10 @@
    (float yalign)
    (float ratio)
    (int obey_child)))
+
+;; Progress
+
+(define-object GtkProgress (GtkWidget))
 
 ;; Progress Bar
 
