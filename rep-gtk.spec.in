@@ -56,7 +56,7 @@ make install \
 
 %files
 %defattr(-,root,root)
-%doc README README.guile-gtk BUGS ChangeLog gtk-1.2.defs gdk-1.2.defs
+%doc README README.guile-gtk BUGS ChangeLog gtk.defs gdk.defs
 %{_libexecdir}/rep/%{_target_platform}/sgtk-types.so*
 %{_libexecdir}/rep/%{_target_platform}/sgtk-types.la
 %{_libexecdir}/rep/%{_target_platform}/gtk.so*
@@ -71,7 +71,8 @@ make install \
 
 %files gnome
 %defattr(-,root,root)
-%doc gnome*.defs examples/gnome-test examples/canvas-test
+%doc gnome*.defs gdk-pixbuf.defs libglade.defs
+%doc examples/gnome-test examples/canvas-test
 %{_libexecdir}/rep/%{_target_platform}/gnome*.so*
 %{_libexecdir}/rep/%{_target_platform}/gnome*.la
 %{_libexecdir}/rep/%{_target_platform}/libglade-gnome.so*
