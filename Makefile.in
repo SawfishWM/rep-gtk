@@ -41,7 +41,7 @@ VPATH=@top_srcdir@:.
 all : $(OUT)
 
 $(OUT) : $(OBJS)
-	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LIBS)
+	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS)
 
 %-glue.c : %-1.2.defs.jl $(RDEFS) build-gtk.jlc
 	rep --batch -l build-gtk -f build-gtk-batch $< $@
