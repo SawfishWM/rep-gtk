@@ -20,7 +20,7 @@ to 0.17), with a new glue-code generator.
 %package libglade
 Summary: librep binding for the libglade library for loading user interfaces.
 Group: Development/Languages
-Requires: %{name}, libglade
+Requires: %{name} = @version@, libglade
 
 %description libglade
 This is a binding of libglade for the librep Lisp interpreter. libglade
@@ -30,7 +30,7 @@ hierarchies. These hierarchies may be created by the GLADE GUI builder.
 %package gnome
 Summary: GNOME binding for librep
 Group: Development/Languages
-Requires: %{name}, gnome-libs, libglade
+Requires: %{name} = @version@, gnome-libs, libglade
 
 %description gnome
 This is a binding of the various GNOME libraries for the librep Lisp
