@@ -24,7 +24,7 @@ AC_INIT(rep-gtk.h)
 AC_CONFIG_HEADER(config.h)
 
 dnl Release versioning info
-version="0.6"
+version="0.7"
 
 dnl Find the system type; this isn't crucial
 AC_CANONICAL_HOST
