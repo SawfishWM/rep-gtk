@@ -26,7 +26,7 @@ AC_CONFIG_HEADER(config.h)
 dnl Release versioning info
 version="0.13a"
 
-OUT="sgtk-types.la gtk.la"
+OUT="gtk/types.la gtk/gtk.la"
 AC_SUBST(OUT)
 
 dnl Find the system type; this isn't crucial
@@ -48,7 +48,7 @@ if test "x${GCC}" = "xyes" -a "x$CFLAGS" = "x-g -O2"; then
 fi
 
 dnl Check for librep
-AM_PATH_REP(0.12)
+AM_PATH_REP(0.13)
 
 dnl Check for glib
 AM_PATH_GLIB
@@ -68,7 +68,7 @@ if test "$with_gnome" != "no"; then
     GNOMEUI_LIBS="`gnome-config --libs gnomeui`"
     GNOME_CFLAGS="`gnome-config --cflags gnomeui`"
     AC_MSG_RESULT([$GNOME_VERSION])
-    OUT="$OUT gnomelib.la gnomeui.la gnome-canvas.la"
+    OUT="$OUT gnome/lib.la gnome/ui.la gnome/canvas.la"
     with_gnome=yes
   elif test "$with_gnome" = "yes"; then
     AC_MSG_ERROR([can't run gnome-config]);
@@ -86,7 +86,7 @@ AC_ARG_WITH(libglade,
  [  --with-libglade         Build libglade wrappers (dynamic GUI builder)
   --without-libglade      Don't wrap libglade], [], [with_libglade=yes])
 if test "$with_libglade" = "yes"; then
-  AM_PATH_LIBGLADE([OUT="$OUT libglade.la"])
+  AM_PATH_LIBGLADE([OUT="$OUT gtk/libglade.la"])
 fi
 
 if test "$with_libglade" = "yes" -a "$with_gnome" = "yes"; then
@@ -105,7 +105,7 @@ if test "$with_libglade" = "yes" -a "$with_gnome" = "yes"; then
 		     AC_DEFINE(LIBGLADE_XML_TXTDOMAIN,1)],
 		    [AC_MSG_RESULT(no)])
     CPPFLAGS="${_cppflags}"
-    OUT="$OUT libglade-gnome.la"
+    OUT="$OUT gnome/libglade.la"
   else
     AC_MSG_ERROR([libglade wasn't compiled with GNOME support])
   fi
@@ -116,7 +116,7 @@ AC_ARG_WITH(gdk-pixbuf,
  [], [with_gdk_pixbuf=maybe])
 if test "$with_gdk_pixbuf" != "no"; then
   AM_PATH_GDK_PIXBUF(,
-    [with_gdk_pixbuf="yes"; OUT="$OUT gdk-pixbuf.la"],
+    [with_gdk_pixbuf="yes"; OUT="$OUT gtk/gdk-pixbuf.la"],
     [with_gdk_pixbuf=no])
 fi
 
@@ -132,7 +132,7 @@ if test "$with_gdk_pixbuf" = "yes" -a "$with_gnome" = "yes"; then
       GNOME_CANVAS_PIXBUF_LIBS="`gnome-config --libs gnomecanvaspixbuf`"
       GNOME_CANVAS_PIXBUF_CFLAGS="`gnome-config --cflags gnomecanvaspixbuf`"
       AC_MSG_RESULT([$GNOME_CANVAS_PIXBUF_VERSION])
-      OUT="$OUT gnome-canvas-pixbuf.la"
+      OUT="$OUT gnome/canvas-pixbuf.la"
     elif test "$with_gnome_canvas_pixbuf" = "yes"; then
       AC_MSG_ERROR([can't run gnome-config]);
     fi
@@ -159,6 +159,8 @@ AC_SUBST(repexecdir)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(CFLAGS)
 AC_SUBST(LIBS)
+
+AC_DEFINE_UNQUOTED(REP_GTK_VERSION, "${version}")
 
 AC_OUTPUT(Makefile rep-gtk.spec)
 
