@@ -2258,8 +2258,7 @@ reset_idle_timeout (void)
 {
     if (idle_timeout_set)
 	gtk_timeout_remove (idle_timeout_tag);
-    else
-	idle_timeout_counter = 0;
+    idle_timeout_counter = 0;
     idle_timeout_tag = gtk_timeout_add (1000, idle_timeout_callback, 0);
     idle_timeout_set = TRUE;
 }
