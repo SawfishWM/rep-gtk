@@ -47,24 +47,11 @@ list_length (repv list)
 
 static GHashTable *proxy_tab;
 
-static guint
-gpointer_hash (gpointer a)
-{
-  return (guint)a;
-}
-
-static gint
-gpointer_compare (gpointer a, gpointer b)
-{
-  return a == b;
-}
-
 static void
 enter_proxy (gpointer obj, repv proxy)
 {
   if (proxy_tab == NULL)
-    proxy_tab = g_hash_table_new ((GHashFunc)gpointer_hash,
-				  (GCompareFunc)gpointer_compare);
+    proxy_tab = g_hash_table_new (NULL, NULL);
   g_hash_table_insert (proxy_tab, obj, (gpointer)proxy);
 }
 
@@ -1878,7 +1865,7 @@ static void
 sgtk_input_callback (gpointer data, gint fd, GdkInputCondition cond)
 {
     struct input_callback_data d;
-    d.func = g_hash_table_lookup (input_callbacks, (gpointer) fd);
+    d.func = g_hash_table_lookup (input_callbacks, GINT_TO_POINTER (fd));
     d.fd = fd;
     if (d.func != 0)
     {
@@ -1896,16 +1883,14 @@ sgtk_register_input_fd (int fd, void (*callback)(int fd))
 	int tag;
 	if (input_tags == 0)
 	{
-	    input_tags = g_hash_table_new ((GHashFunc) gpointer_hash,
-					   (GCompareFunc) gpointer_compare);
-	    input_callbacks = g_hash_table_new ((GHashFunc) gpointer_hash,
-						(GCompareFunc) gpointer_compare);
+	    input_tags = g_hash_table_new (NULL, NULL);
+	    input_callbacks = g_hash_table_new (NULL, NULL);
 	}
 	tag = gdk_input_add (fd, GDK_INPUT_READ,
 			     (GdkInputFunction) sgtk_input_callback, 0);
-	g_hash_table_insert (input_tags, (gpointer) fd, (gpointer) tag);
+	g_hash_table_insert (input_tags, GINT_TO_POINTER (fd), GINT_TO_POINTER (tag));
 	g_hash_table_insert (input_callbacks,
-			     (gpointer) fd, (gpointer) callback);
+			     GINT_TO_POINTER (fd), (gpointer) callback);
     }
 }
 
@@ -1914,10 +1899,10 @@ sgtk_deregister_input_fd (int fd)
 {
     if (input_tags != 0)
     {
-	int tag = (int) g_hash_table_lookup (input_tags, (gpointer) fd);
+	int tag = GPOINTER_TO_INT (g_hash_table_lookup (input_tags, GINT_TO_POINTER (fd)));
 	gdk_input_remove (tag);
-	g_hash_table_remove (input_tags, (gpointer) fd);
-	g_hash_table_remove (input_callbacks, (gpointer) fd);
+	g_hash_table_remove (input_tags, GINT_TO_POINTER (fd));
+	g_hash_table_remove (input_callbacks, GINT_TO_POINTER (fd));
     }
 }
 
