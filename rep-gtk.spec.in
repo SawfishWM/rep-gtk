@@ -55,7 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc README README.guile-gtk ChangeLog gtk-1.2.defs gdk-1.2.defs
+%doc README README.guile-gtk BUGS ChangeLog gtk-1.2.defs gdk-1.2.defs
 %{_prefix}/libexec/rep/%{_host}/sgtk-types.so*
 %{_prefix}/libexec/rep/%{_host}/sgtk-types.la
 %{_prefix}/libexec/rep/%{_host}/gtk.so*
