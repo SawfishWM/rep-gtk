@@ -445,6 +445,18 @@
 ;;   (GtkAcceleratorTable table)
 ;;   (string signal_name)))
 
+(define-func gtk_widget_lock_accelerators
+  none
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_unlock_accelerators
+  none
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_accelerators_locked
+  bool
+  ((GtkWidget widget)))
+
 (define-func gtk_widget_event
   bool
   ((GtkWidget widget)
