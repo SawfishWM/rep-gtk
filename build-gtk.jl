@@ -80,6 +80,15 @@
 (defvar gtk-subrs nil
   "List of C-NAME.")
 
+;; similar for imported files
+(defvar gtk-imported-enums nil)
+(defvar gtk-imported-flags nil)
+(defvar gtk-imported-boxed nil)
+(defvar gtk-imported-objects nil)
+
+;; t when importing secondary definitions
+(defvar gtk-importing nil)
+
 (defmacro gtk-get-options (name options)
   `(cdr (assq ,name ,options)))
 
@@ -120,6 +129,11 @@
        (gtk-functions nil)
        (gtk-options nil)
        (gtk-subrs nil)
+       (gtk-imported-enums nil)
+       (gtk-imported-flags nil)
+       (gtk-imported-boxed nil)
+       (gtk-imported-objects nil)
+       (gtk-importing nil)
        (gtk-emitted-composite-helpers nil))
     (let
 	((defs-file (open-file defs-file-name 'read)))
@@ -169,62 +183,84 @@
 				    'read)))
 		(or file (error "Can't open input file: %s" (nth 1 def)))
 		(unwind-protect
-		    (parse-gtk file)
+		    (let
+			((gtk-importing t))
+		      (parse-gtk file))
 		  (close-file file))))
 	     ((eq (car def) 'define-enum)
 	      (let*
 		  ((name (nth 1 def))
 		   (body (nthcdr 2 def))
-		   (cell (assq name gtk-enums)))
+		   (cell (or (assq name gtk-enums)
+			     (assq name gtk-imported-enums))))
 		(if cell
 		    (rplacd cell body)
-		  (setq gtk-enums (cons (cons name body) gtk-enums)))))
+		  (if (not gtk-importing)
+		      (setq gtk-enums (cons (cons name body) gtk-enums))
+		    (setq gtk-imported-enums
+			  (cons (cons name body) gtk-imported-enums))))))
 	     ((eq (car def) 'define-flags)
 	      (let*
 		  ((name (nth 1 def))
 		   (body (nthcdr 2 def))
-		   (cell (assq name gtk-flags)))
+		   (cell (or (assq name gtk-flags)
+			     (assq name gtk-imported-flags))))
 		(if cell
 		    (rplacd cell body)
-		  (setq gtk-flags (cons (cons name body) gtk-flags)))))
+		  (if (not gtk-importing)
+		      (setq gtk-flags (cons (cons name body) gtk-flags))
+		    (setq gtk-imported-flags
+			  (cons (cons name body) gtk-imported-flags))))))
 	     ((eq (car def) 'define-boxed)
 	      (let
-		  ((cell (assq (nth 1 def) gtk-boxed)))
+		  ((cell (or (assq (nth 1 def) gtk-boxed)
+			     (assq (nth 1 def) gtk-imported-boxed))))
 		(if cell
 		    (rplacd cell (nthcdr 2 def))
-		  (setq gtk-boxed (cons (cdr def) gtk-boxed)))))
+		  (if (not gtk-importing)
+		      (setq gtk-boxed (cons (cdr def) gtk-boxed))
+		    (setq gtk-imported-boxed
+			  (cons (cdr def) gtk-imported-boxed))))))
 	     ((eq (car def) 'define-object)
 	      (let*
 		  ((name (nth 1 def))
 		   (super (nth 2 def))
 		   (attrs (nthcdr 3 def))
-		   (cell (assq name gtk-objects)))
+		   (cell (or (assq name gtk-objects)
+			     (assq name gtk-imported-objects))))
 		(when (car super)
 		  (setq attrs (cons (cons 'super (car super)) attrs)))
 		(if cell
 		    (rplacd cell attrs)
-		  (setq gtk-objects (cons (cons name attrs) gtk-objects)))))
+		  (if (not gtk-importing)
+		      (setq gtk-objects
+			    (cons (cons name attrs) gtk-objects))
+		    (setq gtk-imported-objects
+			  (cons (cons name attrs) gtk-imported-objects))))))
 	     ((eq (car def) 'define-func)
-	      (let
-		  ((cell (assq (nth 1 def) gtk-functions)))
-		(if cell
-		    (rplacd cell (nthcdr 2 def))
-		  (setq gtk-functions (cons (cdr def) gtk-functions)))))
+	      (unless gtk-importing
+		(let
+		    ((cell (assq (nth 1 def) gtk-functions)))
+		  (if cell
+		      (rplacd cell (nthcdr 2 def))
+		    (setq gtk-functions (cons (cdr def) gtk-functions))))))
 	     ((eq (car def) 'options)
-	      (mapc (lambda (cell)
-		      (let
-			  ((value (assq (car cell) gtk-options)))
-			(if value
-			    (rplacd value (nconc (cdr value)
-						 (list (nth 1 cell))))
-			  (setq gtk-options (cons cell gtk-options)))))
-		    (cdr def)))
+	      (unless gtk-importing
+		(mapc (lambda (cell)
+			(let
+			    ((value (assq (car cell) gtk-options)))
+			  (if value
+			      (rplacd value (nconc (cdr value)
+						   (list (nth 1 cell))))
+			    (setq gtk-options (cons cell gtk-options)))))
+		      (cdr def))))
 	     ((eq (car def) 'add-options)
-	      (let
-		  ((value (assq (nth 1 def) gtk-options)))
-		(if value
-		    (rplacd value (nconc (cdr value) (nthcdr 2 def)))
-		  (setq gtk-options (cons (cdr def) gtk-options)))))
+	      (unless gtk-importing
+		(let
+		    ((value (assq (nth 1 def) gtk-options)))
+		  (if value
+		      (rplacd value (nconc (cdr value) (nthcdr 2 def)))
+		    (setq gtk-options (cons (cdr def) gtk-options))))))
 	     (t
 	      (gtk-warning "Ignoring `%S'" def))))))
     (end-of-stream)))
@@ -246,6 +282,16 @@
 
 (defun output-footer (output))
 
+(defun output-imported-enums (output)
+  (when gtk-imported-enums
+    (@ "\f\n/* Imported enums */\n\n")
+    (mapc (lambda (enum)
+	    (let*
+		((cname (gtk-canonical-name (symbol-name (car enum)))))
+	      (@ "extern sgtk_enum_info sgtk_%s_info;\n" cname)))
+	  gtk-imported-enums)
+    (@ "\n")))
+
 (defun output-enums (output)
   (@ "\f\n/* Enums definitions */\n\n")
   (mapc (lambda (enum)
@@ -266,6 +312,16 @@
 	    (@ "};\n\n")))
 	gtk-enums))
 
+(defun output-imported-flags (output)
+  (when gtk-imported-flags
+    (@ "\f\n/* Imported flags */\n\n")
+    (mapc (lambda (flag)
+	    (let*
+		((cname (gtk-canonical-name (symbol-name (car flag)))))
+	      (@ "extern sgtk_enum_info sgtk_%s_info;\n" cname)))
+	  gtk-imported-flags)
+    (@ "\n")))
+
 (defun output-flags (output)
   (@ "\f\n/* Flags definitions */\n\n")
   (mapc (lambda (flag)
@@ -285,6 +341,16 @@
 	       name (length values) cname)
 	    (@ "};\n\n")))
 	gtk-flags))
+
+(defun output-imported-boxed (output)
+  (when gtk-imported-boxed
+    (@ "\f\n/* Imported boxed structures */\n\n")
+    (mapc (lambda (boxed)
+	    (let*
+		((cname (gtk-canonical-name (symbol-name (car boxed)))))
+	      (@ "extern sgtk_boxed_info sgtk_%s_info;\n" cname)))
+	  gtk-imported-boxed)
+    (@ "\n")))
 
 (defun output-boxed (output)
   (@ "\f\n/* Boxed structure definitions */\n\n")
@@ -307,6 +373,16 @@
 	    (@ "};\n\n")))
 	gtk-boxed))
 
+(defun output-imported-objects (output)
+  (when gtk-imported-objects
+    (@ "\f\n/* Imported GTK objects */\n\n")
+    (mapc (lambda (obj)
+	    (let*
+		((cname (gtk-canonical-name (symbol-name (car obj)))))
+	      (@ "extern sgtk_object_info sgtk_%s_info;\n" cname)))
+	  gtk-imported-objects)
+    (@ "\n")))
+
 (defun output-objects (output)
   (@ "\f\n/* GTK object definitions */\n\n")
   (mapc (lambda (obj)
@@ -319,7 +395,7 @@
 
 (defun output-type-info (output)
   (@ "\f\n/* Vector of all type information */\n\n")
-  (@ "sgtk_type_info *sgtk_type_infos[] = {\n")
+  (@ "static sgtk_type_info *_type_infos[] = {\n")
   (mapc (lambda (lst)
 	  (mapc (lambda (type)
 		  (@ "  (sgtk_type_info*)&sgtk_%s_info,\n"
@@ -341,14 +417,26 @@
   (@ "\n\n"))
 
 (defun output-subrs (output)
-  (@ "\f\n/* Vector of all subrs */\n\n")
-  (@ "rep_xsubr *sgtk_subrs[] = \{\n")
-  (mapc (lambda (cname)
-	  (@ "  &S%s,\n" cname)) (nreverse gtk-subrs))
-  (@ "  0\n\};\n"))
+  (@ "\f\n/* Initialisation */\n\n")
+  (let
+      ((init-func (gtk-get-option 'init-func gtk-options))
+       (other-inits (gtk-get-options 'other-inits gtk-options)))
+    (@ "void\n%s (void)\n{\n" init-func)
+    (@ "  static int done;\n  if (!done)\n    {\n")
+    (@ "      done = 1;\n")
+    (mapc (lambda (func)
+	    (@ "      %s ();\n" func)) other-inits)
+    (@ "      sgtk_register_type_infos (_type_infos);\n")
+    (mapc (lambda (cname)
+	    (@ "      rep_ADD_SUBR(S%s);\n" cname)) (nreverse gtk-subrs))
+    (@ "    \}\n\}\n")))
 
 (defun output-gtk (output)
   (output-header output)
+  (output-imported-enums output)
+  (output-imported-flags output)
+  (output-imported-boxed output)
+  (output-imported-objects output)
   (output-enums output)
   (output-flags output)
   (output-boxed output)
@@ -381,13 +469,17 @@
 (defun gtk-type-info (type)
   (let*
       ((actual-type (gtk-outer-type type))
-       (typage (cond ((assq actual-type gtk-enums)
+       (typage (cond ((or (assq actual-type gtk-enums)
+			  (assq actual-type gtk-imported-enums))
 		      (assq 'enum gtk-type-alist))
-		     ((assq actual-type gtk-flags)
+		     ((or (assq actual-type gtk-flags)
+			  (assq actual-type gtk-imported-flags))
 		      (assq 'flags gtk-type-alist))
-		     ((assq actual-type gtk-boxed)
+		     ((or (assq actual-type gtk-boxed)
+			  (assq actual-type gtk-imported-boxed))
 		      (assq 'boxed gtk-type-alist))
-		     ((assq actual-type gtk-objects)
+		     ((or (assq actual-type gtk-objects)
+			  (assq actual-type gtk-imported-objects))
 		      (assq 'object gtk-type-alist))
 		     (t
 		      (assq actual-type gtk-type-alist)))))
@@ -435,7 +527,8 @@
 
 (defun output-complex-type (type typage)
   (setq type (gtk-outer-type type))
-  (if (or (assq type gtk-enums) (assq type gtk-flags))
+  (if (or (assq type gtk-enums) (assq type gtk-imported-enums)
+	  (assq type gtk-flags) (assq type gtk-imported-flags))
       (symbol-name type)
     (format nil "%s*" type)))
 
