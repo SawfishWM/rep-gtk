@@ -1,5 +1,5 @@
 
-%define ver	0.3
+%define ver	0.4
 %define rel	1
 
 Summary: GTK+ binding for librep Lisp environment
