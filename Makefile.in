@@ -100,8 +100,8 @@ build-gtk.jlc : build-gtk.jl
 	rep compiler -f compile-batch $<
 
 libglade-gnome-support.lo : libglade-support.c
-	$(rep_LIBTOOL) $(CC) -c $(CPPFLAGS) $(CFLAGS) @GNOME_LIBGLADE_CFLAGS@ \
-	 -DGLADE_INIT_FUNC=glade_gnome_init $< -o $@
+	$(rep_LIBTOOL) --mode=compile $(CC) -c $(CPPFLAGS) $(CFLAGS) \
+	 @GNOME_LIBGLADE_CFLAGS@ -DGLADE_INIT_FUNC=glade_gnome_init $< -o $@
 
 install : all installdirs
 	set -e; for f in $(OUT); do \
