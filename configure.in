@@ -54,7 +54,12 @@ dnl Check for GTK
 AM_PATH_GTK(1.2.0,,AC_ERROR(need at least Gtk+ version 1.2))
 
 dnl Check for libglade
-AM_PATH_LIBGLADE([OUT="$OUT liblibglade.la"])
+AC_ARG_WITH(libglade,
+ [  --with-libglade         Build libglade wrappers (dynamic GUI builder)
+  --without-libglade      Don't wrap libglade], [], [with_libglade=yes])
+if test "$with_libglade" = "yes"; then
+  AM_PATH_LIBGLADE([OUT="$OUT liblibglade.la"])
+fi
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
