@@ -1,3 +1,9 @@
+2000-02-08  John Harper  <john@dcs.warwick.ac.uk>
+
+	* rep-gtk.c (sgtk_event_loop): rewritten to use
+	rep_max_sleep_for (), has the bonus of cleaning up the idle
+	timeout
+
 2000-02-06  John Harper  <john@dcs.warwick.ac.uk>
 
 	* rep-gtk.c (sgtk_event_loop): if threads are waiting, don't
