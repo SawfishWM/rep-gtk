@@ -3074,6 +3074,36 @@
   (protection #t)
   (scm-name "gtk-signal-set-class-function"))
 
+;; Plug
+
+(define-object GtkPlug (GtkWindow)
+  (fields
+   (GdkWindow socket_window)))
+
+(define-func gtk_plug_construct
+  none
+  ((GtkPlug plug)
+   (uint id)))
+
+(define-func gtk_plug_new
+  GtkWidget
+  ((uint socket_id)))
+
+;; Socket
+
+(define-object GtkSocket (GtkContainer)
+  (fields
+   (GdkWindow plug_window)))
+
+(define-func gtk_socket_new
+  GtkWidget
+  ())
+
+(define-func gtk_socket_steal
+  none
+  ((GtkSocket socket)
+   (uint wid)))
+
 ;; Options
 
 (options
