@@ -1,3 +1,13 @@
+2002-01-17 Sander Vesik <sander.vesik@sun.com>
+
+	* configure.in: disable libgnome binding for the moment
+
+	* gdk-pixbuf.defs: gdk_pixbuf_from_file now has an additional
+	  parameter
+
+	NB! This is an unauthorised temporary patch to have a building
+	rep-gtk for gnome2 alpha release.
+
 Sat Dec  1 13:57:17 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* gnomelib.defs (includes): Remove references

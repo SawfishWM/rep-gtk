@@ -71,7 +71,7 @@
 
 (define-func gdk_pixbuf_new_from_file
   (GdkPixbuf (copy nil))
-  ((string filename)))
+  ((string filename) (pointer error)))
 
 (define-func gdk_pixbuf_new_from_xpm_data
   (GdkPixbuf (copy nil))

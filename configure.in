@@ -57,26 +57,26 @@ dnl Check for GTK
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 1.3,,AC_ERROR(need at least Gtk+ version 1.3))
 
 dnl Check for libgnome
-AC_MSG_CHECKING([for GNOME libs])
-AC_ARG_WITH(gnome,
- [  --with-gnome            Build GNOME wrappers
-  --without-gnome         Don't wrap GNOME], [], [with_gnome=maybe])
-if test "$with_gnome" != "no"; then
-  GNOME_VERSION="`gnome-config --version`"
-  if test $? -eq 0; then
-    dnl XXX FIXME properly
-    GNOME_LIBS="`pkg-config --libs libgnome-2.0`"
-    GNOMEUI_LIBS="`pkg-config --libs libgnomeui-2.0`"
-    GNOME_CFLAGS="`pkg-config --cflags libgnomeui-2.0`"
-    AC_MSG_RESULT([$GNOME_VERSION])
-    OUT="$OUT gnome/lib.la gnome/ui.la gnome/canvas.la"
-    with_gnome=yes
-  elif test "$with_gnome" = "yes"; then
-    AC_MSG_ERROR([can't run gnome-config]);
-  else
+#AC_MSG_CHECKING([for GNOME libs])
+#AC_ARG_WITH(gnome,
+# [  --with-gnome            Build GNOME wrappers
+#  --without-gnome         Don't wrap GNOME], [], [with_gnome=maybe])
+#if test "$with_gnome" != "no"; then
+#  GNOME_VERSION="`gnome-config --version`"
+#  if test $? -eq 0; then
+#    dnl XXX FIXME properly
+#    GNOME_LIBS="`pkg-config --libs libgnome-2.0`"
+#    GNOMEUI_LIBS="`pkg-config --libs libgnomeui-2.0`"
+#    GNOME_CFLAGS="`pkg-config --cflags libgnomeui-2.0`"
+#    AC_MSG_RESULT([$GNOME_VERSION])
+#    OUT="$OUT gnome/lib.la gnome/ui.la gnome/canvas.la"
+#    with_gnome=yes
+#  elif test "$with_gnome" = "yes"; then
+#    AC_MSG_ERROR([can't run gnome-config]);
+#  else
     with_gnome=no
-  fi
-fi
+#  fi
+#fi
 AC_SUBST(GNOME_VERSION)
 AC_SUBST(GNOME_LIBS)
 AC_SUBST(GNOMEUI_LIBS)
