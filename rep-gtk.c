@@ -1924,9 +1924,17 @@ sgtk_deregister_input_fd (int fd)
 static gboolean
 timeout_callback (gpointer data)
 {
-    context->timed_out = 1;
-    context->gtk_tag = 0;
-    gtk_main_quit ();
+    struct timeout_data *d = data;
+
+    d->gtk_tag = 0;
+
+    /* Only quit if we'd return to the correct event loop */
+    if (context == d)
+    {
+	d->timed_out = 1;
+	gtk_main_quit ();
+    }
+
     return FALSE;
 }
 
@@ -1947,12 +1955,13 @@ set_timeout (void)
     if (context != 0)
     {
 	u_long max_sleep = rep_max_sleep_for ();
-	unset_timeout ();
 	context->this_timeout_msecs = rep_input_timeout_secs * 1000;
 	context->actual_timeout_msecs = MIN (context->this_timeout_msecs,
 					     max_sleep);
 	context->gtk_tag = gtk_timeout_add (context->actual_timeout_msecs,
-					    timeout_callback, (gpointer) 0);
+					    timeout_callback,
+					    (gpointer) context);
+	context->timed_out = 0;
     }
 }
 
@@ -1960,6 +1969,7 @@ set_timeout (void)
 void
 sgtk_callback_postfix (void)
 {
+    unset_timeout ();
     if (rep_INTERRUPTP && gtk_main_level () > 0)
 	gtk_main_quit ();
     else if (rep_redisplay_fun != 0)
@@ -1995,7 +2005,6 @@ sgtk_event_loop (void)
 	}
 	else
 	{
-	    data.timed_out = 0;
 	    set_timeout ();
 	    gtk_main ();
 	    unset_timeout ();
@@ -2020,6 +2029,8 @@ sgtk_event_loop (void)
 	    if(rep_handle_input_exception (&result))
 	    {
 		context = data.next;
+		/* reset the timeout for any containing event loop */
+		set_timeout ();
 		return result;
 	    }
 	}
