@@ -18,7 +18,12 @@
    (string root (null-ok))
    (string domain (null-ok))))
 
-;; (define-func glade_xml_new_from_memory)
+(define-func sgtk_glade_xml_new_from_string
+  GladeXML
+  ((SCM text)				;actually a string
+   (string root (null-ok))
+   (string domain (null-ok)))
+  (scm-name "glade-xml-new-from-string"))
 
 (define-func glade_xml_construct
   bool
@@ -32,8 +37,7 @@
   ((GladeXML self)
    (string handler_name)
    (SCM func (null-ok)))
-  (scm-name "glade-xml-signal-connect")
-  (protection self))
+  (scm-name "glade-xml-signal-connect"))
 
 (define-func sgtk_glade_xml_signal_autoconnect
   none
