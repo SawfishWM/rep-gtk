@@ -56,14 +56,6 @@ AM_PATH_GLIB
 dnl Check for GTK
 AM_PATH_GTK(1.2.0,,AC_ERROR(need at least Gtk+ version 1.2))
 
-dnl Check for libglade
-AC_ARG_WITH(libglade,
- [  --with-libglade         Build libglade wrappers (dynamic GUI builder)
-  --without-libglade      Don't wrap libglade], [], [with_libglade=yes])
-if test "$with_libglade" = "yes"; then
-  AM_PATH_LIBGLADE([OUT="$OUT libglade.la"])
-fi
-
 dnl Check for libgnome
 AC_MSG_CHECKING([for GNOME libs])
 AC_ARG_WITH(gnome,
@@ -83,6 +75,28 @@ if test "$with_gnome" = "yes"; then
     OUT="$OUT gnomelib.la gnomeui.la gnome-canvas.la"
   else
     AC_MSG_ERROR([can't run gnome-config]);
+  fi
+fi
+
+dnl Check for libglade
+AC_ARG_WITH(libglade,
+ [  --with-libglade         Build libglade wrappers (dynamic GUI builder)
+  --without-libglade      Don't wrap libglade], [], [with_libglade=yes])
+if test "$with_libglade" = "yes"; then
+  AM_PATH_LIBGLADE([OUT="$OUT libglade.la"])
+fi
+
+if test "$with_libglade" = "yes" -a "$with_gnome" = "yes"; then
+  AC_MSG_CHECKING([for libglade GNOME support])
+  if $LIBGLADE_CONFIG --check gnome; then
+    AC_MSG_RESULT(yes)
+    GNOME_LIBGLADE_CFLAGS=`$LIBGLADE_CONFIG --cflags gnome`
+    GNOME_LIBGLADE_LIBS=`$LIBGLADE_CONFIG --libs gnome`
+    AC_SUBST(GNOME_LIBGLADE_LIBS)
+    AC_SUBST(GNOME_LIBGLADE_CFLAGS)
+    OUT="$OUT libglade-gnome.la"
+  else
+    AC_MSG_ERROR([libglade wasn't compiled with GNOME support])
   fi
 fi
 

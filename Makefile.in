@@ -12,7 +12,8 @@ SRCS = rep-gtk.c gtk-support.c gtk-compat.c gdk-glue.c gtk-glue.c
 OBJS = $(SRCS:.c=.lo)
 
 LIBGLADE_SRCS = libglade-support.c libglade-glue.c
-LIBGLADE_OBJS = $(LIBGLADE_SRCS:.c=.lo)
+LIBGLADE_OBJS = libglade-support.lo libglade-glue.lo
+GNOME_LIBGLADE_OBJS = libglade-gnome-support.lo libglade-glue.lo
 
 GNOMELIB_SRCS = gnomelib-support.c gnomelib-glue.c
 GNOMELIB_OBJS = $(GNOMELIB_SRCS:.c=.lo)
@@ -41,6 +42,7 @@ override CFLAGS += @GLIB_CFLAGS@ @GTK_CFLAGS@ @REP_CFLAGS@ @LIBGLADE_CFLAGS@ @GN
 REP_SGTK_LIBS=@GLIB_LIBS@ @LIBS@
 REP_GTK_LIBS=@GTK_LIBS@ @LIBS@
 REP_LIBGLADE_LIBS=@LIBGLADE_LIBS@ @LIBS@
+REP_GNOME_LIBGLADE_LIBS=@GNOME_LIBGLADE_LIBS@ @LIBS@
 REP_GNOMELIB_LIBS=@GNOME_LIBS@ @LIBS@
 REP_GNOMEUI_LIBS=@GNOMEUI_LIBS@ @LIBS@
 
@@ -68,6 +70,9 @@ gtk.la : $(OBJS)
 libglade.la : $(LIBGLADE_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_LIBGLADE_LIBS)
 
+libglade-gnome.la : $(GNOME_LIBGLADE_OBJS)
+	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOME_LIBGLADE_LIBS)
+
 gnomelib.la : $(GNOMELIB_OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOMELIB_LIBS)
 
@@ -89,15 +94,24 @@ gnome-canvas.la : $(GNOME_CANVAS_OBJS)
 build-gtk.jlc : build-gtk.jl
 	rep compiler -f compile-batch $<
 
+libglade-gnome-support.lo : libglade-support.c
+	$(rep_LIBTOOL) $(CC) -c $(CPPFLAGS) $(CFLAGS) @GNOME_LIBGLADE_CFLAGS@ \
+	 -DGLADE_INIT_FUNC=glade_gnome_init $< -o $@
+
 install : all installdirs
 	set -e; for f in $(OUT); do \
 	  $(rep_DL_INSTALL) $$f $(DESTDIR)$(installdir); \
 	done
-	printf "\nrep_requires='sgtk-types'\n" >>$(DESTDIR)$(installdir)/gtk.la
-	printf "\nrep_requires='sgtk-types'\n" >>$(DESTDIR)$(installdir)/gnomelib.la
-	printf "\nrep_requires='gtk'\n" >>$(DESTDIR)$(installdir)/libglade.la
-	printf "\nrep_requires='gtk'\n" >>$(DESTDIR)$(installdir)/gnomeui.la
-	printf "\nrep_requires='gnomeui'\n" >>$(DESTDIR)$(installdir)/gnome-canvas.la
+	set -e; for f in $(OUT); do \
+	  case $$f in \
+	    gtk.la|gnomelib.la) \
+	      printf "\nrep_requires='sgtk-types'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
+	    libglade*.la|gnomeui.la) \
+	      printf "\nrep_requires='gtk'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
+	    gnome-canvas.la) \
+	      printf "\nrep_requires='gnomeui'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
+	  esac; \
+	done
 	for f in $(OUT); do \
 	  printf "\nrep_open_globally=yes\n" >>$(DESTDIR)$(installdir)/$$f; \
 	done
