@@ -3237,6 +3237,16 @@
   ((GtkSocket socket)
    (uint wid)))
 
+;; TearoffMenuItem
+
+(define-object GtkTearoffMenuItem (GtkMenuItem)
+  (fields
+   (bool torn_off)))
+
+(define-func gtk_tearoff_menu_item_new
+  GtkWidget
+  ())
+
 ;; Options
 
 (options
