@@ -94,6 +94,17 @@ sgtk_glade_xml_new_from_string (repv text, const char *root,
 				      root, domain);
 }
 
+char *
+sgtk_glade_xml_textdomain (GladeXML *xml)
+{
+#ifdef LIBGLADE_XML_TXTDOMAIN
+    /* libglade 0.13 onwards */
+    return xml->txtdomain;
+#else
+    return xml->textdomain;
+#endif
+}
+
 
 /* dl hooks / init */
 
