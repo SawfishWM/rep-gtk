@@ -23,6 +23,20 @@ glue code from it.  Unfortunately, this formal description hasn't
 stabilized yet and I'm currently more interested in completeness than
 in generality.
 
+   Table of Contents
+
+   - Acknowledgements
+   - Bugs
+   - Gtk versions
+   - Related stuff
+   - Package contents   
+   - Installing
+   - Testing
+   - Dynamic Linking
+   - Wrapping Your Own Widgets      
+   - Composite Types and `call-by-reference'
+   - Documentation
+
 
 Acknowledgements
 ----------------
@@ -43,7 +57,7 @@ actually found a bug in guile-gtk or Gtk.
 Please report these bugs to me <mvo@zagadka.ping.de>.
 
 
-Gtk versions
+Gtk Versions
 ------------
 
 [ Whoa, can anyone put this into more simple words?  Seems like I can't
@@ -111,8 +125,8 @@ line programs with too many options a nice GUI.  Available here
      http://www.cs.purdue.edu/homes/lutterdc/software/wickel.html
 
 
-Contents
---------
+Package Contents
+----------------
 
  guile-gtk.c
  guile-gtk.h     Support for converting between Scheme types and Gtk types
@@ -325,6 +339,83 @@ linking does not work for you, you might want to try
 This will link a new executable named guile-foo that will have the
 libguilefoo library pre-linked into it so that you do not need
 dynamic-link.  This will work with any number of *.defs files.
+
+
+Composite Types and `call-by-reference'
+---------------------------------------
+
+Guile-gtk has (still experimental) support for composite types like
+lists and vectors.  On the Gtk+ side, the types GSList (singly linked
+list), GList (doubly linked list), and counted and fixed length
+vectors are supported.  On the Scheme side, you can use Scheme lists
+and Scheme vectors.  You can mix these types freely.  That is you can
+use a list on the Scheme side to represent a vector on the Gtk+ side,
+and vice versa.
+
+Composite types have modes associated with them.  They can be `in',
+`out', or `inout'.  When a composite type is marked with a `in' mode,
+the Gtk+ side is not allowed to make changes to the contents of the
+composite.  When it is `out', it may change the contents but may not
+read it before it has been written to.  Consequently, mode `inout'
+indicates that the Gtk+ side may both read and write the composite
+freely.  On the Scheme side, mode `out' turns off type checking for
+the contents of composites and the initial values of the composite
+passed to Gtk+ will be undefined.
+
+The default mode is `in'.
+
+The available variations are:
+
+  [ *.defs file syntax ]             [ C side function arguments ]
+  [ Comment ]
+
+  (slist <type> [<mode>])            GSList *lst
+  For singly linked lists.  Scheme owns the memory of the list nodes.
+
+  (list <type> [<mode>])             GList *lst
+  For doubly linked lists.  Scheme owns the memory of the list nodes.
+
+  (cvec <type> [<mode>])             int len, <type>* vec
+  For counted vectors.  The length of the Scheme composite is passed
+  to the Gtk+ function.  Scheme owns the memory of the vector.
+
+  (cvecr <type> [<mode>])            <type>* vec, int len
+  For counted vectors, reverse order of arguments.  Scheme owns the
+  memory of the vector.
+
+  (fvec <type> <len> [<mode>])       <type>* vec
+  For fixed length vectors.  The Scheme composite must be of length <len>.
+  Scheme owns the memory of the vector.
+  
+  (ret <type>)                       <type>* vec
+  Abbreviation for (fvec <type> 1 out)
+
+These composite types are also intended to be used for
+call-by-reference arguments.  Neither Scheme nor C really has these
+call-by-reference arguments, so guile-gtk wont either.  In C, you
+would pass a pointer to the desired object; in Scheme you use a
+one-element list or a vector of length one.  For guile-gtk, these
+types are modelled with a `fvec' composite type of length one and mode
+out, or equivalently but shorter with the `ret' type.
+
+For example, when you have a Gtk+ function with a prototype like
+
+    void gtk_foo (char **strptr);
+
+that deposits some string in *STRPTR (whose memory should be taken
+over by the caller), you can wrap it like this:
+
+     (define-func gtk_foo
+       none
+       ((ret string) strptr))
+
+Usage is a little cumbersome from Scheme.  This code snippet
+
+     (let ((strptr (list #f)))
+       (gtk-foo strptr)
+       (car strptr))
+
+would yield the returned string.
 
 
 Documentation

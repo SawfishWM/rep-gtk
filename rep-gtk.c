@@ -1200,11 +1200,14 @@ sgtk_valid_complen (repv obj, int (*predicate)(repv), int len)
       if (len >= 0 && len != actual_len)
 	return 0;
 
-      while (rep_CONSP(obj))
+      if (predicate)
 	{
-	  if (!predicate (rep_CAR(obj)))
-	    return 0;
-	  obj = rep_CDR(obj);
+	  while (rep_CONSP(obj))
+	    {
+	      if (!predicate (rep_CAR(obj)))
+		return 0;
+	      obj = rep_CDR(obj);
+	    }
 	}
       return 1;
     }
@@ -1217,10 +1220,13 @@ sgtk_valid_complen (repv obj, int (*predicate)(repv), int len)
       if (len >= 0 && len != actual_len)
 	return 0;
 
-      elts = rep_VECT(obj)->array;
-      for (i = 0; i < len; i++)
-	if (!predicate(elts[i]))
-	  return 0;
+      if (predicate)
+	{
+	  elts = rep_VECT(obj)->array;
+	  for (i = 0; i < len; i++)
+	    if (!predicate(elts[i]))
+	      return 0;
+	}
       return 1;
     }
   else
@@ -1251,7 +1257,8 @@ sgtk_rep_to_slist (repv obj, void (*fromscm)(repv, void*))
       while (rep_CONSP(obj))
 	{
 	  *tail = g_slist_alloc ();
-	  fromscm (rep_CAR (obj), &(*tail)->data);
+	  if (fromscm)
+	    fromscm (rep_CAR (obj), &(*tail)->data);
 	  obj = rep_CDR(obj);
 	  tail = &(*tail)->next;
 	}
@@ -1263,7 +1270,8 @@ sgtk_rep_to_slist (repv obj, void (*fromscm)(repv, void*))
       for (i = 0; i < len; i++)
 	{
 	  *tail = g_slist_alloc ();
-	  fromscm (elts[i], &(*tail)->data);
+	  if (fromscm)
+	    fromscm (elts[i], &(*tail)->data);
 	  tail = &(*tail)->next;
 	}
     }
@@ -1331,7 +1339,8 @@ sgtk_rep_to_list (repv obj, void (*fromscm)(repv, void*))
 	    g_list_concat (tail, n);
 	    tail = n;
 	  }
-	fromscm (rep_CAR (obj), &(n->data));
+	if (fromscm)
+	  fromscm (rep_CAR (obj), &(n->data));
 	obj = rep_CDR(obj);
       }
     }
@@ -1349,7 +1358,8 @@ sgtk_rep_to_list (repv obj, void (*fromscm)(repv, void*))
 	      g_list_concat (tail, n);
 	      tail = n;
 	    }
-	  fromscm (elts[i], &(n->data));
+	  if (fromscm)
+	    fromscm (elts[i], &(n->data));
 	}
     }
   return res;
@@ -1395,10 +1405,13 @@ sgtk_rep_to_cvec (repv obj, void (*fromscm)(repv, void*), size_t sz)
     {
       res.count = list_length (obj);
       res.vec = rep_alloc (res.count * sz);
-      for (i = 0, ptr = res.vec; i < res.count; i++, ptr += sz)
+      if (fromscm)
 	{
-	  fromscm (rep_CAR (obj), ptr);
-	  obj = rep_CDR(obj);
+	  for (i = 0, ptr = res.vec; i < res.count; i++, ptr += sz)
+	    {
+	      fromscm (rep_CAR (obj), ptr);
+	      obj = rep_CDR(obj);
+	    }
 	}
     }
   else if (rep_VECTORP(obj))
@@ -1406,8 +1419,11 @@ sgtk_rep_to_cvec (repv obj, void (*fromscm)(repv, void*), size_t sz)
       repv *elts = rep_VECT(obj)->array;
       res.count = rep_VECT_LEN (obj);
       res.vec = rep_alloc (res.count * sz);
-      for (i = 0, ptr = res.vec; i < res.count; i++, ptr += sz)
-	fromscm (elts[i], ptr);
+      if (fromscm)
+	{
+	  for (i = 0, ptr = res.vec; i < res.count; i++, ptr += sz)
+	    fromscm (elts[i], ptr);
+	}
     }
 
   return res;

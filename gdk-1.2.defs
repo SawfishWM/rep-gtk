@@ -582,6 +582,10 @@
   int
   ((GdkEvent event)))
 
+(define-func gdk_get_leader_window_id
+  uint
+  ())
+
 ;; Options
 
 (options
