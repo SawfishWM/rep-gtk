@@ -222,6 +222,8 @@ gint16 gdk_event_configure_height (GdkEvent *event);
 
 guint32 gdk_get_leader_window_id (void);
 
+guint32 gdk_window_xid (GdkWindow *win);
+
 GdkGC *gtk_style_fg_gc (GtkStyle *style, GtkStateType state);
 GdkGC *gtk_style_bg_gc (GtkStyle *style, GtkStateType state);
 
