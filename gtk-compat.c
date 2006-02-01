@@ -62,7 +62,10 @@ gtk_menu_popup_interp (GtkMenu *menu,
 		  func, func_data, button, activate_time);
 }
 
-#if GTK_MAJOR_VERSION < 2 || (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 4)
+/* mmc: sawfish (menu & sawfish-ui) code depends on a different semantics
+   of these calls, different from gtk+ versions, so we have to continue to
+   support that, and override the gtk versions. */
+#if 1 /* || (GTK_MAJOR_VERSION < 2 || (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 4)) */
 GtkWidget*
 gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
 						const gchar      *label)
