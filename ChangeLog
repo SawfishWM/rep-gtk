@@ -14,7 +14,10 @@
 		- print usefull things at the end
 		- added --enable-paranoia option 
 			(compile with paranoia CFLAGS)
-		 
+	
+	* gtk.defs: dropped an function no longer available
+		in gtk+ 2.5 or newer (seen in gentoo linux)
+
 2006-01-31  John Harper  <jsh@unfactored.org>
 
 	* gtk-compat.c: applied patch from Michal Maru¹ka
