@@ -1,0 +1,55 @@
+#! /bin/sh
+exec rep --batch "$0" "$@"
+!#
+
+;;;; rep-gtk hello world program
+
+(structure ()
+
+    (open rep
+          rep.system
+          gui.gtk-2.gtk)
+
+  (define window (gtk-window-new 'toplevel))
+
+  (define button (gtk-button-new-with-label "say hello"))
+
+  (gtk-container-set-border-width window 10)
+
+  (g-signal-connect window "delete_event" (lambda (w) (throw 'quit 0)))
+
+  (g-signal-connect button "clicked"
+                    (lambda ()
+                      (write standard-output "hello, world\n")))
+
+  (gtk-container-add window button)
+  (gtk-widget-show-all window)
+  (define tray_icon (gtk-status-icon-new))
+  ;(gtk-status-icon-set-from-file tray_icon "/usr/share/pixmaps/mplayer.xpm")
+  (gtk-status-icon-set-from-icon-name tray_icon "stock_mail-unread")
+  (gtk-status-icon-set-tooltip tray_icon
+                               "Example Tray Icon")
+  (gtk-status-icon-set-blinking tray_icon t)
+  (g-signal-connect tray_icon "activate"
+                    (lambda ()
+                      (write standard-output "activate tray_icon\n")))
+  (define menu (gtk-menu-new))
+  (define item (gtk-menu-item-new-with-label "Test Menu"))
+  (gtk-menu-shell-append menu item)
+  (gtk-widget-show-all menu)
+  (g-signal-connect tray_icon "popup-menu"
+                    (lambda ()
+                      (gtk-status-icon-popup-menu tray_icon menu 0 0)))
+
+  (let ((x (list #f))(y (list #f))(z (list #f)))
+    (gtk-status-icon-get-geometry-interp tray_icon x y z)
+    (write standard-output (format nil "(%d,%d) %s\n" (car x) (car y) (car z))))
+
+  ;(define x (gtk-status-icon-get-geometry-interp tray_icon))
+ 
+  (setq interrupt-mode 'exit)
+  (recursive-edit))
+
+;; Local variables:
+;; major-mode: lisp-mode
+;; End: 

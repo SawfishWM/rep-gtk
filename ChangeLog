@@ -30,6 +30,12 @@
 	* examples/rep-ui.glade
 	* examples/simple.glade: update the glade-files to glade-2
 
+	* gtk.defs
+	* gtk-compat.c
+	* examples/status-icon: added a new Widget: Status-Icon
+		- Also known as Panel-Notification-Area-Widget
+		- Also add an example for devs to know how to use it
+
 2006-01-31  John Harper  <jsh@unfactored.org>
 
 	* gtk-compat.c: applied patch from Michal Maru¹ka

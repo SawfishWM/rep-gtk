@@ -4560,6 +4560,130 @@
 (define-func gtk_separator_menu_item_new
   GtkWidget
   ())
+;; hack for status icon
+(define-object GtkStatusIcon (GObject))
+
+(define-enum GtkImageType
+  (empty GTK_IMAGE_EMPTY)
+  (pixmap GTK_IMAGE_PIXMAP)
+  (image GTK_IMAGE_IMAGE)
+  (pixbuf GTK_IMAGE_PIXBUF)
+  (stock GTK_IMAGE_STOCK)
+  (icon-set GTK_IMAGE_ICON_SET)
+  (animation GTK_IMAGE_ANIMATION)
+  (icon-name GTK_IMAGE_ICON_NAME))
+
+(define-func gtk_status_icon_new
+  GtkStatusIcon
+  ())
+
+(define-func gtk_status_icon_new_from_pixbuf
+  GtkStatusIcon 
+  ((GdkPixbuf pixbuf)))
+
+(define-func gtk_status_icon_new_from_file 
+  GtkStatusIcon
+  ((string filename)))
+
+(define-func gtk_status_icon_new_from_stock
+  GtkStatusIcon 
+  ((string stock_id)))
+
+(define-func gtk_status_icon_new_from_icon_name 
+  GtkStatusIcon 
+  ((string icon_name)))
+
+
+(define-func gtk_status_icon_set_from_pixbuf 
+  none 
+  ((GtkStatusIcon status_icon)
+   (GdkPixbuf pixbuf)))
+
+(define-func gtk_status_icon_set_from_file
+  none
+  ((GtkStatusIcon status_icon)
+   (string  filename)))
+
+(define-func gtk_status_icon_set_from_stock 
+  none 
+  ((GtkStatusIcon status_icon)
+   (string stock_id)))
+
+(define-func gtk_status_icon_set_from_icon_name
+  none
+  ((GtkStatusIcon status_icon)
+   (string icon_name)))
+
+(define-func gtk_status_icon_get_storage_type
+  GtkImageType
+  ((GtkStatusIcon status_icon)))
+
+(define-func gtk_status_icon_get_pixbuf
+  GdkPixbuf 
+((GtkStatusIcon status_icon)))
+
+(define-func gtk_status_icon_get_stock
+  GdkPixbuf 
+  ((GtkStatusIcon status_icon)))
+
+(define-func gtk_status_icon_get_icon_name
+  GdkPixbuf
+  ((GtkStatusIcon status_icon)))
+
+(define-func gtk_status_icon_get_size
+  int
+  ((GtkStatusIcon status_icon)))
+
+;(define-func gtk_status_icon_set_screen
+;  none
+;  ((GtkStatusIcon status_icon)
+;   (GdkScreen screen)))
+
+;(define-func gtk_status_icon_get_screen 
+;  GdkScreen
+;  ((GtkStatusIcon status_icon)))
+
+(define-func gtk_status_icon_set_tooltip
+  none
+  ((GtkStatusIcon status_icon)
+   (string tooltip_text)))
+
+(define-func gtk_status_icon_set_visible
+  none
+  ((GtkStatusIcon status_icon)
+   (bool visible)))
+
+(define-func gtk_status_icon_get_visible
+  bool
+  ((GtkStatusIcon status_icon)))
+
+(define-func gtk_status_icon_set_blinking
+  none
+ ((GtkStatusIcon status_icon)
+  (bool blinking)))
+
+(define-func gtk_status_icon_get_blinking
+  bool
+  ((GtkStatusIcon status_icon)))
+
+(define-func gtk_status_icon_is_embedded
+  bool
+  ((GtkStatusIcon status_icon)))
+
+(define-func gtk_status_icon_popup_menu
+  none
+  ((GtkStatusIcon status_icon)
+   (GtkMenu menu)
+   (uint button)
+   (uint activate_time)))
+
+; remove screen
+(define-func gtk_status_icon_get_geometry_interp
+  bool
+  ((GtkStatusIcon status_icon)
+   ((ret int) x)
+   ((ret int) y)
+   ((ret GtkOrientation) orientation)))
 
 ;; More defs files
 

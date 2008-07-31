@@ -267,3 +267,36 @@ gtk_widget_draw_interp (GtkWidget *widget)
 {
     gtk_widget_draw (widget, NULL);
 }
+
+/* status icon hack */
+
+void
+gtk_status_icon_popup_menu(GtkStatusIcon *status_icon,
+			   GtkMenu *menu,
+			   guint button,
+			   guint32 activate_time)
+{
+     GtkMenuPositionFunc pos_func = gtk_status_icon_position_menu;
+     gpointer user_data = status_icon;
+     gtk_menu_popup (menu, NULL, NULL,
+		     pos_func, user_data, button, activate_time);
+}
+
+gboolean 
+gtk_status_icon_get_geometry_interp(GtkStatusIcon *status_icon,
+				    gint *x,
+				    gint *y,
+				    GtkOrientation *orientation)
+{
+     GdkRectangle area;
+     gboolean ret = gtk_status_icon_get_geometry(status_icon,
+					     NULL,
+					     &area,
+					     orientation);
+     if(!ret)
+	  return ret;
+     *x = area.x;
+     *y = area.y;
+     return ret;
+}
+
