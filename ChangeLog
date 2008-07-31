@@ -39,6 +39,13 @@
 	* BUGS
 	* HACKING: updated both files
 
+	* config.guess
+	* config.sub: updated
+
+	* autogen.sh: add --force --copy to libtoolize flags
+
+	* config.h.in: updated
+
 2006-01-31  John Harper  <jsh@unfactored.org>
 
 	* gtk-compat.c: applied patch from Michal Maru¹ka
