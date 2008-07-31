@@ -18,6 +18,13 @@
 	* gtk.defs: dropped an function no longer available
 		in gtk+ 2.5 or newer (seen in gentoo linux)
 
+	* Makefile.in: recognize DEVELOPMENT_CFLAGS
+		- rename realclean to distclean
+		- rename cvsclean to svnclean
+		- add --tag=CC to rep_LIBTOOL
+		- install examples in @prefix@/share/doc/rep-gtk-@version@
+		- install the .pc file
+
 2006-01-31  John Harper  <jsh@unfactored.org>
 
 	* gtk-compat.c: applied patch from Michal Maru¹ka

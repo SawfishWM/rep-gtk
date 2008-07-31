@@ -1,6 +1,6 @@
 # Makefile.in -- input for rep-gtk Makefile
 # Copyright (C) 1998 John Harper <john@dcs.warwick.ac.uk>
-# $Id$
+# $Id: Makefile.in,v 1.29 2002/02/13 07:50:27 jsh Exp $
 
 SGTK_SRCS = rep-types.c
 SGTK_OBJS = $(SGTK_SRCS:.c=.lo)
@@ -33,7 +33,7 @@ include $(repexecdir)/rules.mk
 
 CC=@CC@
 CPPFLAGS=@CPPFLAGS@
-CFLAGS=@CFLAGS@
+CFLAGS=@CFLAGS@ @DEVELOPMENT_CFLAGS@
 LDFLAGS=@LDFLAGS@
 override CPPFLAGS += -DHAVE_CONFIG_H -I.
 override CFLAGS += @GLIB_CFLAGS@ @GTK_CFLAGS@ @REP_CFLAGS@ @LIBGLADE_CFLAGS@ @GNOME_CFLAGS@ @GNOMEUI_CFLAGS@ @GNOME_CANVAS_CFLAGS@ @GDK_PIXBUF_CFLAGS@
@@ -55,7 +55,7 @@ top_srcdir=@top_srcdir@
 top_builddir=.
 VPATH=@top_srcdir@:.
 
-.PHONY: clean realclean install
+.PHONY: clean distclean install
 
 all : build_dirs $(OUT)
 
@@ -84,7 +84,7 @@ build-gtk.jlc : build-gtk.jl
 	rep compiler -f compile-batch $<
 
 libglade-gnome-support.lo : libglade-support.c
-	$(rep_LIBTOOL) --mode=compile $(CC) -c $(CPPFLAGS) $(CFLAGS) \
+	$(rep_LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) \
 	 @GNOME_LIBGLADE_CFLAGS@ -DGLADE_GNOME=1 $< -o $@
 
 install : all installdirs
@@ -105,23 +105,30 @@ install : all installdirs
 	  printf "\nrep_open_globally=yes\n" >>$(DESTDIR)$(installdir)/$$f; \
 	done
 	$(rep_INSTALL_ALIASES) -c . $(DESTDIR)$(installdir)
+	install -d $(DESTDIR)/@prefix@/@libdir@/pkgconfig/
+	install -m644 rep-gtk.pc $(DESTDIR)/@prefix@/@libdir@/pkgconfig/
+	install -d $(DESTDIR)/@prefix@/share/doc/rep-gtk-@version@/
+	install -m755 examples/* $(DESTDIR)/@prefix@/share/doc/rep-gtk-@version@/
 
 installdirs : $(top_srcdir)/mkinstalldirs
 	$(SHELL) $(top_srcdir)/mkinstalldirs $(DESTDIR)$(installdir)/gui/gtk-2
 
 uninstall :
 	$(rep_DL_UNINSTALL) $(DESTDIR)$(installdir)/$(OUT)
+	rm -f $(DESTDIR)/@prefix@/@libdir@/pkgconfig/rep-gtk.pc
+	rm -rf $(DESTDIR)/@prefix@/share/doc/rep-gtk-@version@/
 
 clean :
 	rm -f *-glue.c *~ core *.jlc *.o *.lo *.la
 	rm -rf gtk-2
 
-realclean : clean
+distclean : clean
 	rm -f Makefile config.cache config.log config.status config.h
-	rm -f rep-gtk.spec
+	rm -f rep-gtk.spec rep-gtk.pc
 
-cvsclean : realclean
+svnclean : distclean
 	rm -f aclocal.m4 configure
+	rm -rf autom4te.cache
 
 build_dirs : gtk-2
 
