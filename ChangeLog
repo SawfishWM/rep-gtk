@@ -4,7 +4,17 @@
 
 	* rep-gtk.c: add atk-accessibility support
 		(thanks to Shobbit Mathur)
+	
+	* rep-gtk.pc.in: added a .pc file for rep-gtk
 
+	* configure.in: bump version to 0.18.1
+		- bump gtk req to 2.6
+		- bump glib req to 2.6
+		- bump glade req to 2.4
+		- print usefull things at the end
+		- added --enable-paranoia option 
+			(compile with paranoia CFLAGS)
+		 
 2006-01-31  John Harper  <jsh@unfactored.org>
 
 	* gtk-compat.c: applied patch from Michal Maru¹ka
