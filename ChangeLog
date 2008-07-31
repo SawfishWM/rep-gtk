@@ -36,6 +36,9 @@
 		- Also known as Panel-Notification-Area-Widget
 		- Also add an example for devs to know how to use it
 
+	* BUGS
+	* HACKING: updated both files
+
 2006-01-31  John Harper  <jsh@unfactored.org>
 
 	* gtk-compat.c: applied patch from Michal Maru¹ka
