@@ -2340,6 +2340,66 @@ DEFUN ("gtk-standalone-p", Fgtk_standalone_p,
   return standalone_p ? Qt : Qnil;
 }
 
+void
+add_relation (AtkRelationSet *set, AtkRelationType type, AtkObject *target)
+{
+    AtkRelation *relation;
+
+    relation = atk_relation_set_get_relation_by_type (set, type);
+
+    if (relation != NULL) {
+	GPtrArray *array = atk_relation_get_target (relation);
+	g_ptr_array_remove (array, target);
+	g_ptr_array_add (array, target);
+    } else {
+	/* Relation hasn't been created yet */
+	relation = atk_relation_new (&target, 1, type);
+	atk_relation_set_add (set, relation);
+	g_object_unref (relation);
+    }
+}
+
+/* This function establishes an Atk Relation between two GTK widgets */
+
+void
+gtk_widget_relate_label(GtkWidget *target1,
+			AtkRelationType target1_type,
+			GtkWidget *target2,
+			AtkRelationType target2_type)
+{
+    AtkObject *atk_target1;
+    AtkObject *atk_target2;
+    AtkRelationSet *set1;
+    AtkRelationSet *set2;
+
+    atk_target1 = gtk_widget_get_accessible (target1);
+    atk_target2 = gtk_widget_get_accessible (target2);
+
+    set1 = atk_object_ref_relation_set (atk_target1);
+    add_relation (set1, target1_type, atk_target2);
+
+    set2 = atk_object_ref_relation_set (atk_target2);
+    add_relation (set2, target2_type, atk_target1);
+}
+
+DEFUN ("gtk-widget-relate-label", Fgtk_widget_relate_label, 
+	Sgtk_widget_relate_label, (repv target1, repv target2), rep_Subr2)
+
+{
+    GtkWidget *Target1, *Target2;
+
+    rep_DECLARE (1, target1, sgtk_is_a_gobj (GTK_TYPE_WIDGET, target1));
+    rep_DECLARE (2, target2, sgtk_is_a_gobj (GTK_TYPE_WIDGET, target2));
+
+    Target1 = (GtkWidget *) sgtk_get_gobj (target1);
+    Target2 = (GtkWidget *) sgtk_get_gobj (target2);
+
+    gtk_widget_relate_label (Target1, ATK_RELATION_LABELLED_BY, Target2, 
+			     ATK_RELATION_LABEL_FOR);
+
+    return Qt;
+}
+
 DEFSYM (gtk_major_version, "gtk-major-version");
 DEFSYM (gtk_minor_version, "gtk-minor-version");
 DEFSYM (gtk_micro_version, "gtk-micro-version");
@@ -2396,6 +2456,7 @@ sgtk_init_substrate (void)
   rep_ADD_SUBR (Sg_object_set);
   rep_ADD_SUBR (Sg_object_get);
   rep_ADD_SUBR (Sg_object_list);
+  rep_ADD_SUBR (Sgtk_widget_relate_label);
 }
 
 static int sgtk_inited = 0;
