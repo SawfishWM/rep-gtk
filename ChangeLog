@@ -25,6 +25,8 @@
 		- install examples in @prefix@/share/doc/rep-gtk-@version@
 		- install the .pc file
 
+	* rep-gtk.spec.in: update the spec-file
+
 2006-01-31  John Harper  <jsh@unfactored.org>
 
 	* gtk-compat.c: applied patch from Michal Maru¹ka
