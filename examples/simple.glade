@@ -1,33 +1,26 @@
-<?xml version="1.0"?>
-<GTK-Interface>
+<?xml version="1.0" standalone="no"?> <!--*- mode: nxml -*-->
+<!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd" >
 
+<glade-interface>
+  <widget class="GtkWindow" id="HelloWindow">
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">Hello</property>
+    <property name="type">GTK_WINDOW_TOPLEVEL</property>
+    <property name="allow_shrink">yes</property>
+    <property name="allow_grow">yes</property>
+    <property name="window-position">GTK_WIN_POS_NONE</property>
+    <property name="visible">yes</property>
 
-<widget>
-  <class>GtkWindow</class>
-  <name>HelloWindow</name>
-  <border_width>5</border_width>
-  <Signal>
-    <name>destroy</name>
-    <handler>gtk-main-quit</handler>
-  </Signal>
-  <title>Hello</title>
-  <type>GTK_WINDOW_TOPLEVEL</type>
-  <position>GTK_WIN_POS_NONE</position>
-  <allow_shrink>True</allow_shrink>
-  <allow_grow>True</allow_grow>
-  <auto_shrink>False</auto_shrink>
+    <signal name="destroy" handler="gtk-main-quit" />
 
-  <widget>
-    <class>GtkButton</class>
-    <name>Hello World</name>
-    <can_focus>True</can_focus>
-    <Signal>
-      <name>clicked</name>
-      <handler>gtk-main-quit</handler>
-      <object>HelloWindow</object>
-    </Signal>
-    <label>Hello World</label>
+    <child>
+      <widget class="GtkButton" id="Hello World">
+        <property name="can_focus">yes</property>
+        <property name="label" translatable="yes">Hello World</property>
+        <property name="visible">yes</property>
+
+        <signal name="clicked" handler="gtk-main-quit" object="HelloWindow" />
+      </widget>
+    </child>
   </widget>
-</widget>
-
-</GTK-Interface>
+</glade-interface>

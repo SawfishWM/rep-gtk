@@ -27,6 +27,9 @@
 
 	* rep-gtk.spec.in: update the spec-file
 
+	* examples/rep-ui.glade
+	* examples/simple.glade: update the glade-files to glade-2
+
 2006-01-31  John Harper  <jsh@unfactored.org>
 
 	* gtk-compat.c: applied patch from Michal Maru¹ka
