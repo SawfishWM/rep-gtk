@@ -1,6 +1,11 @@
 2008-08-05  Christopher Bratusek <nano-master@gmx.de>
 	* rep-gtk.spec.in: updated packager
 
+	* configure.in: librep (trunk) has now a .pc file
+		- use it for version-checking
+	
+	* rep-gtk.pc.in: add librep to requirements
+
 2008-07-31  Christopher Bratusek <nano-master@gmx.de>
 
 	* MAINTAINERS: added

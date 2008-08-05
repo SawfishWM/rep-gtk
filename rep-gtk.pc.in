@@ -6,4 +6,4 @@ includedir=@includedir@
 Name: rep-gtk
 Description: GTK+ bindings to librep
 Version: @version@
-Requires: @pc_libs@
+Requires: librep @pc_libs@

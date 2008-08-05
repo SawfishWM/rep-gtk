@@ -49,7 +49,7 @@ if test "x${GCC}" = "xyes" -a "x$CFLAGS" = "x-g -O2"; then
 fi
 
 dnl Check for librep
-AM_PATH_REP(0.17)
+PKG_CHECK_MODULES(LIBREP, librep >= 0.14)
 
 dnl Check for glib
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.6)
