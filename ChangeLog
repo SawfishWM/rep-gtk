@@ -6,6 +6,8 @@
 	
 	* rep-gtk.pc.in: add librep to requirements
 
+	* Makefile.in: only include rules.mk if it exists
+
 2008-07-31  Christopher Bratusek <nano-master@gmx.de>
 
 	* MAINTAINERS: added
