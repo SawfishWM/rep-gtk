@@ -151,7 +151,7 @@ rep-gtk.spec
 
 AC_OUTPUT
 
-REP_VERSION="`rep --version | gawk '{ print $3 }'`"
+REP_VERSION="`pkg-config --modversion librep`"
 GLIB_VERSION="`pkg-config --modversion glib-2.0`"
 CAIRO_VERSION="`pkg-config --modversion cairo`"
 GTK_VERSION="`pkg-config --modversion gtk+-2.0`"
