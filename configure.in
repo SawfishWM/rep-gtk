@@ -102,7 +102,7 @@ AC_SUBST(GNOME_CANVAS_CFLAGS)
 AC_ARG_ENABLE(paranoia, 	[  --enable-paranoia       use wall, wno-error, ansi, pedantic compiler flags],	[paranoia=$enableval],	[paranoia="no"])
 
 if test $paranoia = "yes"; then
-	DEVELOPMENT_CFLAGS+=" -Wall -Wno-error -ansi -pedantic"
+	DEVELOPMENT_CFLAGS+=" -Wall -ansi -pedantic"
 fi
 
 dnl Check for libglade
