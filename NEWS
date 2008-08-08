@@ -1,0 +1,6 @@
+0.18.1:
+	- code-cleanup (allows building with CFLAGS="-Wall -ansi -pedantic")
+	- added a .pc file
+	- added ATK-Accessibility Support
+	- added Status-Icon Widget
+	- for more see ChangeLog
