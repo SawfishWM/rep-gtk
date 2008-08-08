@@ -29,7 +29,7 @@ host_type=@host@
 SHELL=/bin/sh
 
 repexecdir=@REP_EXECDIR@
--include $(repexecdir)/rules.mk
+include $(repexecdir)/rules.mk
 
 CC=@CC@
 CPPFLAGS=@CPPFLAGS@

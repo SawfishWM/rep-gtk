@@ -18,6 +18,8 @@ dnl  You should have received a copy of the GNU General Public License
 dnl  along with Jade; see the file COPYING.  If not, write to
 dnl  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
+m4_pattern_allow
+
 AC_REVISION($Revision: 1.44 $)
 
 AC_INIT(rep-gtk.h)
@@ -49,7 +51,7 @@ if test "x${GCC}" = "xyes" -a "x$CFLAGS" = "x-g -O2"; then
 fi
 
 dnl Check for librep
-PKG_CHECK_MODULES(LIBREP, librep >= 0.14)
+AM_PATH_REP(0.14)
 
 dnl Check for glib
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.6)
