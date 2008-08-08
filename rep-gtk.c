@@ -2121,8 +2121,8 @@ struct timeout_data {
     struct timeout_data *next;
     int timed_out;
     int idle_counter;
-    u_long this_timeout_msecs;
-    u_long actual_timeout_msecs;
+    unsigned long this_timeout_msecs;
+    unsigned long actual_timeout_msecs;
     int gtk_tag;
 };
 
@@ -2213,7 +2213,7 @@ set_timeout (void)
 {
     if (context != 0 && !context->timed_out && !context->gtk_tag)
     {
-	u_long max_sleep = rep_max_sleep_for ();
+	unsigned long max_sleep = rep_max_sleep_for ();
 	context->this_timeout_msecs = rep_input_timeout_secs * 1000;
 	context->actual_timeout_msecs = MIN (context->this_timeout_msecs,
 					     max_sleep);
@@ -2253,7 +2253,7 @@ sgtk_event_loop (void)
 
     while (1)
     {
-	u_long max_sleep = rep_max_sleep_for ();
+	unsigned long max_sleep = rep_max_sleep_for ();
 
 	if (rep_redisplay_fun != 0)
 	    (*rep_redisplay_fun)();

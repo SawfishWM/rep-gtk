@@ -66,7 +66,7 @@ sgtk_valid_char (repv obj)
 }
 
 repv
-sgtk_uint_to_rep (u_long x)
+sgtk_uint_to_rep (unsigned long x)
 {
     return rep_make_long_uint (x);
 }
@@ -84,7 +84,7 @@ sgtk_long_to_rep (long x)
 }
 
 repv
-sgtk_ulong_to_rep (u_long x)
+sgtk_ulong_to_rep (unsigned long x)
 {
     return rep_make_long_uint (x);
 }
@@ -128,7 +128,7 @@ sgtk_char_to_rep (gchar c)
 char *
 sgtk_rep_to_string (repv obj)
 {
-    return rep_STRINGP (obj) ? rep_STR (obj) : (u_char *)"";
+    return rep_STRINGP (obj) ? rep_STR (obj) : (unsigned char *)"";
 }
 
 repv
