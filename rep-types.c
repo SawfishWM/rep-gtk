@@ -128,7 +128,7 @@ sgtk_char_to_rep (gchar c)
 char *
 sgtk_rep_to_string (repv obj)
 {
-    return rep_STRINGP (obj) ? rep_STR (obj) : (unsigned char *)"";
+    return rep_STRINGP (obj) ? rep_STR (obj) : (char *)"";
 }
 
 repv
@@ -440,7 +440,6 @@ sgtk_rep_to_list (repv obj, void (*fromscm)(repv, void*))
 	  res = tail = n;
 	else 
 	  {
-	    g_list_concat (tail, n);
 	    tail = n;
 	  }
 	if (fromscm)
@@ -461,7 +460,6 @@ sgtk_rep_to_list (repv obj, void (*fromscm)(repv, void*))
 	    res = tail = n;
 	  else 
 	    {
-	      g_list_concat (tail, n);
 	      tail = n;
 	    }
 	  if (fromscm)

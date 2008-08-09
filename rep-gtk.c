@@ -1987,7 +1987,7 @@ DEFUN ("g-object-list", Fg_object_list,
 
   obj = GOBJ_PROXY(scm_obj)->obj;
 
-  props = g_object_class_list_properties (G_OBJECT_GET_CLASS (obj), &nprops);
+  props = g_object_class_list_properties (G_OBJECT_GET_CLASS (obj), (gpointer) &nprops);
   
   if (props != 0)
     {
