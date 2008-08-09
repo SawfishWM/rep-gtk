@@ -65,6 +65,7 @@
 	* examples/status-icon: added a new Widget: Status-Icon
 		- Also known as Panel-Notification-Area-Widget
 		- Also add an example for devs to know how to use it
+		(Wang Diancheng)
 
 	* BUGS
 	* HACKING: updated both files
