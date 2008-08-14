@@ -3,6 +3,8 @@
 
 	* autogen.sh: check for A[MC]_PROG_LIBTOOL
 
+	* Makefile.in: use @prefix@/lib for the .pc file
+
 2008-08-09  Christopher Bratusek <nano-master@gmx.de>
 	* rep-gtk.c
 	* rep-types.c: going on with code-cleanup
