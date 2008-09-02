@@ -161,7 +161,6 @@ GNOME_VERSION="`pkg-config --modversion libgnome-2.0`"
 GNOME_UI_VERSION="`pkg-config --modversion libgnomeui-2.0`"
 GNOME_CANVAS_VERSION="`pkg-config --modversion libgnomecanvas-2.0`"
 GLADE_VERSION="`pkg-config --modversion libglade-2.0`"
-GCC_VERSION="`$CC --version | grep gcc | gawk '{ print $4 }'`"
 
 AC_SUBST(DEVELOPMENT_CFLAGS)
 
@@ -180,10 +179,6 @@ echo "
   == == == == == == == == == == == == ==
   
   compiler:	$CC"
-
-if [[ $GCC_VERSION != "" ]]; then \
-	echo "  cc-version:	$GCC_VERSION"
-fi
 
 echo "  cflags:	$CFLAGS $DEVELOPMENT_CFLAGS
   

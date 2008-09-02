@@ -1,3 +1,6 @@
+2008-09-02  Christopher Bratusek <nano-master@gmx.de>
+	* configure.in: small fixup
+
 2008-08-14  Christopher Bratusek <nano-master@gmx.de>
 	* .cvsignore: removed and set svn:ignore
 
