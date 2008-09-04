@@ -164,6 +164,11 @@
   (top GTK_POS_TOP)
   (bottom GTK_POS_BOTTOM))
 
+;; XXX deprecated
+(define-enum GtkPreviewType
+  (color GTK_PREVIEW_COLOR)
+  (grayscale GTK_PREVIEW_GRAYSCALE))
+
 (define-enum GtkReliefStyle
   (normal GTK_RELIEF_NORMAL)
   (half GTK_RELIEF_HALF)
@@ -173,6 +178,15 @@
   (parent GTK_RESIZE_PARENT)
   (queue GTK_RESIZE_QUEUE)
   (immediate GTK_RESIZE_IMMEDIATE))
+
+;; XXX deprecated
+(define-flags GtkSignalRunType
+  (first GTK_RUN_FIRST)
+  (last GTK_RUN_LAST)
+  (both GTK_RUN_BOTH)
+  (no-recurse GTK_RUN_NO_RECURSE)
+  (action GTK_RUN_ACTION)
+  (no-hooks GTK_RUN_NO_HOOKS))
 
 (define-enum GtkScrollType
   (none GTK_SCROLL_NONE)
@@ -209,6 +223,14 @@
   (prelight GTK_STATE_PRELIGHT)
   (selected GTK_STATE_SELECTED)
   (insensitive GTK_STATE_INSENSITIVE))
+
+;; XXX deprecated
+(define-enum GtkSubmenuDirection
+  (left GTK_DIRECTION_LEFT)
+  (right GTK_DIRECTION_RIGHT))
+(define-enum GtkSubmenuPlacement
+  (top-bottom GTK_TOP_BOTTOM)
+  (left-right GTK_LEFT_RIGHT))
 
 (define-enum GtkToolbarStyle
   (icons GTK_TOOLBAR_ICONS)
@@ -929,6 +951,13 @@
 (define-func gtk_container_check_resize
   none
   ((GtkContainer container)))
+
+;; XXX this is deprecated?
+(define-func gtk_container_foreach_full 
+  none
+  ((GtkContainer container)
+   (full-callback function (protect-during)))
+  (scm-name "gtk-container-foreach"))
 
 (define-func gtk_container_get_children
   ((list GtkWidget))
@@ -3734,12 +3763,8 @@
   ((GtkCurve curve)
    (GtkCurveType type)))
 
-;; Preview
 
-;; XXX deprecated
-(define-enum GtkPreviewType
-  (color GTK_PREVIEW_COLOR)
-  (grayscale GTK_PREVIEW_GRAYSCALE))
+;; Preview
 
 (define-object GtkPreview (GtkWidget))
 

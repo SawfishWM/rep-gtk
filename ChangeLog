@@ -1,6 +1,3 @@
-2008-09-03  Christopher Bratusek <nano-master@gmx.de>
-	* gtk.defs: remove deprecated stuff
-
 2008-09-02  Christopher Bratusek <nano-master@gmx.de>
 	* configure.in: small fixup
 
