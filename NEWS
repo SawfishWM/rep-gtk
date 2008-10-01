@@ -1,3 +1,6 @@
+0.18.2:
+	- fixups in configure.in
+	- updated BUGS, NEWS HACKING
 0.18.1:
 	- code-cleanup (allows building with CFLAGS="-Wall -ansi -pedantic")
 	- added a .pc file

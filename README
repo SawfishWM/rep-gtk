@@ -1,6 +1,6 @@
 -*- text -*-
 
-This is rep-gtk 0.0, a binding of GTK+/GNOME/libglade for the rep Lisp
+This is rep-gtk 0.18.2, a binding of GTK+/GNOME/libglade for the rep Lisp
 system. It is based on Marius Vollmer's guile-gtk binding (initially
 version 0.15, updated to 0.17), with a new glue-code generator.
 
@@ -8,22 +8,22 @@ For more details see:
 
 	http://rep-gtk.sourceforge.net/
 
-Browse the CVS history at:
+Browse the SVN tree at:
 
-	http://tizer.dcs.warwick.ac.uk:8080/cgi-bin/cvsweb/rep-gtk
-
+	http://svn.gnome.org/viewvc/rep-gtk/
 
 Installation
 ============
 
 Basically, `./configure ; make ; make install'. If you're building from
-the CVS repository, execute `aclocal ; autoconf' first.
+the SVN repository, use ./autogen.sh instead of ./configure.
 
 It requires Gtk+ version 2.
 
-WARNING: The libglade and GNOME bindings are currently untested and
+WARNING: The GNOME bindings are currently untested and
 probably broken since the port to Gtk2, use at your own risk.
 
+The libglade binding is definitively broken
 
 Usage
 =====
