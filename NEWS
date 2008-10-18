@@ -7,7 +7,11 @@
 0.18.1:
 	- started code-cleanup
 	- added a .pc file
-	- added ATK-Accessibility Support
-	- added Status-Icon Widget
+	- added ATK-Accessibility Support (Thanks to Shobbit Marthur)
+	- added Status-Icon Widget (Thanks to Wang Diancheng)
 	- bumped gtk req to 2.6, glib req to 2.6 and glade req to 2.4
 	- dropped an function no longer available in GTK 2.5+
+	- added --tag=CC to libtool where nessacary
+	- renamed some of the Makefile targets (cvsclean -> svnclean a.s.o)
+	- updated the spec file
+	- ported the example glade files to glade2
