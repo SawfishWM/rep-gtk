@@ -289,21 +289,24 @@ void gtk_menu_popup_interp (GtkMenu *menu,
 			    guint32 activate_time,
 			    repv position);
 
-#if GTK_MAJOR_VERSION < 2 || (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 4)
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 4)
 GtkWidget*
 gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
 						const gchar      *label);
 GtkWidget*
 gtk_radio_menu_item_new_with_mnemonic_from_widget (GtkRadioMenuItem *group,
 						   const gchar      *label);
-GtkWidget* gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group);
 #endif
+
+GtkWidget* gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group);
 
 GtkWidget* gtk_pixmap_new_interp (char *file, GtkWidget *intended_parent);
 
 #ifndef HAVE_GDK_COLOR_COPY
+#if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 3
 GdkColor*    gdk_color_copy     (GdkColor *);
 void         gdk_color_free     (GdkColor *);
+#endif
 #endif
 
 GdkColor *gdk_color_parse_interp (char *spec);

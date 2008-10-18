@@ -62,10 +62,7 @@ gtk_menu_popup_interp (GtkMenu *menu,
 		  func, func_data, button, activate_time);
 }
 
-/* mmc: sawfish (menu & sawfish-ui) code depends on a different semantics
-   of these calls, different from gtk+ versions, so we have to continue to
-   support that, and override the gtk versions. */
-#if 1 /* || (GTK_MAJOR_VERSION < 2 || (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 4)) */
+#if (GTK_MAJOR_VERSION < 2 || (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 4)) 
 GtkWidget*
 gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
 						const gchar      *label)
@@ -81,6 +78,7 @@ gtk_radio_menu_item_new_with_mnemonic_from_widget (GtkRadioMenuItem *group,
   GSList *g = group? gtk_radio_menu_item_group (group) : NULL;
   return gtk_radio_menu_item_new_with_mnemonic (g, label);
 }
+#endif
 
 GtkWidget*
 gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group)
@@ -88,7 +86,6 @@ gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group)
   GSList *g = group? gtk_radio_menu_item_group (group) : NULL;
   return gtk_radio_menu_item_new (g);
 }
-#endif /* < 2.4 */
 
 GtkWidget*
 gtk_pixmap_new_interp (gchar *file,
@@ -106,6 +103,7 @@ gtk_pixmap_new_interp (gchar *file,
 }
 
 #ifndef HAVE_GDK_COLOR_COPY
+#if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 4
 /*
  *--------------------------------------------------------------
  * gdk_color_copy
@@ -161,6 +159,7 @@ gdk_color_free (GdkColor *color)
 
   g_mem_chunk_free (color_chunk, color);
 }
+#endif
 #endif
 
 GdkColor*

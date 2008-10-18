@@ -1,6 +1,7 @@
 0.18.2:
 	- fixups in configure.in
 	- updated BUGS, README and HACKING
+	- don't build functions useless for GTK >= 2.4 if we got it
 0.18.1:
 	- code-cleanup (allows building with CFLAGS="-Wall -ansi -pedantic")
 	- added a .pc file
