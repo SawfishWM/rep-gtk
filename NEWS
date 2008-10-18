@@ -1,10 +1,13 @@
 0.18.2:
 	- fixups in configure.in
 	- updated BUGS, README and HACKING
-	- don't build functions useless for GTK >= 2.4 if we got it
+	- removed functions no longer available in GTK 2.4+
+	- spec-file does now install all examples into the doc-dir
+
 0.18.1:
-	- code-cleanup (allows building with CFLAGS="-Wall -ansi -pedantic")
+	- started code-cleanup
 	- added a .pc file
 	- added ATK-Accessibility Support
 	- added Status-Icon Widget
-	- for more see ChangeLog
+	- bumped gtk req to 2.6, glib req to 2.6 and glade req to 2.4
+	- dropped an function no longer available in GTK 2.5+

@@ -62,24 +62,6 @@ gtk_menu_popup_interp (GtkMenu *menu,
 		  func, func_data, button, activate_time);
 }
 
-#if (GTK_MAJOR_VERSION < 2 || (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 4)) 
-GtkWidget*
-gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
-						const gchar      *label)
-{
-  GSList *g = group? gtk_radio_menu_item_group (group) : NULL;
-  return gtk_radio_menu_item_new_with_label (g, label);
-}
-
-GtkWidget*
-gtk_radio_menu_item_new_with_mnemonic_from_widget (GtkRadioMenuItem *group,
-						   const gchar      *label)
-{
-  GSList *g = group? gtk_radio_menu_item_group (group) : NULL;
-  return gtk_radio_menu_item_new_with_mnemonic (g, label);
-}
-#endif
-
 GtkWidget*
 gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group)
 {
@@ -101,66 +83,6 @@ gtk_pixmap_new_interp (gchar *file,
 				       file);
   return gtk_pixmap_new (pixmap, mask);
 }
-
-#ifndef HAVE_GDK_COLOR_COPY
-#if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 4
-/*
- *--------------------------------------------------------------
- * gdk_color_copy
- *
- *   Copy a color structure into new storage.
- *
- * Arguments:
- *   "color" is the color struct to copy.
- *
- * Results:
- *   A new color structure.  Free it with gdk_color_free.
- *
- *--------------------------------------------------------------
- */
-
-static GMemChunk *color_chunk;
-
-GdkColor*
-gdk_color_copy (GdkColor *color)
-{
-  GdkColor *new_color;
-  
-  g_return_val_if_fail (color != NULL, NULL);
-
-  if (color_chunk == NULL)
-    color_chunk = g_mem_chunk_new ("colors",
-				   sizeof (GdkColor),
-				   4096,
-				   G_ALLOC_AND_FREE);
-
-  new_color = g_chunk_new (GdkColor, color_chunk);
-  *new_color = *color;
-  return new_color;
-}
-
-/*
- *--------------------------------------------------------------
- * gdk_color_free
- *
- *   Free a color structure obtained from gdk_color_copy.  Do not use
- *   with other color structures.
- *
- * Arguments:
- *   "color" is the color struct to free.
- *
- *-------------------------------------------------------------- */
-
-void
-gdk_color_free (GdkColor *color)
-{
-  g_assert (color_chunk != NULL);
-  g_return_if_fail (color != NULL);
-
-  g_mem_chunk_free (color_chunk, color);
-}
-#endif
-#endif
 
 GdkColor*
 gdk_color_parse_interp (char *spec)

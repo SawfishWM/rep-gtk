@@ -2024,9 +2024,6 @@ gtk_class_new (GtkType parent_type, gchar *name)
   info.class_size = parent_info.class_size;
   info.class_init_func = NULL;
   info.object_init_func = NULL;
-#if GTK_MAJOR_VERSION > 1 || GTK_MINOR_VERSION > 0
-  info.base_class_init_func = NULL;
-#endif
 
   return gtk_type_unique (parent_type, &info);
 }
