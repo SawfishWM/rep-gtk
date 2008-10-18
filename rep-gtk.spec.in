@@ -78,9 +78,10 @@ make install \
 %files gnome
 %defattr(-,root,root)
 %doc gnome*.defs gdk-pixbuf.defs libglade.defs
-%doc examples/gnome-test examples/canvas-test
+%doc examples/*
 %{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/gnome*.so*
 %{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/gnome*.la
+
 
 %changelog
 * Tue Jun 13 2000 John Harper <john@dcs.warwick.ac.uk>
