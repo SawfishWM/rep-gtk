@@ -141,6 +141,7 @@ AC_SUBST(pc_libs)
 AC_SUBST(repexecdir)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(CFLAGS)
+AC_SUBST(DEVELOPMENT_CFLAGS)
 AC_SUBST(LIBS)
 
 AC_DEFINE_UNQUOTED([REP_GTK_VERSION], "${version}", [Version of rep-gtk]) 
@@ -161,8 +162,6 @@ GNOME_VERSION="`pkg-config --modversion libgnome-2.0`"
 GNOME_UI_VERSION="`pkg-config --modversion libgnomeui-2.0`"
 GNOME_CANVAS_VERSION="`pkg-config --modversion libgnomecanvas-2.0`"
 GLADE_VERSION="`pkg-config --modversion libglade-2.0`"
-
-AC_SUBST(DEVELOPMENT_CFLAGS)
 
 echo "
   == == == == == == == == == == == == ==
