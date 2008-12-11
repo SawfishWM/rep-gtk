@@ -1,3 +1,6 @@
+0.18.4:
+	- small code cleanup
+
 0.18.3:
 	- fixed the broken GtkCombo() Widgets
 	- fixed an issue with autoconf on RedHat 
