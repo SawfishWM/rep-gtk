@@ -1,3 +1,6 @@
+2008-12-11  Christopher Bratusek <nano-master@gmx.de>
+	* rep-gtk.c: 1 more code cleanup
+
 2008-11-22  Christopher Bratusek <nano-master@gmx.de>
 	* NEWS: updated
 
