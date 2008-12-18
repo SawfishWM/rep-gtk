@@ -95,7 +95,7 @@ install : all installdirs
 	  case $$f in \
 	    gui/gtk-2/gtk.la|gui/gtk-2/gnome-lib.la) \
 	      printf "\nrep_requires='gui.gtk-2.types'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
-	    gui/gkt-2/libglade.la|gui/gtk-2/gnome-ui.la|gui/gtk-2/gdk-pixbuf.la) \
+	    gui/gtk-2/libglade.la|gui/gtk-2/gnome-ui.la|gui/gtk-2/gdk-pixbuf.la) \
 	      printf "\nrep_requires='gui.gtk-2.gtk'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
 	    gui/gtk-2/gnome-canvas*.la) \
 	      printf "\nrep_requires='gui.gtk-2.gnome-ui'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
