@@ -51,7 +51,12 @@ if test "x${GCC}" = "xyes" -a "x$CFLAGS" = "x-g -O2"; then
 fi
 
 dnl Check for librep
-AM_PATH_REP(0.14)
+PKG_CHECK_MODULES(LIBREP, librep >= 0.17.3)
+REP_EXECDIR="`pkg-config --variable=repcommonexecdir librep`"
+REP_CFLAGS="`pkg-config --cflags librep`"
+
+AC_SUBST(REP_EXECDIR)
+AC_SUBST(REP_CFLAGS)
 
 dnl Check for glib
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.6)
