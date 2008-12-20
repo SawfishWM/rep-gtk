@@ -155,9 +155,12 @@ AC_CONFIG_FILES([
 Makefile
 rep-gtk.pc
 rep-gtk.spec
+rep-gtk.ebuild
 ])
 
 AC_OUTPUT
+
+mv rep-gtk.ebuild rep-gtk-$version.ebuild
 
 REP_VERSION="`pkg-config --modversion librep`"
 GLIB_VERSION="`pkg-config --modversion glib-2.0`"

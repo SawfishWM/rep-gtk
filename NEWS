@@ -1,6 +1,7 @@
 0.18.4:
 	- small code cleanup
 	- updated configure.in since rep.m4 has been dropped
+	- added ebuild (Thanks to Harald van Dijk)
 
 0.18.3:
 	- fixed the broken GtkCombo() Widgets

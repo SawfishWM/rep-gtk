@@ -1,0 +1,42 @@
+# based on rep-gtk-0.18-r3
+
+inherit eutils toolchain-funcs multilib
+
+DESCRIPTION="A GTK+/libglade/GNOME language binding for the librep Lisp environment"
+HOMEPAGE="http://rep-gtk.sourceforge.net/"
+SRC_URI="mirror://sourceforge/rep-gtk/${P}.tar.bz2"
+
+LICENSE="GPL-2"
+SLOT="gtk-2.0"
+KEYWORDS="amd64"
+IUSE="gnome"
+
+RDEPEND=">=dev-libs/librep-0.17.3
+	gnome-base/libglade
+	x11-libs/gtk+
+	gnome? ( gnome-base/libgnome
+		gnome-base/libgnomeui
+		gnome-base/libgnomecanvas )"
+DEPEND="${RDEPEND}
+	dev-util/pkgconfig"
+
+src_unpack() {
+	unpack ${A}
+	cd "${S}"
+}
+
+src_compile() {
+	econf \
+		--libdir=/usr/$(get_libdir) \
+		--with-libglade \
+		$(use_with gnome) || die "configure failed"
+	emake || die "make failed"
+}
+
+src_install() {
+	make DESTDIR="${D}" install || die "make install failed"
+
+	dodoc AUTHORS BUGS ChangeLog HACKING NEWS README* TODO
+	docinto examples
+	dodoc examples/*	
+}
