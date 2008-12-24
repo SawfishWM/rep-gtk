@@ -1,3 +1,6 @@
+2008-12-24  Christopher Bratusek <nano-master@gmx.de>
+	* autogen.sh: fixed for libtool >2.2
+
 2008-12-20  Christopher Bratusek <nano-master@gmx.de>
 	* configure.in
 	* rep-gtk.ebuild.in: Added ebuild [Harald van Dijk]

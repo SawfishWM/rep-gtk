@@ -2,6 +2,7 @@
 	- small code cleanup
 	- updated configure.in since rep.m4 has been dropped
 	- added ebuild (Thanks to Harald van Dijk)
+	- fixed autogen for libtool >2.2
 
 0.18.3:
 	- fixed the broken GtkCombo() Widgets
