@@ -28,6 +28,16 @@
 
 	* install-sh: don't ship it, added by libtoolize
 
+	* rep-gtk.ebuild.in: docs are already install by install-rule
+			     drop libglade dep
+			     drop gnome USEFLAG
+			     configure magic
+
+	* rep-gtk.spec.in: drop -gnome package
+			   drop -glade package
+			   configure magic
+			   source archive is a .tar.bz2
+
 2008-12-30  Christopher Bratusek <nano-master@gmx.de>
 	* rep-gtk.ebuild.in: don't leak copyright info and update keywords
 

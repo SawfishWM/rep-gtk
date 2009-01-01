@@ -3,14 +3,14 @@ Name: rep-gtk
 Version: @version@
 Release: 1
 Summary: GTK+ binding for librep Lisp environment
-Requires: librep >= 0.17, gtk+ >= 2.6
+Requires: librep >= @REP_MIN_VER@ gtk+ >= @GTK_MIN_VER@
 License: GPL
 Group: Development/Languages
-Source: http://download.sourceforge.net/rep-gtk/rep-gtk-%{version}.tar.gz
+Source: http://download.sourceforge.net/rep-gtk/rep-gtk-%{version}.tar.bz2
 URL: http://rep-gtk.sourceforge.net/
 Packager: John Harper <john@dcs.warwick.ac.uk>
 Buildroot: /var/tmp/%{name}-root
-BuildPrereq: librep-devel libglade-devel gnome-libs-devel gdk-pixbuf-devel
+BuildPrereq: librep-devel
 
 %description
 This is a binding of GTK+ for the librep Lisp interpreter. It is based
@@ -48,6 +48,12 @@ make install \
 %{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/types.la
 
 %changelog
+* Thu Jan 01 2009 Christopher Bratusek <nano-master@gmx.de>
+- drop -glade package
+- drop -gnome package
+- source archive is a .tar.bz2
+- configure magic
+
 * Tue Jun 13 2000 John Harper <john@dcs.warwick.ac.uk>
 - use better macros
 

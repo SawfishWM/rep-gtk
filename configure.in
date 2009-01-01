@@ -44,22 +44,27 @@ AC_PROG_GCC_TRADITIONAL
 AC_PROG_LIBTOOL
 
 dnl Check for librep
-PKG_CHECK_MODULES(LIBREP, librep >= 0.17.3
+REP_MIN_VER="0.17.3"
+
+PKG_CHECK_MODULES(LIBREP, librep >= $REP_MIN_VER
 		  ,REP_EXECDIR="`pkg-config --variable=repcommonexecdir librep`"
 		  REP_CFLAGS="`pkg-config --cflags librep`"
 		  ,AC_MSG_ERROR([can't locate librep]))
 
 dnl Check for glib
-PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.6)
+GLIB_MIN_VER="2.6"
+
+PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_MIN_VER)
 
 dnl Check for GTK
+GTK_MIN_VER="2.6"
 pc_libs=""
 
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.6
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= $GTK_MIN_VER
 		  ,pc_libs+="gtk+-2.0 "
 		  ,)
 
-PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= 2.6
+PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= $GTK_MIN_VER
 		  ,pc_libs+="gdk-pixbuf-2.0")
 
 dnl Checks for typedefs, structures, and compiler characteristics.
@@ -81,6 +86,9 @@ AC_SUBST(DEVELOPMENT_CFLAGS)
 AC_SUBST(LIBS)
 AC_SUBST(REP_EXECDIR)
 AC_SUBST(REP_CFLAGS)
+AC_SUBST(REP_MIN_VER)
+AC_SUBST(GTK_MIN_VER)
+AC_SUBST(GLIB_MIN_VER)
 
 AC_DEFINE_UNQUOTED([REP_GTK_VERSION], "${version}", [Version of rep-gtk]) 
 
