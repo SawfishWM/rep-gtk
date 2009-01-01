@@ -26,6 +26,8 @@
 
 	* config.h.in: regenerated
 
+	* install-sh: don't ship it, added by libtoolize
+
 2008-12-30  Christopher Bratusek <nano-master@gmx.de>
 	* rep-gtk.ebuild.in: don't leak copyright info and update keywords
 
