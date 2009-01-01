@@ -8,19 +8,6 @@ SGTK_OBJS = $(SGTK_SRCS:.c=.lo)
 SRCS = rep-gtk.c gtk-support.c gtk-compat.c glib-glue.c gdk-glue.c gtk-glue.c gdk-pixbuf-glue.c
 OBJS = $(SRCS:.c=.lo)
 
-LIBGLADE_SRCS = libglade-support.c libglade-glue.c
-LIBGLADE_OBJS = libglade-support.lo libglade-glue.lo
-GNOME_LIBGLADE_OBJS = libglade-gnome-support.lo libglade-glue.lo
-
-GNOMELIB_SRCS = gnomelib-support.c gnomelib-glue.c
-GNOMELIB_OBJS = $(GNOMELIB_SRCS:.c=.lo)
-
-GNOMEUI_SRCS = gnomeui-support.c gnomeui-glue.c
-GNOMEUI_OBJS = $(GNOMEUI_SRCS:.c=.lo)
-
-GNOME_CANVAS_SRCS = gnome-canvas-support.c gnome-canvas-glue.c
-GNOME_CANVAS_OBJS = $(GNOME_CANVAS_SRCS:.c=.lo)
-
 OUT = @OUT@
 OUT_DESTS = $(foreach x, $(OUT), gui/$(x))
 
@@ -36,13 +23,9 @@ CPPFLAGS=@CPPFLAGS@
 CFLAGS=@CFLAGS@ @DEVELOPMENT_CFLAGS@
 LDFLAGS=@LDFLAGS@
 override CPPFLAGS += -DHAVE_CONFIG_H -I.
-override CFLAGS += @GLIB_CFLAGS@ @GTK_CFLAGS@ @REP_CFLAGS@ @LIBGLADE_CFLAGS@ @GNOME_CFLAGS@ @GNOMEUI_CFLAGS@ @GNOME_CANVAS_CFLAGS@ @GDK_PIXBUF_CFLAGS@
+override CFLAGS += @GLIB_CFLAGS@ @GTK_CFLAGS@ @REP_CFLAGS@ @GDK_PIXBUF_CFLAGS@
 REP_SGTK_LIBS=@GLIB_LIBS@ @LIBS@
 REP_GTK_LIBS=@GTK_LIBS@ @LIBS@
-REP_LIBGLADE_LIBS=@LIBGLADE_LIBS@ @LIBS@
-REP_GNOMELIB_LIBS=@GNOME_LIBS@ @LIBS@
-REP_GNOMEUI_LIBS=@GNOMEUI_LIBS@ @LIBS@
-REP_GNOME_CANVAS_LIBS=@GNOME_CANVAS_LIBS@ @LIBS@
 
 INSTALL=@INSTALL@
 INSTALL_DATA=@INSTALL_DATA@
@@ -65,27 +48,11 @@ gtk-2/types.la : $(SGTK_OBJS)
 gtk-2/gtk.la : $(OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GTK_LIBS)
 
-gtk-2/libglade.la : $(LIBGLADE_OBJS)
-	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_LIBGLADE_LIBS)
-
-gtk-2/gnome-lib.la : $(GNOMELIB_OBJS)
-	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOMELIB_LIBS)
-
-gtk-2/gnome-ui.la : $(GNOMEUI_OBJS)
-	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOMEUI_LIBS)
-
-gtk-2/gnome-canvas.la : $(GNOME_CANVAS_OBJS)
-	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GNOME_CANVAS_LIBS)
-
 %-glue.c : %.defs build-gtk.jlc
 	rep build-gtk.jlc -f build-gtk-batch $< $@
 
 build-gtk.jlc : build-gtk.jl
 	rep compiler -f compile-batch $<
-
-libglade-gnome-support.lo : libglade-support.c
-	$(rep_LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) \
-	 @GNOME_LIBGLADE_CFLAGS@ -DGLADE_GNOME=1 $< -o $@
 
 install : all installdirs
 	set -e; for f in $(OUT); do \
@@ -93,12 +60,10 @@ install : all installdirs
 	done
 	set -e; for f in $(OUT_DESTS); do \
 	  case $$f in \
-	    gui/gtk-2/gtk.la|gui/gtk-2/gnome-lib.la) \
+	    gui/gtk-2/gtk.la) \
 	      printf "\nrep_requires='gui.gtk-2.types'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
-	    gui/gtk-2/libglade.la|gui/gtk-2/gnome-ui.la|gui/gtk-2/gdk-pixbuf.la) \
+	    gui/gtk-2/gdk-pixbuf.la) \
 	      printf "\nrep_requires='gui.gtk-2.gtk'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
-	    gui/gtk-2/gnome-canvas*.la) \
-	      printf "\nrep_requires='gui.gtk-2.gnome-ui'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
 	  esac; \
 	done
 	for f in $(OUT_DESTS); do \
@@ -124,7 +89,7 @@ clean :
 
 distclean : clean
 	rm -f Makefile config.cache config.log config.status config.h
-	rm -f rep-gtk.spec rep-gtk.pc
+	rm -f rep-gtk.spec rep-gtk.pc rep-gtk*.ebuild
 
 svnclean : distclean
 	rm -f aclocal.m4 configure

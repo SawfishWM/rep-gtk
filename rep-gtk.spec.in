@@ -17,27 +17,6 @@ This is a binding of GTK+ for the librep Lisp interpreter. It is based
 on Marius Vollmer's guile-gtk package (initially version 0.15, updated
 to 0.17), with a new glue-code generator.
 
-%package libglade
-Summary: librep binding for the libglade library for loading user interfaces.
-Group: Development/Languages
-Requires: %{name} = @version@, libglade
-
-%description libglade
-This is a binding of libglade for the librep Lisp interpreter. libglade
-allows applications to dynamically load XML descriptions of GTK+ widget
-hierarchies. These hierarchies may be created by the GLADE GUI builder.
-
-%package gnome
-Summary: GNOME binding for librep
-Group: Development/Languages
-Requires: %{name} = @version@, gnome-libs, libglade
-
-%description gnome
-This is a binding of the various GNOME libraries for the librep Lisp
-interpreter. It include support for the basic GNOME functions, the
-GNOME user interface widgets, the GNOME Canvas architecture, and the
-GNOME version of libglade.
-
 %prep
 %setup
 
@@ -67,21 +46,6 @@ make install \
 %{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/gtk.la
 %{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/types.so*
 %{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/types.la
-
-%files libglade
-%defattr(-,root,root)
-%doc libglade.defs examples/test-libglade examples/simple.glade
-%doc examples/rep-ui examples/rep-ui.glade
-%{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/libglade.so*
-%{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/libglade.la
-
-%files gnome
-%defattr(-,root,root)
-%doc gnome*.defs gdk-pixbuf.defs libglade.defs
-%doc examples/*
-%{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/gnome*.so*
-%{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/gnome*.la
-
 
 %changelog
 * Tue Jun 13 2000 John Harper <john@dcs.warwick.ac.uk>

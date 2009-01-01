@@ -1,8 +1,10 @@
 0.18.4:
 	- small code cleanup
-	- updated configure.in since rep.m4 has been dropped
+	- reworked configure.in
 	- added ebuild (Thanks to Harald van Dijk)
-	- fixed autogen for libtool >2.2
+	- reworked autogen.sh
+	- removed libgnome, libgnomeui, libgnomecanvas and libglade bindings
+	- removed examples related to removed bindings
 
 0.18.3:
 	- fixed the broken GtkCombo() Widgets

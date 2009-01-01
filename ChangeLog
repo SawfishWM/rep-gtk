@@ -1,3 +1,31 @@
+2009-01-01  Christopher Bratusek <nano-master@gmx.de>
+	* autogen.sh: small rework
+
+	* configure.in
+	* Makefile.in
+	* rep-gnome.h
+	* rep-libglade.h
+	* gnomelib.defs
+	* gnomeui.defs
+	* gnome-canvas.defs
+	* libglade.defs
+	* gnomelib-support.c
+	* gnome-canvas-support.c
+	* gnomeui-support.c
+	* libglade-support.c: dropped libgnome, libgnomeui, libgnomecanvas and libglade bindings
+
+	* examples/test-libglade
+	* examples/rep-ui
+	* examples/gnome-test
+	* examples/canvas-pixbuf-test
+	* examples/simple.glade
+	* examples/canvas-test
+	* examples/rep-ui.glade: dropped examples related to dropped bindings
+
+	* NEWS: updated
+
+	* config.h.in: regenerated
+
 2008-12-30  Christopher Bratusek <nano-master@gmx.de>
 	* rep-gtk.ebuild.in: don't leak copyright info and update keywords
 
