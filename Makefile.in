@@ -34,6 +34,8 @@ INSTALL_PROGRAM=@INSTALL_PROGRAM@
 DESTDIR=
 installdir=$(repexecdir)
 
+libdir=@prefix@/@libdir@
+
 top_srcdir=@top_srcdir@
 top_builddir=.
 VPATH=@top_srcdir@:.
@@ -70,8 +72,8 @@ install : all installdirs
 	  printf "\nrep_open_globally=yes\n" >>$(DESTDIR)$(installdir)/$$f; \
 	done
 	$(rep_INSTALL_ALIASES) -c . $(DESTDIR)$(installdir)
-	install -d $(DESTDIR)/@prefix@/lib/pkgconfig/
-	install -m644 rep-gtk.pc $(DESTDIR)/@prefix@/lib/pkgconfig/
+	install -d $(DESTDIR)$(libdir)/pkgconfig/
+	install -m644 rep-gtk.pc $(DESTDIR)$(libdir)/pkgconfig/
 	install -d $(DESTDIR)/@prefix@/share/doc/rep-gtk-@version@/
 	install -m755 examples/* $(DESTDIR)/@prefix@/share/doc/rep-gtk-@version@/
 
@@ -80,7 +82,7 @@ installdirs : $(top_srcdir)/mkinstalldirs
 
 uninstall :
 	$(rep_DL_UNINSTALL) $(DESTDIR)$(installdir)/$(OUT)
-	rm -f $(DESTDIR)/@prefix@/lib@/pkgconfig/rep-gtk.pc
+	rm -f $(DESTDIR)$(libdir)/pkgconfig/rep-gtk.pc
 	rm -rf $(DESTDIR)/@prefix@/share/doc/rep-gtk-@version@/
 
 clean :

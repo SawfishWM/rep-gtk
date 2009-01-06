@@ -7,6 +7,7 @@
 	- removed examples related to removed bindings
 	- don't ship install-sh (beeing added by libtoolize)
 	- reworked ebuild and specfile
+	- install rep-gtk.in in $prefix$libdir
 
 0.18.3:
 	- fixed the broken GtkCombo() Widgets
