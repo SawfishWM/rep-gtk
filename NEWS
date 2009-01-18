@@ -8,6 +8,8 @@
 	- don't ship install-sh (beeing added by libtoolize)
 	- reworked ebuild and specfile
 	- install rep-gtk.in in $prefix$libdir
+	- major update of the spec-file
+	- don't install example files
 
 0.18.3:
 	- fixed the broken GtkCombo() Widgets

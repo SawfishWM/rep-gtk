@@ -1,4 +1,3 @@
-
 Name: rep-gtk
 Version: @version@
 Release: 1
@@ -8,9 +7,9 @@ License: GPL
 Group: Development/Languages
 Source: http://download.sourceforge.net/rep-gtk/rep-gtk-%{version}.tar.bz2
 URL: http://rep-gtk.sourceforge.net/
-Packager: John Harper <john@dcs.warwick.ac.uk>
-Buildroot: /var/tmp/%{name}-root
-BuildPrereq: librep-devel
+Packager: Christopher Bratusek <zanghar@freenet.de>
+Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires: librep-devel gtk2-devel glib2-devel automake autoconf
 
 %description
 This is a binding of GTK+ for the librep Lisp interpreter. It is based
@@ -18,26 +17,28 @@ on Marius Vollmer's guile-gtk package (initially version 0.15, updated
 to 0.17), with a new glue-code generator.
 
 %prep
-%setup
+%setup -q
 
 %build
-
-LC_ALL=""
-LINGUAS=""
-LANG=""
-export LC_ALL LINGUAS LANG
-
-%configure
-make host_type=%{_target_platform}
+./autogen.sh --prefix=/usr 
+make %{?_smp_mflags}
 
 %install
-[ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
-make install \
-    host_type=%{_target_platform} \
-    installdir=$RPM_BUILD_ROOT%{_libexecdir}/rep/%{_target_platform}
+rm -rf $RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
-[ -n "$RPM_BUILD_ROOT" -a "$RPM_BUILD_ROOT" != / ] && rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
+%files
+%defattr (-,root,root,-)
+%doc README* examples/  TODO NEWS HACKING AUTHORS BUGS 
+%{_libdir}/rep/%{_host}/gui
+%{_libdir}/pkgconfig/rep-gtk.pc
 
 %files
 %defattr(-,root,root)
@@ -48,6 +49,9 @@ make install \
 %{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/types.la
 
 %changelog
+* Sun Jan 18 2009 Christopher Bratusek <zanghar@freenet.de>
+- several updates
+
 * Thu Jan 01 2009 Christopher Bratusek <nano-master@gmx.de>
 - drop -glade package
 - drop -gnome package

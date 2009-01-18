@@ -1,3 +1,11 @@
+2009-01-18  Christopher Bratusek <zanghar@freenet.de>
+	* rep-gtk.spec.in: - use _tmppath instead of /var/tmp/
+	                   - update BuildRequires
+			   - package rep-gtk.pc
+			   - merge changes from
+
+	* Makefile.in: don't install example files
+
 2009-01-06  Christopher Bratusek <nano-master@gmx.de>
 	* Makefile.in: install rep-gtk.pc in $prefix$libdir
 
