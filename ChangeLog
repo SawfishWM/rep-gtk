@@ -1,3 +1,6 @@
+2009-02-01  Christopher Bratusek <zanghar@freenet.de>
+	* MAINTAINERS: update my mail address
+
 2009-01-18  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.spec.in: - use _tmppath instead of /var/tmp/
 	                   - update BuildRequires
