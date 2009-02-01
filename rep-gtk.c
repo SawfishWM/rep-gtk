@@ -7,12 +7,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -226,8 +226,8 @@ sgtk_fillin_type_info (sgtk_type_info *info)
     }
 
   return 1;
-}      
-     
+}
+
 sgtk_type_info*
 sgtk_maybe_find_type_info (GType type)
 {
@@ -410,7 +410,7 @@ sgtk_set_protect (repv protector, sgtk_protshell *prot)
     prevp = &(GOBJ_PROXY(protector)->protects);
   else
     prevp = &global_protects;
-  
+
   if ((prot->next = *prevp) != 0)
 	prot->next->prevp = &prot->next;
   *prevp = prot;
@@ -650,7 +650,7 @@ make_gobj (GObject *obj)
     }
   else
     g_object_ref (obj);			/* XXX ref may leak? */
-	  
+
 #ifdef DEBUG_PRINT
   fprintf (stderr, "New proxy %p for %p %s\n", proxy, obj,
 	   g_type_name (G_OBJECT_TYPE (obj)));
@@ -785,13 +785,13 @@ sgtk_valid_flags (repv obj, sgtk_enum_info *info)
       int i, valid;
       repv sym;
       char *sym_name;
-      
+
       if (!rep_CONSP (obj))
 	return 0;
       sym = rep_CAR (obj);
       if (!rep_SYMBOLP (sym))
 	return 0;
-      
+
       sym_name = rep_STR(rep_SYM(sym)->name);
       for (i = 0, valid = 0; i < info->n_literals; i++)
 	if (!strcmp (info->literals[i].name, sym_name))
@@ -804,7 +804,7 @@ sgtk_valid_flags (repv obj, sgtk_enum_info *info)
 
       obj = rep_CDR (obj);
     }
-  
+
   return 1;
 }
 
@@ -843,7 +843,7 @@ sgtk_rep_to_flags (repv obj, sgtk_enum_info *info)
       obj = rep_CDR (obj);
       rep_TEST_INT;
     }
-  
+
   return ans;
 }
 
@@ -1208,7 +1208,7 @@ sgtk_gclosure_callback_marshal (GClosure *closure,
       fprintf (stderr, "callback ignored during GC!\n");
       return;
     }
-  
+
   info.proc = prot->object;
   info.n_params = n_param_values;
   info.params = param_values;
@@ -1488,7 +1488,7 @@ sgtk_arg_to_rep (GtkArg *a, int free_mem)
     case GTK_TYPE_POINTER:
       return sgtk_pointer_to_rep (GTK_VALUE_POINTER(*a));
     default:
-      fprintf (stderr, "illegal type %s in arg\n", 
+      fprintf (stderr, "illegal type %s in arg\n",
 	       gtk_type_name (a->type));
       return Qnil;
     }
@@ -1709,7 +1709,7 @@ sgtk_callback_marshal (GtkObject *obj,
       fprintf (stderr, "callback ignored during GC!\n");
       return;
     }
-  
+
   info.obj = obj;
   info.proc = ((sgtk_protshell *)data)->object;
   info.n_args = n_args;
@@ -1744,7 +1744,7 @@ sgtk_find_object_info_from_type (GType type)
   info = (sgtk_object_info *)sgtk_get_type_info (type);
   if (info)
     return info;
-  
+
   return sgtk_find_object_info (g_type_name (type));
 }
 
@@ -1798,13 +1798,13 @@ sgtk_find_object_info (const char *name)
 
  query_args:
   g_type_class_peek (info->header.type);
-  
+
   parent = g_type_parent (info->header.type);
   if (parent != G_TYPE_INVALID)
     info->parent = sgtk_find_object_info_from_type (parent);
   else
     info->parent = NULL;
-  
+
   return info;
 }
 
@@ -1866,13 +1866,13 @@ sgtk_build_args (GObjectClass *objclass, int *n_argsp, repv scm_args, char *subr
 
       if (!sgtk_valid_gvalue (&args[i].value, val))
 	{
-	  repv throw_args = 
+	  repv throw_args =
 	    rep_LIST_3 (rep_string_dup ("wrong type for"),
 			rep_string_dup (g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec))), val);
 	  sgtk_free_args (args, i);
 	  Fsignal (Qerror, throw_args);
 	}
-	  
+
       sgtk_rep_to_gvalue (&args[i].value, val);
     }
 
@@ -1960,7 +1960,7 @@ DEFUN ("g-object-get", Fg_object_get, Sg_object_get,
 
   name = rep_STR(rep_SYM(argsym)->name);
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (obj), name);
-  
+
   if (pspec)
     {
       g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
@@ -1987,8 +1987,8 @@ DEFUN ("g-object-list", Fg_object_list,
 
   obj = GOBJ_PROXY(scm_obj)->obj;
 
-  props = g_object_class_list_properties (G_OBJECT_GET_CLASS (obj), (gpointer) &nprops);
-  
+  props = g_object_class_list_properties (G_OBJECT_GET_CLASS (obj), &nprops);
+
   if (props != 0)
     {
       int i;
@@ -2024,6 +2024,7 @@ gtk_class_new (GtkType parent_type, gchar *name)
   info.class_size = parent_info.class_size;
   info.class_init_func = NULL;
   info.object_init_func = NULL;
+  info.base_class_init_func = NULL;
 
   return gtk_type_unique (parent_type, &info);
 }
@@ -2379,7 +2380,7 @@ gtk_widget_relate_label(GtkWidget *target1,
     add_relation (set2, target2_type, atk_target1);
 }
 
-DEFUN ("gtk-widget-relate-label", Fgtk_widget_relate_label, 
+DEFUN ("gtk-widget-relate-label", Fgtk_widget_relate_label,
 	Sgtk_widget_relate_label, (repv target1, repv target2), rep_Subr2)
 
 {
@@ -2391,7 +2392,7 @@ DEFUN ("gtk-widget-relate-label", Fgtk_widget_relate_label,
     Target1 = (GtkWidget *) sgtk_get_gobj (target1);
     Target2 = (GtkWidget *) sgtk_get_gobj (target2);
 
-    gtk_widget_relate_label (Target1, ATK_RELATION_LABELLED_BY, Target2, 
+    gtk_widget_relate_label (Target1, ATK_RELATION_LABELLED_BY, Target2,
 			     ATK_RELATION_LABEL_FOR);
 
     return Qt;
@@ -2421,7 +2422,7 @@ sgtk_init_substrate (void)
   global_protects = NULL;
   sgtk_protshell_chunk = g_mem_chunk_create (sgtk_protshell, 128,
 					     G_ALLOC_AND_FREE);
-  
+
   callback_trampoline = Fcons (Qnil, Qnil);
   rep_mark_static (&callback_trampoline);
 
@@ -2531,7 +2532,7 @@ make_argv (repv list, int *argc, char ***argv)
       v[i] = xstrdup (rep_STR (rep_CAR (list)));
     }
   v[c] = NULL;
-  
+
   *argv = v;
   *argc = c;
 }

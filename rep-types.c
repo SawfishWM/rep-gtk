@@ -7,12 +7,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; see the file COPYING.  If not, write to
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -128,7 +128,7 @@ sgtk_char_to_rep (gchar c)
 char *
 sgtk_rep_to_string (repv obj)
 {
-    return rep_STRINGP (obj) ? rep_STR (obj) : (char *)"";
+    return rep_STRINGP (obj) ? rep_STR (obj) : (unsigned char *)"";
 }
 
 repv
@@ -430,7 +430,7 @@ GList*
 sgtk_rep_to_list (repv obj, void (*fromscm)(repv, void*))
 {
   GList *res = NULL, *tail;
-  
+
   if (obj == Qnil || (rep_CONSP(obj)))
     {
       while (rep_CONSP(obj))
@@ -438,7 +438,7 @@ sgtk_rep_to_list (repv obj, void (*fromscm)(repv, void*))
         GList *n = g_list_alloc ();
 	if (res == NULL)
 	  res = tail = n;
-	else 
+	else
 	  {
 	    g_list_concat (tail, n);
 	    tail = n;
@@ -459,7 +459,7 @@ sgtk_rep_to_list (repv obj, void (*fromscm)(repv, void*))
 	  GList *n = g_list_alloc ();
 	  if (res == NULL)
 	    res = tail = n;
-	  else 
+	  else
 	    {
 	      g_list_concat (tail, n);
 	      tail = n;
@@ -498,7 +498,7 @@ sgtk_list_finish (GList *list, repv obj, repv (*toscm)(void*))
 	    }
 	}
     }
-  
+
   g_list_free (list);
 }
 
