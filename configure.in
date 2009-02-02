@@ -125,18 +125,16 @@ echo "
   
   == == == == == == == == == == == == ==
   
-  compiler:	$CC"
-
-echo "  cflags:	$CFLAGS $DEVELOPMENT_CFLAGS
+  compiler:	$CC
+  cflags:	$CFLAGS $DEVELOPMENT_CFLAGS
   
   == == == == == == == == == == == == ==
   
   rep:		$REP_VERSION
   glib:		$GLIB_VERSION
   cairo:	$CAIRO_VERSION
-  gtk+:		$GTK_VERSION"
-
-echo "  
+  gtk+:		$GTK_VERSION
+ 
   == == == == == == == == == == == == ==
 "
 
