@@ -1,5 +1,5 @@
 2009-02-02  Christopher Bratusek <zanghar@freenet.de>
-	* autogen.sh: don't use bash-specific syntax
+	* autogen.sh: don't use bash-specific syntax [Mark Diekhans]
 
 2009-02-01  Christopher Bratusek <zanghar@freenet.de>
 	* MAINTAINERS: update my mail address
