@@ -5,7 +5,6 @@
 	- reworked autogen.sh
 	- removed libgnome, libgnomeui, libgnomecanvas and libglade bindings
 	- removed examples related to removed bindings
-	- don't ship install-sh (beeing added by libtoolize)
 	- reworked ebuild and specfile
 	- install rep-gtk.in in $prefix$libdir
 	- major update of the spec-file
