@@ -1,3 +1,48 @@
+2009-03-04  Christopher Bratusek <zanghar@freenet.de>
+	* configure.in: 0.18.4 released, bump to 0.18.5
+		        bump minimum gtk+ to 2.15.5
+	
+	* gtk.defs:
+	
+	[ 
+		~ = not completely implemented 
+		* = completely implemented 
+		^ not completely removed 
+		# to implement low priority 
+		! to remove high priority 
+	]
+	
+	> implemented new stuff:
+		- GtkArrowPlacement ~
+		- GtkArrowType -> none (= GTK_ARROW_NONE) *
+		- GtkButtonBoxStyle -> center (= GTK_BUTTONBOX_CENTER) *
+		- GtkSensitivityType ~
+		- GtkMovementStep -> horizontal-pages (= GTK_MOVEMENT_HORIZONTAL_PAGES) *
+		- GtkScrollStep ~
+		- GtkWrapMode -> word-char (= GTK_WRAP_WORD_CHAR) *
+		- GtkIMPreeditStyle ~
+		- GtkIMStatusStyle ~
+		- GtkPackDirection ~
+		- GtkPrintPages ~
+		- GtkPageSet ~
+
+	> removed deprecated stuff:
+		- GtkSignalRunType ^
+		- GtkSubmenuDirection ^
+		- GtkSubmenuPlacement ^
+
+	> new stuff marked for implemention:
+		- GtkNumberUpLayout #
+		- GtkPageOrientation #
+		- GtkPrintQuality #
+		- GtkPrintDuplex #
+		- GtkUnit #
+		- GtkTreeViewGridLines #
+		- GtkDragResult #
+
+	> deprecated stuff marked for removal:
+		- GtkPreviewType !
+
 2009-02-03  Christopher Bratusek <zanghar@freenet.de>
 	* install-sh: added for libtool < 2.2
 
@@ -104,7 +149,7 @@
 
 	* rep-gtk.c
 	* rep-gtk.h
-	* gtk-compat.c: removed functions no longer available in GTK 2.4+ 
+	* gtk-compat.c: removed functions no longer available in GTK 2.4+
 
 2008-10-01  Christopher Bratusek <nano-master@gmx.de>
 	* BUGS: updated
@@ -150,7 +195,7 @@
 
 	* configure.in: librep (trunk) has now a .pc file
 		- use it for version-checking
-	
+
 	* rep-gtk.pc.in: add librep to requirements
 
 	* Makefile.in: only include rules.mk if it exists
@@ -161,7 +206,7 @@
 
 	* rep-gtk.c: add atk-accessibility support
 		(thanks to Shobbit Mathur)
-	
+
 	* rep-gtk.pc.in: added a .pc file for rep-gtk
 
 	* configure.in: bump version to 0.18.1
@@ -169,9 +214,9 @@
 		- bump glib req to 2.6
 		- bump glade req to 2.4
 		- print usefull things at the end
-		- added --enable-paranoia option 
+		- added --enable-paranoia option
 			(compile with paranoia CFLAGS)
-	
+
 	* gtk.defs: dropped an function no longer available
 		in gtk+ 2.5 or newer (seen in gentoo linux)
 
@@ -347,11 +392,11 @@
 	gnomelib-support.c, gnome-canvas.defs, gnome-canvas-support.c,
 	gnome-canvas-pixbuf.defs, glib.defs, gdk-pixbuf.defs,
 	configure.in, README-GTK-2, README, Makefile.in, HACKING,
-	AUTHORS, .cvsignore: 
+	AUTHORS, .cvsignore:
 
 	* examples/test-libglade, examples/rep-ui, examples/hello.jl,
 	examples/gtk-dialog.jl, examples/gnome-test, examples/clist.jl,
-	examples/canvas-test, examples/canvas-pixbuf-test: 
+	examples/canvas-test, examples/canvas-pixbuf-test:
 
 	Lots of minor changes. Changed module hierarchy so that all
 	modules are installed under the gui.gtk-2 prefix. This will
@@ -385,7 +430,7 @@ Sat Dec  1 13:57:17 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* rep-gtk.c (sgtk_find_arg_info): Remove unused function.
 
-	* rep-gtk.c (gtk_signal_new_generic): Remove 
+	* rep-gtk.c (gtk_signal_new_generic): Remove
 	unnecessary call to gtk_object_class_add_signals.
 
 	* rep-gtk.[ch] (sgtk_build_args): Rework to use GObject
@@ -410,7 +455,7 @@ Sat Dec  1 13:57:17 2001  Owen Taylor  <otaylor@redhat.com>
 2001-11-17  John Harper  <jsh@unfactored.org>
 
 	* rep-libglade.h, rep-gtk.c, libglade.defs, libglade-support.c,
-	gtk.defs, configure.in, config.h.in, README.gtk-defs: 
+	gtk.defs, configure.in, config.h.in, README.gtk-defs:
 
 	More porting. Libglade now compiles. Haven't tested it (don't
 	have a new enough glade), but it _should_ work..
