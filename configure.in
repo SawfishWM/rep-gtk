@@ -26,6 +26,8 @@ AC_INIT(rep-gtk.h)
 AC_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 
+AC_SUBST(datarootdir)
+
 AM_PROG_LIBTOOL
 
 dnl Release versioning info
