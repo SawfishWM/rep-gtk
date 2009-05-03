@@ -31,7 +31,7 @@ AC_SUBST(datarootdir)
 AM_PROG_LIBTOOL
 
 dnl Release versioning info
-version="0.18.5"
+version="0.18.6"
 
 dnl Find the system type; this isn't crucial
 AC_CANONICAL_HOST

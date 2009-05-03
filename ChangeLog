@@ -3,6 +3,8 @@
 
 	* configure.in: require gtk+ 2.6
 
+	* configure.in: bump to 0.18.6
+
 2009-03-24  Christopher Bratusek <zanghar@freenet.de>
 	* configure.in: only display cairo version if it exists
                         display additional infos
