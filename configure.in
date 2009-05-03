@@ -59,7 +59,7 @@ GLIB_MIN_VER="2.6"
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_MIN_VER)
 
 dnl Check for GTK
-GTK_MIN_VER="2.15.5"
+GTK_MIN_VER="2.6"
 pc_libs=""
 
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= $GTK_MIN_VER

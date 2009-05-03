@@ -26,11 +26,6 @@
 (import "gdk.defs")
 (import "gdk-pixbuf.defs")
 
-;; XXX Marked for removal
-(define-enum GtkPreviewType
-  (color GTK_PREVIEW_COLOR)
-  (grayscale GTK_PREVIEW_GRAYSCALE))
-
 (define-enum GtkAnchorType
   (center GTK_ANCHOR_CENTER)
   (north GTK_ANCHOR_NORTH)
@@ -46,13 +41,7 @@
   (up GTK_ARROW_UP)
   (down GTK_ARROW_DOWN)
   (left GTK_ARROW_LEFT)
-  (right GTK_ARROW_RIGHT)
-  (none GTK_ARROW_NONE))
-
-(define-enum GtkArrowPlacement
-  (both GTK_ARROWS_BOTH)
-  (start GTK_ARROWS_START)
-  (end GTK_ARROWS_END))
+  (right GTK_ARROW_RIGHT))
 
 (define-flags GtkAttachOptions
   (expand GTK_EXPAND)
@@ -64,8 +53,7 @@
   (spread GTK_BUTTONBOX_SPREAD)
   (edge GTK_BUTTONBOX_EDGE)
   (start GTK_BUTTONBOX_START)
-  (end GTK_BUTTONBOX_END)
-  (center GTK_BUTTONBOX_CENTER))
+  (end GTK_BUTTONBOX_END))
 
 (define-enum GtkCurveType
   (linear GTK_CURVE_TYPE_LINEAR)
@@ -110,11 +98,6 @@
   (ltr GTK_TEXT_DIR_LTR)
   (rtl GTK_TEXT_DIR_RTL))
 
-(define-enum GtkSensitivityType
-  (auto GTK_SENSITIVITY_AUTO)
-  (on GTK_SENSITIVITY_ON)
-  (off GTK_SENSITIVITY_OFF))
-
 (define-enum GtkJustification
   (left GTK_JUSTIFY_LEFT)
   (right GTK_JUSTIFY_RIGHT)
@@ -141,16 +124,7 @@
   (paragraph-ends GTK_MOVEMENT_PARAGRAPH_ENDS)
   (paragraphs GTK_MOVEMENT_PARAGRAPHS)
   (pages GTK_MOVEMENT_PAGES)
-  (buffer-ends GTK_MOVEMENT_BUFFER_ENDS)
-  (horizontal-pages GTK_MOVEMENT_HORIZONTAL_PAGES))
-
-(define-enum GtkScrollStep
-  (steps GTK_SCROLL_STEPS)
-  (pages GTK_SCROLL_PAGES)
-  (ends GTK_SCROLL_ENDS)
-  (horizontal-steps GTK_SCROLL_HORIZONTAL_STEPS)
-  (horizontal-pages GTK_SCROLL_HORIZONTAL_PAGES)
-  (horizontal-ends GTK_SCROLL_HORIZONTAL_ENDS))
+  (buffer-ends GTK_MOVEMENT_BUFFER_ENDS))
 
 (define-enum GtkOrientation
   (horizontal GTK_ORIENTATION_HORIZONTAL)
@@ -190,6 +164,11 @@
   (top GTK_POS_TOP)
   (bottom GTK_POS_BOTTOM))
 
+;; XXX deprecated
+(define-enum GtkPreviewType
+  (color GTK_PREVIEW_COLOR)
+  (grayscale GTK_PREVIEW_GRAYSCALE))
+
 (define-enum GtkReliefStyle
   (normal GTK_RELIEF_NORMAL)
   (half GTK_RELIEF_HALF)
@@ -199,6 +178,15 @@
   (parent GTK_RESIZE_PARENT)
   (queue GTK_RESIZE_QUEUE)
   (immediate GTK_RESIZE_IMMEDIATE))
+
+;; XXX deprecated
+(define-flags GtkSignalRunType
+  (first GTK_RUN_FIRST)
+  (last GTK_RUN_LAST)
+  (both GTK_RUN_BOTH)
+  (no-recurse GTK_RUN_NO_RECURSE)
+  (action GTK_RUN_ACTION)
+  (no-hooks GTK_RUN_NO_HOOKS))
 
 (define-enum GtkScrollType
   (none GTK_SCROLL_NONE)
@@ -236,6 +224,14 @@
   (selected GTK_STATE_SELECTED)
   (insensitive GTK_STATE_INSENSITIVE))
 
+;; XXX deprecated
+(define-enum GtkSubmenuDirection
+  (left GTK_DIRECTION_LEFT)
+  (right GTK_DIRECTION_RIGHT))
+(define-enum GtkSubmenuPlacement
+  (top-bottom GTK_TOP_BOTTOM)
+  (left-right GTK_LEFT_RIGHT))
+
 (define-enum GtkToolbarStyle
   (icons GTK_TOOLBAR_ICONS)
   (text GTK_TOOLBAR_TEXT)
@@ -266,38 +262,11 @@
 (define-enum GtkWrapMode
   (none GTK_WRAP_NONE)
   (char GTK_WRAP_CHAR)
-  (word GTK_WRAP_WORD)
-  (word-char GTK_WRAP_WORD_CHAR))
+  (word GTK_WRAP_WORD))
 
 (define-enum GtkSortType
   (ascending GTK_SORT_ASCENDING)
   (descending GTK_SORT_DESCENDING))
-
-(define-enum GtkIMPreeditStyle
-  (nothing GTK_IM_PREEDIT_NOTHING)
-  (callback GTK_IM_PREEDIT_CALLBACK)
-  (none GTK_IM_PREEDIT_NONE))
-
-(define-enum GtkIMStatusStyle
-  (nothing GTK_IM_STATUS_NOTHING)
-  (callback GTK_IM_STATUS_CALLBACK)
-  (none GTK_IM_STATUS_NONE))
-
-(define-enum GtkPackDirection
-  (ltr GTK_PACK_DIRECTION_LTR)
-  (rtl GTK_PACK_DIRECTION_RTL)
-  (ttb GTK_PACK_DIRECTION_TTB)
-  (btt GTK_PACK_DIRECTION_BTT))
-
-(define-enum GtkPrintPages
-  (all GTK_PRINT_PAGES_ALL)
-  (current GTK_PRINT_PAGES_CURRENT)
-  (ranges GTK_PRINT_PAGES_RANGES))
-
-(define-enum GtkPageSet
-  (all GTK_PAGE_SET_ALL)
-  (even GTK_PAGE_SET_EVEN)
-  (odd GTK_PAGE_SET_ODD))
 
 ;(define-enum GtkMenuFactoryType
 ;  (menu GTK_MENU_FACTORY_MENU)
@@ -3794,7 +3763,7 @@
   ((GtkCurve curve)
    (GtkCurveType type)))
 
-;; XXX Marked for removal
+
 ;; Preview
 
 (define-object GtkPreview (GtkWidget))

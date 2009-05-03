@@ -1,7 +1,6 @@
 0.18.5:
-	- bump minimum gtk+ to 2.15.5
 	- don't ignore datarootdir setting
-	- fix libdir issue
+	- fix libdir/pkgconfig issue
 	- improved configures ending message
 
 0.18.4:
