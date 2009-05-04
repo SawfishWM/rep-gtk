@@ -1,4 +1,5 @@
 0.18.6:
+	- fixup %files section in .spec
 
 0.18.5:
 	- don't ignore datarootdir setting

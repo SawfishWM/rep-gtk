@@ -36,19 +36,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-,root,root,-)
-%doc README* examples/  TODO NEWS HACKING AUTHORS BUGS 
+%doc README* examples/  TODO NEWS HACKING AUTHORS BUGS ChangeLog gtk.defs gdk.defs
 %{_libdir}/rep/%{_host}/gui
 %{_libdir}/pkgconfig/rep-gtk.pc
 
-%files
-%defattr(-,root,root)
-%doc README README.guile-gtk BUGS ChangeLog gtk.defs gdk.defs
-%{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/gtk.so*
-%{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/gtk.la
-%{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/types.so*
-%{_libexecdir}/rep/%{_target_platform}/gui/gtk-2/types.la
-
 %changelog
+* Mon May 04 2009 Christopher Bratusek <zanghar@freenet.de>
+- fixup %files section
+
 * Sun Jan 18 2009 Christopher Bratusek <zanghar@freenet.de>
 - several updates
 

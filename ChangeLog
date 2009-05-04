@@ -1,3 +1,6 @@
+2009-05-04  Christopher Bratusek <zanghar@freenet.de>
+	* rep-gtk.spec.in: fixup %files section
+
 2009-05-03  Christopher Bratusek <zanghar@freenet.de>
 	* gtk.defs: remove gtk+2.16 changes
 
