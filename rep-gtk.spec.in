@@ -2,7 +2,7 @@ Name: rep-gtk
 Version: @version@
 Release: 1
 Summary: GTK+ binding for librep Lisp environment
-Requires: librep >= @REP_MIN_VER@ gtk+ >= @GTK_MIN_VER@
+Requires: librep >= @REP_MIN_VER@ gtk2 >= @GTK_MIN_VER@
 License: GPL
 Group: Development/Languages
 Source: http://download.sourceforge.net/rep-gtk/rep-gtk-%{version}.tar.bz2
@@ -20,7 +20,7 @@ to 0.17), with a new glue-code generator.
 %setup -q
 
 %build
-./autogen.sh --prefix=/usr 
+./autogen.sh --prefix=/usr --libdir=%{_libdir}
 make %{?_smp_mflags}
 
 %install
@@ -41,6 +41,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/rep-gtk.pc
 
 %changelog
+* Wed May 06 2009 Christopher Bratusek <zanghar@freenet.de>
+- require gtk2 instead of gtk+
+- add --libdir=%{_libdir} to configure flags
+
 * Mon May 04 2009 Christopher Bratusek <zanghar@freenet.de>
 - fixup %files section
 
