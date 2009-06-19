@@ -2,6 +2,76 @@
 	* configure.in: 0.18.6 released, bump to 0.90.0, bump minimal required
 	gtk+ version to 2.12 (as I'll update the rep-gtk API to that version)
 
+	* gtk.defs: gtk+ 2.12 API added:
+	*********** gtkenums.h ***********
+	GtkArrowType >> none (GTK_ARROW_NONE)
+	GtkButtonBoxStyle >> center (GTK_BUTTONBOX_CENTER)
+	GtkSensitivityType >> auto (GTK_SENSITIVITY_AUTO)
+	GtkSensitivityType >> on (GTK_SENSITIVITY_ON)
+	GtkSensitivityType >> off (GTK_SENSITIVITY_OFF)
+	GtkMovementStep >> horizontal-pages (GTK_MOVEMENT_HORIZONTAL_PAGES)
+	GtkScrollStep >> steps (GTK_SCROLL_STEPS)
+	GtkScrollStep >> pages (GTK_SCROLL_PAGES)
+	GtkScrollStep >> ends (GTK_SCROLL_ENDS)
+	GtkScrollStep >> horizontal-steps (GTK_SCROLL_HORIZONTAL_STEPS)
+	GtkScrollStep >> horizontal-pages (GTK_SCROLL_HORIZONTAL_PAGES)
+	GtkScrollStep >> horizontal-ends (GTK_SCROLL_HORIZONTAL_ENDS)
+	GtkScrollType >> page-left (GTK_SCROLL_PAGE_LEFT)
+	GtkScrollType >> page-right (GTK_SCROLL_PAGE_RIGHT)
+	GtkWarpMode >> word-char (GTK_WRAP_WORD_CHAR)
+	GtkIMPreeditStyle >> nothing (GTK_IM_PREEDIT_NOTHING)
+	GtkIMPreeditStyle >> callback (GTK_IM_PREEDIT_CALLBACK)
+	GtkIMPreeditStyle >> none (GTK_IM_PREEDIT_NONE)
+	GtkIMStatusStyle >> nothing (GTK_IM_STATUS_NOTHING)
+	GtkIMStatusStyle >> callback (GTK_IM_STATUS_CALLBACK)
+	GtkIMStatusStyle >> none (GTK_IM_STATUS_NONE)
+	GtkPackDirection >> rtl (GTK_PACK_DIRECTION_RTL)
+	GtkPackDirection >> ltr (GTK_PACK_DIRECTION_LTR)
+	GtkPackDirection >> ttb (GTK_PACK_DIRECTION_TTB)
+	GtkPackDirection >> btt (GTK_PACK_DIRECTION_BTT)
+	GtkPrintPages >> all (GTK_PRINT_PAGES_ALL)
+	GtkPrintPages >> current (GTK_PRINT_PAGES_CURRENT)
+	GtkPrintPages >> ranges (GTK_PRINT_PAGES_RANGES)
+	GtkPageSet >> all (GTK_PAGE_SET_ALL)
+	GtkPageSet >> even (GTK_PAGE_SET_EVEN)
+	GtkPageSet >> odd (GTK_PAGE_SET_ODD)
+	GtkPageOrientation >> portrait (GTK_PAGE_ORIENTATION_PORTRAIT)
+	GtkPageOrientation >> landscape (GTK_PAGE_ORIENTATION_LANDSCAPE)
+	GtkPageOrientation >> reverse-portrait (GTK_PAGE_ORIENTATION_REVERSE_PORTRAIT)
+	GtkPageOrientation >> reverse-landscape (GTK_PAGE_ORIENTATION_REVERSE_LANDSCAPE)
+	GtkPrintQuality >> low (GTK_PRINT_QUALITY_LOW)
+	GtkPrintQuality >> normal (GTK_PRINT_QUALITY_NORMAL)
+	GtkPrintQuality >> high (GTK_PRINT_QUALITY_HIGH)
+	GtkPrintQuality >> draft (GTK_PRINT_QUALITY_DRAFT)
+	GtkUnit >> pixl (GTK_UNIT_PIXEL)
+	GtkUnit >> points (GTK_UNIT_POINTS)
+	GtkUnit >> inch (GTK_UNIT_INCH)
+	GtkUnit >> mm (GTK_UNIT_MM)
+	GtkTreeViewGridLines >> none (GTK_TREE_VIEW_GRID_LINES_NONE)
+	GtkTreeViewGridLines >> horizontal (GTK_TREE_VIEW_GRID_LINES_HORIZONTAL)
+	GtkTreeViewGridLines >> vertical (GTK_TREE_VIEW_GRID_LINES_VERTICAL)
+	GtkTreeViewGridLines >> both (GTK_TREE_VIEW_GRID_LINES_BOTH)
+	GtkDragResult >> success (GTK_DRAG_RESULT_SUCCESS)
+	GtkDragResult >> no-target (GTK_DRAG_RESULT_NO_TARGET)
+	GtkDragResult >> user-cancelled (GTK_DRAG_RESULT_USER_CANCELLED)
+	GtkDragResult >> timeout-expired (GTK_DRAG_RESULT_TIMEOUT_EXPIRED)
+	GtkDragResult >> grab-broken (GTK_DRAG_RESULT_GRAB_BROKEN)
+	GtkDragResult >> error (GTK_DRAG_RESULT_ERROR)
+	*********** gtkcolorbutton.h ***********
+	Implemented new widget: GtkColorButton
+
+	* gtk.defs: deprecated API removed:
+	GtkSignalRunType >> completely
+	GtkSubMenuDirection >> completely
+	GtkSubMenuPlacement >> completely
+
+	* gtk.defs: deprecated API replaced:
+	GtkPreview* >> GtkColorButton
+	(apply the included gcb.patch to make sawfish-ui work with this change!)
+
+	* gcb.patch: patch for sawfish, to make sawfish-ui work with the new GtkColorButton
+	instead of GtkPreview (which has been removed from rep-gtk now)
+
 2009-05-06  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.spec.in: - require gtk2 instead of gtk+
 			   - add --libdir=%{_libdir} to configure flags
@@ -32,17 +102,17 @@
 2009-03-04  Christopher Bratusek <zanghar@freenet.de>
 	* configure.in: 0.18.4 released, bump to 0.18.5
 		        bump minimum gtk+ to 2.15.5
-	
+
 	* gtk.defs:
-	
-	[ 
-		~ = not completely implemented 
-		* = completely implemented 
-		^ not completely removed 
-		# to implement low priority 
-		! to remove high priority 
+
+	[
+		~ = not completely implemented
+		* = completely implemented
+		^ not completely removed
+		# to implement low priority
+		! to remove high priority
 	]
-	
+
 	> implemented new stuff:
 		- GtkArrowPlacement ~
 		- GtkArrowType -> none (= GTK_ARROW_NONE) *
