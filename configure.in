@@ -51,7 +51,7 @@ REP_MIN_VER="0.17.3"
 PKG_CHECK_MODULES(LIBREP, librep >= $REP_MIN_VER
 		  ,REP_EXECDIR="`pkg-config --variable=repcommonexecdir librep`"
 		  REP_CFLAGS="`pkg-config --cflags librep`"
-		  ,AC_MSG_ERROR([can't locate librep]))
+		  ,AC_MSG_ERROR([can not locate librep]))
 
 dnl Check for glib
 GLIB_MIN_VER="2.6"
@@ -64,10 +64,11 @@ pc_libs=""
 
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= $GTK_MIN_VER
 		  ,pc_libs+="gtk+-2.0 "
-		  ,)
+		  ,AC_MSG_ERROR([can not locate gtk+]))
 
 PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= $GTK_MIN_VER
-		  ,pc_libs+="gdk-pixbuf-2.0")
+		  ,pc_libs+="gdk-pixbuf-2.0"
+		  ,AC_MSG_ERROR([can nott locate gdk-pixbuf]))
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
