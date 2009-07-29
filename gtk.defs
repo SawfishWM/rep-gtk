@@ -2111,7 +2111,7 @@
 
 ;;; Button
 
-(define-object GtkButton (GtkContainer)
+(define-object GtkButton (GtkBin)
   (fields
    (bool in_button)
    (bool button_down)))
@@ -2186,6 +2186,46 @@
 
 (define-func gtk_button_get_use_stock
   bool
+  ((GtkButton button)))
+
+(define-func gtk_button_set_focus_on_click
+  none
+  ((GtkButton button)
+   (bool focus_on_click)))
+
+(define-func gtk_button_get_focus_on_click
+  bool
+  ((GtkButton button)))
+
+(define-func gtk_button_set_alignment
+  none
+  ((GtkButton button)
+   (double xalign)
+   (double yalin)))
+
+;; XXX not working!
+;;(define-func gtk_button_get_alignment
+;;  none
+;;  ((GtkButton button)
+;;   (double xalign)
+;;   (double yalin)))
+
+(define-func gtk_button_set_image
+  none
+  ((GtkButton button)
+   (GtkImage image)))
+
+(define-func gtk_button_get_image
+  GtkWidget
+  ((GtkButton button)))
+
+(define-func gtk_button_set_image_position
+  none
+  ((GtkButton button)
+   (GtkPositionType position)))
+
+(define-func gtk_button_get_image_position
+  GtkPositionType
   ((GtkButton button)))
 
 ;;; ToggleButton
