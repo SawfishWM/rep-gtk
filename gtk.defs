@@ -4781,6 +4781,74 @@
   ((GtkColorButton color_button)
    (string title)))
 
+;; XXX GtkFileChooserButton needs support of GtkFileChooserAction
+
+;; GtkFontButton
+
+(define-object GtkFontButton (GtkButton))
+
+(define-func gtk_font_button_new
+  GtkWidget
+  ())
+
+(define-func gtk_font_button_new_with_font
+  GtkWidget
+  ((string font)))
+
+(define-func gtk_font_button_get_title
+  string
+  ((GtkFontButton button)))
+
+(define-func gtk_font_button_set_title
+  none
+  ((GtkFontButton button)
+   (string title)))
+
+(define-func gtk_font_button_get_use_font
+  bool
+  ((GtkFontButton button)))
+
+(define-func gtk_font_button_set_use_font
+  none
+  ((GtkFontButton button)
+   (bool option)))
+
+(define-func gtk_font_button_get_use_size
+  bool
+  ((GtkFontButton button)))
+
+(define-func gtk_font_button_set_use_size
+  none
+  ((GtkFontButton button)
+   (bool option)))
+
+(define-func gtk_font_button_get_font_name
+  string
+  ((GtkFontButton button)))
+
+(define-func gtk_font_button_set_font_name
+  none
+  ((GtkFontButton button)
+   (string font)))
+
+(define-func gtk_font_button_get_show_style
+  bool
+  ((GtkFontButton button)))
+
+(define-func gtk_font_button_set_show_style
+  none
+  ((GtkFontButton button)
+   (bool option)))
+
+(define-func gtk_font_button_get_show_size
+  bool
+  ((GtkFontButton button)))
+
+(define-func gtk_font_button_set_show_size
+  none
+  ((GtkFontButton button)
+   (bool option)))
+
 ;; More defs files
 
 (include "gtktext.defs")

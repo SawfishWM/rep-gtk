@@ -18,6 +18,23 @@
 	gtk_radio_button_new_with_label
 	gtk_radio_button_new_with_mnemonic
 	== GtkRadioButton 2.12 API complete ==
+	== GtkColorButton 2.12 already up-to-date ==
+	== GtkFileChooserButton needs GtkFileChooserAction first ==
+	*********** gtkfontbutton.h ***********
+	gtk_font_button_new
+	gtk_font_button_new_with_font
+	gtk_font_button_get_title
+	gtk_font_button_set_title
+	gtk_font_button_get_use_font
+	gtk_font_button_set_use_font
+	gtk_font_button_get_use_size
+	gtk_font_button_set_use_size
+	gtk_font_button_get_font_name
+	gtk_font_button_set_font_name
+	gtk_font_button_get_show_style
+	gtk_font_button_set_show_style
+	gtk_font_button_get_show_size
+	gtk_font_button_set_show_size
 
 2009-07-15  Christopher Bratusek <zanghar@freenet.de>
 	* configure.in: small improvement
