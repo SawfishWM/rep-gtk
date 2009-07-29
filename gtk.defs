@@ -4881,7 +4881,7 @@
    (double min)
    (double max)
    (double step)
-   (string icons)))
+   (string icons))) ;XXX 5 arg not working
 
 (define-func gtk_scale_button_set_icons
   none
