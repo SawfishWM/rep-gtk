@@ -35,6 +35,13 @@
 	gtk_font_button_set_show_style
 	gtk_font_button_get_show_size
 	gtk_font_button_set_show_size
+	== GtkFontButton 2.12 API complete ==
+	*********** gtklinkbutton.h ***********
+	gtk_link_button_new
+	gtk_link_button_new_with_label
+	gtk_link_button_get_uri
+	gtk_link_button_set_uri
+	== GtkLinkButton 2.12 API complete ==
 
 2009-07-15  Christopher Bratusek <zanghar@freenet.de>
 	* configure.in: small improvement
