@@ -165,14 +165,14 @@ gtk_signal_set_class_function_full (GtkType            type,
 }
 #endif
 
-void 
+void
 gtk_color_selection_set_color_interp (GtkColorSelection *selection, GdkColor *color)
 {
   gdouble vals[4];
-  
-  vals[0] = color->red / 65535.0; 
-  vals[1] = color->green / 65535.0; 
-  vals[2] = color->blue / 65535.0; 
+
+  vals[0] = color->red / 65535.0;
+  vals[1] = color->green / 65535.0;
+  vals[2] = color->blue / 65535.0;
   vals[3] = 1.0;
 
   gtk_color_selection_set_color (selection, vals);
@@ -193,12 +193,26 @@ gtk_color_selection_get_color_interp (GtkColorSelection *selection)
 
   /* Since this color is not part of a colormap, the pixel value is
      pointless */
-  color->pixel = 0; 
-  color->red = (gushort) (65535.0 * vals[0]); 
-  color->green = (gushort) (65535.0 * vals[1]); 
-  color->blue = (gushort) (65535.0 * vals[2]); 
+  color->pixel = 0;
+  color->red = (gushort) (65535.0 * vals[0]);
+  color->green = (gushort) (65535.0 * vals[1]);
+  color->blue = (gushort) (65535.0 * vals[2]);
 
   return color;
+}
+
+char *
+gtk_color_button_get_color_interp (GtkColorButton *button)
+{
+  GdkColor color;
+  gchar *str;
+
+  gtk_color_button_get_color (button, &color);
+
+  str = g_strdup_printf ("#%02x%02x%02x", color.red >> 8,
+		  color.green >> 8, color.blue >> 8);
+
+  return str;
 }
 
 void
@@ -221,7 +235,7 @@ gtk_status_icon_popup_menu(GtkStatusIcon *status_icon,
 		     pos_func, user_data, button, activate_time);
 }
 
-gboolean 
+gboolean
 gtk_status_icon_get_geometry_interp(GtkStatusIcon *status_icon,
 				    gint *x,
 				    gint *y,
