@@ -2297,7 +2297,7 @@
 
 (define-func gtk_radio_button_new
   GtkWidget
-  ((GtkRadioButton group (null-ok))))
+  (((slist string) group (null-ok))))
 
 (define-func gtk_radio_button_new_from_widget
   GtkWidget
@@ -2305,7 +2305,7 @@
 
 (define-func gtk_radio_button_new_with_label
   GtkWidget
-  ((GtkRadioButton group (null-ok))
+  (((slist string) group (null-ok))
    (string label)))
 
 (define-func gtk_radio_button_new_with_label_from_widget
@@ -2315,7 +2315,7 @@
 
 (define-func gtk_radio_button_new_with_mnemonic
   GtkWidget
-  ((GtkRadioButton group (null-ok))
+  (((slist string) group (null-ok))
    (string mnemonic)))
 
 (define-func gtk_radio_button_new_with_mnemonic_from_widget
