@@ -4674,11 +4674,11 @@
 ((GtkStatusIcon status_icon)))
 
 (define-func gtk_status_icon_get_stock
-  GdkPixbuf
+  none
   ((GtkStatusIcon status_icon)))
 
 (define-func gtk_status_icon_get_icon_name
-  GdkPixbuf
+  none
   ((GtkStatusIcon status_icon)))
 
 (define-func gtk_status_icon_get_size
@@ -4800,7 +4800,7 @@
   ((string font)))
 
 (define-func gtk_font_button_get_title
-  char
+  static_string
   ((GtkFontButton button)))
 
 (define-func gtk_font_button_set_title
@@ -4827,7 +4827,7 @@
    (bool option)))
 
 (define-func gtk_font_button_get_font_name
-  char
+  static_string
   ((GtkFontButton button)))
 
 (define-func gtk_font_button_set_font_name
@@ -4867,7 +4867,7 @@
    (string label)))
 
 (define-func gtk_link_button_get_uri
-  char
+  static_string
   ((GtkLinkButton button)))
 
 (define-func gtk_link_button_set_uri

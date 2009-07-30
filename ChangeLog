@@ -9,6 +9,11 @@
 	            make gtk_radio_button_new work
 		    make gtk_radio_button_new_with_label work
 		    make gtk_radio_button_new_with_mnemonic work
+		    make gtk_status_icon_get_icon_name work
+		    make gtk_status_icon_get_stock work
+		    make gtk_font_button_get_title work
+		    make gtk_font_button_get_font_name work
+		    make gtk_link_button_get_uri work
 
 2009-07-29  Christopher Bratusek <zanghar@freenet.de>
 	* gtk.defs: gtk+ 2.12 API added:
