@@ -2213,7 +2213,7 @@
 (define-func gtk_button_set_image
   none
   ((GtkButton button)
-   (GtkImage image)))
+   (GtkWidget image)))
 
 (define-func gtk_button_get_image
   GtkWidget
