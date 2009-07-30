@@ -3,6 +3,8 @@
 	* gtk-compat.c
 	* gtk.defs: added gtk_color_button_get_color_interp (outputs a GdkColor in 6 digits hexformat)
 
+	* rep-types.c: fix two miss-signed args
+
 2009-07-29  Christopher Bratusek <zanghar@freenet.de>
 	* gtk.defs: gtk+ 2.12 API added:
 	*********** gtkbutton.h ***********

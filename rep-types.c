@@ -128,7 +128,7 @@ sgtk_char_to_rep (gchar c)
 char *
 sgtk_rep_to_string (repv obj)
 {
-    return rep_STRINGP (obj) ? rep_STR (obj) : (unsigned char *)"";
+    return rep_STRINGP (obj) ? rep_STR (obj) : (gpointer) (char *)"";
 }
 
 repv
