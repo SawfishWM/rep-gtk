@@ -55,7 +55,14 @@
 	gtk_accelerator_set_default_mod_mask
 	gtk_accel_group_query
 	== GtkAccelGroup 2.12 API complete ==
-
+	*********** gtkaccellabel.h ***********
+	gtk_accel_label_new
+	gtk_accel_label_get_accel_widget
+	gtk_accel_label_set_accel_widget
+	gtk_accel_label_get_accel_width
+	gtk_accel_label_set_accel_closure
+	gtk_accel_label_refetch
+	== GtkAccelLabel 2.12 API complete ==
 
 2009-07-30  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.h
