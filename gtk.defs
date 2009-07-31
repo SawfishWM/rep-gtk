@@ -1,5 +1,10 @@
 ;; -*- lisp -*-
 
+;; updated for gtk+ 2.12:
+
+;; GtkButton, GtkToggleButton, GtkCheckButton, GtkRadioButton, GtkFontButton
+;; GtkLinkButton, GtkColorButton, GtkVolumeButton, GtkStatusIcon
+
 ;; updated for gtk+ 1.3:
 
 ;; GtkButton, GtkWidget, GtkContainer, GtkFixed, GtkWindow, GtkHandleBox,
@@ -365,26 +370,22 @@
 ;  (item GTK_TREE_VIEW_ITEM))
 
 (define-enum GtkFundamentalType
-  (invalid GTK_TYPE_INVALID)
-  (none GTK_TYPE_NONE)
-  (char GTK_TYPE_CHAR)
-  (bool GTK_TYPE_BOOL)
-  (int GTK_TYPE_INT)
-  (uint GTK_TYPE_UINT)
-  (long GTK_TYPE_LONG)
-  (ulong GTK_TYPE_ULONG)
-  (float GTK_TYPE_FLOAT)
-  (string GTK_TYPE_STRING)
-  (enum GTK_TYPE_ENUM)
-  (flags GTK_TYPE_FLAGS)
-  (boxed GTK_TYPE_BOXED)
-;  (foreign GTK_TYPE_FOREIGN)
-;  (callback GTK_TYPE_CALLBACK)
-;  (args GTK_TYPE_ARGS)
-  (pointer GTK_TYPE_POINTER)
-;  (signal GTK_TYPE_SIGNAL)
-;  (c-callback GTK_TYPE_C_CALLBACK)
-;  (object GTK_TYPE_OBJECT)
+  (invalid G_TYPE_INVALID)
+  (none G_TYPE_NONE)
+  (char G_TYPE_CHAR)
+  (uchar G_TYPE_UCHAR)
+  (bool G_TYPE_BOOLEAN)
+  (int G_TYPE_INT)
+  (uint G_TYPE_UINT)
+  (long G_TYPE_LONG)
+  (ulong G_TYPE_ULONG)
+  (float G_TYPE_FLOAT)
+  (double G_TYPE_DOUBLE)
+  (string G_TYPE_STRING)
+  (enum G_TYPE_ENUM)
+  (flags G_TYPE_FLAGS)
+  (boxed G_TYPE_BOXED)
+  (pointer G_TYPE_POINTER)
 )
 
 (define-enum GtkSpinButtonUpdatePolicy
