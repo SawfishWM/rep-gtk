@@ -3,6 +3,17 @@
 TODO
 ====
 
+ * need support for GQuark
+
+ * need support for GtkAccelKeyFindFunc
+
+ * need support for GtkAccelGroupEntry
+
+ * need rep_to_static_string 
+
+TODO (old)
+====
+
  * fix the signal_connect_object stuff in libglade-support.c
 
  * support the `define-struct' and `define-ptype' defs

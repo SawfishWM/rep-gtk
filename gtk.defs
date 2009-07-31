@@ -443,7 +443,108 @@
    (GtkWidget parent)
    (SCM allocation (getter sgtk_gtk_widget_get_allocation))))
 
+;; GtkAccelGroup
+
 (define-object GtkAccelGroup (GObject))
+
+(define-func gtk_accel_group_new
+  GtkAccelGroup
+  ())
+
+(define-func gtk_accel_group_lock
+  none
+  ((GtkAccelGroup group)))
+
+(define-func gtk_accel_group_unlock
+  none
+  ((GtkAccelGroup group)))
+
+(define-func gtk_accel_group_connect
+  none
+  ((GtkAccelGroup group)
+   (uint accel_key)
+   (GdkModifierType modifier)
+   (GtkAccelFlags flags)
+   (gclosure closure)))
+
+(define-func gtk_accel_group_connect_by_path
+  none
+  ((GtkAccelGroup group)
+   (string path)
+   (gclosure closure)))
+
+(define-func gtk_accel_group_disconnect
+  bool
+  ((GtkAccelGroup group)
+   (gclosure closure)))
+
+(define-func gtk_accel_group_disconnect_key
+  bool
+  ((GtkAccelGroup group)
+   (uint key)
+   (GdkModifierType modifier)))
+
+;; XXX GQuark not supported
+;(define-func gtk_accel_group_activate
+;  bool
+;  ((GtkAccelGroup group)
+;   (GQuark quark)
+;   (GObject acceleratable)
+;   (uint key)
+;   (GdkModifierType modifier)))
+
+(define-func gtk_accel_groups_activate
+  bool
+  ((GObject object)
+   (uint key)
+   (GdkModifierType modifier)))
+
+(define-func gtk_accel_groups_from_object
+  (slist string)
+  ((GObject object)))
+
+;; XXX need support for GtkAccelGroupFindFunc
+;(define-func gtk_accel_group_find
+;  GtkAccelKey
+;  ((GtkAccelGroup group)
+;   (GtkAccelGroupFindFunc findfunc)
+;   (gpointer data)))
+
+(define-func gtk_accel_group_from_accel_closure
+  GtkAccelGroup
+  ((gclosure closure)))
+
+(define-func gtk_accelerator_parse
+  none
+  ((string accel)
+   ((ret uint) key)
+   ((ret GdkModifierType) modifier)))
+
+(define-func gtk_accelerator_name
+  string
+  ((uint key)
+   (GdkModifierType modifier)))
+
+(define-func gtk_accelerator_get_label
+  string
+  ((uint key)
+   (GdkModifierType modifier)))
+
+(define-func gtk_accelerator_get_default_mod_mask
+  uint
+  ())
+
+(define-func gtk_accelerator_set_default_mod_mask
+  none
+  ((GdkModifierType modifier)))
+
+;; XXX need support for GtkAccelGroupEntry
+(define-func gtk_accel_group_query
+  none
+  ((GtkAccelGroup group)
+   (uint key)
+   (GdkModifierType modifier)
+   ((ret uint) entries)))
 
 (define-object GtkStyle (GObject))
 

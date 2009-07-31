@@ -35,6 +35,26 @@
 	gtk_about_dialog_get_logo_icon_name
 	gtk_about_dialog_set_logo_icon_name
 	== GtkAboutdialog 2.12 API complete ==
+	*********** gtkaccelgroup.h ***********
+	gtk_accel_group_new
+	gtk_accel_group_lock
+	gtk_accel_group_unlock
+	gtk_accel_group_connect
+	gtk_accel_group_connect_by_path
+	gtk_accel_group_disconnect
+	gtk_accel_group_disconnect_key
+	gtk_accel_group_activate [not working]
+	gtk_accel_groups_activate
+	gtk_accel_groups_from_object
+	gtk_accel_group_find [not working]
+	gtk_accel_group_from_accel_closure
+	gtk_accelerator_parse
+	gtk_accelerator_name
+	gtk_accelerator_get_label
+	gtk_accelerator_get_default_mod_mask
+	gtk_accelerator_set_default_mod_mask
+	gtk_accel_group_query
+	== GtkAccelGroup 2.12 API complete ==
 
 
 2009-07-30  Christopher Bratusek <zanghar@freenet.de>
