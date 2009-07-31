@@ -3,6 +3,40 @@
 	* rep-gtk.h
 	* gtk.defs: moved from GTK_TYPE_* to G_TYPE_*
 
+	* gtk.defs: gtk+ 2.12 API added:
+	*********** gtkaboutdialog.h ***********
+	gtk_about_dialog_new
+	gtk_about_dialog_get_program_name
+	gtk_about_dialog_set_program_name
+	gtk_about_dialog_get_version
+	gtk_about_dialog_set_version
+	gtk_about_dialog_get_copyright
+	gtk_about_dialog_set_copyright
+	gtk_about_dialog_get_comments
+	gtk_about_dialog_set_comments
+	gtk_about_dialog_get_license
+	gtk_about_dialog_set_license
+	gtk_about_dialog_get_wrap_license
+	gtk_about_dialog_set_wrap_license
+	gtk_about_dialog_get_website
+	gtk_about_dialog_set_website
+	gtk_about_dialog_get_website_label
+	gtk_about_dialog_set_website_label
+	gtk_about_dialog_get_authors [not working]
+	gtk_about_dialog_set_authors [not working]
+	gtk_about_dialog_get_documenters [not working]
+	gtk_about_dialog_set_documenters [not working]
+	gtk_about_dialog_get_artists [not working]
+	gtk_about_dialog_set_artists [not working]
+	gtk_about_dialog_get_translator_credits
+	gtk_about_dialog_set_translator_credits
+	gtk_about_dialog_get_logo
+	gtk_about_dialog_set_logo
+	gtk_about_dialog_get_logo_icon_name
+	gtk_about_dialog_set_logo_icon_name
+	== GtkAboutdialog 2.12 API complete ==
+
+
 2009-07-30  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.h
 	* gtk-compat.c
