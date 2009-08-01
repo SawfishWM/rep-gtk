@@ -1243,9 +1243,6 @@
 (define-type 'GtkArg "GtkArg" "sgtk_rep_to_arg"
              "sgtk_arg_to_rep" "sgtk_valid_arg")
 
-(define-type 'GdkPoint "GdkPoint" "sgtk_rep_to_point"
-             "sgtk_point_to_rep" "sgtk_valid_point")
-
 (define-type 'char "gchar" "sgtk_rep_to_char"
 	     "sgtk_char_to_rep" "sgtk_valid_char")
 
@@ -1339,7 +1336,7 @@
 (define-type 'double "gdouble" "sgtk_rep_to_double"
 	     "sgtk_double_to_rep" "sgtk_valid_double")
 
-(define-type 'point "GdkPoint" "sgtk_rep_to_point"
+(define-type 'GdkPoint "GdkPoint" "sgtk_rep_to_point"
 	     "sgtk_point_to_rep" "sgtk_valid_point")
 
 (define-type 'rect "GdkRectangle" "sgtk_rep_to_rect"
