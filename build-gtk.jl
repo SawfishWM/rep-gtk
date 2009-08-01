@@ -1237,6 +1237,9 @@
 (define-type 'type "GtkType" "sgtk_rep_to_type"
 	     "sgtk_type_to_rep" "sgtk_valid_type")
 
+(define-type 'GValue "GValue" "sgtk_rep_to_gvalue"
+             "sgtk_gvalue_to_rep" "sgtk_valid_gvalue")
+
 (define-type 'char "gchar" "sgtk_rep_to_char"
 	     "sgtk_char_to_rep" "sgtk_valid_char")
 
@@ -1295,7 +1298,7 @@
 	     "sgtk_valid_function" (cons 'c2args output-full-callback-args)
 	     (cons 'finish output-full-callback-finish))
 
-(define-type 'gclosure "GClosure*" output-rep-to-gclosure nil
+(define-type 'GClosure "GClosure*" output-rep-to-gclosure nil
 	     "sgtk_valid_function" (cons 'finish output-full-callback-finish))
 
 (define-type 'file-descriptor "int" "sgtk_rep_to_fd"

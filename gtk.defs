@@ -465,18 +465,18 @@
    (uint accel_key)
    (GdkModifierType modifier)
    (GtkAccelFlags flags)
-   (gclosure closure)))
+   (GClosure closure)))
 
 (define-func gtk_accel_group_connect_by_path
   none
   ((GtkAccelGroup group)
    (string path)
-   (gclosure closure)))
+   (GClosure closure)))
 
 (define-func gtk_accel_group_disconnect
   bool
   ((GtkAccelGroup group)
-   (gclosure closure)))
+   (GClosure closure)))
 
 (define-func gtk_accel_group_disconnect_key
   bool
@@ -511,7 +511,7 @@
 
 (define-func gtk_accel_group_from_accel_closure
   GtkAccelGroup
-  ((gclosure closure)))
+  ((GClosure closure)))
 
 (define-func gtk_accelerator_parse
   none
@@ -5178,7 +5178,7 @@
 (define-func gtk_accel_label_set_accel_closure
   none
   ((GtkAccelLabel label)
-   (gclosure closure)))
+   (GClosure closure)))
 
 (define-func gtk_accel_label_refetch
   bool

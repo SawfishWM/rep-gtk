@@ -11,7 +11,7 @@
   int
   ((GObject object)
    (string name)
-   (gclosure func)
+   (GClosure func)
    (bool after (= "0")))
   (scm-name "g-signal-connect")
   (protection object))
