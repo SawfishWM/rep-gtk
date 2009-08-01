@@ -1288,7 +1288,7 @@
 (define-type 'boxed output-complex-type output-rep-to-boxed
 	     output-boxed-to-rep output-boxed-pred '(listable . t))
 
-(define-type 'pointer "gpointer" "sgtk_rep_to_pointer"
+(define-type 'GPointer "gpointer" "sgtk_rep_to_pointer"
 	     "sgtk_pointer_to_rep" "sgtk_valid_pointer")
 
 (define-type 'object output-complex-type output-rep-to-object

@@ -507,7 +507,7 @@
 ;  GtkAccelKey
 ;  ((GtkAccelGroup group)
 ;   (GtkAccelGroupFindFunc findfunc)
-;   (gpointer data)))
+;   (GPointer data)))
 
 (define-func gtk_accel_group_from_accel_closure
   GtkAccelGroup

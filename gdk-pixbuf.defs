@@ -73,7 +73,7 @@
   (GdkPixbuf (copy nil))
   ((string filename)
    ;; XXX fix this
-   (pointer gerror (= "0"))))
+   (GPointer gerror (= "0"))))
 
 ;why the fuck was this changed to take a const char **?
 ;(define-func gdk_pixbuf_new_from_xpm_data
