@@ -6,12 +6,12 @@
 ;;; it under the terms of the GNU General Public License as published by
 ;;; the Free Software Foundation; either version 2, or (at your option)
 ;;; any later version.
-;;; 
+;;;
 ;;; This program is distributed in the hope that it will be useful,
 ;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;;; GNU General Public License for more details.
-;;; 
+;;;
 ;;; You should have received a copy of the GNU General Public License
 ;;; along with this software; see the file COPYING.  If not, write to
 ;;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
@@ -840,7 +840,7 @@
     (output-helper inner-type standard-output)
     (@ "sgtk_rep_to_%s \(%s, _sgtk_helper_fromrep_%s\)"
        outer-type rep-var inner-type)))
-       
+
 (defun output-list-to-rep (output type gtk-var typage)
   (declare (unused typage))
   (let
@@ -950,7 +950,7 @@
 	  (setq tem (cdr tem))
 	  (setq i (1+ i)))
 	(@ "\n")))
-    
+
     ;; output arg checks and conversions
     (let
 	((tem args)
@@ -1018,7 +1018,7 @@
 	      (@ ";\n"))) args)
     (when args
       (@ "\n"))
-    
+
     (if function-callback
 	(funcall function-callback output)
       ;; output call
@@ -1245,6 +1245,7 @@
 ;; XXX fix the validation functions
 (define-type 'short "short" "sgtk_rep_to_int" "sgtk_int_to_rep"
 	     "sgtk_valid_int" '(listable . t))
+
 (define-type 'ushort "gushort" "sgtk_rep_to_uint" "sgtk_uint_to_rep"
 	     "sgtk_valid_uint" '(listable . t))
 
@@ -1252,6 +1253,9 @@
 	     "sgtk_valid_int" '(listable . t))
 
 (define-type 'uint "guint" "sgtk_rep_to_uint" "sgtk_uint_to_rep"
+	     "sgtk_valid_uint" '(listable . t))
+
+(define-type 'GQuark "guint" "sgtk_rep_to_uint" "sgtk_uint_to_rep"
 	     "sgtk_valid_uint" '(listable . t))
 
 (define-type 'long "glong" "sgtk_rep_to_long"

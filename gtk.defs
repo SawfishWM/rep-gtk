@@ -484,14 +484,13 @@
    (uint key)
    (GdkModifierType modifier)))
 
-;; XXX GQuark not supported
-;(define-func gtk_accel_group_activate
-;  bool
-;  ((GtkAccelGroup group)
-;   (GQuark quark)
-;   (GObject acceleratable)
-;   (uint key)
-;   (GdkModifierType modifier)))
+(define-func gtk_accel_group_activate
+  bool
+  ((GtkAccelGroup group)
+   (GQuark quark)
+   (GObject acceleratable)
+   (uint key)
+   (GdkModifierType modifier)))
 
 (define-func gtk_accel_groups_activate
   bool
