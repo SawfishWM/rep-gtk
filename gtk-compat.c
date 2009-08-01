@@ -252,4 +252,3 @@ gtk_status_icon_get_geometry_interp(GtkStatusIcon *status_icon,
      *y = area.y;
      return ret;
 }
-

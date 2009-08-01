@@ -12,6 +12,23 @@
 
 	* gtk.defs: since we now got GQuark, build gtk_accel_group_activate
 
+	* gtk.defs: Began implementing the huge GtkTreeView
+	[my life will be two years shorter then this is finished!]
+	*********** gtktreemodel.h ***********
+	object GtkTreeModel
+	flags GtkTreeModelFlags
+	*********** gtktreeselection.h *******
+	object GtkTreeSelection
+	gtk_tree_selection_set_mode
+	gtk_tree_selection_get_mode
+	gtk_tree_selection_get_user_data
+	gtk_tree_selection_get_tree_view
+	*********** gtktreeview.h ************
+	gtk_tree_view_new
+	gtk_tree_view_new_with_model
+	gtk_tree_view_get_model
+	gtk_tree_view_set_model
+
 2009-07-31  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.c
 	* rep-gtk.h

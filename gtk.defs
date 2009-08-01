@@ -5184,6 +5184,54 @@
   bool
   ((GtkAccelLabel label)))
 
+;; GtkTreeModel && GtkTreeSelection && GtkTreeView
+
+(define-object GtkTreeModel (GInterface))
+
+(define-flags GtkTreeModelFlags
+  (iters-persist GTK_TREE_MODEL_ITERS_PERSIST)
+  (list-only GTK_TREE_MODEL_LIST_ONLY))
+
+(define-object GtkTreeSelection (GObject))
+
+(define-func gtk_tree_selection_set_mode
+  none
+  ((GtkTreeSelection selection)
+   (GtkSelectionMode mode)))
+
+(define-func gtk_tree_selection_get_mode
+  GtkSelectionMode
+  ((GtkTreeSelection selection)))
+
+;; XXX gtk_tree_view_set_select_function needs GtkTreeSelectionFunc
+
+(define-func gtk_tree_selection_get_user_data
+  GPointer
+  ((GtkTreeSelection selection)))
+
+(define-func gtk_tree_selection_get_tree_view
+  GtkTreeView
+  ((GtkTreeSelection selection)))
+
+(define-object GtkTreeView (GtkContainer))
+
+(define-func gtk_tree_view_new
+  GtkWidget
+  ())
+
+(define-func gtk_tree_view_new_with_model
+  GtkWidget
+  ((GtkTreeModel model)))
+
+(define-func gtk_tree_view_get_model
+  GtkTreeModel
+  ((GtkTreeView treeview)))
+
+(define-func gtk_tree_view_set_model
+  none
+  ((GtkTreeView treeview)
+   (GtkTreeModel model)))
+
 ;; More defs files
 
 (include "gtktext.defs")
