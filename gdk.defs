@@ -369,7 +369,7 @@
   none
   ((GdkWindow window)
    (GdkGC gc)
-   ((cvecr point) points)))
+   ((cvecr GdkPoint) points)))
 
 (define-func gdk_draw_rectangle
   none
@@ -386,7 +386,7 @@
   ((GdkWindow window)
    (GdkGC gc)
    (bool filled)
-   ((cvecr point) points)))
+   ((cvecr GdkPoint) points)))
 
 (define-func gdk_draw_arc
   none
