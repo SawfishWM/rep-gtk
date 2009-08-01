@@ -1240,6 +1240,9 @@
 (define-type 'GValue "GValue" "sgtk_rep_to_gvalue"
              "sgtk_gvalue_to_rep" "sgtk_valid_gvalue")
 
+(define-type 'GtkArg "GtkArg" "sgtk_rep_to_arg"
+             "sgtk_arg_to_rep" "sgtk_valid_arg")
+
 (define-type 'char "gchar" "sgtk_rep_to_char"
 	     "sgtk_char_to_rep" "sgtk_valid_char")
 

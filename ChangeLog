@@ -2,6 +2,7 @@
 	* build-gtk.jl: define-type GQuark (basic)
 	                renamed gclosure type to GClosure
 			rep-gtk has {rep,gvalue}_to_{gvalue,rep} -> make GValue accessible in .defs
+			rep-gtk has {rep,arg}_to_{arg,rep} -> make GtkArg accessible in .defs
 
 2009-07-31  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.c
