@@ -5192,6 +5192,99 @@
   (iters-persist GTK_TREE_MODEL_ITERS_PERSIST)
   (list-only GTK_TREE_MODEL_LIST_ONLY))
 
+(define-boxed GtkTreeIter
+  (copy gtk_tree_iter_copy)
+  (free gtk_tree_iter_free))
+
+(define-boxed GtkTreePath
+  (copy gtk_tree_path_copy)
+  (free gtk_tree_path_free))
+
+(define-func gtk_tree_path_new
+  GtkTreePath
+  ())
+
+(define-func gtk_tree_path_new_from_string
+  GtkTreePath
+  ((string path)))
+
+(define-func gtk_tree_path_new_from_indices
+  GtkTreePath
+  ((int indices)))
+
+(define-func gtk_tree_path_to_string
+  string
+  ((GtkTreePath path)))
+
+(define-func gtk_tree_path_new_first
+  GtkTreePath
+  ())
+
+(define-func gtk_tree_path_append_index
+  none
+  ((GtkTreePath path)
+   (int index)))
+
+(define-func gtk_tree_path_prepend_index
+  none
+  ((GtkTreePath path)
+   (int index)))
+
+(define-func gtk_tree_path_get_depth
+  int
+  ((GtkTreePath path)))
+
+(define-func gtk_tree_path_get_indices
+  none
+  ((GtkTreePath path)))
+
+(define-func gtk_tree_path_free
+  none
+  ((GtkTreePath path)))
+
+(define-func gtk_tree_path_copy
+  GtkTreePath
+  ((GtkTreePath path)))
+
+(define-func gtk_tree_path_get_type
+  type
+  ())
+
+(define-func gtk_tree_path_compare
+  int
+  ((GtkTreePath path1)
+   (GtkTreePath path2)))
+
+(define-func gtk_tree_path_next
+  none
+  ((GtkTreePath path)))
+
+(define-func gtk_tree_path_prev
+  none
+  ((GtkTreePath path)))
+
+(define-func gtk_tree_path_up
+  none
+  ((GtkTreePath path)))
+
+(define-func gtk_tree_path_down
+  none
+  ((GtkTreePath path)))
+
+(define-func gtk_tree_path_is_ancestor
+  bool
+  ((GtkTreePath path)
+   (GtkTreePath descendant)))
+
+(define-func gtk_tree_path_is_descendant
+  bool
+  ((GtkTreePath path)
+   (GtkTreePath ancestor)))
+
+(define-boxed GtkTreeRowReference
+  (copy gtk_tree_row_reference_copy)
+  (free gtk_tree_row_reference_free))
+
 (define-object GtkTreeSelection (GObject))
 
 (define-func gtk_tree_selection_set_mode
