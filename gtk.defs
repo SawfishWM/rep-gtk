@@ -365,9 +365,9 @@
   (radio-button GTK_TOOLBAR_CHILD_RADIOBUTTON)
   (widget GTK_TOOLBAR_CHILD_WIDGET))
 
-;(define-enum GtkTreeViewMode
-;  (line GTK_TREE_VIEW_LINE)
-;  (item GTK_TREE_VIEW_ITEM))
+(define-enum GtkTreeViewMode
+  (line GTK_TREE_VIEW_LINE)
+  (item GTK_TREE_VIEW_ITEM))
 
 (define-enum GtkFundamentalType
   (invalid G_TYPE_INVALID)
@@ -1264,10 +1264,10 @@
   ((GtkTree tree)
    (GtkSelectionMode mode)))
 
-;(define-func gtk_tree_set_view_mode
-;  none
-;  ((GtkTree tree)
-;   (GtkTreeViewMode mode)))
+(define-func gtk_tree_set_view_mode
+  none
+  ((GtkTree tree)
+   (GtkTreeViewMode mode)))
 
 (define-func gtk_tree_set_view_lines
   none
@@ -5184,214 +5184,10 @@
   bool
   ((GtkAccelLabel label)))
 
-;; GtkTreeModel && GtkTreeSelection && GtkTreeView
-
-(define-object GtkTreeModel (GInterface))
-
-(define-flags GtkTreeModelFlags
-  (iters-persist GTK_TREE_MODEL_ITERS_PERSIST)
-  (list-only GTK_TREE_MODEL_LIST_ONLY))
-
-(define-boxed GtkTreeIter
-  (copy gtk_tree_iter_copy)
-  (free gtk_tree_iter_free))
-
-(define-boxed GtkTreePath
-  (copy gtk_tree_path_copy)
-  (free gtk_tree_path_free))
-
-(define-func gtk_tree_path_new
-  GtkTreePath
-  ())
-
-(define-func gtk_tree_path_new_from_string
-  GtkTreePath
-  ((string path)))
-
-(define-func gtk_tree_path_new_from_indices
-  GtkTreePath
-  ((int indices)))
-
-(define-func gtk_tree_path_to_string
-  string
-  ((GtkTreePath path)))
-
-(define-func gtk_tree_path_new_first
-  GtkTreePath
-  ())
-
-(define-func gtk_tree_path_append_index
-  none
-  ((GtkTreePath path)
-   (int index)))
-
-(define-func gtk_tree_path_prepend_index
-  none
-  ((GtkTreePath path)
-   (int index)))
-
-(define-func gtk_tree_path_get_depth
-  int
-  ((GtkTreePath path)))
-
-(define-func gtk_tree_path_get_indices
-  none
-  ((GtkTreePath path)))
-
-(define-func gtk_tree_path_free
-  none
-  ((GtkTreePath path)))
-
-(define-func gtk_tree_path_copy
-  GtkTreePath
-  ((GtkTreePath path)))
-
-(define-func gtk_tree_path_get_type
-  type
-  ())
-
-(define-func gtk_tree_path_compare
-  int
-  ((GtkTreePath path1)
-   (GtkTreePath path2)))
-
-(define-func gtk_tree_path_next
-  none
-  ((GtkTreePath path)))
-
-(define-func gtk_tree_path_prev
-  none
-  ((GtkTreePath path)))
-
-(define-func gtk_tree_path_up
-  none
-  ((GtkTreePath path)))
-
-(define-func gtk_tree_path_down
-  none
-  ((GtkTreePath path)))
-
-(define-func gtk_tree_path_is_ancestor
-  bool
-  ((GtkTreePath path)
-   (GtkTreePath descendant)))
-
-(define-func gtk_tree_path_is_descendant
-  bool
-  ((GtkTreePath path)
-   (GtkTreePath ancestor)))
-
-(define-boxed GtkTreeRowReference
-  (copy gtk_tree_row_reference_copy)
-  (free gtk_tree_row_reference_free))
-
-(define-func gtk_tree_row_reference_get_type
-  type
-  ())
-
-(define-func gtk_tree_row_reference_new
-  GtkTreeRowReference
-  ((GtkTreeModel model)
-   (GtkTreePath path)))
-
-(define-func gtk_tree_row_reference_new_proxy
-  GtkTreeRowReference
-  ((GObject proxy)
-   (GtkTreeModel model)
-   (GtkTreePath path)))
-
-(define-func gtk_tree_row_reference_get_path
-  GtkTreePath
-  ((GtkTreeRowReference reference)))
-
-(define-func gtk_tree_row_reference_get_model
-  GtkTreeModel
-  ((GtkTreeRowReference reference)))
-
-(define-func gtk_tree_row_reference_valid
-  bool
-  ((GtkTreeRowReference reference)))
-
-(define-func gtk_tree_row_reference_copy
-  GtkTreeRowReference
-  ((GtkTreeRowReference reference)))
-
-(define-func gtk_tree_row_reference_free
-  none
-  ((GtkTreeRowReference reference)))
-
-(define-func gtk_tree_row_reference_inserted
-  none
-  ((GObject proxy)
-   (GtkTreePath path)))
-
-(define-func gtk_tree_row_reference_deleted
-  none
-  ((GObject proxy)
-   (GtkTreePath path)))
-
-(define-func gtk_tree_row_reference_reordered
-  none
-  ((GObject proxy)
-   (GtkTreePath path)
-   (GtkTreeIter iter)
-   ((tvec int in) new_order)))
-
-(define-func gtk_tree_iter_copy
-  GtkTreeIter
-  ((GtkTreeIter iter)))
-
-(define-func gtk_tree_iter_free
-  none
-  ((GtkTreeIter iter)))
-
-(define-func gtk_tree_iter_get_type
-  type
-  ())
-
-(define-object GtkTreeSelection (GObject))
-
-(define-func gtk_tree_selection_set_mode
-  none
-  ((GtkTreeSelection selection)
-   (GtkSelectionMode mode)))
-
-(define-func gtk_tree_selection_get_mode
-  GtkSelectionMode
-  ((GtkTreeSelection selection)))
-
-;; XXX gtk_tree_view_set_select_function needs GtkTreeSelectionFunc
-
-(define-func gtk_tree_selection_get_user_data
-  GPointer
-  ((GtkTreeSelection selection)))
-
-(define-func gtk_tree_selection_get_tree_view
-  GtkTreeView
-  ((GtkTreeSelection selection)))
-
-(define-object GtkTreeView (GtkContainer))
-
-(define-func gtk_tree_view_new
-  GtkWidget
-  ())
-
-(define-func gtk_tree_view_new_with_model
-  GtkWidget
-  ((GtkTreeModel model)))
-
-(define-func gtk_tree_view_get_model
-  GtkTreeModel
-  ((GtkTreeView treeview)))
-
-(define-func gtk_tree_view_set_model
-  none
-  ((GtkTreeView treeview)
-   (GtkTreeModel model)))
-
 ;; More defs files
 
 (include "gtktext.defs")
+(include "gtktree.defs")
 
 ;; Options
 

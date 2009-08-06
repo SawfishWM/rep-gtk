@@ -1,5 +1,5 @@
 2009-08-06  Christopher Bratusek <zanghar@freenet.de>
-	* gtk.defs: implementing GtkTreeView [part2]
+	* gtktree.defs: implementing GtkTreeView [part2]
 	*********** gtktreemodel.h ***********
 	boxed GtkTreeIter
 	gtk_tree_iter_copy
@@ -37,6 +37,22 @@
 	gtk_tree_row_reference_inserted
 	gtk_tree_row_reference_deleted
 	gtk_tree_row_reference_reordered
+	gtk_tree_model_get_iter
+	gtk_tree_model_get_iter_from_string
+	gtk_tree_model_get_string_from_iter
+	gtk_tree_model_get_iter_first
+	gtk_tree_model_get_path
+	gtk_tree_model_get_value [not working, not compiled]
+	gtk_tree_model_iter_next
+	gtk_tree_model_iter_children
+	gtk_tree_model_iter_has_child
+	gtk_tree_model_iter_n_children
+	gtk_tree_model_iter_nth_child
+	gtk_tree_model_ref_node
+	gtk_tree_model_iter_unref_node
+	gtk_tree_model_get
+	gtk_tree_model_get_valist
+	gtk_tree_model_foreach [not working, not compiled]
 
 2009-08-01  Christopher Bratusek <zanghar@freenet.de>
 	* build-gtk.jl: define-type GQuark (basic)
