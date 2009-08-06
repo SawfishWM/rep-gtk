@@ -5285,6 +5285,10 @@
   (copy gtk_tree_row_reference_copy)
   (free gtk_tree_row_reference_free))
 
+(define-func gtk_tree_row_reference_get_type
+  type
+  ())
+
 (define-func gtk_tree_row_reference_new
   GtkTreeRowReference
   ((GtkTreeModel model)
@@ -5332,6 +5336,18 @@
    (GtkTreePath path)
    (GtkTreeIter iter)
    ((tvec int in) new_order)))
+
+(define-func gtk_tree_iter_copy
+  GtkTreeIter
+  ((GtkTreeIter iter)))
+
+(define-func gtk_tree_iter_free
+  none
+  ((GtkTreeIter iter)))
+
+(define-func gtk_tree_iter_get_type
+  type
+  ())
 
 (define-object GtkTreeSelection (GObject))
 

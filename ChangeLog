@@ -2,6 +2,9 @@
 	* gtk.defs: implementing GtkTreeView [part2]
 	*********** gtktreemodel.h ***********
 	boxed GtkTreeIter
+	gtk_tree_iter_copy
+	gtk_tree_iter_free
+	gtk_tree_iter_get_type
 	boxed GtkTreePath
 	gtk_tree_path_new
 	gtk_tree_path_new_from_string
@@ -23,6 +26,7 @@
 	gtk_tree_path_is_ancestor
 	gtk_tree_path_is_descendant
 	boxed GtkTreeRowReference
+	gtk_tree_row_reference_get_type
 	gtk_tree_row_reference_new
 	gtk_tree_row_reference_new_proxy
 	gtk_tree_row_reference_get_path
