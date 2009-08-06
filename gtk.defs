@@ -5285,6 +5285,54 @@
   (copy gtk_tree_row_reference_copy)
   (free gtk_tree_row_reference_free))
 
+(define-func gtk_tree_row_reference_new
+  GtkTreeRowReference
+  ((GtkTreeModel model)
+   (GtkTreePath path)))
+
+(define-func gtk_tree_row_reference_new_proxy
+  GtkTreeRowReference
+  ((GObject proxy)
+   (GtkTreeModel model)
+   (GtkTreePath path)))
+
+(define-func gtk_tree_row_reference_get_path
+  GtkTreePath
+  ((GtkTreeRowReference reference)))
+
+(define-func gtk_tree_row_reference_get_model
+  GtkTreeModel
+  ((GtkTreeRowReference reference)))
+
+(define-func gtk_tree_row_reference_valid
+  bool
+  ((GtkTreeRowReference reference)))
+
+(define-func gtk_tree_row_reference_copy
+  GtkTreeRowReference
+  ((GtkTreeRowReference reference)))
+
+(define-func gtk_tree_row_reference_free
+  none
+  ((GtkTreeRowReference reference)))
+
+(define-func gtk_tree_row_reference_inserted
+  none
+  ((GObject proxy)
+   (GtkTreePath path)))
+
+(define-func gtk_tree_row_reference_deleted
+  none
+  ((GObject proxy)
+   (GtkTreePath path)))
+
+(define-func gtk_tree_row_reference_reordered
+  none
+  ((GObject proxy)
+   (GtkTreePath path)
+   (GtkTreeIter iter)
+   ((tvec int in) new_order)))
+
 (define-object GtkTreeSelection (GObject))
 
 (define-func gtk_tree_selection_set_mode
