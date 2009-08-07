@@ -273,7 +273,22 @@
   GtkSelectionMode
   ((GtkTreeSelection selection)))
 
-;; XXX gtk_tree_view_set_select_function needs GtkTreeSelectionFunc
+(define-boxed GtkTreeSelectionFunc
+  ((GtkTreeSelection selection)
+   (GtkTreeModel model)
+   (GtkTreePath path)
+   (bool selected)
+   (GPointer data)))
+
+(define-boxed GtkDestroyNotify
+  ((GPointer data)))
+
+(define-func gtk_tree_selection_set_select_function
+  none
+  ((GtkTreeSelection selection)
+   (GtkTreeSelectionFunc func)
+   (GPointer data)
+   (GtkDestroyNotify destroy)))
 
 (define-func gtk_tree_selection_get_user_data
   GPointer
@@ -282,6 +297,17 @@
 (define-func gtk_tree_selection_get_tree_view
   GtkTreeView
   ((GtkTreeSelection selection)))
+
+;(define-func gtk_tree_selection_get_selected
+;  bool
+;  ((GtkTreeSelection selection)
+;   (GtkTreeModel model)
+;   (GtkTreeIter iter)))
+
+;(define-func gtk_tree_selection_get_selected_rows
+; (list string)
+;  ((GtkTreeSelection selection)
+;   (GtkTreeModel model)))
 
 (define-object GtkTreeView (GtkContainer))
 

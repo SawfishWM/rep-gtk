@@ -1,3 +1,11 @@
+2009-08-07  Christopher Bratusek <zanghar@freenet.de>
+	* gtktree.defs: implementing GtkTreeView [part3]
+	*********** gtktreeselection.h ***********
+	boxed GtkTreeSelectionFunc
+	boxed GtkDestroyNotify
+	gtk_tree_selection_set_select_function
+	gtk_tree_selection_get_selected [not working, not compiled]
+
 2009-08-06  Christopher Bratusek <zanghar@freenet.de>
 	* gtktree.defs: implementing GtkTreeView [part2]
 	*********** gtktreemodel.h ***********
@@ -53,6 +61,10 @@
 	gtk_tree_model_get
 	gtk_tree_model_get_valist
 	gtk_tree_model_foreach [not working, not compiled]
+	== GtkTreeModel 2.12 API complete ==
+	== GtkTreeIter 2.12 API complete ==
+	== GtkTreePath 2.12 API complete ==
+	== GtkTreeRowReference 2.12 API complete ==
 
 2009-08-01  Christopher Bratusek <zanghar@freenet.de>
 	* build-gtk.jl: define-type GQuark (basic)
