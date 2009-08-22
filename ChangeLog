@@ -1,3 +1,8 @@
+2009-08-22  Christopher Bratusek <zanghar@freenet.de>
+	* gtk.defs:
+	use tvec to make gtk_about_dialog_set_* work
+	use tvec to make gtk_scale_button_new work
+
 2009-08-07  Christopher Bratusek <zanghar@freenet.de>
 	* gtktree.defs: implementing GtkTreeView [part3]
 	*********** gtktreeselection.h ***********

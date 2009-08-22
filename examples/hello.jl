@@ -12,15 +12,11 @@ exec rep --batch "$0" "$@"
 
   (define window (gtk-window-new 'toplevel))
 
-  (define button (gtk-button-new-with-label "say hello"))
+  (define button (gtk-scale-button-new 'menu 0 100 0.5 '("gtk-ok" "" "undo")))
 
   (gtk-container-set-border-width window 10)
 
   (g-signal-connect window "delete_event" (lambda (w) (throw 'quit 0)))
-
-  (g-signal-connect button "clicked"
-		    (lambda ()
-		      (write standard-output "hello, world\n")))
 
   (gtk-container-add window button)
   (gtk-widget-show-all window)
