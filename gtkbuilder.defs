@@ -1,0 +1,24 @@
+;; -*- lisp -*-
+
+(define-object GtkBuilder (GObject))
+
+(define-func gtk_builder_new
+  GtkBuilder
+  ())
+
+(define-func gtk_builder_add_from_file
+  (int)
+  ((GtkBuilder builder)
+   (string filename)
+   ;; XXX fix this
+   (GPointer gerror (= "0"))))
+
+(define-func gtk_builder_get_object 
+  (GObject)
+  ((GtkBuilder builder)
+   (string name)))
+
+(define-func gtk_builder_connect_signals
+  none
+  ((GtkBuilder builder)
+   (GPointer user_data)))
