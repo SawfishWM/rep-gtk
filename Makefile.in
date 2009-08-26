@@ -56,6 +56,8 @@ gtk-2/gtk.la : $(OBJS)
 %-glue.c : %.defs build-gtk.jlc
 	rep build-gtk.jlc -f build-gtk-batch $< $@
 
+.PRECIOUS:  %-glue.c
+
 build-gtk.jlc : build-gtk.jl
 	rep compiler -f compile-batch $<
 
@@ -103,4 +105,4 @@ gtk-2 :
 	mkdir gtk-2
 
 # hand-needed dependences
-gtk-glue.c : gtk.defs gtktext.defs build-gtk.jlc
+gtk-glue.c : gtk.defs gtktext.defs gtktree.defs gtkbuilder.defs build-gtk.jlc

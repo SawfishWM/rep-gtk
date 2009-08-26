@@ -5175,6 +5175,7 @@
 
 (include "gtktext.defs")
 (include "gtktree.defs")
+(include "gtkbuilder.defs")
 
 ;; Options
 
