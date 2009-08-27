@@ -918,6 +918,8 @@
 		  (@ "  %s c_%s;\n" decl (gtk-arg-name arg))
 		(gtk-warning
 		 "Don't know how to declare type: %s" type)))) args)
+    (when (gtk-get-option 'gerror-arg options)
+      (@ "  GError* error = NULL;\n"))
     (unless (eq ret 'none)
       (let*
 	  ((typage (gtk-type-info ret))
@@ -1040,6 +1042,8 @@
 	      (@ "c_%s" (gtk-arg-name (car tem)))))
 	  (@ (if (cdr tem) ", " ""))
 	  (setq tem (cdr tem))))
+      (if (gtk-get-option 'gerror-arg options)
+	  (@ ", &error"))
       (@ "\);\n\n"))
 
     ;; output ret conversion
@@ -1076,6 +1080,11 @@
 	      (@ "  rep_POPGC;\n"
 		 (gtk-arg-name arg) (gtk-arg-name arg)))) args)
 
+    ;; gerror checking
+    (when (gtk-get-option 'gerror-arg options)
+      (@ "  if (error != NULL)\n" )
+      (@ "    sgtk_throw_gerror (\"%s\", error);\n" fname))
+    
     ;; output return statement
     (if (eq ret 'none)
 	(@ "  return Qnil;\n")

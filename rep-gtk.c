@@ -2318,6 +2318,19 @@ sgtk_sigchld_callback (void)
 
 
 
+/* GError handling */
+DEFSYM(g_error, "glib-error");
+DEFSTRING(err_g_error, "Glib error");
+
+void
+sgtk_throw_gerror (const char *func_name, GError *gerr)
+{
+
+  /* FIXME: We should also handle error domain */
+  Fsignal (Qg_error, rep_list_1(rep_string_dup (gerr->message)));
+  g_error_free (gerr);
+}
+
 /* Initialization */
 
 static int standalone_p = 1;
@@ -2444,6 +2457,7 @@ sgtk_init_substrate (void)
   rep_INTERN (gtk_minor_version);
   rep_INTERN (gtk_micro_version);
   rep_INTERN (rep_gtk_version);
+  rep_INTERN(g_error); rep_ERROR(g_error);
   Fset (Qgtk_major_version, rep_MAKE_INT (GTK_MAJOR_VERSION));
   Fset (Qgtk_minor_version, rep_MAKE_INT (GTK_MINOR_VERSION));
   Fset (Qgtk_micro_version, rep_MAKE_INT (GTK_MICRO_VERSION));
