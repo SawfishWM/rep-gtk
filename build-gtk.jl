@@ -1212,6 +1212,12 @@
   (let
       ((out nil)
        (point 0))
+
+    ;; Some Classes (GtkUIManager) contain Upcase Tokens: UI
+    (while (string-match "[A-Z]([A-Z]+)[A-Z]" name)
+      (let ((upcase-token (substring name (match-start 1) (match-end 1))))
+	(setq name (string-replace upcase-token (string-downcase upcase-token) name))))
+
     (while (string-match "[A-Z]+" name point)
       (setq out (cons (substring name point (match-start)) out))
       (unless (zerop point)
