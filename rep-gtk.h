@@ -224,6 +224,8 @@ GParameter *sgtk_build_args (GObjectClass *objclass, int *n_argsp,
 repv sgtk_color_conversion (repv color);
 repv sgtk_font_conversion (repv color);
 
+void sgtk_throw_gerror (const char *func_name, GError *gerr);
+
 void sgtk_set_standalone (int flag);
 int sgtk_is_standalone (void);
 repv sgtk_standalone_p (void);

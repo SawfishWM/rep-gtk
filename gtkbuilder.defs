@@ -9,9 +9,8 @@
 (define-func gtk_builder_add_from_file
   (int)
   ((GtkBuilder builder)
-   (string filename)
-   ;; XXX fix this
-   (GPointer gerror (= "0"))))
+   (string filename))
+  (gerror-arg t))
 
 (define-func gtk_builder_get_object 
   (GObject)
