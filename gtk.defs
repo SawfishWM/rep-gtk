@@ -5386,7 +5386,7 @@
    (bool visible_horizontal)))
 
 (define-func gtk_action_get_visible_horizontal 
-  gboolean
+  bool
   ((GtkAction action)))
 
 (define-func gtk_action_set_visible_vertical 
@@ -5395,16 +5395,16 @@
    (bool visible_vertical)))
 
 (define-func gtk_action_get_visible_vertical 
-  gboolean
+  bool
   ((GtkAction action)))
 
 (define-func gtk_action_set_is_important 
   none
   ((GtkAction action )
-   (gboolean is_important)))
+   (bool is_important)))
 
 (define-func gtk_action_get_is_important 
-  gboolean
+  bool
   ((GtkAction action)))
 
 (define-object GtkActionGroup (GtkObject))
