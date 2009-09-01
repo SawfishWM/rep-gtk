@@ -5214,6 +5214,198 @@
    (string tooltip (=  0))
    (string stock_id (= 0))))
 
+(define-func gtk_action_get_name 
+  static_string
+  ((GtkAction action)))
+
+(define-func  gtk_action_is_sensitive 
+  bool
+  ((GtkAction action)))
+
+(define-func gtk_action_get_sensitive
+  bool 
+  ((GtkAction action)))
+
+(define-func gtk_action_set_sensitive
+  none
+  ((GtkAction action)
+   (bool sensitive)))
+
+(define-func gtk_action_is_visible
+  bool
+  ((GtkAction action)))
+
+(define-func gtk_action_get_visible 
+  bool
+  ((GtkAction action)))
+
+(define-func gtk_action_set_visible 
+  none
+  ((GtkAction action)
+   (bool visible)))
+
+(define-func gtk_action_activate 
+  none
+  ((GtkAction action)))
+
+(define-func gtk_action_create_icon
+  GtkWidget
+  ((GtkAction action)
+   (GtkIconSize icon_size)))
+
+(define-func gtk_action_create_menu_item 
+  GtkWidget
+  ((GtkAction action)))
+
+(define-func gtk_action_create_tool_item 
+  GtkWidget
+  ((GtkAction action)))
+
+(define-func gtk_action_create_menu 
+  GtkWidget
+  ((GtkAction action)))
+
+(define-func gtk_action_connect_proxy 
+  none
+  ((GtkAction action)
+   (GtkWidget proxy)))
+
+(define-func gtk_action_disconnect_proxy 
+  none
+  ((GtkAction action)
+   (GtkWidget *proxy)))
+
+;; FIXME: We need to wrap slist
+;; (define-func gtk_action_get_proxies 
+;;   GSList
+;;   ((GtkAction action)))
+
+(define-func gtk_action_connect_accelerator 
+  none
+  ((GtkAction action)))
+
+(define-func gtk_action_disconnect_accelerator 
+  none
+  ((GtkAction action)))
+
+(define-func gtk_action_block_activate 
+  none
+  ((GtkAction action)))
+
+(define-func gtk_action_unblock_activate 
+  none
+  ((GtkAction action)))
+
+(define-func gtk_action_block_activate_from 
+  none
+  ((GtkAction action)
+   (GtkWidget proxy)))
+                                                         
+(define-func gtk_action_unblock_activate_from 
+  none
+  ((GtkAction action)
+   (GtkWidget proxy)))
+
+(define-func gtk_action_get_accel_path 
+  static_string
+  ((GtkAction action)))
+
+(define-func gtk_action_set_accel_path 
+  none
+  ((GtkAction action)
+   (string accel_path)))
+
+; FIXME: we need to wrap GClosure return value
+;; (define-func gtk_action_get_accel_closure 
+;;   GClosure
+;;   ((GtkAction action)))
+
+(define-func gtk_action_set_accel_group 
+  none
+  ((GtkAction action)
+   (GtkAccelGroup accel_group)))
+
+(define-func gtk_action_set_label 
+  none
+  ((GtkAction action)
+   (string label)))
+
+(define-func gtk_action_get_label 
+  static_string
+  ((GtkAction action)))
+
+(define-func gtk_action_set_short_label 
+  none
+  ((GtkAction action)
+   (string short_label)))
+
+(define-func gtk_action_get_short_label 
+  static_string
+  ((GtkAction action)))
+
+(define-func gtk_action_set_tooltip 
+  none
+  ((GtkAction action)
+   (string tooltip)))
+
+(define-func gtk_action_get_tooltip 
+  static_string
+  ((GtkAction action)))
+
+(define-func gtk_action_set_stock_id 
+  none
+  ((GtkAction action)
+   (string stock_id)))
+
+(define-func gtk_action_get_stock_id 
+  static_string
+  ((GtkAction action)))
+
+(define-func gtk_action_set_gicon 
+  none
+  ((GtkAction action)
+   (GIcon icon)))
+
+(define-func gtk_action_get_gicon 
+  GIcon
+  ((GtkAction action)))
+
+(define-func gtk_action_set_icon_name 
+  none
+  ((GtkAction action)
+   (string icon_name)))
+
+(define-func gtk_action_get_icon_name 
+  static_string
+  ((GtkAction action)))
+
+(define-func gtk_action_set_visible_horizontal 
+  none
+  ((GtkAction action)
+   (bool visible_horizontal)))
+
+(define-func gtk_action_get_visible_horizontal 
+  gboolean
+  ((GtkAction action)))
+
+(define-func gtk_action_set_visible_vertical 
+  none
+  ((GtkAction action)
+   (bool visible_vertical)))
+
+(define-func gtk_action_get_visible_vertical 
+  gboolean
+  ((GtkAction action)))
+
+(define-func gtk_action_set_is_important 
+  none
+  ((GtkAction action )
+   (gboolean is_important)))
+
+(define-func gtk_action_get_is_important 
+  gboolean
+  ((GtkAction action)))
+
 (define-object GtkActionGroup (GtkObject))
 
 (define-func gtk_action_group_new
