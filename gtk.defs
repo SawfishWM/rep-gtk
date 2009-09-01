@@ -5273,7 +5273,7 @@
 (define-func gtk_action_disconnect_proxy 
   none
   ((GtkAction action)
-   (GtkWidget *proxy)))
+   (GtkWidget proxy)))
 
 ;; FIXME: We need to wrap slist
 ;; (define-func gtk_action_get_proxies 
