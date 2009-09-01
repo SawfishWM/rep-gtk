@@ -5361,14 +5361,15 @@
   static_string
   ((GtkAction action)))
 
-(define-func gtk_action_set_gicon 
-  none
-  ((GtkAction action)
-   (GIcon icon)))
+;; FIXME: Implement GIcon
+;; (define-func gtk_action_set_gicon 
+;;   none
+;;   ((GtkAction action)
+;;    (GIcon icon)))
 
-(define-func gtk_action_get_gicon 
-  GIcon
-  ((GtkAction action)))
+;; (define-func gtk_action_get_gicon 
+;;   GIcon
+;;   ((GtkAction action)))
 
 (define-func gtk_action_set_icon_name 
   none
