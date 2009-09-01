@@ -1,0 +1,111 @@
+;; -*- lisp -*-
+
+(define-flags GtkUIManagerItemType
+  (auto  GTK_UI_MANAGER_AUTO)
+  (menubar  GTK_UI_MANAGER_MENUBAR)
+  (menu  GTK_UI_MANAGER_MENU)
+  (toolbar  GTK_UI_MANAGER_TOOLBAR)
+  (placeholder  GTK_UI_MANAGER_PLACEHOLDER)
+  (popup  GTK_UI_MANAGER_POPUP)
+  (menuitem  GTK_UI_MANAGER_MENUITEM)
+  (toolitem  GTK_UI_MANAGER_TOOLITEM)
+  (separator  GTK_UI_MANAGER_SEPARATOR)
+  (accelerator  GTK_UI_MANAGER_ACCELERATOR)
+  (popup  GTK_UI_MANAGER_POPUP))
+
+(define-object GtkUIManager (GObject))
+
+(define-func gtk_ui_manager_new
+  GtkUIManager
+  ())
+
+(define-func gtk_ui_manager_get_add_tearoffs 
+  (bool)
+  ((GtkUIManager self)))
+
+(define-func gtk_ui_manager_set_add_tearoffs 
+  none
+  ((GtkUIManager self)
+   (bool add_tearoffs)))
+
+(define-func gtk_ui_manager_insert_action_group 
+  none
+  ((GtkUIManager   self)
+   (GtkActionGroup action_group)
+   (int pos)))
+
+(define-func gtk_ui_manager_remove_action_group 
+  none
+  ((GtkUIManager   self)
+   (GtkActionGroup action_group)))
+
+
+;; (define-func gtk_ui_manager_get_action_groups 
+;;   ;; Fixme We need to wrap slist
+;;   list 
+;;   ((GtkUIManager self)))
+
+(define-func gtk_ui_manager_get_accel_group 
+  (GtkAccelGroup)
+  ((GtkUIManager self)))
+
+(define-func gtk_ui_manager_get_widget 
+  (GtkWidget)
+  ((GtkUIManager self)
+   (string path)))
+
+
+;; (define-func gtk_ui_manager_get_toplevels
+;;   FIXME: We need to wrap slist
+;;   slist 
+;;   ((GtkUIManager self)
+;;    (GtkUIManagerItemType  types)))
+
+(define-func gtk_ui_manager_get_action
+  (GtkAction)
+  ((GtkUIManager self)
+   (string path)))
+  
+(define-func gtk_ui_manager_new_merge_id 
+  (int)
+  ((GtkUIManager self)))
+
+
+;; (define-func gtk_ui_manager_add_ui_from_string 
+;;   (int)
+;;   ((GtkUIManager self)
+;;    FIXME: We need to wrap size-limited strings
+;;    const gchar  *buffer, 
+;;    gssize        length)
+;;   (gerror-arg t))
+
+(define-func gtk_ui_manager_add_ui_from_file
+  (int)
+  ((GtkUIManager self)
+   (string filename))
+  (gerror-arg t))   
+
+(define-func gtk_ui_manager_add_ui 
+  none
+  ((GtkUIManager self)
+   (int merge_id)
+   (string path)
+   (string name)
+   (string action)
+   (GtkUIManagerItemType type)
+   (bool             top)))
+
+(define-func gtk_ui_manager_remove_ui
+  none
+  ((GtkUIManager self)
+   (int merge_id)))
+
+(define-func gtk_ui_manager_get_ui 
+  (string)
+  ((GtkUIManager self)))
+
+(define-func gtk_ui_manager_ensure_update 
+  none
+  ((GtkUIManager self)))
+  
+  
