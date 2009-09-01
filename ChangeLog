@@ -1,3 +1,11 @@
+2009-09-01  Christopher Bratusek <zanghar@freenet.de>
+	* configure.in: bumped to 0.90.1
+
+	* <tree>:
+	sync with Jürgen Hötzels branch
+	- GtkUiManager support
+	- GtkAction support
+
 2009-08-28  Christopher Bratusek <zanghar@freenet.de>
 	* <tree>:
 	sync with Jürgen Hötzels branch
