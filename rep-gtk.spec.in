@@ -1,6 +1,6 @@
 Name: rep-gtk
 Version: @version@
-Release: 1
+Release: 1%{?dist}
 Summary: GTK+ binding for librep Lisp environment
 Requires: librep >= @REP_MIN_VER@ gtk2 >= @GTK_MIN_VER@
 License: GPL
@@ -41,6 +41,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/rep-gtk.pc
 
 %changelog
+* Sat Sep 05 2009 Kim B. Heino <b@bbbs.net>
+- add dist-tag
+
 * Wed May 06 2009 Christopher Bratusek <zanghar@freenet.de>
 - require gtk2 instead of gtk+
 - add --libdir=%{_libdir} to configure flags
