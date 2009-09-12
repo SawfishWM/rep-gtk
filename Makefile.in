@@ -54,7 +54,7 @@ gtk-2/gtk.la : $(OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GTK_LIBS)
 
 %-glue.c : %.defs build-gtk.jlc
-	rep build-gtk.jlc -f build-gtk-batch $< $@
+	LC_ALL=C rep build-gtk.jlc -f build-gtk-batch $< $@
 
 .PRECIOUS:  %-glue.c
 

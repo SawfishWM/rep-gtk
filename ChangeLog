@@ -1,6 +1,8 @@
 2009-09-12  Christopher Bratusek <zanghar@freenet.de>
 	* ChangeLog: change encoding to UTF-8 [Teika Kazura]
 
+	* Makefile.in: build with LC_ALL=C [Gentoo]
+
 2009-09-05  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.spec.in: improved [Kim B. Heino]
 
