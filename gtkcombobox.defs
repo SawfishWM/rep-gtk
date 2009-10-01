@@ -1,0 +1,120 @@
+;; -*- lisp -*-
+
+;; GtkComboBox
+
+(define-object GtkComboBox (GObject))
+
+(define-func gtk_combo_box_new
+  GtkWidget
+  ())
+
+(define-func gtk_combo_box_new_with_model
+  GtkWidget
+  ((GtkTreeModel model)))
+
+(define-func gtk_combo_box_set_wrap_width
+  none
+  ((GtkComboBox box)
+   (int width)))
+
+(define-func gtk_combo_box_get_wrap_width
+  int
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_set_row_span_column
+  none
+  ((GtkComboBox box)
+   (int column)))
+
+(define-func gtk_combo_box_get_row_span_column
+  int
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_set_column_span_column
+  none
+  ((GtkComboBox box)
+   (int column)))
+
+(define-func gtk_combo_box_get_column_span_column
+  int
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_set_add_tearoffs
+  none
+  ((GtkComboBox box)
+   (bool tearoffs)))
+
+(define-func gtk_combo_box_get_add_tearoffs
+  bool
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_set_title
+  none
+  ((GtkComboBox box)
+   ((tvec string in) title)))
+
+(define-func gtk_combo_box_get_title
+  static_string
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_set_focus_on_click
+  none
+  ((GtkComboBox box)
+   (bool focus)))
+
+(define-func gtk_combo_box_get_focus_on_click
+  bool
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_set_active
+  none
+  ((GtkComboBox box)
+   (int active)))
+
+(define-func gtk_combo_box_get_active
+  int
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_set_active_iter
+  none
+  ((GtkComboBox box)
+   (GtkTreeIter iter)))
+
+(define-func gtk_combo_box_get_active_iter
+  bool
+  ((GtkComboBox box)
+   (GtkTreeIter iter)))
+
+(define-func gtk_combo_box_set_model
+  none
+  ((GtkComboBox box)
+   (GtkTreeModel model)))
+
+(define-func gtk_combo_box_get_model
+  GtkTreeModel
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_append_text
+  none
+  ((GtkComboBox box)
+   ((tvec string in) text)))
+
+(define-func gtk_combo_box_insert_text
+  none
+  ((GtkComboBox box)
+   (int position)
+   ((tvec string in) text)))
+
+(define-func gtk_combo_box_prepend_text
+  none
+  ((GtkComboBox box)
+   ((tvec string in) text)))
+
+(define-func gtk_combo_box_remove_text
+  none
+  ((GtkComboBox box)
+   (int position)))
+
+(define-func gtk_combo_box_get_active_text
+  static_string
+  ((GtkComboBox box)))
