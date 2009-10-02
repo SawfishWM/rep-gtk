@@ -1,3 +1,12 @@
+2009-10-02  Christopher Bratusek <zanghar@freenet.de>
+	* gtkcombobox.defs: GtkComboBoxEntry implemented
+	*********** gtkcomboboxentry.h ***********
+	gtk_combo_box_entry_new
+	gtk_combo_box_entry_new_with_model
+	gtk_combo_box_entry_set_text_column
+	gtk_combo_box_entry_get_text_column
+	== GtkComboBoxEntry 2.12 API complete ==
+
 2009-10-01  Christopher Bratusek <zanghar@freenet.de>
 	* gtkcombobox.defs: GtkComboBox implemented
 	*********** gtkcombobox.h ***********

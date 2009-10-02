@@ -118,3 +118,25 @@
 (define-func gtk_combo_box_get_active_text
   static_string
   ((GtkComboBox box)))
+
+;; GtkComboBoxEntry
+
+(define-object GtkComboBoxEntry (GObject))
+
+(define-func gtk_combo_box_entry_new
+  GtkWidget
+  ())
+
+(define-func gtk_combo_box_entry_new_with_model
+  GtkWidget
+  ((GtkTreeModel model)
+   (int column)))
+
+(define-func gtk_combo_box_entry_set_text_column
+  none
+  ((GtkComboBoxEntry box)
+   (int column)))
+
+(define-func gtk_combo_box_entry_get_text_column
+  int
+  ((GtkComboBoxEntry box)))
