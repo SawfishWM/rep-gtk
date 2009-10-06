@@ -1084,7 +1084,7 @@
     (when (gtk-get-option 'gerror-arg options)
       (@ "  if (error != NULL)\n" )
       (@ "    sgtk_throw_gerror (\"%s\", error);\n" fname))
-    
+
     ;; output return statement
     (if (eq ret 'none)
 	(@ "  return Qnil;\n")
@@ -1354,7 +1354,10 @@
 (define-type 'GdkPoint "GdkPoint" "sgtk_rep_to_point"
 	     "sgtk_point_to_rep" "sgtk_valid_point")
 
-(define-type 'rect "GdkRectangle" "sgtk_rep_to_rect"
+(define-type 'GdkRectangle "GdkRectangle" "sgtk_rep_to_rect"
 	     "sgtk_rect_to_rep" "sgtk_valid_rect")
+
+(define-type 'GdkSegment "GdkSegment" "sgtk_rep_to_segment"
+             "sgtk_segment_to_rep" "sgtk_valid_segment")
 
 (define-type 'SCM "repv" "" "" nil)

@@ -151,6 +151,10 @@ int sgtk_valid_rect (repv obj);
 GdkRectangle sgtk_rep_to_rect (repv obj);
 repv sgtk_rect_to_rep (GdkRectangle p);
 
+int sgtk_valid_segment (repv obj);
+GdkSegment sgtk_scm2segment (repv obj);
+repv sgtk_segment2scm (GdkSegment seg);
+
 GType sgtk_type_from_name (char *name);
 int sgtk_valid_type (repv obj);
 GType sgtk_rep_to_type (repv obj);

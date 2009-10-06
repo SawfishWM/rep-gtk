@@ -172,6 +172,8 @@ sgtk_try_missing_type (char *name)
 {
   static sgtk_type_info missing[] = {
     { "GdkGC", G_TYPE_BOXED },
+    { "GdkSegment", G_TYPE_BOXED },
+    { "GdkSpan", G_TYPE_BOXED },
     { "GdkPixbuf", G_TYPE_BOXED },	/* XXX okay? */
     { "GtkTextIter", G_TYPE_BOXED },
     { "GtkTreeIter", G_TYPE_BOXED },
@@ -849,7 +851,7 @@ sgtk_rep_to_flags (repv obj, sgtk_enum_info *info)
   return ans;
 }
 
-
+
 /* String enums.
 
    A string enum is like an enum, but the values are strings.  The
@@ -1127,7 +1129,33 @@ sgtk_type_to_rep (GType t)
   return sgtk_uint_to_rep (t);
 }
 
-
+int
+sgtk_valid_segment (repv obj)
+{
+  return scm_is_pair (obj)
+    && sgtk_valid_point (SCM_CAR (obj))
+    && sgtk_valid_point (SCM_CDR (obj));
+}
+
+GdkSegment
+sgtk_rep_to_segment (repv obj)
+{
+  GdkSegment seg;
+  seg.x1 = rep_INT (rep_CAAR (obj));
+  seg.y1 = rep_INT (rep_CDAR (obj));
+  seg.x2 = rep_INT (rep_CADR (obj));
+  seg.y2 = rep_INT (rep_CDDR (obj));
+  return seg;
+}
+
+repv
+sgtk_segment_to_rep (GdkSegment seg)
+{
+  return Fcons (Fcons (rep_MAKE_INT (seg.x1),
+			     rep_MAKE_INT (seg.y1)),
+		   Fcons (rep_MAKE_INT (seg.x2),
+			     rep_MAKE_INT (seg.y2)));
+}
 
 /* Callbacks.
 
