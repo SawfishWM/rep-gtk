@@ -1,3 +1,6 @@
+2009-10-09  Christopher Bratusek <zanghar@freenet.de>
+	* gtk.defs: temporarily disable gtk_style_apply_default_background (breaks build)
+
 2009-10-06  Christopher Bratusek <zanghar@freenet.de>
 	* gtk.defs: merged with JH branch
 

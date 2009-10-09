@@ -572,17 +572,17 @@
    (GdkWindow window)
    (GtkStateType state)))
 
-(define-func gtk_style_apply_default_background
-  void
-  ((GtkStyle style)
-   (GdkWindow window)
-   (bool setbg)
-   (GtkStateType state)
-   (GdkRectangle rect)
-   (int x)
-   (int y)
-   (int width)
-   (int height)))
+;(define-func gtk_style_apply_default_background
+;  none
+;  ((GtkStyle style)
+;   (GdkWindow window)
+;   (bool setbg)
+;   (GtkStateType state)
+;   (GdkRectangle rect)
+;   (int x)
+;   (int y)
+;   (int width)
+;   (int height)))
 
 (define-func gtk_style_get_white_interp
   GdkColor
