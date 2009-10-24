@@ -1,0 +1,99 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+
+version := $(shell sed -n 's/Package: \(.*\)/\1/p' debian/control | head -n 1)
+
+DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+CFLAGS += -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+
+	cp -f /usr/share/misc/config.guess .
+	cp -f /usr/share/misc/config.sub .
+
+	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr --libexecdir=/usr/lib \
+	--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE)
+
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+
+	$(MAKE)
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	[ ! -f Makefile ] || $(MAKE) distclean
+
+	rm -rf .libs
+
+	debian/rules unpatch
+
+	dh_clean config.guess config.sub libtool install-stamp
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	$(MAKE) install DESTDIR=`pwd`/debian/tmp
+
+	#Fix libdir in *.la files
+	find debian/tmp -name '*.la' |\
+	 while read file; do\
+	  DIRNAME=$$(dirname $$file | sed 's@debian/tmp@@');\
+	  sed -i "/libdir/ s@^.*@libdir=$$DIRNAME@" $$file;\
+	 done
+
+	dh_install --list-missing
+	touch install-stamp
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs -i
+	dh_installchangelogs -i
+	dh_compress -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs -A README README.gtk-defs README.guile-gtk
+	dh_installexamples -prep-gtk examples/*
+	dh_installchangelogs -a ChangeLog
+	dh_strip -a
+	dh_link -a
+	dh_compress -a
+	dh_fixperms -a
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure patch unpatch

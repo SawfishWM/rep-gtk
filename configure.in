@@ -79,8 +79,11 @@ dnl locale checks
 AC_CHECK_FUNCS(setlocale)
 AC_CHECK_HEADERS(locale.h)
 
+gitdate=`date +%y%m%d`
+
 dnl Nonstandard exported symbols
 AC_SUBST(version)
+AC_SUBST(gitdate)
 AC_SUBST(pc_libs)
 AC_SUBST(repexecdir)
 AC_SUBST(CPPFLAGS)
@@ -103,6 +106,7 @@ Makefile
 rep-gtk.pc
 rep-gtk.spec
 rep-gtk.ebuild
+debian/changelog
 ])
 
 AC_OUTPUT

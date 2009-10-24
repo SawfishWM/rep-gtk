@@ -1,3 +1,11 @@
+2009-10-24  Christopher Bratusek <zanghar@freenet.de>
+	* debian/changelog.in
+	* debian/compat
+	* debian/control
+	* rep-gtk.install
+	* debian/rules
+	* debian/watch: added debian packaging scripts based on the official ones
+
 2009-10-09  Christopher Bratusek <zanghar@freenet.de>
 	* gtk.defs: temporarily disable gtk_style_apply_default_background (breaks build)
 

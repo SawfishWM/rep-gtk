@@ -1,0 +1,19 @@
+Source: rep-gtk
+Section: lisp
+Priority: optional
+Maintainer: Christopher Roy Bratusek <zanghar@freenet.de>
+Standards-Version: 3.8.2
+Build-Depends: debhelper (>= 5), librep-dev (>= 0.17.3), rep,
+ autotools-dev, libglib2.0-dev (>= 2.6), libgtk2.0-dev (>= 2.12)
+Homepage: http://sawfish.wikia.com/
+
+Package: rep-gtk
+Architecture: any
+Depends: ${shlibs:Depends}, librep9 (>= 0.17.3)
+Conflicts: rep-gtk2
+Replaces: rep-gtk2, rep-gtk-gnome
+Breaks: rep-gtk-gnome (<= 0.18.cvs20060518-3)
+Suggests: rep
+Description: GTK+ binding for librep
+ This package provides an interface to the GTK+ graphical toolkit for
+ the librep lisp interpreter.

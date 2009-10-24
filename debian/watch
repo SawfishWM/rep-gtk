@@ -1,0 +1,3 @@
+version=3
+
+http://sf.net/rep-gtk/rep-gtk-(.+)\.tar\.(?:gz|bz2)
