@@ -1,3 +1,3 @@
-debian/tmp/usr/libexec/rep/*/gui/gtk-2/types.*
-debian/tmp/usr/libexec/rep/*/gui/gtk-2/gtk.*
+debian/tmp/usr/lib/rep/*/gui/gtk-2/types.*
+debian/tmp/usr/lib/rep/*/gui/gtk-2/gtk.*
 debian/tmp/usr/lib/pkgconfig/rep-gtk.pc
