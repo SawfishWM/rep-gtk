@@ -1,3 +1,7 @@
+2009-12-05  Christopher Bratusek <zanghar@freenet.de>
+	* configure.in
+	* debian/rules: use $prefix/lib instead of $prefix/libdir
+
 2009-10-24  Christopher Bratusek <zanghar@freenet.de>
 	* debian/changelog.in
 	* debian/compat
