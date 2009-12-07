@@ -6,6 +6,10 @@ Addtitions:
 	GtkAction support [Jürgen Hötzel]
 
 2.12 APIs added:
+	**************** gtkspinbutton.h *****************
+	gtk_spin_button_get_increments
+	gtk_spin_button_get_range
+	== GtkSpinButton 2.12 API complete ==
 	************ gtkfilechooserbutton.h *************
 	gtk_file_chooser_button_new
 	gtk_file_chooser_button_new_with_backend

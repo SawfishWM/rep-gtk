@@ -5,7 +5,8 @@
 ;; GtkButton, GtkToggleButton, GtkCheckButton, GtkRadioButton, GtkFontButton
 ;; GtkLinkButton, GtkColorButton, GtkVolumeButton, GtkStatusIcon
 ;; GtkBuilder, GtkUIManager, GtkActionGroup, GtkAction, GtkComboBox
-;; GtkComboBoxEntry
+;; GtkComboBoxEntry, GtkExpander, GtkFileChooserButton, GtkSpinButton
+;; GtkScaleButton
 
 ;; updated for gtk+ 1.3:
 
@@ -3883,7 +3884,11 @@
    (double step)
    (double page)))
 
-;; XXX get_increments
+(define-func gtk_spin_button_get_increments
+  none
+  ((GtkSpinButton spin_button)
+   ((tvec double in) step)
+   ((tvec double in) page)))
 
 (define-func gtk_spin_button_set_range
   none
@@ -3891,7 +3896,11 @@
    (double min)
    (double max)))
 
-;; XXX get_range
+(define-func gtk_spin_button_get_range
+  none
+  ((GtkSpinButton spin_button)
+   ((tvec double in) min)
+   ((tvec double in) max)))
 
 (define-func gtk_spin_button_get_value
   double

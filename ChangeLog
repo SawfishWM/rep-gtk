@@ -34,6 +34,12 @@
 	gtk_file_chooser_button_get_focus_on_click
 	== GtkFileChooserButton 2.12 API complete ==
 
+	* gtk.defs: GtkSpinButton updated
+	**************** gtkspinbutton.h *****************
+	gtk_spin_button_get_increments
+	gtk_spin_button_get_range
+	== GtkSpinButton 2.12 API complete ==
+
 2009-12-05  Christopher Bratusek <zanghar@freenet.de>
 	* configure.in
 	* debian/rules: use $prefix/lib instead of $prefix/libdir
