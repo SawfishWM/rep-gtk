@@ -5424,6 +5424,72 @@
    (GtkAction action)
    (string accelerator)))
 
+;; GtkExpander
+
+(define-object GtkExpander (GtkBin))
+
+(define-func gtk_expander_new
+  GtkWidget
+  (((tvec string in) label)))
+
+(define-func gtk_expander_new_with_mnemonic
+  GtkWidget
+  (((tvec string in) label)))
+
+(define-func gtk_expander_set_expanded
+  none
+  ((GtkExpander expander)
+   (bool expanded)))
+
+(define-func gtk_expander_get_expanded
+  bool
+  ((GtkExpander expander)))
+
+(define-func gtk_expander_set_spacing
+  none
+  ((GtkExpander expander)
+   (int spacing)))
+
+(define-func gtk_expander_get_spacing
+  int
+  ((GtkExpander expander)))
+
+(define-func gtk_expander_set_label
+  none
+  ((GtkExpander expander)
+   ((tvec string in) label)))
+
+(define-func gtk_expander_get_label
+  static_string
+  ((GtkExpander expander)))
+
+(define-func gtk_expander_set_use_underline
+  none
+  ((GtkExpander expander)
+   (bool use_underline)))
+
+(define-func gtk_expander_get_use_underline
+  bool
+  ((GtkExpander expander)))
+
+(define-func gtk_expander_set_use_markup
+  none
+  ((GtkExpander expander)
+   (bool use_markup)))
+
+(define-func gtk_expander_get_use_markup
+  bool
+  ((GtkExpander expander)))
+
+(define-func gtk_expander_set_label_widget
+  none
+  ((GtkExpander expander)
+   (GtkWidget label_widget)))
+
+(define-func gtk_expander_get_label_widget
+  GtkWidget
+  ((GtkExpander expander)))
+
 ;; More defs files
 
 (include "gtktext.defs")
