@@ -416,6 +416,17 @@
   (bottom-to-top GTK_PROGRESS_BOTTOM_TO_TOP)
   (top-to-bottom GTK_PROGRESS_TOP_TO_BOTTOM))
 
+(define-enum GtkFileChooserAction
+  (open GTK_FILE_CHOOSER_ACTION_OPEN)
+  (save GTK_FILE_CHOOSER_ACTION_SAVE)
+  (select-folder GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER)
+  (create-folder GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER))
+
+(define-enum GtkFileChooserConfirmation
+  (confirm GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM)
+  (accept-filename GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME)
+  (select-again GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN))
+
 (define-flags GtkArgFlags
   (readable GTK_ARG_READABLE)
   (writeable GTK_ARG_WRITABLE)
@@ -5489,6 +5500,52 @@
 (define-func gtk_expander_get_label_widget
   GtkWidget
   ((GtkExpander expander)))
+
+;; GtkFileChooserButton
+
+(define-object GtkFileChooserButton (GtkHbox))
+
+(define-func gtk_file_chooser_button_new
+  GtkWidget
+  (((tvec string in) title)
+   (GtkFileChooserAction action)))
+
+(define-func gtk_file_chooser_button_new_with_backend
+  GtkWidget
+  (((tvec string in) title)
+   (GtkFileChooserAction action)
+   ((tvec string in) backend)))
+
+(define-func gtk_file_chooser_button_new_with_dialog
+  GtkWidget
+  ((GtkWidget dialog)))
+
+(define-func gtk_file_chooser_button_set_title
+  none
+  ((GtkFileChooserButton button)
+   ((tvec string in) title)))
+
+(define-func gtk_file_chooser_button_get_title
+  static_string
+  ((GtkFileChooserButton button)))
+
+(define-func gtk_file_chooser_button_set_width_chars
+  none
+  ((GtkFileChooserButton button)
+   (int chars)))
+
+(define-func gtk_file_chooser_button_get_width_chars
+  int
+  ((GtkFileChooserButton button)))
+
+(define-func gtk_file_chooser_button_set_focus_on_click
+  none
+  ((GtkFileChooserButton button)
+   (bool focus)))
+
+(define-func gtk_file_chooser_button_get_focus_on_click
+  bool
+  ((GtkFileChooserButton button)))
 
 ;; More defs files
 

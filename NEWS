@@ -6,6 +6,17 @@ Addtitions:
 	GtkAction support [Jürgen Hötzel]
 
 2.12 APIs added:
+	************ gtkfilechooserbutton.h *************
+	gtk_file_chooser_button_new
+	gtk_file_chooser_button_new_with_backend
+	gtk_file_chooser_button_new_with_dialog
+	gtk_file_chooser_button_set_title
+	gtk_file_chooser_button_get_title
+	gtk_file_chooser_button_set_width_chars
+	gtk_file_chooser_button_get_width_chars
+	gtk_file_chooser_button_set_focus_on_click
+	gtk_file_chooser_button_get_focus_on_click
+	== GtkFileChooserButton 2.12 API complete ==
 	************** gtkexpander.h *****************
 	gtk_expander_new
 	gtk_expander_new_with_mnemonic

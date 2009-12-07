@@ -15,7 +15,24 @@
 	gtk_expander_get_use_markup
 	gtk_expander_set_label_widget
 	gtk_expander_get_label_widget
-	== GtkExpander 2.12 API complete == 
+	== GtkExpander 2.12 API complete ==
+
+	* gtk.defs: GtkFileChooserButton implemented
+	****************** gtkfilechooser.h *************
+	GtkFileChooserAction (enum)
+	GtkFileChooserConfirmation (enum)
+	!! GtkFileChooser not complete !!
+	************ gtkfilechooserbutton.h *************
+	gtk_file_chooser_button_new
+	gtk_file_chooser_button_new_with_backend
+	gtk_file_chooser_button_new_with_dialog
+	gtk_file_chooser_button_set_title
+	gtk_file_chooser_button_get_title
+	gtk_file_chooser_button_set_width_chars
+	gtk_file_chooser_button_get_width_chars
+	gtk_file_chooser_button_set_focus_on_click
+	gtk_file_chooser_button_get_focus_on_click
+	== GtkFileChooserButton 2.12 API complete ==
 
 2009-12-05  Christopher Bratusek <zanghar@freenet.de>
 	* configure.in
