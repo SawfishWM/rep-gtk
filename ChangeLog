@@ -1,3 +1,7 @@
+2009-12-29  Christopher Bratusek <zanghar@freenet.de>
+	* configure.in
+	* debian/control.in: autogenerate debian/control
+
 2009-12-06  Christopher Bratusek <zanghar@freenet.de>
 	* gtk.defs: GtkExpander implemented
 	************** gtkexpander.h *****************

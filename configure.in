@@ -46,7 +46,7 @@ AC_PROG_GCC_TRADITIONAL
 AC_PROG_LIBTOOL
 
 dnl Check for librep
-REP_MIN_VER="0.17.3"
+REP_MIN_VER="0.90.4"
 
 PKG_CHECK_MODULES(LIBREP, librep >= $REP_MIN_VER
 		  ,REP_EXECDIR="`pkg-config --variable=repcommonexecdir librep`"
@@ -107,6 +107,7 @@ rep-gtk.pc
 rep-gtk.spec
 rep-gtk.ebuild
 debian/changelog
+debian/control
 ])
 
 AC_OUTPUT
