@@ -2,6 +2,8 @@
 	* rep-gtk.h
 	* build-gtk.jl: update for librep 0.90.5 header directory change
 
+	* Makefile.in: install rep-gtk.h in $includedir/rep-gtk/
+
 2009-12-29  Christopher Bratusek <zanghar@freenet.de>
 	* configure.in
 	* debian/control.in: autogenerate debian/control
