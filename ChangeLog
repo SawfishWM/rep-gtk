@@ -1,3 +1,7 @@
+2010-01-02  Christopher Bratusek <zanghar@freenet.de>
+	* rep-gtk.h
+	* build-gtk.jl: update for librep 0.90.5 header directory change
+
 2009-12-29  Christopher Bratusek <zanghar@freenet.de>
 	* configure.in
 	* debian/control.in: autogenerate debian/control

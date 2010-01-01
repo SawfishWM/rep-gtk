@@ -25,7 +25,7 @@
 #include <config.h>
 #endif
 
-#include <rep.h>
+#include <rep/rep.h>
 #include <gtk/gtk.h>
 
 typedef struct _sgtk_type_info {

@@ -309,7 +309,7 @@
     (mapc (lambda (opt)
 	    (@ "%s\n" opt))
 	  (gtk-get-options 'includes gtk-options)))
-  (@ "#include <rep.h>\n")
+  (@ "#include <rep/rep.h>\n")
   (@ "#include \"rep-gtk.h\"\n\n"))
 
 (defun output-footer (output)
