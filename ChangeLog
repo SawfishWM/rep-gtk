@@ -4,6 +4,11 @@
 
 	* Makefile.in: install rep-gtk.h in $includedir/rep-gtk/
 
+	* rep-gtk.pc.in
+	* debian/rep-gtk.install: updated
+
+	* configure.in: bumped minimum librep to 0.90.5
+
 2009-12-29  Christopher Bratusek <zanghar@freenet.de>
 	* configure.in
 	* debian/control.in: autogenerate debian/control
