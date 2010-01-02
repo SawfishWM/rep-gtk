@@ -20,7 +20,8 @@ to 0.17), with a new glue-code generator.
 %setup -q
 
 %build
-./autogen.sh --prefix=/usr --libdir=%{_libdir}
+./autogen.sh --nocfg
+%configure
 make %{?_smp_mflags}
 
 %install
@@ -39,6 +40,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc README* examples/  TODO NEWS HACKING AUTHORS BUGS ChangeLog gtk.defs gdk.defs
 %{_libdir}/rep/%{_host}/gui
 %{_libdir}/pkgconfig/rep-gtk.pc
+%{_includedir}/rep-gtk/
 
 %changelog
 * Sat Sep 05 2009 Kim B. Heino <b@bbbs.net>

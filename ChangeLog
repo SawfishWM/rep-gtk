@@ -9,6 +9,10 @@
 
 	* configure.in: bumped minimum librep to 0.90.5
 
+	* autogen.sh: added --nocfg flag for not running configure afterwards
+
+	* rep-gtk.spec.in: improved [Kim B. Heino]
+
 2009-12-29  Christopher Bratusek <zanghar@freenet.de>
 	* configure.in
 	* debian/control.in: autogenerate debian/control
