@@ -97,7 +97,6 @@ clean :
 
 distclean : clean
 	rm -f Makefile config.cache config.log config.status config.h
-	rm -f rep-gtk.spec rep-gtk.pc rep-gtk*.ebuild
 
 gitclean : distclean
 	rm -f aclocal.m4 configure
