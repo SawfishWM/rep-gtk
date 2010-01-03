@@ -7,6 +7,10 @@
 
 	* debian/changelog.in: s/+0200/+0100/
 
+	* Makefile.in: rename svnclean target to gitclean
+	               instead of removing generated packging-script files upon
+		       `distclean', remove them on `svnclean'
+
 2010-01-02  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.h
 	* build-gtk.jl: update for librep 0.90.5 header directory change
