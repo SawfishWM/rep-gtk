@@ -18,6 +18,25 @@
 
 	* rep-gtk.ebuild.in: libdir already is $prefix/lib/ no need to adjust
 
+	* gtk.defs: moved GtkFileChooserButton to gtkfilechooser.defs
+
+	* Makefile.in: updated
+
+	* gtkfilechooser.defs:
+	****************** gtkfilechooser.h *************
+	GtkFileChooser [object]
+	GtkFileChooserError [enum]
+	gtk_file_chooser_set_action
+	gtk_file_chooser_get_action
+	gtk_file_chooser_set_local_only
+	gtk_file_chooser_get_local_only
+	gtk_file_chooser_set_select_multiple
+	gtk_file_chooser_get_select_multiple
+	gtk_file_chooser_set_show_hidden
+	gtk_file_chooser_get_show_hidden
+	gtk_file_chooser_set_do_overwrite_confirmation
+	gtk_file_chooser_get_do_overwrite_confirmation
+
 2010-01-02  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.h
 	* build-gtk.jl: update for librep 0.90.5 header directory change
