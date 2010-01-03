@@ -19,9 +19,6 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 
-	cp -f /usr/share/misc/config.guess .
-	cp -f /usr/share/misc/config.sub .
-
 	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr \
 	--host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE)
 
@@ -46,7 +43,7 @@ clean:
 
 	debian/rules unpatch
 
-	dh_clean config.guess config.sub libtool install-stamp
+	dh_clean libtool install-stamp
 
 install: build
 	dh_testdir
