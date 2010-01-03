@@ -44,7 +44,7 @@ top_srcdir=@top_srcdir@
 top_builddir=.
 VPATH=@top_srcdir@:.
 
-.PHONY: clean distclean install
+.PHONY: clean distclean gitclean install
 
 all : build_dirs $(OUT)
 
