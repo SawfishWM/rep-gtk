@@ -12,6 +12,8 @@
 		        `distclean', remove them on `gitclean'
 		       + call fakeroot debian/rules clean
 
+	* debian/control.in: removed debian-specific bits
+
 2010-01-02  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.h
 	* build-gtk.jl: update for librep 0.90.5 header directory change

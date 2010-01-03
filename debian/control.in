@@ -14,9 +14,6 @@ Homepage: http://sawfish.wikia.com/
 Package: rep-gtk
 Architecture: any
 Depends: ${shlibs:Depends}
-Conflicts: rep-gtk2
-Replaces: rep-gtk2, rep-gtk-gnome
-Breaks: rep-gtk-gnome (<= 0.18.cvs20060518-3)
 Suggests: rep (>= @REP_MIN_VER@)
 Description: GTK+ binding for librep
  This package provides an interface to the GTK+ graphical toolkit for
