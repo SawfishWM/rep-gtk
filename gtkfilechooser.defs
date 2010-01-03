@@ -1,0 +1,192 @@
+;; -*- lisp -*-
+
+;; Enums
+
+(define-enum GtkFileChooserAction
+  (open GTK_FILE_CHOOSER_ACTION_OPEN)
+  (save GTK_FILE_CHOOSER_ACTION_SAVE)
+  (select-folder GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER)
+  (create-folder GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER))
+
+(define-enum GtkFileChooserConfirmation
+  (confirm GTK_FILE_CHOOSER_CONFIRMATION_CONFIRM)
+  (accept-filename GTK_FILE_CHOOSER_CONFIRMATION_ACCEPT_FILENAME)
+  (select-again GTK_FILE_CHOOSER_CONFIRMATION_SELECT_AGAIN))
+
+(define-enum GtkFileChooserError
+ (nonexistent GTK_FILE_CHOOSER_ERROR_NONEXISTENT)
+ (bad-filename GTK_FILE_CHOOSER_ERROR_BAD_FILENAME)
+ (already-exists GTK_FILE_CHOOSER_ERROR_ALREADY_EXISTS))
+
+;; GtkFileChooser [Base]
+
+(define-object GtkFileChooser (GObject))
+
+(define-func gtk_file_chooser_set_action
+  none
+  ((GtkFileChooser chooser)
+   (GtkFileChooserAction action)))
+
+(define-func gtk_file_chooser_get_action
+  GtkFileChooserAction
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_set_local_only
+  none
+  ((GtkFileChooser chooser)
+   (bool local_only)))
+
+(define-func gtk_file_chooser_get_local_only
+  bool
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_set_select_multiple
+  none
+  ((GtkFileChooser chooser)
+   (bool select_multiple)))
+
+(define-func gtk_file_chooser_get_select_multiple
+  bool
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_set_show_hidden
+  none
+  ((GtkFileChooser chooser)
+   (bool show_hidden)))
+
+(define-func gtk_file_chooser_get_show_hidden
+  bool
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_set_do_overwrite_confirmation
+  none
+  ((GtkFileChooser chooser)
+   (bool confirm)))
+
+(define-func gtk_file_chooser_get_do_overwrite_confirmation
+  bool
+  ((GtkFileChooser chooser)))
+
+;; GtkFileChooser [Filenames]
+
+(define-func gtk_file_chooser_set_filename
+  none
+  ((GtkFileChooser chooser)
+   ((tvec string in) filename)))
+
+(define-func gtk_file_chooser_get_filename
+  string
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_select_filename
+  bool
+  ((GtkFileChooser chooser)
+   ((tvec string in) filename)))
+
+(define-func gtk_file_chooser_unselect_filename
+  none
+  ((GtkFileChooser chooser)
+   ((tvec string in) filename)))
+
+(define-func gtk_file_chooser_select_all
+  none
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_unselect_all
+  none
+  ((GtkFileChooser chooser)))
+
+;;; XXX need GSList return type support
+;;(define-func gtk_file_chooser_get_filenames
+;;  GSList
+;;  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_set_current_folder
+  bool
+  ((GtkFileChooser chooser)
+   ((tvec string in) folder)))
+
+(define-func gtk_file_chooser_get_current_folder
+  string
+  ((GtkFileChooser chooser)))
+
+;; GtkFileChooser [URI]
+
+(define-func gtk_file_chooser_set_uri
+  bool
+  ((GtkFileChooser chooser)
+  ((tvec string in) uri)))
+
+(define-func gtk_file_chooser_get_uri
+  string
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_select_uri
+  bool
+  ((GtkFileChooser chooser)
+   ((tvec string in) uri)))
+
+(define-func gtk_file_chooser_unselect_uri
+  none
+  ((GtkFileChooser chooser)
+   ((tvec string in) uri)))
+
+;;; XXX need GSList return type support
+;;(define-func gtk_file_chooser_get_uris
+;;  GSList
+;;  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_set_current_folder_uri
+  bool
+  ((GtkFileChooser chooser)
+  ((tvec string in) uri)))
+
+(define-func gtk_file_chooser_get_current_folder_uri
+  string
+  ((GtkFileChooser chooser)))
+
+;; GtkFileChooserButton
+
+(define-object GtkFileChooserButton (GtkHbox))
+
+(define-func gtk_file_chooser_button_new
+  GtkWidget
+  (((tvec string in) title)
+   (GtkFileChooserAction action)))
+
+(define-func gtk_file_chooser_button_new_with_backend
+  GtkWidget
+  (((tvec string in) title)
+   (GtkFileChooserAction action)
+   ((tvec string in) backend)))
+
+(define-func gtk_file_chooser_button_new_with_dialog
+  GtkWidget
+  ((GtkWidget dialog)))
+
+(define-func gtk_file_chooser_button_set_title
+  none
+  ((GtkFileChooserButton button)
+   ((tvec string in) title)))
+
+(define-func gtk_file_chooser_button_get_title
+  static_string
+  ((GtkFileChooserButton button)))
+
+(define-func gtk_file_chooser_button_set_width_chars
+  none
+  ((GtkFileChooserButton button)
+   (int chars)))
+
+(define-func gtk_file_chooser_button_get_width_chars
+  int
+  ((GtkFileChooserButton button)))
+
+(define-func gtk_file_chooser_button_set_focus_on_click
+  none
+  ((GtkFileChooserButton button)
+   (bool focus)))
+
+(define-func gtk_file_chooser_button_get_focus_on_click
+  bool
+  ((GtkFileChooserButton button)))
