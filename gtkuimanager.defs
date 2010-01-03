@@ -41,7 +41,7 @@
 
 
 ;; (define-func gtk_ui_manager_get_action_groups 
-;;   ;; Fixme We need to wrap slist
+;;   ;; Fixme We need to wrap GSList
 ;;   list 
 ;;   ((GtkUIManager self)))
 
@@ -56,8 +56,8 @@
 
 
 ;; (define-func gtk_ui_manager_get_toplevels
-;;   FIXME: We need to wrap slist
-;;   slist 
+;;   FIXME: We need to wrap GSList
+;;   GSList 
 ;;   ((GtkUIManager self)
 ;;    (GtkUIManagerItemType  types)))
 

@@ -1322,10 +1322,10 @@
 (define-type 'file-descriptor "int" "sgtk_rep_to_fd"
 	     "sgtk_fd_to_rep" "sgtk_valid_fd")
 
-(define-type 'list "GList*" output-rep-to-list output-list-to-rep
+(define-type 'GList "GList*" output-rep-to-list output-list-to-rep
 	     output-cvec-pred (cons 'finish output-list-finish))
 
-(define-type 'slist "GSList*" output-rep-to-list output-list-to-rep
+(define-type 'GSList "GSList*" output-rep-to-list output-list-to-rep
 	     output-cvec-pred (cons 'finish output-list-finish))
 
 (define-type 'cvec "sgtk_cvec" output-rep-to-cvec output-cvec-to-rep

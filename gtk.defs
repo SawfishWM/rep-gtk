@@ -504,7 +504,7 @@
    (GdkModifierType modifier)))
 
 (define-func gtk_accel_groups_from_object
-  (slist string)
+  (GSList string)
   ((GObject object)))
 
 ;; XXX need support for GtkAccelGroupFindFunc
@@ -1147,13 +1147,13 @@
   ((GtkContainer container)))
 
 (define-func gtk_container_get_children
-  ((list GtkWidget))
+  ((GList GtkWidget))
   ((GtkContainer container)))
 
 (define-func gtk_container_set_focus_chain
   none
   ((GtkContainer container)
-   ((list GtkWidget) focusable_widgets)))
+   ((GList GtkWidget) focusable_widgets)))
 
 (define-func gtk_container_unset_focus_chain
   none
@@ -1815,7 +1815,7 @@
 
 
 (define-func gtk_window_list_toplevels
-  ((list GtkWindow))
+  ((GList GtkWindow))
   ())
 
 (define-func gtk_window_add_mnemonic
@@ -2429,7 +2429,7 @@
 
 (define-func gtk_radio_button_new
   GtkWidget
-  (((slist string) group (null-ok))))
+  (((GSList string) group (null-ok))))
 
 (define-func gtk_radio_button_new_from_widget
   GtkWidget
@@ -2437,7 +2437,7 @@
 
 (define-func gtk_radio_button_new_with_label
   GtkWidget
-  (((slist string) group (null-ok))
+  (((GSList string) group (null-ok))
    (string label)))
 
 (define-func gtk_radio_button_new_with_label_from_widget
@@ -2447,7 +2447,7 @@
 
 (define-func gtk_radio_button_new_with_mnemonic
   GtkWidget
-  (((slist string) group (null-ok))
+  (((GSList string) group (null-ok))
    (string mnemonic)))
 
 (define-func gtk_radio_button_new_with_mnemonic_from_widget
@@ -2458,13 +2458,13 @@
 ;; XXX
 ;;(define-func gtk_radio_button_set_group
 ;;  none
-;;  ((slist GtkWidget))
+;;  ((GSList GtkWidget))
 ;;   ((GtkRadioButton button)))
 ;;
 ;;(define-func gtk_radio_button_get_group
 ;;  none
 ;;  ((GtkRadioButton button)
-;;   (slist GtkWidget)))
+;;   (GSList GtkWidget)))
 
 ;;; Misc
 
@@ -2775,7 +2775,7 @@
 (define-func gtk_combo_set_popdown_strings
   none
   ((GtkCombo combo)
-   ((list string) strings)))
+   ((GList string) strings)))
 
 ;;;; StatusBar
 
@@ -3395,23 +3395,23 @@
 (define-func gtk_list_insert_items
   none
   ((GtkList list)
-   ((list GtkListItem) items)
+   ((GList GtkListItem) items)
    (int position)))
 
 (define-func gtk_list_append_items
   none
   ((GtkList list)
-   ((list GtkListItem) items)))
+   ((GList GtkListItem) items)))
 
 (define-func gtk_list_prepend_items
   none
   ((GtkList list)
-   ((list GtkListItem) items)))
+   ((GList GtkListItem) items)))
 
 (define-func gtk_list_remove_items
   none
   ((GtkList list)
-   ((list GtkListItem) items)))
+   ((GList GtkListItem) items)))
 
 ;; in gtk-compat.c
 (define-func gtk_list_append_item
@@ -5282,7 +5282,7 @@
   ((GtkAction action)
    (GtkWidget proxy)))
 
-;; FIXME: We need to wrap slist
+;; FIXME: We need to wrap GSList
 ;; (define-func gtk_action_get_proxies
 ;;   GSList
 ;;   ((GtkAction action)))

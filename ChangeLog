@@ -22,6 +22,9 @@
 
 	* Makefile.in: updated
 
+	* build-gtk.jl: renamed slist type to GSList
+	                renamed list type to GList
+
 	* gtkfilechooser.defs:
 	****************** gtkfilechooser.h *************
 	GtkFileChooser [object]
@@ -36,6 +39,20 @@
 	gtk_file_chooser_get_show_hidden
 	gtk_file_chooser_set_do_overwrite_confirmation
 	gtk_file_chooser_get_do_overwrite_confirmation
+	gtk_file_chooser_set_filename
+	gtk_file_chooser_get_filename
+	gtk_file_chooser_select_filename
+	gtk_file_chooser_unselect_filename
+	gtk_file_chooser_select_all
+	gtk_file_chooser_unselect_all
+	gtk_file_chooser_set_current_folder
+	gtk_file_chooser_get_current_folder
+	gtk_file_chooser_set_uri
+	gtk_file_chooser_get_uri
+	gtk_file_chooser_select_uri
+	gtk_file_chooser_unselect_uri
+	gtk_file_chooser_set_current_folder_uri
+	gtk_file_chooser_get_current_folder_uri
 
 2010-01-02  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.h
