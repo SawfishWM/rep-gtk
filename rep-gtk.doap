@@ -5,7 +5,7 @@
          xmlns="http://usefulinc.com/ns/doap#">
 
   <name xml:lang="en">rep-gtk</name>
-  <shortdesc xml:lang="en">A GTK+ bindint to librep</shortdesc>
+  <shortdesc xml:lang="en">A GTK+2 binding to librep</shortdesc>
   <homepage rdf:resource="http://sawfish.wikia.com/" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/sawfish-list" />
 
