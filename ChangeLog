@@ -16,6 +16,8 @@
 
 	* autogen.sh: call gitclean instead of distclean
 
+	* rep-gtk.ebuild.in: libdir already is $prefix/lib/ no need to adjust
+
 2010-01-02  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.h
 	* build-gtk.jl: update for librep 0.90.5 header directory change

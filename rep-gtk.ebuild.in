@@ -23,7 +23,7 @@ src_unpack() {
 }
 
 src_compile() {
-	econf --libdir=/usr/$(get_libdir) || die "configure failed"
+	econf || die "configure failed"
 	emake || die "make failed"
 }
 
