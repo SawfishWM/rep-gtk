@@ -9,7 +9,7 @@
 
 	* Makefile.in: + rename svnclean target to gitclean
 	               + instead of removing generated packging-script files upon
-		        `distclean', remove them on `svnclean'
+		        `distclean', remove them on `gitclean'
 		       + call fakeroot debian/rules clean
 
 2010-01-02  Christopher Bratusek <zanghar@freenet.de>
