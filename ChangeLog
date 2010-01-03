@@ -7,9 +7,10 @@
 
 	* debian/changelog.in: s/+0200/+0100/
 
-	* Makefile.in: rename svnclean target to gitclean
-	               instead of removing generated packging-script files upon
-		       `distclean', remove them on `svnclean'
+	* Makefile.in: + rename svnclean target to gitclean
+	               + instead of removing generated packging-script files upon
+		        `distclean', remove them on `svnclean'
+		       + call fakeroot debian/rules clean
 
 2010-01-02  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.h
