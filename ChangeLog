@@ -1,6 +1,8 @@
 2010-01-03  Christopher Bratusek <zanghar@freenet.de>
 	* debian/rules: don't remove config.{guess,sub} on rules/clean
 
+	* rep-gtk.spec.in: don't call autogen.sh
+
 2010-01-02  Christopher Bratusek <zanghar@freenet.de>
 	* rep-gtk.h
 	* build-gtk.jl: update for librep 0.90.5 header directory change

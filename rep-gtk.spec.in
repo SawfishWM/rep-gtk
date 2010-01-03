@@ -20,7 +20,6 @@ to 0.17), with a new glue-code generator.
 %setup -q
 
 %build
-./autogen.sh --nocfg
 %configure
 make %{?_smp_mflags}
 
