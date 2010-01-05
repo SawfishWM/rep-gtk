@@ -145,6 +145,43 @@
   string
   ((GtkFileChooser chooser)))
 
+;; GtkFileChooser [Preview]
+
+(define-func gtk_file_chooser_set_preview_widget
+  none
+  ((GtkFileChooser chooser)
+   (GtkWidget widget)))
+
+(define-func gtk_file_chooset_get_preview_widget
+  GtkWidget
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_set_preview_widget_active
+  none
+  ((GtkFileChooser chooser)
+   (bool active)))
+
+(define-func gtk_file_chooser_get_preview_widget_active
+  bool
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_set_use_preview_label
+  none
+  ((GtkFileChooser chooser)
+   (bool use_label)))
+
+(define-func gtk_file_chooser_get_use_preview_label
+  bool
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_get_preview_filename
+  string
+  ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_get_preview_uri
+  string
+  ((GtkFileChooser chooser)))
+
 ;; GtkFileChooserButton
 
 (define-object GtkFileChooserButton (GtkHbox))

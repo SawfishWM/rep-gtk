@@ -1,3 +1,15 @@
+2010-01-05  Christopher Bratusek <zanghar@freenet.de>
+	* gtkfilechooser.defs:
+	****************** gtkfilechooser.h *************
+	gtk_file_chooser_set_preview_widget
+	gtk_file_chooser_get_preview_widget
+	gtk_file_chooser_set_preview_widget_active
+	gtk_file_chooser_get_preview_widget_active
+	gtk_file_chooser_set_use_preview_label
+	gtk_file_chooser_get_use_preview_label
+	gtk_file_chooser_get_preview_filename
+	gtk_file_chooser_get_preview_uri
+
 2010-01-03  Christopher Bratusek <zanghar@freenet.de>
 	* debian/rules: don't remove config.{guess,sub} on rules/clean
 
