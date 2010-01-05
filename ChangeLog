@@ -31,6 +31,11 @@
 	gtk_file_filter_add_pixbuf_formats
 	gtk_file_filter_get_needed
 	== GtkFileFilter 2.12 API complete ==
+	****************** gtkfilechooserwidget.h **************
+	GtkFileChooserWidget (object)
+	gtk_file_chooser_widget_new
+	gtk_file_chooser_widget_new_with_backend
+	== GtkFileChooserWidget 2.12 API complete ==
 
 2010-01-03  Christopher Bratusek <zanghar@freenet.de>
 	* debian/rules: don't remove config.{guess,sub} on rules/clean

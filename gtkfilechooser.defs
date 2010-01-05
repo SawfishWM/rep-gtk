@@ -311,9 +311,22 @@
 ;;   GSList
 ;;   ((GtkFileChooser chooser)))
 
+;; GtkFileChooserWidget
+
+(define-object GtkFileChooserWidget (GtkVBox))
+
+(define-func gtk_file_chooser_widget_new
+  GtkWidget
+  ((GtkFileChooserAction action)))
+
+(define-func gtk_file_chooser_widget_new_with_backend
+  GtkWidget
+  ((GtkFileChooserAction action)
+   ((tvec string in) backend)))
+
 ;; GtkFileChooserButton
 
-(define-object GtkFileChooserButton (GtkHbox))
+(define-object GtkFileChooserButton (GtkHBox))
 
 (define-func gtk_file_chooser_button_new
   GtkWidget
