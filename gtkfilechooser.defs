@@ -251,7 +251,65 @@
 
 ;; GtkFileChooser [Filter]
 
+(define-func gtk_file_chooser_add_filter
+  none
+  ((GtkFileChooser chooser)
+   (GtkFileFilter filter)))
 
+(define-func gtk_file_chooser_remove_filter
+  none
+  ((GtkFileChooser chooser)
+   (GtkFileFilter filter)))
+
+;; XXX Need GSList Returntype support
+;;  (define-func gtk_file_chooser_list_filters
+;;    GSList
+;;    ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_set_filter
+  none
+  ((GtkFileChooser chooser)
+   (GtkFileFilter filter)))
+
+(define-func gtk_file_chooser_get_filter
+  GtkFileFilter
+  ((GtkFileChooser chooser)))
+
+;; GtkFileChooser [Shortcuts]
+
+(define-func gtk_file_chooser_add_shortcut_folder
+  bool
+  ((GtkFileChooser chooser)
+   ((tvec string in) folder)
+   (GPointer gerror error)))
+
+(define-func gtk_file_chooser_remove_shortcut_folder
+  bool
+  ((GtkFileChooser chooser)
+   ((tvec string in) folder)
+   (GPointer gerror error)))
+
+;; XXX Need GSList Returntype support
+;; (define-func gtk_file_chooser_list_shortcut_folders
+;;   GSList
+;;   ((GtkFileChooser chooser)))
+
+(define-func gtk_file_chooser_add_shortcut_folder_uri
+  bool
+  ((GtkFileChooser chooser)
+   ((tvec string in) folder)
+   (GPointer gerror error)))
+
+(define-func gtk_file_chooser_remove_shortcut_folder_uri
+  bool
+  ((GtkFileChooser chooser)
+   ((tvec string in) folder)
+   (GPointer gerror error)))
+
+;; XXX Need GSList Returntype support
+;; (define-func gtk_file_chooser_list_shortcut_folder_uris
+;;   GSList
+;;   ((GtkFileChooser chooser)))
 
 ;; GtkFileChooserButton
 

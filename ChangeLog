@@ -11,6 +11,15 @@
 	gtk_file_chooser_get_preview_uri
 	gtk_file_chooset_set_extra_widget
 	gtk_file_chooset_get_extra_widget
+	gtk_file_chooser_add_filter
+	gtk_file_chooser_remove_filter
+	gtk_file_chooser_set_filter
+	gtk_file_chooser_get_filter
+	gtk_file_chooser_add_shortcut_folder
+	gtk_file_chooser_remove_shortcut_folder
+	gtk_file_chooser_add_shortcut_folder_uri
+	gtk_file_chooser_remove_shortcut_folder_uri
+	== GtkFileChooser 2.12 API complete ==
 	****************** gtkfilefilter.h **************
 	GtkFileFilter (object)
 	GtkFileFilterFlags (enum)
