@@ -1,4 +1,49 @@
 2010-01-05  Christopher Bratusek <zanghar@freenet.de>
+	* gtktree.defs:
+	****************** gtkcelleditable.h ************
+	GtkCellEditable (object)
+	gtk_cell_editable_start_editing
+	gtk_cell_editable_editing_done
+	gtk_cell_editable_remove_widget
+	== GtkCellEditable 2.12 API complete ==
+	****************** gtkcellrenderer.h ************
+	GtkCellRenderer (object)
+	GtkCellRendererState (enum)
+	GtkCellRendererMode (enum)
+	gtk_cell_renderer_get_size
+	gtk_cell_renderer_render
+	gtk_cell_renderer_activate
+	gtk_cell_renderer_start_editing
+	gtk_cell_renderer_stop_editing
+	gtk_cell_renderer_set_fixed_size
+	gtk_cell_renderer_get_fixed_size
+	== GtkCellRenderer 2.12 API complete ==
+	****************** gtktreeviewcolumn.h **********
+	GtkTreeViewColumn (object)
+	GtkTreeViewColumnSizing (enum)
+	gtk_tree_view_column_new
+	gtk_tree_view_column_pack_start
+	gtk_tree_view_column_pack_end
+	gtk_tree_view_column_clear
+	gtk_tree_view_column_add_attribute
+	gtk_tree_view_column_clear_attributes
+	gtk_tree_view_column_set_spacing
+	gtk_tree_view_column_get_spacing
+	gtk_tree_view_column_set_visible
+	gtk_tree_view_column_get_visible
+	gtk_tree_view_column_set_resizable
+	gtk_tree_view_column_get_resizable
+	gtk_tree_view_column_set_sizing
+	gtk_tree_view_column_get_sizing
+	gtk_tree_view_column_get_width
+	gtk_tree_view_column_set_fixed_width
+	gtk_tree_view_column_get_fixed_width
+	gtk_tree_view_column_set_min_width
+	gtk_tree_view_column_get_min_width
+	gtk_tree_view_column_set_max_width
+	gtk_tree_view_column_get_max_width
+	gtk_tree_view_column_clicked
+
 	* gtkfilechooser.defs:
 	****************** gtkfilechooser.h *************
 	gtk_file_chooser_set_preview_widget

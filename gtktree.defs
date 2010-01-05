@@ -262,6 +262,8 @@
 ;   (GtkTreeModelForeachFunc func)
 ;   (GPointer data)))
 
+;; GtkTreeSelection
+
 (define-object GtkTreeSelection (GObject))
 
 (define-func gtk_tree_selection_set_mode
@@ -308,6 +310,213 @@
 ; (GList string)
 ;  ((GtkTreeSelection selection)
 ;   (GtkTreeModel model)))
+
+;; GtkCellEditable
+
+(define-object GtkCellEditable (GInterface))
+
+(define-func gtk_cell_editable_start_editing
+  none
+  ((GtkCellEditable editable)
+   (GdkEvent event)))
+
+(define-func gtk_cell_editable_editing_done
+  none
+  ((GtkCellEditable editable)))
+
+(define-func gtk_cell_editable_remove_widget
+  none
+  ((GtkCellEditable editable)))
+
+;; GtkCellRenderer
+
+(define-object GtkCellRenderer (GtkObject))
+
+(define-enum GtkCellRendererState
+ (selected GTK_CELL_RENDERER_SELECTED)
+ (prelit GTK_CELL_RENDERER_PRELIT)
+ (insensitive GTK_CELL_RENDERER_INSENSITIVE)
+ (sorted GTK_CELL_RENDERER_SORTED)
+ (focused GTK_CELL_RENDERER_FOCUSED))
+
+(define-enum GtkCellRendererMode
+  (inert GTK_CELL_RENDERER_MODE_INERT)
+  (activatable GTK_CELL_RENDERER_MODE_ACTIVATABLE)
+  (editable GTK_CELL_RENDERER_MODE_EDITABLE))
+
+(define-func gtk_cell_renderer_get_size
+  none
+  ((GtkCellRenderer cell)
+   (GtkWidget widget)
+   ((tvec GdkRectangle in) area)
+   (int xoffset)
+   (int yoffset)
+   (int width)
+   (int height)))
+
+(define-func gtk_cell_renderer_render
+  none
+  ((GtkCellRenderer cell)
+   (GdkWindow window)
+   (GtkWidget widget)
+   ((tvec GdkRectangle in) background_area)
+   ((tvec GdkRectangle in) cell_area)
+   ((tvec GdkRectangle in) expose_area)
+   (GtkCellRendererState state)))
+
+(define-func gtk_cell_renderer_activate
+  bool
+  ((GtkCellRenderer cell)
+   (GdkEvent event)
+   (GtkWidget widget)
+   ((tvec string in) path)
+   ((tvec GdkRectangle in) background_area)
+   ((tvec GdkRectangle in) cell_area)
+   (GtkCellRendererState state)))
+
+(define-func gtk_cell_renderer_start_editing
+  GtkCellEditable
+  ((GtkCellRenderer cell)
+   (GdkEvent event)
+   (GtkWidget widget)
+   ((tvec string in) path)
+   ((tvec GdkRectangle in) background_area)
+   ((tvec GdkRectangle in) cell_area)
+   (GtkCellRendererState state)))
+
+(define-func gtk_cell_renderer_stop_editing
+  none
+  ((GtkCellRenderer cell)
+   (bool stop)))
+
+(define-func gtk_cell_renderer_set_fixed_size
+  none
+  ((GtkCellRenderer cell)
+   (int width)
+   (int height)))
+
+(define-func gtk_cell_renderer_get_fixed_size
+  none
+  ((GtkCellRenderer cell)
+   (int width)
+   (int height)))
+
+;; GtkTreeViewColumn [Base]
+
+(define-object GtkTreeViewColumn (GtkObject))
+
+(define-enum GtkTreeViewColumnSizing
+  (grow-only GTK_TREE_VIEW_COLUMN_GROW_ONLY)
+  (autosize GTK_TREE_VIEW_COLUMN_AUTOSIZE)
+  (fixed GTK_TREE_VIEW_COLUMN_FIXED))
+
+(define-func gtk_tree_view_column_new
+  GtkTreeViewColumn
+  ())
+
+(define-func gtk_tree_view_column_pack_start
+  none
+  ((GtkTreeViewColumn column)
+   (GtkCellRenderer cell)
+   (bool expand)))
+
+(define-func gtk_tree_view_column_pack_end
+  none
+  ((GtkTreeViewColumn column)
+   (GtkCellRenderer cell)
+   (bool expand)))
+
+(define-func gtk_tree_view_column_clear
+  none
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_add_attribute
+  none
+  ((GtkTreeViewColumn tv_column)
+   (GtkCellRenderer cell)
+   ((tvec string in) attr)
+   (int column)))
+
+(define-func gtk_tree_view_column_clear_attributes
+  none
+  ((GtkTreeViewColumn column)
+   (GtkCellRenderer cell)))
+
+(define-func gtk_tree_view_column_set_spacing
+  none
+  ((GtkTreeViewColumn column)
+   (int spacing)))
+
+(define-func gtk_tree_view_column_get_spacing
+  int
+  ((GtkTreeViewColumn column)))
+
+(define-func  gtk_tree_view_column_set_visible
+  none
+  ((GtkTreeViewColumn column)
+   (bool visible)))
+
+(define-func gtk_tree_view_column_get_visible
+  bool
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_resizable
+  none
+  ((GtkTreeViewColumn column)
+   (bool resizable)))
+
+(define-func gtk_tree_view_column_get_resizable
+  bool
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_sizing
+  none
+  ((GtkTreeViewColumn column)
+   (GtkTreeViewColumnSizing sizing)))
+
+(define-func gtk_tree_view_column_get_sizing
+  GtkTreeViewColumnSizing
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_get_width
+  int
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_fixed_width
+  none
+  ((GtkTreeViewColumn column)
+   (int width)))
+
+(define-func gtk_tree_view_column_get_fixed_width
+  int
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_min_width
+  none
+  ((GtkTreeViewColumn column)
+   (int width)))
+
+(define-func gtk_tree_view_column_get_min_width
+  int
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_max_width
+  none
+  ((GtkTreeViewColumn column)
+   (int width)))
+
+(define-func gtk_tree_view_column_get_max_width
+  int
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_clicked
+  none
+  ((GtkTreeViewColumn column)))
+
+;;; XXX Need GList Returntype support
+;;(define-func gtk_tree_view_column_get_cell_renderers)
+
+;; GtkTreeView
 
 (define-object GtkTreeView (GtkContainer))
 
