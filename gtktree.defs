@@ -572,6 +572,35 @@
   bool
   ((GtkTreeViewColumn column)))
 
+;; GtkTreeViewColumn [Sorting]
+
+(define-func gtk_tree_view_column_set_sort_column_id
+  none
+  ((GtkTreeViewColumn tv_column)
+   (int column)))
+
+(define-func gtk_tree_view_column_get_sort_column_id
+  int
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_sort_indicator
+  none
+  ((GtkTreeViewColumn column)
+   (bool setting)))
+
+(define-func gtk_tree_view_column_get_sort_indicator
+  bool
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_sort_order
+  none
+  ((GtkTreeViewColumn column)
+   (GtkSortType order)))
+
+(define-func gtk_tree_view_column_get_sort_order
+  GtkSortType
+  ((GtkTreeViewColumn column)))
+
 ;; GtkTreeView
 
 (define-object GtkTreeView (GtkContainer))
