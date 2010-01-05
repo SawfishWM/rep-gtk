@@ -601,6 +601,49 @@
   GtkSortType
   ((GtkTreeViewColumn column)))
 
+;; GtkTreeViewColumn [GtkTreeView Interaction]
+
+(define-func gtk_tree_view_column_cell_set_cell_data
+  none
+  ((GtkTreeViewColumn column)
+   (GtkTreeModel model)
+   (GtkTreeIter iter)
+   (bool is_expander)
+   (bool is_expanded)))
+
+(define-func gtk_tree_view_column_cell_get_size
+  none
+  ((GtkTreeViewColumn column)
+   ((tvec GdkRectangle in) area)
+   (int xoffset)
+   (int yoffset)
+   (int width)
+   (int height)))
+
+(define-func gtk_tree_view_column_cell_is_visible
+  bool
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_focus_cell
+  none
+  ((GtkTreeViewColumn column)
+   (GtkCellRenderer cell)))
+
+(define-func gtk_tree_view_column_cell_get_position
+  bool
+  ((GtkTreeViewColumn column)
+   (GtkCellRenderer cell)
+   (int start)
+   (int width)))
+
+(define-func gtk_tree_view_column_queue_resize
+  none
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_get_tree_view
+  GtkWidget
+  ((GtkTreeViewColumn column)))
+
 ;; GtkTreeView
 
 (define-object GtkTreeView (GtkContainer))
