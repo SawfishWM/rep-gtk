@@ -516,6 +516,62 @@
 ;;; XXX Need GList Returntype support
 ;;(define-func gtk_tree_view_column_get_cell_renderers)
 
+;; GtkTreeViewColumn [Headers]
+
+(define-func gtk_tree_view_column_set_title
+  none
+  ((GtkTreeViewColumn column)
+   ((tvec string in) title)))
+
+(define-func gtk_tree_view_column_get_title
+  static_string
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_expand
+  none
+  ((GtkTreeViewColumn column)
+   (bool expand)))
+
+(define-func gtk_tree_view_column_get_expand
+  bool
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_clickable
+  none
+  ((GtkTreeViewColumn column)
+   (bool clickable)))
+
+(define-func gtk_tree_view_column_get_clickable
+  bool
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_widget
+  none
+  ((GtkTreeViewColumn column)
+   (GtkWidget widget)))
+
+(define-func gtk_tree_view_column_get_widget
+  GtkWidget
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_alignment
+  none
+  ((GtkTreeViewColumn column)
+   (double align)))
+
+(define-func gtk_tree_view_column_get_alignment
+  double
+  ((GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_column_set_reorderable
+  none
+  ((GtkTreeViewColumn column)
+   (bool reorderable)))
+
+(define-func gtk_tree_view_column_get_reorderable
+  bool
+  ((GtkTreeViewColumn column)))
+
 ;; GtkTreeView
 
 (define-object GtkTreeView (GtkContainer))

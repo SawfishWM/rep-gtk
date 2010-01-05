@@ -43,6 +43,18 @@
 	gtk_tree_view_column_set_max_width
 	gtk_tree_view_column_get_max_width
 	gtk_tree_view_column_clicked
+	gtk_tree_view_column_set_title
+	gtk_tree_view_column_get_title
+	gtk_tree_view_column_set_expand
+	gtk_tree_view_column_get_expand
+	gtk_tree_view_column_set_clickable
+	gtk_tree_view_column_get_clickable
+	gtk_tree_view_column_set_widget
+	gtk_tree_view_column_get_widget
+	gtk_tree_view_column_set_alignment
+	gtk_tree_view_column_get_alignment
+	gtk_tree_view_column_set_reorderable
+	gtk_tree_view_column_get_reorderable
 
 	* gtkfilechooser.defs:
 	****************** gtkfilechooser.h *************
