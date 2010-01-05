@@ -18,6 +18,12 @@
  (bad-filename GTK_FILE_CHOOSER_ERROR_BAD_FILENAME)
  (already-exists GTK_FILE_CHOOSER_ERROR_ALREADY_EXISTS))
 
+(define-enum GtkFileFilterFlags
+  (filename GTK_FILE_FILTER_FILENAME)
+  (uri GTK_FILE_FILTER_URI)
+  (display-name GTK_FILE_FILTER_DISPLAY_NAME)
+  (mime-type GTK_FILE_FILTER_MIME_TYPE))
+
 ;; GtkFileChooser [Base]
 
 (define-object GtkFileChooser (GObject))
@@ -181,6 +187,71 @@
 (define-func gtk_file_chooser_get_preview_uri
   string
   ((GtkFileChooser chooser)))
+
+;; GtkFileChooser [Extra]
+
+(define-func gtk_file_chooser_set_extra_widget
+  none
+  ((GtkFileChooser chooser)
+   (GtkWidget widget)))
+
+(define-func gtk_file_chooset_get_extra_widget
+  GtkWidget
+  ((GtkFileChooser chooser)))
+
+;; GtkFileFilter
+
+(define-object GtkFileFilter (GObject))
+
+(define-func gtk_file_filter_new
+  GtkFileFilter
+   ())
+
+(define-func gtk_file_filter_set_name
+  none
+  ((GtkFileFilter filter)
+   ((tvec string in) name)))
+
+(define-func gtk_file_filter_get_name
+  string
+  ((GtkFileFilter filter)))
+
+(define-func gtk_file_filter_add_mime_type
+  none
+  ((GtkFileFilter filter)
+   ((tvec string in) mimetype)))
+
+(define-func gtk_file_filter_add_pattern
+  none
+  ((GtkFileFilter filter)
+   ((tvec string in) pattern)))
+
+(define-func gtk_file_filter_add_pixbuf_formats
+  none
+  ((GtkFileFilter filter)))
+
+;;; XXX Need GtkFileFilterFunc
+;;  (define-func gtk_file_filter_add_custom
+;;    none
+;;    ((GtkFileFilter filter)
+;;     (GtkFileFilterFlags flags)
+;;     (GtkFileFilterFunc func)
+;;     (GPointer data)
+;;     (GDestroyNotify notify)))
+
+(define-func gtk_file_filter_get_needed
+  GtkFileFilterFlags
+  ((GtkFileFilter filter)))
+
+;;; XXX Need GtkFileFilterInfo
+;;  (define-func gtk_file_filter_filter
+;;    bool
+;;    ((GtkFileFilter filter)
+;;     (GtkFileFilterInfo info)))
+
+;; GtkFileChooser [Filter]
+
+
 
 ;; GtkFileChooserButton
 
