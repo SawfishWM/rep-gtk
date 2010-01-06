@@ -18,6 +18,10 @@
 	GtkCellRendererCombo (object)
 	gtk_cell_renderer_combo_new
 	== GtkCellRendererCombo 2.12 API complete ==
+	****************** gtkcellrendererprogress.h *****
+	GtkCellRendererProgress (object)
+	gtk_cell_renderer_progress_new
+	== GtkCellRendererProgress 2.12 API complete ==
 
 2010-01-05  Christopher Bratusek <zanghar@freenet.de>
 	* gtktree.defs:

@@ -436,11 +436,17 @@
 
 ;; GtkCellRendererCombo
 
-;; GtkCellRendererText
-
 (define-object GtkCellRendererCombo (GtkCellRendererText))
 
 (define-func gtk_cell_renderer_combo_new
+  GtkCellRenderer
+  ())
+
+;; GtkCellRendererProgress
+
+(define-object GtkCellRendererProgress (GtkCellRenderer))
+
+(define-func gtk_cell_renderer_progress_new
   GtkCellRenderer
   ())
 
