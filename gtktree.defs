@@ -434,6 +434,16 @@
   GtkCellRenderer
   ())
 
+;; GtkCellRendererCombo
+
+;; GtkCellRendererText
+
+(define-object GtkCellRendererCombo (GtkCellRendererText))
+
+(define-func gtk_cell_renderer_combo_new
+  GtkCellRenderer
+  ())
+
 ;; GtkTreeViewColumn [Base]
 
 (define-object GtkTreeViewColumn (GtkObject))
