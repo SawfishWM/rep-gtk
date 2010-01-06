@@ -22,10 +22,18 @@
 	GtkCellRendererProgress (object)
 	gtk_cell_renderer_progress_new
 	== GtkCellRendererProgress 2.12 API complete ==
-	****************** gtkcellrendererspin.h *****
+	****************** gtkcellrendererspin.h *********
 	GtkCellRendererSpin (object)
 	gtk_cell_renderer_spin_new
 	== GtkCellRendererSpin 2.12 API complete ==
+	****************** gtkcellrenderertoggle.h *******
+	GtkCellRendererToggle (object)
+	gtk_cell_rendere_toggle_new
+	gtk_cell_renderer_toggle_set_radio
+	gtk_cell_renderer_toggle_get_radio
+	gtk_cell_renderer_toggle_set_active
+	gtk_cell_renderer_toggle_get_active
+	== GtkCellRendererToggle 2.12 API complete ==
 
 2010-01-05  Christopher Bratusek <zanghar@freenet.de>
 	* gtktree.defs:

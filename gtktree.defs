@@ -458,6 +458,32 @@
   GtkCellRenderer
   ())
 
+;; GtkCellRendererToggle
+
+(define-object GtkCellRendererToggle (GtkCellRendererText))
+
+(define-func gtk_cell_renderer_toggle_new
+  GtkCellRenderer
+  ())
+
+(define-func gtk_cell_renderer_toggle_set_radio
+  none
+  ((GtkCellRendererToggle cell)
+   (bool radio)))
+
+(define-func gtk_cell_renderer_toggle_get_radio
+  bool
+  ((GtkCellRendererToggle cell)))
+
+(define-func gtk_cell_renderer_toggle_set_active
+  none
+  ((GtkCellRendererToggle cell)
+   (bool radio)))
+
+(define-func gtk_cell_renderer_toggle_get_active
+  bool
+  ((GtkCellRendererToggle cell)))
+
 ;; GtkTreeViewColumn [Base]
 
 (define-object GtkTreeViewColumn (GtkObject))
