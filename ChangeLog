@@ -9,6 +9,11 @@
 	GtkCellRendererPixbuf (object)
 	gtk_cell_renderer_pixbuf_new
 	== GtkCellRendererPixbuf 2.12 API complete ==
+	****************** gtkcellrendereraccel.h ********
+	GtkCellRendererAccel (object)
+	GtkCellRendererAccelMode (enum)
+	gtk_cell_renderer_accel_new
+	== GtkCellRendererAccel 2.12 API complete ==
 
 2010-01-05  Christopher Bratusek <zanghar@freenet.de>
 	* gtktree.defs:

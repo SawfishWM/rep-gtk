@@ -422,6 +422,18 @@
   GtkCellRenderer
   ())
 
+;; GtkCellRendererAccel
+
+(define-object GtkCellRendererAccel (GtkCellRendererText))
+
+(define-enum GtkCellRendererAccelMode
+  (gtk GTK_CELL_RENDERER_ACCEL_MODE_GTK)
+  (other GTK_CELL_RENDERER_ACCEL_MODE_OTHER))
+
+(define-func gtk_cell_renderer_accel_new
+  GtkCellRenderer
+  ())
+
 ;; GtkTreeViewColumn [Base]
 
 (define-object GtkTreeViewColumn (GtkObject))
