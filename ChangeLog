@@ -5,6 +5,10 @@
 	gtk_cell_renderer_text_new
 	gtk_cell_renderer_text_set_fixed_height_from_font
 	== GtkCellRendererText 2.12 API complete ==
+	****************** gtkcellrendererpixbuf.h *******
+	GtkCellRendererPixbuf (object)
+	gtk_cell_renderer_pixbuf_new
+	== GtkCellRendererPixbuf 2.12 API complete ==
 
 2010-01-05  Christopher Bratusek <zanghar@freenet.de>
 	* gtktree.defs:

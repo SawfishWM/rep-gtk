@@ -414,6 +414,14 @@
   ((GtkCellRendererText cell)
    (int num_rows)))
 
+;; GtkCellRendererPixbuf
+
+(define-object GtkCellRendererPixbuf (GtkCellRenderer))
+
+(define-func gtk_cell_renderer_pixbuf_new
+  GtkCellRenderer
+  ())
+
 ;; GtkTreeViewColumn [Base]
 
 (define-object GtkTreeViewColumn (GtkObject))
