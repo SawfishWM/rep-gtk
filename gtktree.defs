@@ -450,6 +450,14 @@
   GtkCellRenderer
   ())
 
+;; GtkCellRendererSpin
+
+(define-object GtkCellRendererSpin (GtkCellRendererText))
+
+(define-func gtk_cell_renderer_spin_new
+  GtkCellRenderer
+  ())
+
 ;; GtkTreeViewColumn [Base]
 
 (define-object GtkTreeViewColumn (GtkObject))
