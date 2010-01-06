@@ -727,9 +727,15 @@
   GtkWidget
   ((GtkTreeViewColumn column)))
 
-;; GtkTreeView
+;; GtkTreeView [Base]
 
 (define-object GtkTreeView (GtkContainer))
+
+(define-enum GtkTreeViewDropPosition
+  (before GTK_TREE_VIEW_DROP_BEFORE)
+  (after GTK_TREE_VIEW_DROP_AFTER)
+  (into-before GTK_TREE_VIEW_DROP_INTO_OR_BEFORE)
+  (into-after GTK_TREE_VIEW_DROP_INTO_OR_AFTER))
 
 (define-func gtk_tree_view_new
   GtkWidget
@@ -747,3 +753,56 @@
   none
   ((GtkTreeView treeview)
    (GtkTreeModel model)))
+
+(define-func gtk_tree_view_get_selection
+  GtkTreeSelection
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_set_hadjustment
+  none
+  ((GtkTreeView tree)
+   (GtkAdjustment adjustment)))
+
+(define-func gtk_tree_view_get_hadjustment
+  GtkAdjustment
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_set_vadjustment
+  none
+  ((GtkTreeView tree)
+   (GtkAdjustment adjustment)))
+
+(define-func gtk_tree_view_get_vadjustment
+  GtkAdjustment
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_set_headers_visible
+  none
+  ((GtkTreeView tree)
+   (bool visible)))
+
+(define-func gtk_tree_view_get_headers_visible
+  bool
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_set_headers_clickable
+  none
+  ((GtkTreeView tree)
+   (bool clickable)))
+
+(define-func gtk_tree_view_get_headers_clickable
+  bool
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_columns_autosize
+  none
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_set_rules_hint
+  none
+  ((GtkTreeView tree)
+   (bool hint)))
+
+(define-func gtk_tree_view_get_rules_hint
+  bool
+  ((GtkTreeView tree)))

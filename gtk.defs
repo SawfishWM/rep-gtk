@@ -2,11 +2,16 @@
 
 ;; updated for gtk+ 2.12:
 
-;; GtkButton, GtkToggleButton, GtkCheckButton, GtkRadioButton, GtkFontButton
-;; GtkLinkButton, GtkColorButton, GtkVolumeButton, GtkStatusIcon
-;; GtkBuilder, GtkUIManager, GtkActionGroup, GtkAction, GtkComboBox
-;; GtkComboBoxEntry, GtkExpander, GtkFileChooserButton, GtkSpinButton
-;; GtkScaleButton
+;; GtkButton, GtkToggleButton, GtkCheckButton, GtkRadioButton, GtkFontButton,
+;; GtkLinkButton, GtkColorButton, GtkVolumeButton, GtkStatusIcon,
+;; GtkBuilder, GtkUIManager, GtkActionGroup, GtkAction, GtkComboBox,
+;; GtkComboBoxEntry, GtkExpander, GtkFileChooserButton, GtkSpinButton,
+;; GtkScaleButton, GtkTreeViewColumn, GtkCellRenderer, GtkFileChooser,
+;; GtkCellRendererText, GtkCellRendererAccel, GtkCellRendererSpin,
+;; GtkCellRendererProgress, GtkCellRendererPixbuf, GtkCellRendererToggle,
+;; GtkCellRendererCombo, GtkCellEditable, GtkFileFilter, GtkFileChooserWidget,
+;; GtkTreePath, GtkTreeSelection, GtkTreeIter, GtkTreeRowReference, GtkTreeModel,
+;; GtkAboutDialog, GtkAccelGroup, GtkAccelLabel,
 
 ;; updated for gtk+ 1.3:
 
