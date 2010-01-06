@@ -1,3 +1,11 @@
+2010-01-06  Christopher Bratusek <zanghar@freenet.de>
+	* gtktree.defs:
+	****************** gtkcellrenderertext.h ********
+	GtkCellRendererText (object)
+	gtk_cell_renderer_text_new
+	gtk_cell_renderer_text_set_fixed_height_from_font
+	== GtkCellRendererText 2.12 API complete ==
+
 2010-01-05  Christopher Bratusek <zanghar@freenet.de>
 	* gtktree.defs:
 	****************** gtkcelleditable.h ************

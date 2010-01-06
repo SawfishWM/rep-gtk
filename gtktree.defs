@@ -401,6 +401,19 @@
    (int width)
    (int height)))
 
+;; GtkCellRendererText
+
+(define-object GtkCellRendererText (GtkCellRenderer))
+
+(define-func gtk_cell_renderer_text_new
+  GtkCellRenderer
+  ())
+
+(define-func gtk_cell_renderer_text_set_fixed_height_from_font
+  none
+  ((GtkCellRendererText cell)
+   (int num_rows)))
+
 ;; GtkTreeViewColumn [Base]
 
 (define-object GtkTreeViewColumn (GtkObject))
