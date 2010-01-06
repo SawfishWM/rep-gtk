@@ -1,6 +1,6 @@
 ;; -*- lisp -*-
 
-;; updated for gtk+ 2.12:
+;; updated for GTK+ 2.12:
 
 ;; GtkButton, GtkToggleButton, GtkCheckButton, GtkRadioButton, GtkFontButton,
 ;; GtkLinkButton, GtkColorButton, GtkVolumeButton, GtkStatusIcon,
@@ -13,7 +13,7 @@
 ;; GtkTreePath, GtkTreeSelection, GtkTreeIter, GtkTreeRowReference, GtkTreeModel,
 ;; GtkAboutDialog, GtkAccelGroup, GtkAccelLabel,
 
-;; updated for gtk+ 1.3:
+;; updated for GTK+ 1.3/2.0:
 
 ;; GtkButton, GtkWidget, GtkContainer, GtkFixed, GtkWindow, GtkHandleBox,
 ;; GtkBox, GtkButtonBox, Gtk[HV]ButtonBox, GtkToolbar, GtkTable,
@@ -33,7 +33,7 @@
 
 ;; Todo: TreeView/TreeModel et al; delete Tree and CList
 
-;;; Gtk enums
+;;; GTK+ enums
 
 (import "glib.defs")
 (import "gdk.defs")
