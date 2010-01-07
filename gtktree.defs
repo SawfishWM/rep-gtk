@@ -727,6 +727,51 @@
   GtkWidget
   ((GtkTreeViewColumn column)))
 
+;; GtkTreeSortable
+
+(define-object GtkTreeSortable (GInterface))
+
+(define-boxed GtkTreeIterCompareFunc
+  ((GtkTreeModel model)
+   (GtkTreeIter iter1)
+   (GtkTreeIter iter2)
+   (GPointer data)))
+
+(define-func gtk_tree_sortable_sort_column_changed
+  none
+  ((GtkTreeSortable sortable)))
+
+(define-func gtk_tree_sortable_set_sort_column_id
+  none
+  ((GtkTreeSortable sortable)
+   (int column)
+   (GtkSortType type)))
+
+(define-func gtk_tree_sortable_get_sort_column_id
+  bool
+  ((GtkTreeSortable sortable)
+   ((tvec int in) column)
+   ((tvec GtkSortType in) type)))
+
+(define-func gtk_tree_sortable_set_sort_func
+  none
+  ((GtkTreeSortable sortable)
+   (int column)
+   (GtkTreeIterCompareFunc func)
+   (GPointer data)
+   (GtkDestroyNotify destroy)))
+
+(define-func gtk_tree_sortable_set_default_sort_func
+  none
+  ((GtkTreeSortable sortable)
+   (GtkTreeIterCompareFunc func)
+   (GPointer data)
+   (GtkDestroyNotify destroy)))
+
+(define-func gtk_tree_sortable_has_default_sort_func
+  bool
+  ((GtkTreeSortable sortable)))
+
 ;; GtkTreeView [Base]
 
 (define-object GtkTreeView (GtkContainer))
