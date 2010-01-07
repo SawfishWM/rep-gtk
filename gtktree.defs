@@ -6,7 +6,7 @@
 
 (define-flags GtkTreeModelFlags
   (iters-persist GTK_TREE_MODEL_ITERS_PERSIST)
-  (GList-only GTK_TREE_MODEL_LIST_ONLY))
+  (list-only GTK_TREE_MODEL_LIST_ONLY))
 
 (define-boxed GtkTreeIter
   (copy gtk_tree_iter_copy)
@@ -307,7 +307,7 @@
 ;   (GtkTreeIter iter)))
 
 ;(define-func gtk_tree_selection_get_selected_rows
-; (GList string)
+; (list string)
 ;  ((GtkTreeSelection selection)
 ;   (GtkTreeModel model)))
 

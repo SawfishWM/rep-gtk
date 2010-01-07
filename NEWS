@@ -3,8 +3,6 @@ improved deb and rpm packaging scripts
 improved ebuild
 install header to $includedir/rep-gtk
 autotools (Makefile & Co.) rework
-renamed slist type to GSList
-renamed list type to GList
 
 2.12 APIs added:
 	* gtkfilechooser.defs:
