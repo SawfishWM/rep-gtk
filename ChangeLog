@@ -17,6 +17,9 @@
 	gtk_list_store_new
 	gtk_list_store_newv
 	gtk_list_store_set_column_types
+	gtk_list_store_append
+	****************** gtktreeview.h ****************
+	gtk_tree_view_append_column
 
 2010-01-06  Christopher Bratusek <zanghar@freenet.de>
 	* gtktree.defs:

@@ -791,6 +791,11 @@
    (int columns)
    ((tvec type in) type)))
 
+(define-func gtk_list_store_append
+  none
+  ((GtkListStore store)
+   (GtkTreeIter iter)))
+
 ;; GtkTreeView [Base]
 
 (define-object GtkTreeView (GtkContainer))
@@ -870,3 +875,8 @@
 (define-func gtk_tree_view_get_rules_hint
   bool
   ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_append_column
+  int
+  ((GtkTreeView tree)
+   (GtkTreeViewColumn column)))
