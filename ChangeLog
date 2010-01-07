@@ -12,6 +12,11 @@
 	gtk_tree_sortable_set_default_sort_func
 	gtk_tree_sortable_has_default_sort_func
 	== GtkTreeSortable 2.12 API complete ==
+	****************** gtkliststore.h ***************
+	GtkListStore (object)
+	gtk_list_store_new
+	gtk_list_store_newv
+	gtk_list_store_set_column_types
 
 2010-01-06  Christopher Bratusek <zanghar@freenet.de>
 	* gtktree.defs:

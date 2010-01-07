@@ -12,7 +12,9 @@ exec rep --batch "$0" "$@"
 
   ;; Widgets
   (define MainWindow (gtk-window-new 'toplevel))
-  (define TreeView (gtk-tree-view-new))
+ ; (define ListStore (gtk-list-store-newv 1 G_TYPE_STRING))
+ ; (define TreeView (gtk-tree-view-new-with-model ListStore))
+   (define TreeView (gtk-tree-view-new))
 
   ;; Windowborder
   (gtk-container-set-border-width MainWindow 10)

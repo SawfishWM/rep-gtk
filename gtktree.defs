@@ -772,6 +772,25 @@
   bool
   ((GtkTreeSortable sortable)))
 
+;; GtkListStore
+
+(define-object GtkListStore (GObject))
+
+(define-func gtk_list_store_new
+  GtkListStore
+  ((int columns)))
+
+(define-func gtk_list_store_newv
+  GtkListStore
+  ((int columns)
+   ((tvec type in) type)))
+
+(define-func gtk_list_store_set_column_types
+  none
+  ((GtkListStore store)
+   (int columns)
+   ((tvec type in) type)))
+
 ;; GtkTreeView [Base]
 
 (define-object GtkTreeView (GtkContainer))
