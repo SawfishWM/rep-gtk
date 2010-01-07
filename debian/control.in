@@ -4,8 +4,8 @@ Priority: optional
 Maintainer: Christopher Roy Bratusek <zanghar@freenet.de>
 Standards-Version: 3.8.2
 Build-Depends: debhelper (>= 5),
-               librep-dev (>= @REP_MIN_VER@),
-               rep (>= @REP_MIN_VER@),
+               librep-dev (>= @REP_MIN_VER@~@gitdate@),
+               rep (>= @REP_MIN_VER@~@gitdate@),
                autotools-dev,
                libglib2.0-dev (>= @GLIB_MIN_VER@),
                libgtk2.0-dev (>= @GTK_MIN_VER@)
@@ -14,7 +14,7 @@ Homepage: http://sawfish.wikia.com/
 Package: rep-gtk
 Architecture: any
 Depends: ${shlibs:Depends}
-Suggests: rep (>= @REP_MIN_VER@)
+Suggests: rep (>= @REP_MIN_VER@~@gitdate@)
 Description: GTK+ binding for librep
  This package provides an interface to the GTK+ graphical toolkit for
  the librep lisp interpreter.
