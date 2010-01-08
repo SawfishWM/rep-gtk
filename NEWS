@@ -171,6 +171,23 @@ autotools (Makefile & Co.) rework
 	gtk_cell_renderer_toggle_set_active
 	gtk_cell_renderer_toggle_get_active
 	== GtkCellRendererToggle 2.12 API complete ==
+	****************** gtktreesortable.h ************
+	GtkTreeSortable (object)
+	GtkTreeIterCompareFunc (boxed)
+	gtk_tree_sortable_get_sort_column_id
+	gtk_tree_sortable_get_sort_column_id
+	gtk_tree_sortable_set_sort_func
+	gtk_tree_sortable_set_default_sort_func
+	gtk_tree_sortable_has_default_sort_func
+	== GtkTreeSortable 2.12 API complete ==
+	****************** gtkliststore.h ***************
+	GtkListStore (object)
+	gtk_list_store_new
+	gtk_list_store_newv
+	gtk_list_store_set_column_types
+	gtk_list_store_append
+	****************** gtktreeview.h ****************
+	gtk_tree_view_append_column
 
 0.90.1:
 improved ebuild
