@@ -6,6 +6,8 @@
 
 	* gtktree.defs: improved some functions [Vincent Untz]
 
+	* Makefile.in: remove rep-gtk.pc upon distclean, not gitlcean
+
 2010-01-07  Christopher Bratusek <zanghar@freenet.de>
 	* *.defs
 	* build-gtk.jl: revert slist >> GSList / list >> GList renamal
