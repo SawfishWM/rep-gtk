@@ -349,10 +349,10 @@
   ((GtkCellRenderer cell)
    (GtkWidget widget)
    ((tvec GdkRectangle in) area)
-   (int xoffset)
-   (int yoffset)
-   (int width)
-   (int height)))
+   ((tvec int in) xoffset)
+   ((tvec int in) yoffset)
+   ((tvec int in) width)
+   ((tvec int in) height)))
 
 (define-func gtk_cell_renderer_render
   none
@@ -398,8 +398,8 @@
 (define-func gtk_cell_renderer_get_fixed_size
   none
   ((GtkCellRenderer cell)
-   (int width)
-   (int height)))
+   ((tvec int in) width)
+   ((tvec int in) height)))
 
 ;; GtkCellRendererText
 
@@ -698,10 +698,10 @@
   none
   ((GtkTreeViewColumn column)
    ((tvec GdkRectangle in) area)
-   (int xoffset)
-   (int yoffset)
-   (int width)
-   (int height)))
+   ((tvec int in) xoffset)
+   ((tvec int in) yoffset)
+   ((tvec int in) width)
+   ((tvec int in) height)))
 
 (define-func gtk_tree_view_column_cell_is_visible
   bool
@@ -716,8 +716,8 @@
   bool
   ((GtkTreeViewColumn column)
    (GtkCellRenderer cell)
-   (int start)
-   (int width)))
+   ((tvec int in) start)
+   ((tvec int in) width)))
 
 (define-func gtk_tree_view_column_queue_resize
   none

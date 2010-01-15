@@ -158,7 +158,7 @@
   ((GtkFileChooser chooser)
    (GtkWidget widget)))
 
-(define-func gtk_file_chooset_get_preview_widget
+(define-func gtk_file_chooser_get_preview_widget
   GtkWidget
   ((GtkFileChooser chooser)))
 
@@ -195,7 +195,7 @@
   ((GtkFileChooser chooser)
    (GtkWidget widget)))
 
-(define-func gtk_file_chooset_get_extra_widget
+(define-func gtk_file_chooser_get_extra_widget
   GtkWidget
   ((GtkFileChooser chooser)))
 

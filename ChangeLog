@@ -1,3 +1,11 @@
+2010-01-15  Christopher Bratusek <zanghar@freenet.de>
+	* gtkfilechooser.defs: fixed two typos:
+		gtk_file_choose{t,r}_get_preview_widget
+		gtk_file_choose{t,r}_get_extra_widget
+		-- [Vincent Untz]
+
+	* gtktree.defs: improved some functions [Vincent Untz]
+
 2010-01-07  Christopher Bratusek <zanghar@freenet.de>
 	* *.defs
 	* build-gtk.jl: revert slist >> GSList / list >> GList renamal
