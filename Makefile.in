@@ -96,12 +96,12 @@ clean :
 	rm -rf gtk-2
 
 distclean : clean
-	rm -f Makefile config.cache config.log config.status config.h
+	rm -f Makefile config.cache config.log config.status config.h rep-gtk.pc
 
 gitclean : distclean
 	rm -f aclocal.m4 configure
 	rm -rf autom4te.cache
-	rm -f rep-gtk.spec rep-gtk.pc rep-gtk*.ebuild
+	rm -f rep-gtk.spec rep-gtk*.ebuild
 	-fakeroot debian/rules clean
 	rm -f debian/changelog debian/control
 
