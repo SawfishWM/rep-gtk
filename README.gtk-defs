@@ -2,24 +2,20 @@
 
 These notes describe the format of the .defs files
 
-
 (import "DEFS-FILE")
 (include "DEFS-FILE")
 
 
-
 (define-enum ENUM-TYPEDEF-NAME
   (LISP-SYM CPP-MACRO)
   ...)
 
 
-
 (define-flags FLAGS-TYPEDEF-NAME
   (LISP-SYM CPP-MACRO)
   ...)
 
 
-
 (define-boxed BOXED-TYPEDEF-NAME
   ATTR ...)
 
@@ -36,7 +32,6 @@ where each ATTR is one of:
       method of retrieving the value
 
 
-
 (define-object OBJECT-TYPEDEF-NAME (SUPER-CLASS-TYPEDEF)
   ATTR ...)
 
@@ -45,7 +40,6 @@ where each ATTR is one of:
       (fields FIELD ...)		[as above]
 
 
-
 (define-func C-FUNC-NAME
   RETURN-VALUE [RET-OPTIONS...]
   (ARG ...)
@@ -73,7 +67,6 @@ and each RET-OPTION may be one of:
   (copy nil)				; unimplemented?
 
 
-
 (options OPTION ...)
 
 where each OPTION can be:
@@ -87,7 +80,6 @@ where each OPTION can be:
 the `provide' option generates the rep dl stub required to provide
 FEATURE and call the init-func when loaded
 
-
 
 GTK fundamental types seem to include:
 

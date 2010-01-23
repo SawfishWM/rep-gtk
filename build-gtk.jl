@@ -32,7 +32,6 @@
 
 ;; WARNING: This makes some pretty gruesome assumptions. [where?]
 
-
 ;; Configuration
 
 ;; Alist of (TYPE ["C-TYPE" | DECL-FUNC] ["REP2GTK" | FROM-REP-FUNC]
@@ -64,7 +63,6 @@
 				    gtk-to-rep type-pred options)
 			     gtk-type-alist)))
 
-
 ;; Work variables
 
 (defvar gtk-enums nil
@@ -129,7 +127,6 @@
 
 (defvar gtk-emitted-composite-helpers nil)
 
-
 ;; Entry point
 
 (defun build-gtk (defs-file-name output-file-name)
@@ -178,7 +175,6 @@
     (setq command-line-args (nthcdr 2 command-line-args))
     (build-gtk in out)))
 
-
 ;; Parsing
 
 (defun parse-gtk (input)
@@ -297,7 +293,6 @@
 	      (gtk-warning "Ignoring `%S'" def))))))
     (end-of-stream)))
 
-
 ;; Code generation
 
 (defmacro @ args
@@ -550,7 +545,6 @@
   (output-subrs output)
   (output-footer output))
 
-
 ;; Type management
 
 (defun gtk-outer-type (type)
@@ -623,7 +617,6 @@
 (defun gtk-type-prop (type prop)
   (gtk-typage-prop (gtk-type-info type) prop))
 
-
 ;; Function arg helpers
 
 (defmacro gtk-get-arg-options (option arg)
@@ -638,7 +631,6 @@
 (defmacro gtk-arg-name (arg)
   `(symbol-name (nth 1 ,arg)))
 
-
 ;; Type output functions
 
 (defun output-complex-type (type typage)
@@ -862,7 +854,6 @@
 	   "0"
 	 (format nil "_sgtk_helper_torep_nocopy_%s" inner-type)))))
 
-
 ;; Function generation
 
 (defun output-function (def output #!optional function-callback)
@@ -1093,7 +1084,6 @@
     ;; footer
     (@ "}\n\n")))
 
-
 ;; Field access functions
 
 (defun output-field-functions (type-list output)
@@ -1151,7 +1141,6 @@
     (@ "  return \(%s\) ? Qt : Qnil;\n}\n\n" pred)
     (setq gtk-subrs (cons (intern (format nil "%s_p" ctype)) gtk-subrs))))
 
-
 ;; Composite type helper functions
 
 (defun output-helper (type output)
@@ -1205,7 +1194,6 @@
       (@ "static repv\n_sgtk_helper_torep_nocopy_%s \(void *mem\)\n" type)
       (@ "\{\n  return %s;\n\}\n\n" to))))
 
-
 ;; Sundries
 
 (defun gtk-canonical-name (name)
@@ -1246,7 +1234,6 @@
   (apply format standard-error fmt args)
   (write standard-error ?\n))
 
-
 ;; initialisation
 
 (define-type 'type "GtkType" "sgtk_rep_to_type"

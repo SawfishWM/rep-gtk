@@ -25,7 +25,6 @@
 #include <string.h>
 #include <limits.h>
 
-
 
 /* Hacking the basic types --jsh */
 
@@ -239,7 +238,6 @@ gobject_get_type (void)
   return G_TYPE_OBJECT;
 }
 
-
 /* Floats. */
 
 int
@@ -278,7 +276,6 @@ sgtk_double_to_rep (double f)
   return rep_make_float (f, rep_FALSE);
 }
 
-
 
 /* Composites. */
 
@@ -588,7 +585,6 @@ sgtk_cvec_to_rep (sgtk_cvec *cvec, repv (*toscm)(void *), size_t sz)
     return obj;
 }
 
-
 /* dl hooks */
 
 repv

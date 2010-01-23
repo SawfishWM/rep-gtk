@@ -42,7 +42,6 @@ list_length (repv list)
     return (len && rep_INTP (len)) ? rep_INT (len) : 0;
 }
 
-
 
 /* Associating SCM values with Gtk pointers.
 
@@ -77,7 +76,6 @@ forget_proxy (gpointer obj)
   g_hash_table_remove (proxy_tab, obj);
 }
 
-
 
 /* Storing additional info about a GType.
 
@@ -283,7 +281,6 @@ sgtk_find_type_info (GType type)
   abort ();
 }
 
-
 
 /* G[tk]Objects.
 
@@ -725,7 +722,6 @@ GtkObject * sgtk_get_gtkobj (repv obj)
   return GTK_OBJECT (sgtk_get_gobj (obj));
 }
 
-
 /* Enums.
 
    Enumerations are described by a `sgtk_enum_info' structure.  That
@@ -774,7 +770,6 @@ sgtk_rep_to_enum (repv obj, sgtk_enum_info *info)
   return -1;
 }
 
-
 /* Flags.
 
    Like enums, flags are described by a `sgtk_enum_info' structure.
@@ -902,7 +897,6 @@ sgtk_rep_to_senum (repv obj, sgtk_senum_info *info)
   return NULL;
 }
 
-
 
 /* Boxed Values.
 
@@ -1064,7 +1058,6 @@ sgtk_rect_to_rep (GdkRectangle r)
 		       rep_MAKE_INT (r.height)));
 }
 
-
 
 /* GType objects
 
@@ -1155,8 +1148,7 @@ sgtk_segment_to_rep (GdkSegment seg)
 			     rep_MAKE_INT (seg.y1)),
 		   Fcons (rep_MAKE_INT (seg.x2),
 			     rep_MAKE_INT (seg.y2)));
-}
-
+}
 /* Callbacks.
 
    Callbacks are executed within a new dynamic root.  That means that
@@ -1256,7 +1248,6 @@ sgtk_gclosure_callback_destroy (gpointer data, GClosure *closure)
   sgtk_unprotect ((sgtk_protshell *)data);
 }
 
-
 /* converting between SCM and GValue */
 
 repv
@@ -1414,7 +1405,6 @@ sgtk_rep_to_gvalue (GValue *a, repv obj)
     }
 }
 
-
 
 /* Type conversions */
 
@@ -1465,7 +1455,6 @@ sgtk_font_conversion (repv font)
   return font;
 }
 
-
 #ifndef NO_GTK1_COMPAT_CODE
 
 /* converting between SCM and GtkArg */
@@ -1691,7 +1680,6 @@ sgtk_rep_to_ret (GtkArg *a, repv obj)
     }
 }
 
-
 /* Old callback style */
 
 struct callback_info {
@@ -1759,7 +1747,6 @@ sgtk_callback_destroy (gpointer data)
 
 #endif /* NO_GTK1_COMPAT_CODE */
 
-
 /* Support for g_object_new, g_object_set, ... */
 
 /* The SCM_PROC for the exported functions is in gtk-support.c to have
@@ -2035,7 +2022,6 @@ DEFUN ("g-object-list", Fg_object_list,
     return Qnil;
 }
 
-
 #ifndef NO_GTK1_COMPAT_CODE
 
 /* Creating new object classes */
@@ -2132,7 +2118,6 @@ sgtk_signal_emit (GtkObject *obj, char *name, repv scm_args)
 
 #endif /* NO_GTK1_COMPAT_CODE */
 
-
 /* Support rep input handling through gtk_main */
 
 /* The input_tags table hashes fds to gdk tags; the input_callbacks
@@ -2344,7 +2329,6 @@ sgtk_sigchld_callback (void)
 	gtk_main_quit ();
 }
 
-
 
 /* GError handling */
 DEFSYM(g_error, "glib-error");
@@ -2608,7 +2592,6 @@ sgtk_init (void)
   Fset (Qcommand_line_args, head);
 }
 
-
 
 /* DL hooks */
 

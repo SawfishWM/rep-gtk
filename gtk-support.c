@@ -24,7 +24,6 @@
    as long as we do not want to have some SCM_PROCs for the (gdk gdk)
    module, we are safe. */
 
-
 
 GdkColor *
 gdk_color_intern (GdkColor *color)

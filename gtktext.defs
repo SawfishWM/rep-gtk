@@ -26,7 +26,6 @@
   (top GTK_TEXT_WINDOW_TOP)
   (bottom GTK_TEXT_WINDOW_BOTTOM))
 
-
 ;; TextMark
 
 (define-func gtk_text_mark_set_visible
@@ -54,7 +53,6 @@
   bool
   ((GtkTextMark mark)))
 
-
 ;; TextTag
 
 (define-func gtk_text_tag_new
@@ -79,7 +77,6 @@
 
 ;; XXX text_attributes foo?
 
-
 ;; TextTagTable
 
 (define-func gtk_text_tag_table_new
@@ -107,7 +104,6 @@
   int
   ((GtkTextTagTable table)))
 
-
 ;; TextIter
 
 ;; not in the usual API, defined locally
@@ -434,7 +430,6 @@
   ((GtkTextIter first)
    (GtkTextIter second)))
 
-
 ;; TextBuffer
 
 (define-func gtk_text_buffer_new
@@ -726,7 +721,6 @@
   none
   ((GtkTextBuffer buffer)))
 
-
 ;; TextView
 
 (define-func gtk_text_view_new
