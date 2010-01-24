@@ -2,19 +2,26 @@ Name: rep-gtk
 Version: @version@
 Release: 1%{?dist}
 Summary: GTK+ binding for librep Lisp environment
-Requires: librep >= @REP_MIN_VER@ gtk2 >= @GTK_MIN_VER@
-License: GPL
+Requires: librep >= @REP_MIN_VER@, gtk2 >= @GTK_MIN_VER@
+License: GPLv2+
 Group: Development/Languages
 Source: http://download.sourceforge.net/rep-gtk/rep-gtk-%{version}.tar.bz2
 URL: http://rep-gtk.sourceforge.net/
-Packager: Christopher Bratusek <zanghar@freenet.de>
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires: librep-devel gtk2-devel glib2-devel automake autoconf
+BuildRequires: librep-devel, glib2-devel, cairo-devel, gtk2-devel
 
 %description
 This is a binding of GTK+ for the librep Lisp interpreter. It is based
 on Marius Vollmer's guile-gtk package (initially version 0.15, updated
 to 0.17), with a new glue-code generator.
+
+%package devel
+Summary: Development files for rep-gtk
+Group: Development/Languages
+Requires: %{name} = %{version}, pkgconfig
+
+%description devel
+Link libraries and C header files for librep development.
 
 %prep
 %setup -q
@@ -38,19 +45,25 @@ rm -rf $RPM_BUILD_ROOT
 %defattr (-,root,root,-)
 %doc README* examples/  TODO NEWS HACKING AUTHORS BUGS ChangeLog gtk.defs gdk.defs
 %{_libdir}/rep/%{_host}/gui
-%{_libdir}/pkgconfig/rep-gtk.pc
+
+%files devel
+%defattr (-,root,root,-)
 %{_includedir}/rep-gtk/
+%{_libdir}/pkgconfig/rep-gtk.pc
 
 %changelog
+* Sun Jan 10 2010 Kim B. Heino <b@bbbs.net> - 0.90.3-1
+- fix devel package, fix rpmlint warnings
+
 * Sat Sep 05 2009 Kim B. Heino <b@bbbs.net>
 - add dist-tag
 
 * Wed May 06 2009 Christopher Bratusek <zanghar@freenet.de>
 - require gtk2 instead of gtk+
-- add --libdir=%{_libdir} to configure flags
+- add --libdir=_libdir to configure flags
 
 * Mon May 04 2009 Christopher Bratusek <zanghar@freenet.de>
-- fixup %files section
+- fixup files section
 
 * Sun Jan 18 2009 Christopher Bratusek <zanghar@freenet.de>
 - several updates

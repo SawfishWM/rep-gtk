@@ -1,3 +1,6 @@
+2010-01-24  Christopher Bratusek <zanghar@freenet.de>
+	* rep-gtk.spec.in: improved [Kim B. Heino]
+
 2010-01-15  Christopher Bratusek <zanghar@freenet.de>
 	* gtkfilechooser.defs: fixed two typos:
 		gtk_file_choose{t,r}_get_preview_widget

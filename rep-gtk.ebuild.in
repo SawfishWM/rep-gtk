@@ -17,11 +17,6 @@ RDEPEND=">=dev-libs/librep-@REP_MIN_VER@
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-}
-
 src_compile() {
 	econf || die "configure failed"
 	emake || die "make failed"
