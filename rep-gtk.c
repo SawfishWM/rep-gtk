@@ -1126,8 +1126,8 @@ int
 sgtk_valid_segment (repv obj)
 {
   return scm_is_pair (obj)
-    && sgtk_valid_point (SCM_CAR (obj))
-    && sgtk_valid_point (SCM_CDR (obj));
+    && sgtk_valid_point (rep_CAR (obj))
+    && sgtk_valid_point (rep_CDR (obj));
 }
 
 GdkSegment
