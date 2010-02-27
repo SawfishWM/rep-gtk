@@ -234,6 +234,14 @@
   (eraser GDK_SOURCE_ERASER)
   (cursor GDK_SOURCE_CURSOR))
 
+(define-enum GdkDragAction
+  (default GDK_ACTION_DEFAULT)
+  (copy GDK_ACTION_COPY)
+  (move GDK_ACTION_MOVE)
+  (link GDK_ACTION_LINK)
+  (private GDK_ACTION_PRIVATE)
+  (ask GDK_ACTION_ASK))
+
 ;;; Gdk boxed types
 
 ;;(define-boxed GdkPoint
@@ -276,6 +284,12 @@
 
 (add-options GdkColor (conversion "sgtk_color_conversion"))
 
+(define-object GdkPixmap (GType))
+
+(define-boxed GdkBitmap
+  (copy gdk_bitmap_ref)
+  (free gdk_bitmap_unref))
+
 ;;; GdkGC
 
 (define-boxed GdkGC
@@ -311,15 +325,15 @@
   ((GdkGC gc)
    (GdkFill fill)))
 
-;(define-func gdk_gc_set_tile
-;  none
-;  ((GdkGC gc)
-;   (GdkPixmap tile)))
+(define-func gdk_gc_set_tile
+  none
+  ((GdkGC gc)
+   (GdkPixmap tile)))
 
-;(define-func gdk_gc_set_stipple
-;  none
-;  ((GdkGC gc)
-;   (GdkPixmap stipple)))
+(define-func gdk_gc_set_stipple
+  none
+  ((GdkGC gc)
+   (GdkPixmap stipple)))
 
 (define-func gdk_gc_set_ts_origin
   none
@@ -333,10 +347,10 @@
    (int x)
    (int y)))
 
-;(define-func gdk_gc_set_clip_mask
-;  none
-;  ((GdkGC gc)
-;   (GdkBitmap mask)))
+(define-func gdk_gc_set_clip_mask
+  none
+  ((GdkGC gc)
+   (GdkBitmap mask)))
 
 (define-func gdk_gc_set_subwindow
   none

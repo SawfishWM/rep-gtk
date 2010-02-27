@@ -1115,3 +1115,65 @@
   none
   ((GtkTreeView tree)
    ((tvec GdkRectangle in) rect)))
+
+(define-func gtk_tree_view_get_visible_range
+  bool
+  ((GtkTreeView tree)
+   (GtkTreePath start)
+   (GtkTreePath end)))
+
+;; GtkTreeView [D-N-D]
+
+(define-func gtk_tree_view_enable_model_drag_source
+  none
+  ((GtkTreeView tree)
+   (GdkModifierType start_button_mask)
+   (GtkTargetEntry target)
+   (int targets)
+   (GdkDragAction action)))
+
+(define-func gtk_tree_view_enable_model_drag_dest
+  none
+  ((GtkTreeView tree)
+   (GtkTargetEntry target)
+   (int targets)
+   (GdkDragAction action)))
+
+(define-func gtk_tree_view_unset_rows_drag_source
+  none
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_unset_rows_drag_dest
+  none
+  ((GtkTreeView tree)))
+
+(define-enum GtkTreeViewDropPosition
+  (before GTK_TREE_VIEW_DROP_BEFORE)
+  (after GTK_TREE_VIEW_DROP_AFTER)
+  (into-or-before GTK_TREE_VIEW_DROP_INTO_OR_BEFORE)
+  (into-or-after GTK_TREE_VIEW_DROP_INTO_OR_AFTER))
+
+(define-func gtk_tree_view_set_drag_dest_row
+  none
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   (GtkTreeViewDropPosition pos)))
+
+(define-func gtk_tree_view_get_drag_dest_row
+  none
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   ((tvec GtkTreeViewDropPosition in) pos)))
+
+(define-func gtk_tree_view_get_dest_row_at_pos
+  bool
+  ((GtkTreeView tree)
+   (int x)
+   (int y)
+   (GtkTreePath path)
+   ((tvec GtkTreeViewDropPosition in) pos)))
+
+(define-func gtk_tree_view_create_row_drag_icon
+  GdkPixmap
+  ((GtkTreeView tree)
+   (GtkTreePath path)))
