@@ -44,7 +44,7 @@
 	gtk_tree_view_get_bin_window
 	gtk_tree_view_get_path_at_pos
 	gtk_tree_view_get_cell_area
-	gtk_treeview_get_background_area
+	gtk_tree_view_get_background_area
 	gtk_tree_view_get_visible_rect
 	gtk_tree_view_get_visible_range
 	gtk_tree_view_enable_model_drag_source

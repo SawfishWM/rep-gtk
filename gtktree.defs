@@ -1104,7 +1104,7 @@
    (GtkTreeViewColumn column)
    ((tvec GdkRectangle in) rect)))
 
-(define-func gtk_treeview_get_background_area
+(define-func gtk_tree_view_get_background_area
   none
   ((GtkTreeView tree)
    (GtkTreePath path)
