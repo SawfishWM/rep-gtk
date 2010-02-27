@@ -14,6 +14,16 @@
 	gtk_list_store_move_after
 	gtk_list_store_move_before
 	== GtkListStore 2.12 API complete ==
+	************** gtktreeview.h ******************
+	GtkTreeViewColumnDropFunc [boxed]
+	gtk_tree_view_append_column
+	gtk_tree_view_remove_column
+	gtk_tree_view_insert_column
+	gtk_tree_view_get_column
+	gtk_tree_view_move_column_after
+	gtk_tree_view_set_expander_column
+	gtk_tree_view_get_expander_column
+	gtk_tree_view_set_column_drag_function
 
 2010-02-16  Christopher Bratusek <zanghar@freenet.de>
 	* ChangeLog

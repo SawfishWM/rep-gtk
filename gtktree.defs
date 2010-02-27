@@ -936,7 +936,56 @@
   bool
   ((GtkTreeView tree)))
 
+;; GtkTreeView [Columns]
+
 (define-func gtk_tree_view_append_column
   int
   ((GtkTreeView tree)
    (GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_remove_column
+  int
+  ((GtkTreeView tree)
+   (GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_insert_column
+  int
+  ((GtkTreeView tree)
+   (GtkTreeViewColumn column)
+   (int position)))
+
+(define-func gtk_tree_view_get_column
+  GtkTreeViewColumn
+  ((GtkTreeView tree)
+   (int column)))
+
+(define-func gtk_tree_view_move_column_after
+  none
+  ((GtkTreeView tree)
+   (GtkTreeViewColumn column)
+   (GtkTreeViewColumn base)))
+
+(define-func gtk_tree_view_set_expander_column
+  none
+  ((GtkTreeView tree)
+   (GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_get_expander_column
+  GtkTreeViewColumn
+  ((GtkTreeView tree)))
+
+(define-boxed GtkTreeViewColumnDropFunc
+  ((GtkTreeView tree)
+   (GtkTreeViewColumn column)
+   (GtkTreeViewColumn prev)
+   (GtkTreeViewColumn next)
+   (GPointer data)))
+
+(define-func gtk_tree_view_set_column_drag_function
+  none
+  ((GtkTreeView tree)
+   (GtkTreeViewColumnDropFunc func)
+   (GPointer data)
+   (GtkDestroyNotify destroy)))
+
+;; GtkTreeView [Actions]
