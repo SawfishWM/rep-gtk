@@ -791,10 +791,70 @@
    (int columns)
    ((tvec type in) type)))
 
+(define-func gtk_list_store_remove
+  none
+  ((GtkListStore store)
+   (GtkTreeIter iter)))
+
+(define-func gtk_list_store_insert
+  none
+  ((GtkListStore store)
+   (GtkTreeIter iter)
+   (int position)))
+
+(define-func gtk_list_store_insert_before
+  none
+  ((GtkListStore store)
+   (GtkTreeIter iter)
+   (GtkTreeIter sibling)))
+
+(define-func gtk_list_store_insert_after
+  none
+  ((GtkListStore store)
+   (GtkTreeIter iter)
+   (GtkTreeIter sibling)))
+
+(define-func gtk_list_store_prepend
+  none
+  ((GtkListStore store)
+   (GtkTreeIter iter)))
+
 (define-func gtk_list_store_append
   none
   ((GtkListStore store)
    (GtkTreeIter iter)))
+
+(define-func gtk_list_store_clear
+  none
+  ((GtkListStore store)))
+
+(define-func gtk_list_store_iter_is_valid
+  bool
+  ((GtkListStore store)
+   (GtkTreeIter iter)))
+
+(define-func gtk_list_store_reorder
+  none
+  ((GtkListStore store)
+   (int order)))
+
+(define-func gtk_list_store_swap
+  none
+  ((GtkListStore store)
+   (GtkTreeIter a)
+   (GtkTreeIter b)))
+
+(define-func gtk_list_store_move_after
+  none
+  ((GtkListStore store)
+   (GtkTreeIter iter)
+   (GtkTreeIter position)))
+
+(define-func gtk_list_store_move_before
+  none
+  ((GtkListStore store)
+   (GtkTreeIter iter)
+   (GtkTreeIter position)))
 
 ;; GtkTreeView [Base]
 

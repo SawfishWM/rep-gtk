@@ -1,3 +1,20 @@
+2010-02-27  Christopher Bratusek <zanghar@freenet.de>
+	* gtktree.defs:
+	*************** gtkliststore.h ***************
+	gtk_list_store_remove
+	gtk_list_store_insert
+	gtk_list_store_insert_before
+	gtk_list_store_insert_after
+	gtk_list_store_prepend
+	gtk_list_store_append
+	gtk_list_store_clear
+	gtk_list_store_iter_is_valid
+	gtk_list_store_reorder
+	gtk_list_store_swap
+	gtk_list_store_move_after
+	gtk_list_store_move_before
+	== GtkListStore 2.12 API complete ==
+
 2010-02-16  Christopher Bratusek <zanghar@freenet.de>
 	* ChangeLog
 	* NEWS: fixed some types [Alexey I. Froloff]
