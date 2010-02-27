@@ -989,3 +989,94 @@
    (GtkDestroyNotify destroy)))
 
 ;; GtkTreeView [Actions]
+
+(define-func gtk_tree_view_scroll_to_point
+  none
+  ((GtkTreeView tree)
+   (int x)
+   (int y)))
+
+(define-func gtk_tree_view_scroll_to_cell
+  none
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   (GtkTreeViewColumn column)
+   (bool use_align)
+   (int row_align)
+   (int column_align)))
+
+(define-func gtk_tree_view_row_activated
+  none
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   (GtkTreeViewColumn column)))
+
+(define-func gtk_tree_view_expand_all
+  none
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_collapse_all
+  none
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_expand_to_path
+  none
+  ((GtkTreeView tree)
+   (GtkTreePath path)))
+
+(define-func gtk_tree_view_expand_row
+  bool
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   (bool all)))
+
+(define-func gtk_tree_view_collapse_row
+  bool
+  ((GtkTreeView tree)
+   (GtkTreePath path)))
+
+(define-boxed GtkTreeViewMappingFunc
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   (GPointer data)))
+
+(define-func gtk_tree_view_map_expanded_rows
+  none
+  ((GtkTreeView tree)
+   (GtkTreeViewMappingFunc func)
+   (GPointer data)))
+
+(define-func gtk_tree_view_row_expanded
+  bool
+  ((GtkTreeView tree)
+   (GtkTreePath path)))
+
+(define-func gtk_tree_view_set_reorderable
+  none
+  ((GtkTreeView tree)
+   (bool reorderable)))
+
+(define-func gtk_tree_view_get_reorderable
+  bool
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_set_cursor
+  none
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   (GtkTreeViewColumn column)
+   (bool start_editing)))
+
+(define-func gtk_tree_view_set_cursor_on_cell
+  none
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   (GtkTreeViewColumn column)
+   (GtkCellRenderer renderer)
+   (bool start_editing)))
+
+(define-func gtk_tree_view_get_cursor
+  none
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   (GtkTreeViewColumn column)))
