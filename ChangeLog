@@ -40,6 +40,11 @@
 	gtk_tree_view_set_cursor
 	gtk_tree_view_set_cursor_on_cell
 	gtk_tree_view_get_cursor
+	gtk_tree_view_get_bin_window
+	gtk_tree_view_get_path_at_pos
+	gtk_tree_view_get_cell_area
+	gtk_treeview_get_background_area
+	gtk_tree_view_get_visible_rect
 
 2010-02-16  Christopher Bratusek <zanghar@freenet.de>
 	* ChangeLog

@@ -1080,3 +1080,38 @@
   ((GtkTreeView tree)
    (GtkTreePath path)
    (GtkTreeViewColumn column)))
+
+;; GtkTreeView [Layout]
+
+(define-func gtk_tree_view_get_bin_window
+  GdkWindow
+  ((GtkTreeView tree)))
+
+(define-func gtk_tree_view_get_path_at_pos
+  bool
+  ((GtkTreeView tree)
+   (int x)
+   (int y)
+   (GtkTreePath path)
+   (GtkTreeViewColumn column)
+   (int cell_x)
+   (int cell_y)))
+
+(define-func gtk_tree_view_get_cell_area
+  none
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   (GtkTreeViewColumn column)
+   ((tvec GdkRectangle in) rect)))
+
+(define-func gtk_treeview_get_background_area
+  none
+  ((GtkTreeView tree)
+   (GtkTreePath path)
+   (GtkTreeViewColumn column)
+   (GdkRectangle rect)))
+
+(define-func gtk_tree_view_get_visible_rect
+  none
+  ((GtkTreeView tree)
+   ((tvec GdkRectangle in) rect)))
