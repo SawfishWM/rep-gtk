@@ -17,6 +17,7 @@
 	************** gtktreeview.h ******************
 	GtkTreeViewColumnDropFunc [boxed]
 	GtkTreeViewMappingFunc [boxed]
+	GtkTreeViewSearchEqualFunc [boxed]
 	GtkTreeViewDropPosition [enum]
 	gtk_tree_view_append_column
 	gtk_tree_view_remove_column

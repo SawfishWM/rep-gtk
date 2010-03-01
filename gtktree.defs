@@ -1109,7 +1109,7 @@
   ((GtkTreeView tree)
    (GtkTreePath path)
    (GtkTreeViewColumn column)
-   (GdkRectangle rect)))
+   ((tvec GdkRectangle in) rect)))
 
 (define-func gtk_tree_view_get_visible_rect
   none
@@ -1177,3 +1177,12 @@
   GdkPixmap
   ((GtkTreeView tree)
    (GtkTreePath path)))
+
+;; GtkTreeView [Interactive Search]
+
+(define-boxed GtkTreeViewSearchEqualFunc
+  ((GtkTreeModel model)
+   (int column)
+   ((tvec string in) key)
+   (GtkTreeIter iter)
+   (GPointer data)))
