@@ -12,6 +12,7 @@
 ;; GtkCellRendererCombo, GtkCellEditable, GtkFileFilter, GtkFileChooserWidget,
 ;; GtkTreePath, GtkTreeSelection, GtkTreeIter, GtkTreeRowReference, GtkTreeModel,
 ;; GtkAboutDialog, GtkAccelGroup, GtkAccelLabel, GtkListStore, GtkTreeView
+;; GtkWindow
 
 ;; updated for GTK+ 1.3/2.0:
 
@@ -1707,6 +1708,11 @@
   static_string
   ((GtkWindow window)))
 
+(define-func gtk_window_set_startup_id
+  none
+  ((GtkWindow window)
+   (string startup_id)))
+
 (define-func gtk_window_add_accel_group
   none
   ((GtkWindow window)
@@ -1722,6 +1728,12 @@
   ((GtkWindow window)
    (GtkWindowPosition position)))
 
+(define-func gtk_window_get_position
+  none
+  ((GtkWindow window)
+   (int x)
+   (int y)))
+
 (define-func gtk_window_set_default
   none
   ((GtkWindow window)
@@ -1735,6 +1747,15 @@
   int
   ((GtkWindow window)))
 
+(define-func gtk_window_set_focus
+  none
+  ((GtkWindow window)
+   (GtkWidget focus_widget)))
+
+(define-func gtk_window_get_focus
+  GtkWidget
+  ((GtkWindow window)))
+
 (define-func gtk_window_set_transient_for
   none
   ((GtkWindow window)
@@ -1744,15 +1765,68 @@
   GtkWindow
   ((GtkWindow window)))
 
-;; XXX GdkWindowTypeHint?
-;(define-func gtk_window_set_type_hint
-;  none
-;  ((GtkWindow window)
-;   (GdkWindowTypeHint hint)))
-;
-;(define-func gtk_window_get_type_hint
-;  GdkWindowTypeHint
-;  ((GtkWindow window)))
+(define-func gtk_window_set_opacity
+  none
+  ((GtkWindow window)
+   (double opacity)))
+
+(define-func gtk_window_get_opacity
+  double
+  ((GtkWindow window)))
+
+(define-func gtk_window_set_type_hint
+  none
+  ((GtkWindow window)
+   (GdkWindowTypeHint hint)))
+
+(define-func gtk_window_get_type_hint
+  GdkWindowTypeHint
+  ((GtkWindow window)))
+
+(define-func gtk_window_set_skip_taskbar_hint
+  none
+  ((GtkWindow window)
+   (bool hint)))
+
+(define-func gtk_window_get_skip_taskbar_hint
+  bool
+  ((GtkWindow window)))
+
+(define-func gtk_window_set_skip_pager_hint
+  none
+  ((GtkWindow window)
+   (bool hint)))
+
+(define-func gtk_window_get_skip_pager_hint
+  bool
+  ((GtkWindow window)))
+
+(define-func gtk_window_set_urgency_hint
+  none
+  ((GtkWindow window)
+   (bool hint)))
+
+(define-func gtk_window_get_urgency_hint
+  bool
+  ((GtkWindow window)))
+
+(define-func gtk_window_set_accept_focus
+  none
+  ((GtkWindow window)
+   (bool focus)))
+
+(define-func gtk_window_get_accept_focus
+  bool
+  ((GtkWindow window)))
+
+(define-func gtk_window_set_focus_on_map
+  none
+  ((GtkWindow window)
+   (bool focus)))
+
+(define-func gtk_window_get_focus_on_map
+  bool
+  ((GtkWindow window)))
 
 (define-func gtk_window_set_destroy_with_parent
   none
@@ -1772,17 +1846,33 @@
   bool
   ((GtkWindow window)))
 
-;; XXX GdkGravity?
-;(define-func gtk_window_set_gravity
-;  none
-;  ((GtkWindow window)
-;   (GdkGravity gravity)))
-;
-;(define-func gtk_window_get_gravity
-;  GdkGravity
-;  ((GtkWindow window)))
+(define-func gtk_window_set_gravity
+  none
+  ((GtkWindow window)
+   (GdkGravity gravity)))
+
+(define-func gtk_window_get_gravity
+  GdkGravity
+  ((GtkWindow window)))
 
 ;; XXX gtk_window_set_geometry_hints
+
+(define-func gtk_window_set_screen
+  none
+  ((GtkWindow window)
+   (GdkScreen screen)))
+
+(define-func gtk_window_get_screen
+  GdkScreen
+  ((GtkWindow window)))
+
+(define-func gtk_window_is_active
+  bool
+  ((GtkWindow window)))
+
+(define-func gtk_window_has_toplevel_focus
+  bool
+  ((GtkWindow window)))
 
 (define-func gtk_window_set_has_frame
   none
@@ -1801,7 +1891,13 @@
    (int right)
    (int bottom)))
 
-;; XXX gtk_window_get_frame_dimensions
+(define-func gtk_window_get_frame_dimensions
+  none
+  ((GtkWindow window)
+   (int left)
+   (int top)
+   (int right)
+   (int bottom)))
 
 (define-func gtk_window_set_decorated
   none
@@ -1812,7 +1908,57 @@
   bool
   ((GtkWindow window)))
 
+(define-func gtk_window_set_deletable
+  none
+  ((GtkWindow window)
+   (bool deletable)))
+
+(define-func gtk_window_get_deletable
+  bool
+  ((GtkWindow window)))
+
 ;; XXX icon-list stuff
+
+(define-func gtk_window_set_icon
+  none
+  ((GtkWindow window)
+   (GdkPixbuf pixbuf)))
+
+(define-func gtk_window_set_icon_name
+  none
+  ((GtkWindow window)
+   (string name)))
+
+(define-func gtk_window_set_icon_from_file
+  bool
+  ((GtkWindow window)
+   (string file))
+  (gerror-arg t))
+
+(define-func gtk_window_get_icon
+  GdkPixbuf
+  ((GtkWindow window)))
+
+(define-func gtk_window_get_icon_name
+  string
+  ((GtkWindow window)))
+
+(define-func gtk_window_set_default_icon
+  none
+  ((GdkPixbuf icon)))
+
+(define-func gtk_window_set_default_icon_name
+  none
+  ((string name)))
+
+(define-func gtk_window_set_default_icon_from_file
+  bool
+  ((string name))
+  (gerror-arg t))
+
+(define-func gtk_window_set_auto_startup_notification
+  none
+  ((bool setting)))
 
 (define-func gtk_window_set_modal
   none
@@ -1822,7 +1968,6 @@
 (define-func gtk_window_get_modal
   bool
   ((GtkWindow window)))
-
 
 (define-func gtk_window_list_toplevels
   ((list GtkWindow))
@@ -1859,6 +2004,11 @@
   none
   ((GtkWindow window)))
 
+(define-func gtk_window_present_with_time
+  none
+  ((GtkWindow window)
+   (int timestamp)))
+
 (define-func gtk_window_iconify
   none
   ((GtkWindow window)))
@@ -1883,7 +2033,40 @@
   none
   ((GtkWindow window)))
 
-;; XXX begin_{move,resize}_drag
+(define-func gtk_window_fullscreen
+  none
+  ((GtkWindow window)))
+
+(define-func gtk_window_unfullscreen
+  none
+  ((GtkWindow window)))
+
+(define-func gtk_window_set_keep_above
+  none
+  ((GtkWindow window)
+   (bool setting)))
+
+(define-func gtk_window_set_keep_below
+  none
+  ((GtkWindow window)
+   (bool setting)))
+
+(define-func gtk_window_begin_resize_drag
+  none
+  ((GtkWindow window)
+   (GdkWindowEdge edge)
+   (int button)
+   (int x)
+   (int y)
+   (int timestamp)))
+
+(define-func gtk_window_begin_move_drag
+  none
+  ((GtkWindow window)
+   (int button)
+   (int x)
+   (int y)
+   (int timestamp)))
 
 (define-func gtk_window_set_default_size
   none
@@ -1891,7 +2074,11 @@
    (int width)
    (int height)))
 
-;; XXX get_default_size
+(define-func gtk_window_get_default_size
+  none
+  ((GtkWindow window)
+   (int width)
+   (int height)))
 
 (define-func gtk_window_resize
   none
@@ -1899,7 +2086,11 @@
    (int width)
    (int height)))
 
-;; XXX get_size
+(define-func gtk_window_get_size
+  none
+  ((GtkWindow window)
+   (int width)
+   (int height)))
 
 (define-func gtk_window_move
   none
@@ -1907,12 +2098,30 @@
    (int x)
    (int y)))
 
-;; XXX get_position
-
 (define-func gtk_window_parse_geometry
   bool
   ((GtkWindow window)
    (string geometry)))
+
+(define-object GtkWindowGroup (GObject))
+
+(define-func gtk_window_get_group
+  GtkWindowGroup
+  ((GtkWindow window)))
+
+(define-func gtk_window_group_new
+  GtkWindowGroup
+  ())
+
+(define-func gtk_window_group_add_window
+  none
+  ((GtkWindowGroup group)
+   (GtkWindow window)))
+
+(define-func gtk_window_group_remove_window
+  none
+  ((GtkWindowGroup group)
+   (GtkWindow window)))
 
 ;;; HandleBox
 

@@ -12,6 +12,44 @@
   (temp GDK_WINDOW_TEMP)
   (pixmap GDK_WINDOW_FOREIGN))
 
+(define-enum GdkWindowTypeHint
+  (normal GDK_WINDOW_TYPE_HINT_NORMAL)
+  (dialog GDK_WINDOW_TYPE_HINT_DIALOG)
+  (menu GDK_WINDOW_TYPE_HINT_MENU)
+  (toolbar GDK_WINDOW_TYPE_HINT_TOOLBAR)
+  (splash GDK_WINDOW_TYPE_HINT_SPLASHSCREEN)
+  (utility GDK_WINDOW_TYPE_HINT_UTILITY)
+  (dock GDK_WINDOW_TYPE_HINT_DOCK)
+  (desktop GDK_WINDOW_TYPE_HINT_DESKTOP)
+  (dropdown GDK_WINDOW_TYPE_HINT_DROPDOWN_MENU)
+  (popup GDK_WINDOW_TYPE_HINT_POPUP_MENU)
+  (tooltip GDK_WINDOW_TYPE_HINT_TOOLTIP)
+  (notification GDK_WINDOW_TYPE_HINT_NOTIFICATION)
+  (combo GDK_WINDOW_TYPE_HINT_COMBO)
+  (dnd GDK_WINDOW_TYPE_HINT_DND))
+
+(define-enum GdkGravity
+  (north-west GDK_GRAVITY_NORTH_WEST)
+  (north GDK_GRAVITY_NORTH)
+  (north-east GDK_GRAVITY_NORTH_EAST)
+  (west GDK_GRAVITY_WEST)
+  (center GDK_GRAVITY_CENTER)
+  (east GDK_GRAVITY_EAST)
+  (south-west GDK_GRAVITY_SOUTH_WEST)
+  (south GDK_GRAVITY_SOUTH)
+  (south-east GDK_GRAVITY_SOUTH_EAST)
+  (static GDK_GRAVITY_STATIC))
+
+(define-enum GdkWindowEdge
+  (north-west GDK_GRAVITY_NORTH_WEST)
+  (north GDK_GRAVITY_NORTH)
+  (north-east GDK_GRAVITY_NORTH_EAST)
+  (west GDK_GRAVITY_WEST)
+  (east GDK_GRAVITY_EAST)
+  (south-west GDK_GRAVITY_SOUTH_WEST)
+  (south GDK_GRAVITY_SOUTH)
+  (south-east GDK_GRAVITY_SOUTH_EAST))
+
 (define-enum GdkWindowClass
   (input-output GDK_INPUT_OUTPUT)
   (input-only GDK_INPUT_ONLY))
@@ -283,6 +321,8 @@
   (conversion "sgtk_color_conversion"))
 
 (add-options GdkColor (conversion "sgtk_color_conversion"))
+
+(define-object GdkScreen (GType))
 
 (define-object GdkPixmap (GType))
 
