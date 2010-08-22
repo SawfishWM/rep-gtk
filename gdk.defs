@@ -280,11 +280,24 @@
   (private GDK_ACTION_PRIVATE)
   (ask GDK_ACTION_ASK))
 
+(define-enum GdkFillRule
+  (even-odd GDK_EVEN_ODD_RULE)
+  (winding GDK_WINDING_RULE))
+
+(define-enum GdkOverlapType
+  (in GDK_OVERLAP_RECTANGLE_IN)
+  (out GDK_OVERLAP_RECTANGLE_OUT)
+  (part GDK_OVERLAP_RECTANGLE_PART))
+
 ;;; Gdk boxed types
 
 ;;(define-boxed GdkPoint
 ;;  (copy gdk_point_copy)
 ;;  (free gdk_point_destroy))
+
+(define-boxed GdkRegion
+    (copy gdk_region_copy)
+    (free gdk_region_destroy))
 
 (define-boxed GdkColormap
   (copy gdk_colormap_ref)

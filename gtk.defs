@@ -803,6 +803,15 @@
   none
   ((GtkWidget widget)))
 
+(define-func gtk_widget_set_no_show_all
+  none
+  ((GtkWidget widget)
+   (bool setting)))
+
+(define-func gtk_widget_get_no_show_all
+  bool
+  ((GtkWidget widget)))
+
 (define-func gtk_widget_hide
   none
   ((GtkWidget widget)))
@@ -851,6 +860,10 @@
   none
   ((GtkWidget widget)))
 
+(define-func gtk_widget_queue_resize_no_redraw
+  none
+  ((GtkWidget widget)))
+
 (define-func gtk_widget_add_accelerator
   none
   ((GtkWidget          widget)
@@ -867,8 +880,33 @@
    (uint accel_key)
    (GdkModifierType accel_mods)))
 
+(define-func gtk_widget_set_accel_path
+  none
+  ((GtkWidget widget)
+   (string accel_path)
+   (GtkAccelGroup group)))
+
+(define-func gtk_widget_list_accel_closures
+  ((list string))
+  ((GtkWidget widget)))
+
+(define-func gtk_widget_can_activate_accel
+  bool
+  ((GtkWidget widget)
+   (int signal_id)))
+
+(define-func gtk_widget_mnemonic_activate
+  bool
+  ((GtkWidget widget)
+   (bool group_cycling)))
+
 (define-func gtk_widget_event
   bool
+  ((GtkWidget widget)
+   (GdkEvent event)))
+
+(define-func gtk_widget_send_expose
+  int
   ((GtkWidget widget)
    (GdkEvent event)))
 
@@ -886,6 +924,17 @@
   none
   ((GtkWidget widget)
    (GtkWidget new_parent)))
+
+(define-func gtk_widget_intersect
+  bool
+  ((GtkWidget widget)
+   ((tvec GdkRectangle in) area)
+   ((tvec GdkRectangle in) intersect)))
+
+(define-func gtk_widget_region_intersect
+  GdkRegion
+  ((GtkWidget widget)
+   (GdkRegion region)))
 
 (define-func gtk_widget_is_focus
   bool

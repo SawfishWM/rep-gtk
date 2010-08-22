@@ -1,3 +1,23 @@
+2010-08-22  Christopher Bratusek <zanghar@freenet.de>
+	* gtk.defs:
+	*************** gtkwidget.h *******************
+	gtk_widget_set_no_show_all
+	gtk_widget_get_no_show_all
+	gtk_widget_queue_resize_no_redraw
+	gtk_widget_set_accel_path
+	gtk_widget_list_accel_closures
+	gtk_widget_can_activate_accel
+	gtk_widget_mnemonic_activate
+	gtk_widget_send_expose
+	gtk_widget_intersect
+	gtk_widget_region_intersect
+
+	* gdk.defs:
+	*************** gdkregion.h ********************
+	GdkFillType [enum]
+	GdkOverlaType [enum]
+	GdkRegion [boxed]
+
 2010-08-21  Christopher Bratusek <zanghar@freenet.de>
 	* gtk.defs:
 	*************** gtkwindow.h *******************
