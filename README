@@ -1,29 +1,28 @@
 -*- text -*-
 
-This is rep-gtk 0.18.2, a binding of GTK+/GNOME/libglade for the rep Lisp
-system. It is based on Marius Vollmer's guile-gtk binding (initially
-version 0.15, updated to 0.17), with a new glue-code generator.
+This is rep-gtk, a binding of GTK+ for the librep Lisp system. It is
+based on Marius Vollmer's guile-gtk binding (initially version 0.15,
+updated to 0.17), with a new glue-code generator.
 
 For more details see:
 
-	http://rep-gtk.sourceforge.net/
-
-Browse the SVN tree at:
-
-	http://svn.gnome.org/viewvc/rep-gtk/
+	http://sawfish.wikia.com
 
 Installation
 ============
 
 Basically, `./configure ; make ; make install'. If you're building from
-the SVN repository, use ./autogen.sh instead of ./configure.
+the git repository, use ./autogen.sh instead of ./configure.
 
 It requires Gtk+ version 2.
 
-WARNING: The GNOME bindings are currently untested and
-probably broken since the port to Gtk2, use at your own risk.
+Feedbacks
+=========
+Please report Bugs and all patches to the mailing list
+<sawfish-list@gnome.org>.
 
-The libglade binding is definitively broken
+When possible, please make patches in unified diff format 
+(i.e. 'diff -u' or use 'git diff').
 
 Usage
 =====
@@ -33,65 +32,10 @@ functions as in guile-gtk. The only difference is that Lisp conventions
 are used for booleans, i.e. nil for #f, and non-nil for #t.
 
 See the included *.defs files for the details of how the library maps
-to lisp functions.
+to lisp functions. See also examples.
 
-
-libglade
-========
-
-From the libglade README file:
-
-    This library allows you to load glade interface files in a program
-    at runtime. It doesn't require GLADE to be used, but GLADE is by
-    far the easiest way to create the interface files.
-
-So you can now use GLADE with rep! Here's an example from the
-examples/test-libglade script:
-
-    (require 'gui.gtk-2.libglade)
-
-    (let ((xml (or (glade-xml-new (car command-line-args))
-		   (error "something bad happened"))))
-      (glade-xml-signal-autoconnect xml)
-      (gtk-main))
-
-The glade-xml-new function takes a filename, and creates a widget
-hierarchy. glade-xml-signal-autoconnect connects all signal handlers to
-the lisp functions named in the GLADE file. You can also use the
-glade-xml-signal-connect function to connect individually named
-handlers. (see libglade.defs for the complete function list)
-
-
-GNOME
-=====
-
-There's also now reasonably complete bindings of gnome and gnomeui.
-These extra modules will get built and installed:
-
-	gui.gtk-2.gnome-lib	Non-UI GNOME functions, doesn't require GTK
-	gui.gtk-2.gnome-ui	GNOME UI widgets and utilities
-	gui.gtk-2.gnome-canvas	GNOME Canvas widgets and utilities
-
-see the .defs files for the gruesome details about what goes in what.
-The dependence tree is something like:
-
-	types -+- gtk -+- libglade
-		     \  \
-		      \   gnome-ui -+- gnome-canvas
-		       \
-			 gnome-lib
-
-gui.gtk-2.types provides conversions for the basic C types (and GLIB's
-GList and GSList types).
-
-When `gui.gtk-2.gnome-ui' is loaded the gnome-init function is called
-automatically. If the special variables `*gnome-app-id*' and
-`*gnome-app-version*' are bound to strings, then these values will be
-used, otherwise something will be fabricated.
-
-However, if using `gui.gtk-2.gnome-lib' without `gui.gtk-2.gnome-ui',
-you should call `gnomelib-init' manually.
-
+*** Don't test it from sawfish-client, but use the bare rep. Otherwise,
+Sawfish will crash. ***
 
 Caveats
 =======
@@ -99,3 +43,15 @@ Caveats
 It's still too easy to crash the Lisp interpreter through invalid use
 of GTK..
 
+Copyright
+=========
+
+Rep-gtk is released under GPLv2.
+
+Maintainer
+==========
+
+Rep-gtk was originally written by John Harper. The current maintainer
+is Christopher Bratusek.
+E-mail: zanghar@freenet.de
+Userid: chrisb

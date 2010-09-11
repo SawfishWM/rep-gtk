@@ -87,11 +87,6 @@ GTK fundamental types seem to include:
 	string, enum, flags, boxed, foreign, callback, args, pointer,
 	signal, c-callback, object
 
-The guile-gtk .defs files seem to add the following:
-
-	static_string, full_callback, file-descriptor, list, slist,
-	double, SCM, cvec, cvecr, fvec, ret, tvec
-
 static_string:
   a static string returned from a function
 

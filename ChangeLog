@@ -1,3 +1,13 @@
+2010-08-28  Teika Kazura <teika@lavabit.com>
+	* BUGS
+	* HACKING
+	* MAINTAINERS
+	* README
+	* README-GTK-2
+	* README.gtk-defs: Doc update. Deleted obsolete references to
+	gnome and guile. Files 'BUGS', 'HACKING' and 'MAINTAINERS' are
+	merged to 'README'. File 'README-GTK-2' is deleted.
+
 2010-08-22  Christopher Bratusek <zanghar@freenet.de>
 	* gtk.defs:
 	*************** gtkwidget.h *******************
