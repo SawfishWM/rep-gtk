@@ -5,9 +5,9 @@ Summary: GTK+ binding for librep Lisp environment
 Requires: librep >= @REP_MIN_VER@, gtk2 >= @GTK_MIN_VER@
 License: GPLv2+
 Group: Development/Languages
-Source: http://download.sourceforge.net/rep-gtk/rep-gtk-%{version}.tar.bz2
-URL: http://rep-gtk.sourceforge.net/
-Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
+Source0: http://download.tuxfamily.org/sawfish/%{name}/%{name}-%{version}.tar.bz2
+URL: http://sawfish.wikia.com/
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: librep-devel, glib2-devel, cairo-devel, gtk2-devel
 
 %description
@@ -43,7 +43,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr (-,root,root,-)
-%doc README* examples/  TODO NEWS HACKING AUTHORS BUGS ChangeLog gtk.defs gdk.defs
+%doc examples/* NEWS README* TODO gtk.defs gdk.defs
 %{_libdir}/rep/%{_host}/gui
 
 %files devel
@@ -52,6 +52,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/pkgconfig/rep-gtk.pc
 
 %changelog
+* Sat Sep 25 2010 Kim B. Heino <b@bbbs.net> - 0.90.4-1
+- fix doc-files, url, misc fixes
+
 * Sun Jan 10 2010 Kim B. Heino <b@bbbs.net> - 0.90.3-1
 - fix devel package, fix rpmlint warnings
 
