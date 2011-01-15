@@ -1,7 +1,7 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
-includedir=@includedir@/rep-gtk/
+includedir=@includedir@
 
 Name: rep-gtk
 Description: GTK+ bindings to librep
