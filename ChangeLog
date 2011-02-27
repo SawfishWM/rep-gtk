@@ -1,3 +1,27 @@
+2011-02-27  Christopher Roy Bratusek <zanghar@freenet.de>
+	* configure.in: fixed a syntax-error (+=), which could create incomplete rep-gtk.pc
+	                don't substitute gitdate
+			don't generate debian/changelog
+			don't generate debian/control
+
+	* Makefile.in: don't remove debian/changelog
+	               don't remove debian/control
+
+	* debian/watch
+	* debian/rep-gtk.install
+	* debian/changelog.in
+	* debian/control.in: removed
+
+	* debian/changelog
+	* debian/control
+	* debian/docs: added
+
+	* debian/rules: updated
+
+	* debian/source/format: change to 3.0 quilt
+
+	* debian/compat: bump version to 7
+
 2010-08-28  Teika Kazura <teika@lavabit.com>
 	* BUGS
 	* HACKING

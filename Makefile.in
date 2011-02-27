@@ -103,7 +103,6 @@ gitclean : distclean
 	rm -rf autom4te.cache
 	rm -f rep-gtk.spec rep-gtk*.ebuild
 	-fakeroot debian/rules clean
-	rm -f debian/changelog debian/control
 
 build_dirs : gtk-2
 

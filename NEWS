@@ -1,3 +1,8 @@
+0,90,5:
+
+* fixed a bug in configure, which could create an incomplete rep-gtk.pc
+* updated the debian packaging scripts (mostly) to the new spec
+
 0.90.4:
 * BUGS
 * HACKING

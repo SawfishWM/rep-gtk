@@ -1,4 +1,0 @@
-debian/tmp/usr/include/rep-gtk/
-debian/tmp/usr/lib/rep/*/gui/gtk-2/types.*
-debian/tmp/usr/lib/rep/*/gui/gtk-2/gtk.*
-debian/tmp/usr/lib/pkgconfig/rep-gtk.pc

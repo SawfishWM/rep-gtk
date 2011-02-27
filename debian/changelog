@@ -1,4 +1,4 @@
-rep-gtk (1:@version@~@gitdate@-1nano) unstable; urgency=low
+rep-gtk (1:0.90.5-1nano) unstable; urgency=low
 
   * New upstream GIT
 
