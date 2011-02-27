@@ -63,11 +63,11 @@ GTK_MIN_VER="2.12.0"
 pc_libs=""
 
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= $GTK_MIN_VER
-		  ,pc_libs+="gtk+-2.0 "
+		  ,pc_libs="${pc_libs} gtk+-2.0"
 		  ,AC_MSG_ERROR([can not locate gtk+ >= $GTK_MIN_VER]))
 
 PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= $GTK_MIN_VER
-		  ,pc_libs+="gdk-pixbuf-2.0"
+		  ,pc_libs="${pc_libs} gdk-pixbuf-2.0"
 		  ,AC_MSG_ERROR([can not locate gdk-pixbuf >= $GTK_MIN_VER]))
 
 dnl Checks for typedefs, structures, and compiler characteristics.
@@ -79,11 +79,8 @@ dnl locale checks
 AC_CHECK_FUNCS(setlocale)
 AC_CHECK_HEADERS(locale.h)
 
-gitdate=`date +%y%m%d`
-
 dnl Nonstandard exported symbols
 AC_SUBST(version)
-AC_SUBST(gitdate)
 AC_SUBST(pc_libs)
 AC_SUBST(repexecdir)
 AC_SUBST(CPPFLAGS)
@@ -106,8 +103,6 @@ Makefile
 rep-gtk.pc
 rep-gtk.spec
 rep-gtk.ebuild
-debian/changelog
-debian/control
 ])
 
 AC_OUTPUT
