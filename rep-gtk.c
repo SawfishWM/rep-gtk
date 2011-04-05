@@ -2600,7 +2600,10 @@ extern void sgtk_init_gtk_gtk_glue (void);
 repv
 rep_dl_init (void)
 {
-  repv tem = rep_push_structure ("gui.gtk-2.gtk");
+  repv tem = rep_push_structure ("gui.gtk-2.types");
+  rep_pop_structure (tem);
+
+  tem = rep_push_structure ("gui.gtk-2.gtk");
   sgtk_init_gtk_gtk_glue ();
   return rep_pop_structure (tem);
 }

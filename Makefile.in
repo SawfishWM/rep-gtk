@@ -2,10 +2,7 @@
 # Copyright (C) 1998 John Harper <john@dcs.warwick.ac.uk>
 # $Id: Makefile.in,v 1.29 2002/02/13 07:50:27 jsh Exp $
 
-SGTK_SRCS = rep-types.c
-SGTK_OBJS = $(SGTK_SRCS:.c=.lo)
-
-SRCS = rep-gtk.c gtk-support.c gtk-compat.c glib-glue.c gdk-glue.c gtk-glue.c gdk-pixbuf-glue.c
+SRCS = rep-gtk.c gtk-support.c gtk-compat.c glib-glue.c gdk-glue.c gtk-glue.c gdk-pixbuf-glue.c rep-types.c
 OBJS = $(SRCS:.c=.lo)
 
 OUT = @OUT@
@@ -48,9 +45,6 @@ VPATH=@top_srcdir@:.
 
 all : build_dirs $(OUT)
 
-gtk-2/types.la : $(SGTK_OBJS)
-	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_SGTK_LIBS)
-
 gtk-2/gtk.la : $(OBJS)
 	$(rep_DL_LD) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(REP_GTK_LIBS)
 
@@ -65,17 +59,6 @@ build-gtk.jlc : build-gtk.jl
 install : all installdirs
 	set -e; for f in $(OUT); do \
 	  $(rep_DL_INSTALL) $$f $(DESTDIR)$(installdir)/gui/gtk-2; \
-	done
-	set -e; for f in $(OUT_DESTS); do \
-	  case $$f in \
-	    gui/gtk-2/gtk.la) \
-	      printf "\nrep_requires='gui.gtk-2.types'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
-	    gui/gtk-2/gdk-pixbuf.la) \
-	      printf "\nrep_requires='gui.gtk-2.gtk'\n" >>$(DESTDIR)$(installdir)/$$f ;; \
-	  esac; \
-	done
-	for f in $(OUT_DESTS); do \
-	  printf "\nrep_open_globally=yes\n" >>$(DESTDIR)$(installdir)/$$f; \
 	done
 	$(rep_INSTALL_ALIASES) -c . $(DESTDIR)$(installdir)
 	install -m644 rep-gtk.h $(DESTDIR)$(includedir)/rep-gtk/

@@ -585,11 +585,3 @@ sgtk_cvec_to_rep (sgtk_cvec *cvec, repv (*toscm)(void *), size_t sz)
     return obj;
 }
 
-/* dl hooks */
-
-repv
-rep_dl_init (void)
-{
-    repv tem = rep_push_structure ("gui.gtk-2.types");
-    return rep_pop_structure (tem);
-}
