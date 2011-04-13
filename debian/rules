@@ -2,11 +2,6 @@
 
 export DH_VERBOSE=1
 
-version := $(shell sed -n 's/Package: \(.*\)/\1/p' debian/control | head -n 1)
-
-DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
-DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
-
 CFLAGS += -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -15,5 +10,25 @@ else
 	CFLAGS += -O2
 endif
 
+
 %:
-	dh $@
+	dh $@ --with autotools-dev --with autoreconf
+
+override_dh_auto_clean:
+	-$(MAKE) debclean
+
+override_dh_auto_configure:
+	env CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" dh_auto_configure
+
+override_dh_auto_install:
+	dh_auto_install
+	dh_install
+
+override_dh_installdocs:
+	dh_installdocs -A README README.gtk-defs README.guile-gtk
+
+override_dh_installchangelogs:
+	dh_installchangelogs -prep-gtk NEWS
+
+override_dh_installexamples:
+	dh_installexamples -prep-gtk examples/*
