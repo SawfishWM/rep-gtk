@@ -94,12 +94,13 @@ distclean : clean
 	rm -f Makefile config.cache config.log config.status config.h rep-gtk.pc
 
 debclean : distclean
-	rm -f rep-gtk*.ebuild rep-gtk.spec config.h.in libtool
+	rm -f rep-gtk*.ebuild rep-gtk.spec config.h.in libtool ltmain.sh
 
 gitclean : distclean
 	rm -f aclocal.m4 configure
 	rm -rf autom4te.cache m4/
 	rm -f rep-gtk.spec rep-gtk*.ebuild
+	rm -f libtool ltmain.sh
 	-fakeroot debian/rules clean
 
 build_dirs : gtk-2
