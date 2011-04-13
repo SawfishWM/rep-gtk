@@ -1,5 +1,5 @@
-rep-gtk (1:0.90.5-1nano) unstable; urgency=low
+rep-gtk (3:0.90.6-1nano) unstable; urgency=low
 
-  * New upstream GIT
+  * New upstream release
 
- -- Christopher Roy Bratusek <zanghar@freenet.de>  Sat, 24 Oct 2009 22:21:18 +0100
+ -- Christopher Roy Bratusek <nano@tuxfamily.org>  Wed, 13 Apr 2011 20:45:05 +0200
