@@ -50,6 +50,19 @@ gtk-2/gtk.la : $(OBJS)
 %-glue.c : %.defs build-gtk.jlc
 	LC_ALL=C rep build-gtk.jlc -f build-gtk-batch $< $@
 
+# shut up warnings for generated code
+gdk-glue.lo : gdk-glue.c
+	$(rep_LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
+
+gdk-pixbuf-glue.lo : gdk-pixbuf-glue.c
+	$(rep_LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
+
+glib-glue.lo : glib-glue.c
+	$(rep_LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
+
+gtk-glue.lo : gtk-glue.c
+	$(rep_LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
+
 .PRECIOUS:  %-glue.c
 
 build-gtk.jlc : build-gtk.jl
@@ -75,14 +88,17 @@ uninstall :
 
 clean :
 	rm -f *-glue.c *~ core *.jlc *.o *.lo *.la
-	rm -rf gtk-2
+	rm -rf gtk-2 .libs
 
 distclean : clean
 	rm -f Makefile config.cache config.log config.status config.h rep-gtk.pc
 
+debclean : distclean
+	rm -f rep-gtk*.ebuild rep-gtk.spec config.h.in libtool
+
 gitclean : distclean
 	rm -f aclocal.m4 configure
-	rm -rf autom4te.cache
+	rm -rf autom4te.cache m4/
 	rm -f rep-gtk.spec rep-gtk*.ebuild
 	-fakeroot debian/rules clean
 
