@@ -9,7 +9,6 @@ OUT = @OUT@
 OUT_DESTS = $(foreach x, $(OUT), gui/$(x))
 
 version=@version@
-host_type=@host@
 SHELL=/bin/sh
 
 prefix=@prefix@
