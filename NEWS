@@ -1,3 +1,10 @@
+0.90.6:
+
+* bump minimum librep to 0.92.0
+* updated for changes in installation-paths in librep 0.92.0
+* merged Debian scripts from Ian Zimmermann
+* improved Makefile clean rules
+
 0,90,5:
 
 * fixed a bug in configure, which could create an incomplete rep-gtk.pc
