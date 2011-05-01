@@ -4,7 +4,7 @@
 * updated for changes in installation-paths in librep 0.92.0
 * merged Debian scripts from Ian Zimmermann
 * improved Makefile clean rules
-* combined gtk and gtk-types modules
+* combined gtk and gtk-types modules [Kim B. Heino]
 
 0,90,5:
 
