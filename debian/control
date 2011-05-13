@@ -3,15 +3,15 @@ Section: lisp
 Priority: optional
 Maintainer: Christopher Roy Bratusek <nano@tuxfamily.org>
 Standards-Version: 3.8.2
-Build-Depends: debhelper (>> 5),
+Build-Depends: debhelper (>= 7),
                librep-dev (>> 0.90.5),
                rep (>> 0.90.5),
                libtool,
                autoconf,
                automake1.11,
                autotools-dev,
-               libglib2.0-dev (>> 2.6),
-               libgtk2.0-dev (>> 2.12.0)
+               libglib2.0-dev (>= 2.6),
+               libgtk2.0-dev (>= 2.12.0)
 Homepage: http://sawfish.wikia.com/
 
 Package: rep-gtk
