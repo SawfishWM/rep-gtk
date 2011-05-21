@@ -1,3 +1,9 @@
+rep-gtk (3:0.90.7~20110521-1nano) unstable; urgency=low
+
+  * New upstream GIT snapshot
+
+ -- Christopher Roy Bratusek <nano@tuxfamily.org>  Sat, 21 May 2011 09:52:55 +0200
+
 rep-gtk (3:0.90.6-1nano) unstable; urgency=low
 
   * New upstream release
