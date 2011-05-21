@@ -95,6 +95,7 @@ distclean : clean
 
 debclean : distclean
 	rm -f rep-gtk*.ebuild rep-gtk.spec config.h.in libtool ltmain.sh
+	rm -f configure aclocal.m4 m4/*
 
 gitclean : distclean
 	rm -f aclocal.m4 configure
