@@ -73,6 +73,21 @@
    ;; XXX fix this
    (GPointer gerror (= "0"))))
 
+(define-func gdk_pixbuf_new_from_file_at_size
+  (GdkPixbuf)
+  ((string filename)
+   (int width)
+   (int height)
+   (GPointer gerror (= "0"))))
+
+(define-func gdk_pixbuf_new_from_file_at_scale
+  (GdkPixbuf)
+  ((string filename)
+   (int width)
+   (int height)
+   (bool preserve_aspect)
+   (GPointer gerror (= "0"))))
+
 ;why the fuck was this changed to take a const char **?
 ;(define-func gdk_pixbuf_new_from_xpm_data
 ;  (GdkPixbuf (copy nil))

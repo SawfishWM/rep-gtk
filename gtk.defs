@@ -4974,6 +4974,10 @@
   GdkPixbuf
   ((GtkImage image)))
 
+(define-func gtk_image_clear
+  none
+  ((GtkImage image)))
+
 ;; ImageMenuItem
 
 (define-object GtkImageMenuItem (GtkMenuItem))
