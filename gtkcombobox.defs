@@ -119,24 +119,34 @@
   static_string
   ((GtkComboBox box)))
 
-;; GtkComboBoxEntry
+;; GtkComboBoxText
 
-(define-object GtkComboBoxEntry (GObject))
+(define-object GtkComboBoxText (GObject))
 
-(define-func gtk_combo_box_entry_new
+(define-func gtk_combo_box_text_new
   GtkWidget
   ())
 
-(define-func gtk_combo_box_entry_new_with_model
+(define-func gtk_combo_box_text_new_with_entry
   GtkWidget
-  ((GtkTreeModel model)
-   (int column)))
+  ())
 
-(define-func gtk_combo_box_entry_set_text_column
+(define-func gtk_combo_box_text_append_text
   none
-  ((GtkComboBoxEntry box)
-   (int column)))
+  ((GtkComboBoxText combo)
+   (string text)))
 
-(define-func gtk_combo_box_entry_get_text_column
-  int
-  ((GtkComboBoxEntry box)))
+(define-func gtk_combo_box_text_insert_text
+  none
+  ((GtkComboBoxText combo)
+   (int position)
+   ((tvec string in) text)))
+
+(define-func gtk_combo_box_text_prepend_text
+  none
+  ((GtkComboBoxText combo)
+   ((tvec string in) text)))
+
+(define-func gtk_combo_box_text_get_active_text
+  string
+  ((GtkComboBoxText combo)))
