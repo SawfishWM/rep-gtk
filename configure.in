@@ -60,15 +60,16 @@ PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_MIN_VER)
 
 dnl Check for GTK
 GTK_MIN_VER="2.24.0"
+GDK_MIN_VER="2.23.0"
 pc_libs=""
 
 PKG_CHECK_MODULES(GTK, gtk+-2.0 >= $GTK_MIN_VER
 		  ,pc_libs="${pc_libs} gtk+-2.0"
 		  ,AC_MSG_ERROR([can not locate gtk+ >= $GTK_MIN_VER]))
 
-PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= $GTK_MIN_VER
+PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= $GDK_MIN_VER
 		  ,pc_libs="${pc_libs} gdk-pixbuf-2.0"
-		  ,AC_MSG_ERROR([can not locate gdk-pixbuf >= $GTK_MIN_VER]))
+		  ,AC_MSG_ERROR([can not locate gdk-pixbuf >= $GDK_MIN_VER]))
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
