@@ -78,7 +78,7 @@
 (define-func gtk_file_chooser_set_filename
   none
   ((GtkFileChooser chooser)
-   ((tvec string in) filename)))
+   (string filename)))
 
 (define-func gtk_file_chooser_get_filename
   string
@@ -87,7 +87,7 @@
 (define-func gtk_file_chooser_select_filename
   bool
   ((GtkFileChooser chooser)
-   ((tvec string in) filename)))
+   (string filename)))
 
 (define-func gtk_file_chooser_unselect_filename
   none
