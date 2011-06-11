@@ -743,6 +743,10 @@
   none
   ((string file)))
 
+(define-func gtk_rc_parse_string
+  none
+  ((string style)))
+
 ;; GtkObject
 
 (define-object GtkObject (GObject))
