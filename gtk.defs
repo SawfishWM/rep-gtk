@@ -4513,6 +4513,17 @@
   GtkPositionType
   ((GtkScale scale)))
 
+(define-func gtk_scale_add_mark
+  none
+  ((GtkScale scale)
+   (double value)
+   (GtkPositionType pos)
+   (string markup)))
+
+(define-func gtk_scale_clear_marks
+  none
+  ((GtkScale scale)))
+
 ;; HScale
 
 (define-object GtkHScale (GtkScale))
