@@ -1,5 +1,8 @@
 ;; -*- lisp -*-
 
+;; updated for GTK+ 2.24:
+;; GtkComboBox, GtkComboBoxText
+
 ;; updated for GTK+ 2.12:
 
 ;; GtkButton, GtkToggleButton, GtkCheckButton, GtkRadioButton, GtkFontButton,

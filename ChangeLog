@@ -1,3 +1,28 @@
+2011-06-17  Christopher Roy Bratusek <nano@tuxfamily.org>
+	* gtktree.defs: added:
+	  - GtkTreeViewRowSeparatorFunc
+	  - GDestroyNotify
+
+	* gtkcombobox.defs: updated to 2.24 API
+	                    added:
+	  - gtk_combo_box_new_with_entry
+	  - gtk_combo_box_new_with_model_and_entry
+	  - gtk_combo_box_popup
+	  - gtk_combo_box_popdown
+	  - gtk_combo_box_set_button_sensitivity
+	  - gtk_combo_box_get_button_sensitivity
+	  - gtk_combo_box_get_has_entry
+	  - gtk_combo_box_get_entry_text_column
+	  - gtk_combo_box_set_entry_text_column
+	  - gtk_combo_box_set_row_separator_func
+	  - gtk_combo_box_get_row_separator_func
+	  		    removed:
+	  - gtk_combo_box_get_active_text
+	  - gtk_combo_box_remove_text
+	  - gtk_combo_box_append_text
+	  - gtk_combo_box_insert_text
+	  - gtk_combo_box_prepend_text
+
 2011-06-13  Christopher Roy Bratusek <nano@tuxfamily.org>
 	* gtk.defs: added:
 	  - gtk_scale_add_mark

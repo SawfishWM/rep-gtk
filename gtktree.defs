@@ -282,6 +282,14 @@
    (bool selected)
    (GPointer data)))
 
+(define-boxed GtkTreeViewRowSeparatorFunc
+  ((GtkTreeModel model)
+   (GtkTreeIter iter)
+   (GPointer data)))
+
+(define-boxed GDestroyNotify
+  ((GPointer data)))
+
 (define-boxed GtkDestroyNotify
   ((GPointer data)))
 

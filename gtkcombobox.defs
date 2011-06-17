@@ -8,7 +8,15 @@
   GtkWidget
   ())
 
+(define-func gtk_combo_box_new_with_entry
+  GtkWidget
+  ())
+
 (define-func gtk_combo_box_new_with_model
+  GtkWidget
+  ((GtkTreeModel model)))
+
+(define-func gtk_combo_box_new_with_model_and_entry
   GtkWidget
   ((GtkTreeModel model)))
 
@@ -94,30 +102,48 @@
   GtkTreeModel
   ((GtkComboBox box)))
 
-(define-func gtk_combo_box_append_text
+(define-func gtk_combo_box_popup
   none
-  ((GtkComboBox box)
-   ((tvec string in) text)))
+ ((GtkComboBox box)))
 
-(define-func gtk_combo_box_insert_text
+(define-func gtk_combo_box_popdown
   none
-  ((GtkComboBox box)
-   (int position)
-   ((tvec string in) text)))
-
-(define-func gtk_combo_box_prepend_text
-  none
-  ((GtkComboBox box)
-   ((tvec string in) text)))
-
-(define-func gtk_combo_box_remove_text
-  none
-  ((GtkComboBox box)
-   (int position)))
-
-(define-func gtk_combo_box_get_active_text
-  static_string
   ((GtkComboBox box)))
+
+(define-func gtk_combo_box_set_button_sensitivity
+  none
+ ((GtkComboBox box)
+  (GtkSensitivityType type)))
+
+(define-func gtk_combo_box_get_button_sensitivity
+  GtkSensitivityType
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_get_has_entry
+  bool
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_set_entry_text_column
+  none
+  ((GtkComboBox box)
+   (int column)))
+
+(define-func gtk_combo_box_get_entry_text_column
+  int
+  ((GtkComboBox box)))
+
+(define-func gtk_combo_box_set_row_separator_func
+  none
+ ((GtkComboBox box)
+  (GtkTreeViewRowSeparatorFunc func)
+  (GPointer data)
+  (GDestroyNotify notify)))
+
+(define-func gtk_combo_box_get_row_separator_func
+  GtkTreeViewRowSeparatorFunc
+  ((GtkComboBox box)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; GtkComboBoxText
 
@@ -140,12 +166,12 @@
   none
   ((GtkComboBoxText combo)
    (int position)
-   ((tvec string in) text)))
+   (string text)))
 
 (define-func gtk_combo_box_text_prepend_text
   none
   ((GtkComboBoxText combo)
-   ((tvec string in) text)))
+   (string text)))
 
 (define-func gtk_combo_box_text_get_active_text
   string
