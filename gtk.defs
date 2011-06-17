@@ -5273,9 +5273,22 @@
 (include "gtktree.defs")
 (include "gtkbuilder.defs")
 (include "gtkuimanager.defs")
-(include "gtkcombobox.defs")
 (include "gtkfilechooser.defs")
-(include "gtkbutton.defs")
+
+(include "widgets/button")
+(include "widgets/togglebutton")
+(include "widgets/checkbutton")
+(include "widgets/radiobutton")
+(include "widgets/scalebutton")
+(include "widgets/volumebutton")
+(include "widgets/spinbutton")
+(include "widgets/fontbutton")
+(include "widgets/filechooserbutton")
+(include "widgets/linkbutton")
+(include "widgets/colorbutton")
+
+(include "widgets/combobox")
+(include "widgets/comboboxtext")
 
 ;; Options
 

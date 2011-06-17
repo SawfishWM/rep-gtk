@@ -1,0 +1,123 @@
+;; SpinButton
+
+(define-object GtkSpinButton (GtkEntry))
+
+(define-func gtk_spin_button_new
+  GtkWidget
+  ((GtkAdjustment adjustment)
+   (double climb_rate)
+   (int digits)))
+
+(define-func gtk_spin_button_configure
+  none
+  ((GtkSpinButton button)
+   (GtkAdjustment adjustment)
+   (double climb_rate)
+   (int digits)))
+
+(define-func gtk_spin_button_new_with_range
+  GtkWidget
+  ((double min)
+   (double max)
+   (double step)))
+
+(define-func gtk_spin_button_set_adjustment
+  none
+  ((GtkSpinButton spin_button)
+   (GtkAdjustment adjustment)))
+
+(define-func gtk_spin_button_get_adjustment
+  GtkAdjustment
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_set_digits
+  none
+  ((GtkSpinButton spin_button)
+   (int digits)))
+
+(define-func gtk_spin_button_get_digits
+  int
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_set_increments
+  none
+  ((GtkSpinButton spin_button)
+   (double step)
+   (double page)))
+
+(define-func gtk_spin_button_get_increments
+  none
+  ((GtkSpinButton spin_button)
+   ((tvec double in) step)
+   ((tvec double in) page)))
+
+(define-func gtk_spin_button_set_range
+  none
+  ((GtkSpinButton spin_button)
+   (double min)
+   (double max)))
+
+(define-func gtk_spin_button_get_range
+  none
+  ((GtkSpinButton spin_button)
+   ((tvec double in) min)
+   ((tvec double in) max)))
+
+(define-func gtk_spin_button_get_value
+  double
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_get_value_as_int
+  int
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_set_value
+  none
+  ((GtkSpinButton spin_button)
+   (double value)))
+
+(define-func gtk_spin_button_set_update_policy
+  none
+  ((GtkSpinButton spin_button)
+   (GtkSpinButtonUpdatePolicy policy)))
+
+(define-func gtk_spin_button_get_update_policy
+  GtkSpinButtonUpdatePolicy
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_set_numeric
+  none
+  ((GtkSpinButton spin_button)
+   (bool numeric)))
+
+(define-func gtk_spin_button_get_numeric
+  bool
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_spin
+  none
+  ((GtkSpinButton spin_button)
+   (GtkSpinType direction)
+   (double increment)))
+
+(define-func gtk_spin_button_set_wrap
+  none
+  ((GtkSpinButton spin_button)
+   (bool wrap)))
+
+(define-func gtk_spin_button_get_wrap
+  bool
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_set_snap_to_ticks
+  none
+  ((GtkSpinButton spin_button)
+   (bool snap_to_ticks)))
+
+(define-func gtk_spin_button_get_snap_to_ticks
+  bool
+  ((GtkSpinButton spin_button)))
+
+(define-func gtk_spin_button_update
+  none
+  ((GtkSpinButton spin_button)))

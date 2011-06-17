@@ -1,0 +1,46 @@
+;; GtkScaleButton
+
+(define-object GtkScaleButton (GtkButton))
+
+(define-func gtk_scale_button_new
+  GtkWidget
+  ((GtkIconSize size)
+   (double min)
+   (double max)
+   (double step)
+   ((tvec string in) icons)))
+
+(define-func gtk_scale_button_set_icons
+  none
+  ((GtkScaleButton button)
+   (string icons)))
+
+(define-func gtk_scale_button_get_value
+  double
+  ((GtkScaleButton button)))
+
+(define-func gtk_scale_button_set_value
+  none
+  ((GtkScaleButton button)
+   (double value)))
+
+(define-func gtk_scale_button_get_adjustment
+  GtkAdjustment
+  ((GtkScaleButton button)))
+
+(define-func gtk_scale_button_set_adjustment
+  none
+  ((GtkScaleButton button)
+   (GtkAdjustment adjustment)))
+
+(define-func gtk_scale_button_get_plus_button
+  GtkWidget
+  ((GtkScaleButton button)))
+
+(define-func gtk_scale_button_get_minus_button
+  GtkWidget
+  ((GtkScaleButton button)))
+
+(define-func gtk_scale_button_get_popup
+  GtkWidget
+  ((GtkScaleButton button)))

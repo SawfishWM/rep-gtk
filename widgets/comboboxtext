@@ -1,0 +1,31 @@
+;; GtkComboBoxText
+
+(define-object GtkComboBoxText (GObject))
+
+(define-func gtk_combo_box_text_new
+  GtkWidget
+  ())
+
+(define-func gtk_combo_box_text_new_with_entry
+  GtkWidget
+  ())
+
+(define-func gtk_combo_box_text_append_text
+  none
+  ((GtkComboBoxText combo)
+   (string text)))
+
+(define-func gtk_combo_box_text_insert_text
+  none
+  ((GtkComboBoxText combo)
+   (int position)
+   (string text)))
+
+(define-func gtk_combo_box_text_prepend_text
+  none
+  ((GtkComboBoxText combo)
+   (string text)))
+
+(define-func gtk_combo_box_text_get_active_text
+  string
+  ((GtkComboBoxText combo)))

@@ -1,0 +1,46 @@
+;;; ToggleButton
+
+(define-object GtkToggleButton (GtkButton))
+
+(define-func gtk_toggle_button_new
+  GtkWidget
+  ())
+
+(define-func gtk_toggle_button_new_with_label
+  GtkWidget
+  ((string label)))
+
+(define-func gtk_toggle_button_new_with_mnemonic
+  GtkWidget
+  ((string mnemonic)))
+
+(define-func gtk_toggle_button_set_mode
+  none
+  ((GtkToggleButton toggle_button)
+   (bool draw_indicator)))
+
+(define-func gtk_toggle_button_get_mode
+  bool
+  ((GtkToggleButton toggle_button)))
+
+(define-func gtk_toggle_button_set_active
+  none
+  ((GtkToggleButton toggle_button)
+   (bool is_active)))
+
+(define-func gtk_toggle_button_get_active
+  bool
+  ((GtkToggleButton toggle_button)))
+
+(define-func gtk_toggle_button_toggled
+  none
+  ((GtkToggleButton toggle_button)))
+
+(define-func gtk_toggle_button_set_inconsistent
+  none
+  ((GtkToggleButton toggle_button)
+   (bool setting)))
+
+(define-func gtk_toggle_button_get_inconsistent
+  bool
+  ((GtkToggleButton toggle_button)))

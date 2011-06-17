@@ -1,0 +1,7 @@
+;; GtkVolumeButton
+
+(define-object GtkVolumeButton (GtkScaleButton))
+
+(define-func gtk_volume_button_new
+  GtkWidget
+  ())

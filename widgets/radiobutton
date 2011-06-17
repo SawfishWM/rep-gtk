@@ -1,0 +1,42 @@
+;;; RadioButton
+
+(define-object GtkRadioButton (GtkCheckButton))
+
+(define-func gtk_radio_button_new
+  GtkWidget
+  (((slist string) group (null-ok))))
+
+(define-func gtk_radio_button_new_from_widget
+  GtkWidget
+  ((GtkRadioButton group (null-ok))))
+
+(define-func gtk_radio_button_new_with_label
+  GtkWidget
+  (((slist string) group (null-ok))
+   (string label)))
+
+(define-func gtk_radio_button_new_with_label_from_widget
+  GtkWidget
+  ((GtkRadioButton group (null-ok))
+   (string label)))
+
+(define-func gtk_radio_button_new_with_mnemonic
+  GtkWidget
+  (((slist string) group (null-ok))
+   (string mnemonic)))
+
+(define-func gtk_radio_button_new_with_mnemonic_from_widget
+  GtkWidget
+  ((GtkRadioButton group (null-ok))
+   (string label)))
+
+;; XXX
+;(define-func gtk_radio_button_set_group
+;  none
+;  ((slist GtkWidget))
+;   ((GtkRadioButton button)))
+
+;(define-func gtk_radio_button_get_group
+;  none
+;  ((GtkRadioButton button)
+;   (slist GtkWidget)))

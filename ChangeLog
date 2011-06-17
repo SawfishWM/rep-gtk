@@ -41,6 +41,10 @@
 
 	* Makefile.in: update
 
+	* gtkcombobox.defs
+	* gtkbutton.defs: split up into widgets/[WIDGET] files,
+	easier to maintain
+
 2011-06-13  Christopher Roy Bratusek <nano@tuxfamily.org>
 	* gtk.defs: added:
 	  - gtk_scale_add_mark

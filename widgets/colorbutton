@@ -1,0 +1,48 @@
+;; GtkColorButton
+
+(define-object GtkColorButton (GtkButton))
+
+(define-func gtk_color_button_new
+  GtkWidget
+  ())
+
+(define-func gtk_color_button_new_with_color
+  GtkWidget
+  ((GdkColor color)))
+
+(define-func gtk_color_button_set_color
+  none
+  ((GtkColorButton color_button)
+   (GdkColor color)))
+
+(define-func gtk_color_button_get_color
+  none
+  ((GtkColorButton color_button)
+   (GdkColor color)))
+
+(define-func gtk_color_button_get_color_interp
+  string
+  ((GtkColorButton button)))
+
+(define-func gtk_color_button_set_alpha
+  none
+  ((GtkColorButton color_button)
+   (uint alpha)))
+
+(define-func gtk_color_button_get_alpha
+  none
+  ((GtkColorButton color_button)))
+
+(define-func gtk_color_button_set_use_alpha
+  none
+  ((GtkColorButton color_button)
+   (bool use_alpha)))
+
+(define-func gtk_color_button_get_use_alpha
+  bool
+  ((GtkColorButton color_button)))
+
+(define-func gtk_color_button_set_title
+  none
+  ((GtkColorButton color_button)
+   (string title)))

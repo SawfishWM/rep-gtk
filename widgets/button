@@ -1,0 +1,103 @@
+;;; Button
+
+(define-object GtkButton (GtkBin))
+
+(define-func gtk_button_new
+  GtkWidget
+  ())
+
+(define-func gtk_button_new_with_label
+  GtkWidget
+  ((string label)))
+
+(define-func gtk_button_new_from_stock
+  GtkWidget
+  ((string stock_id)))
+
+(define-func gtk_button_new_with_mnemonic
+  GtkWidget
+  ((string label)))
+
+(define-func gtk_button_clicked
+  none
+  ((GtkButton button)))
+
+(define-func gtk_button_set_relief
+  none
+  ((GtkButton button)
+   (GtkReliefStyle relief)))
+
+(define-func gtk_button_get_relief
+  GtkReliefStyle
+  ((GtkButton button)))
+
+(define-func gtk_button_set_label
+  none
+  ((GtkButton button)
+   (string label)))
+
+(define-func gtk_button_get_label
+  static_string
+  ((GtkButton button)))
+
+(define-func gtk_button_set_use_underline
+  none
+  ((GtkButton button)
+   (bool use_underline)))
+
+(define-func gtk_button_get_use_underline
+  bool
+  ((GtkButton button)))
+
+(define-func gtk_button_set_use_stock
+  none
+  ((GtkButton button)
+   (bool use_stock)))
+
+(define-func gtk_button_get_use_stock
+  bool
+  ((GtkButton button)))
+
+(define-func gtk_button_set_focus_on_click
+  none
+  ((GtkButton button)
+   (bool focus_on_click)))
+
+(define-func gtk_button_get_focus_on_click
+  bool
+  ((GtkButton button)))
+
+(define-func gtk_button_set_alignment
+  none
+  ((GtkButton button)
+   (double xalign)
+   (double yalin)))
+
+;; XXX not working
+;(define-func gtk_button_get_alignment
+;  none
+;  ((GtkButton button)
+;   (float xalign)
+;   (float yalin)))
+
+(define-func gtk_button_set_image
+  none
+  ((GtkButton button)
+   (GtkWidget image)))
+
+(define-func gtk_button_get_image
+  GtkWidget
+  ((GtkButton button)))
+
+(define-func gtk_button_set_image_position
+  none
+  ((GtkButton button)
+   (GtkPositionType position)))
+
+(define-func gtk_button_get_image_position
+  GtkPositionType
+  ((GtkButton button)))
+
+(define-func gtk_button_get_event_window
+  GdkWindow
+  ((GtkButton button)))

@@ -1,0 +1,15 @@
+;;; CheckButton
+
+(define-object GtkCheckButton (GtkToggleButton))
+
+(define-func gtk_check_button_new
+  GtkWidget
+  ())
+
+(define-func gtk_check_button_new_with_label
+  GtkWidget
+  ((string label)))
+
+(define-func gtk_check_button_new_with_mnemonic
+  GtkWidget
+  ((string mnemonic)))

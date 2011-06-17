@@ -1,0 +1,30 @@
+;; GtkLinkButton
+
+(define-object GtkLinkButton (GtkButton))
+
+(define-func gtk_link_button_new
+  GtkWidget
+  ((string uri)))
+
+(define-func gtk_link_button_new_with_label
+  GtkWidget
+  ((string uri)
+   (string label)))
+
+(define-func gtk_link_button_get_uri
+  static_string
+  ((GtkLinkButton button)))
+
+(define-func gtk_link_button_set_uri
+  none
+  ((GtkLinkButton button)
+   (string uri)))
+
+(define-func gtk_link_button_set_visited
+  none
+  ((GtkLinkButton button)
+   (bool visited)))
+
+(define-func gtk_link_button_get_visited
+  bool
+  ((GtkLinkButton button)))
