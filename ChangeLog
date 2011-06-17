@@ -1,3 +1,34 @@
+2011-06-13  Christopher Roy Bratusek <nano@tuxfamily.org>
+	* gtk.defs: added:
+	  - gtk_scale_add_mark
+	  - gtk_scale_clear_marks
+
+2011-06-11  Christopher Roy Bratusek <nano@tuxfamily.org>
+	* gtk.defs: added:
+	  - gtk_rc_parse_string
+
+2011-06-02  Christopher Roy Bratusek <nano@tuxfamily.org>
+	* gtkfilechooser.defs: fixed:
+	  - gtk_file_chooser_set_filename
+	  - gtk_file_chooser_select_filename
+
+	* configure.in: bump GTK+ req to 2.24 // GDK req to 2.23
+
+	* examples/hello.jl: now shows GtkComboBoxText
+
+	* gtkcombobox.defs: removed:
+	  - GtkComboBoxEntry (deprecated)
+	                    added:
+	  - GtkComboBoxText (complete)
+
+2011-05-25  Christopher Roy Bratusek <nano@tuxfamily.org>
+	* gdk-pixbuf.defs: added:
+	  - gdk_pixbuf_new_from_file_at_size
+	  - gdk_pixbuf_new_from_file_at_scale
+
+	* gtk.defs: added:
+	  - gtk_image_clear
+
 2011-02-27  Christopher Roy Bratusek <zanghar@freenet.de>
 	* configure.in: fixed a syntax-error (+=), which could create incomplete rep-gtk.pc
 	                don't substitute gitdate
