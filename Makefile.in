@@ -110,4 +110,4 @@ gtk-2 :
 	mkdir gtk-2
 
 # hand-needed dependences
-gtk-glue.c : glib.defs gdk.defs gdk-pixbuf.defs gtk.defs gtktext.defs gtktree.defs gtkbuilder.defs gtkuimanager.defs gtkcombobox.defs gtkfilechooser.defs build-gtk.jlc
+gtk-glue.c : glib.defs gdk.defs gdk-pixbuf.defs gtk.defs gtkbutton gtktext.defs gtktree.defs gtkbuilder.defs gtkuimanager.defs gtkcombobox.defs gtkfilechooser.defs build-gtk.jlc

@@ -23,6 +23,24 @@
 	  - gtk_combo_box_insert_text
 	  - gtk_combo_box_prepend_text
 
+	* gtkbutton.defs: split from gtk.defs updated to 2.24 API
+	                    added:
+	  - gtk_button_get_event_window
+	  - gtk_link_button_set_visited
+	  - gtk_link_button_get_visited
+	  - gtk_scale_button_get_plus_button
+	  - gtk_scale_button_get_minus_button
+	  - gtk_scale_button_get_popup
+	  - gtk_spin_button_configure
+			    removed:
+	  - gtk_button_pressed
+	  - gtk_button_released
+	  - gtk_button_enter
+	  - gtk_button_leave
+	  - gtk_file_chooser_button_new_with_backend
+
+	* Makefile.in: update
+
 2011-06-13  Christopher Roy Bratusek <nano@tuxfamily.org>
 	* gtk.defs: added:
 	  - gtk_scale_add_mark
