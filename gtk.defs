@@ -3,7 +3,8 @@
 ;; updated for GTK+ 2.24:
 ;; GtkComboBox, GtkComboBoxText, GtkButton, GtkToggleButton, GtkCheckButton,
 ;; GtkRadioButton, GtkColorButton, GtkFontButton, GtkFileChooserButton,
-;; GtkLinkButton, GtkFontButton, GtkSpinButton, GtkVolumeButton
+;; GtkLinkButton, GtkFontButton, GtkSpinButton, GtkVolumeButton,
+;; GtkAboutDialog, GtkAccelGroup, GtkAccelLabel, GtkAccelMap
 
 ;; updated for GTK+ 2.12:
 
@@ -461,110 +462,6 @@
   ((char target)
    (uint flags)
    (uint info)))
-
-;; GtkAccelGroup
-
-(define-object GtkAccelGroup (GObject))
-(define-boxed GtkAccelGroupEntry
-  ())
-
-(define-func gtk_accel_group_new
-  GtkAccelGroup
-  ())
-
-(define-func gtk_accel_group_lock
-  none
-  ((GtkAccelGroup group)))
-
-(define-func gtk_accel_group_unlock
-  none
-  ((GtkAccelGroup group)))
-
-(define-func gtk_accel_group_connect
-  none
-  ((GtkAccelGroup group)
-   (uint accel_key)
-   (GdkModifierType modifier)
-   (GtkAccelFlags flags)
-   (GClosure closure)))
-
-(define-func gtk_accel_group_connect_by_path
-  none
-  ((GtkAccelGroup group)
-   (string path)
-   (GClosure closure)))
-
-(define-func gtk_accel_group_disconnect
-  bool
-  ((GtkAccelGroup group)
-   (GClosure closure)))
-
-(define-func gtk_accel_group_disconnect_key
-  bool
-  ((GtkAccelGroup group)
-   (uint key)
-   (GdkModifierType modifier)))
-
-(define-func gtk_accel_group_activate
-  bool
-  ((GtkAccelGroup group)
-   (GQuark quark)
-   (GObject acceleratable)
-   (uint key)
-   (GdkModifierType modifier)))
-
-(define-func gtk_accel_groups_activate
-  bool
-  ((GObject object)
-   (uint key)
-   (GdkModifierType modifier)))
-
-(define-func gtk_accel_groups_from_object
-  (slist string)
-  ((GObject object)))
-
-;; XXX need support for GtkAccelGroupFindFunc
-;(define-func gtk_accel_group_find
-;  GtkAccelKey
-;  ((GtkAccelGroup group)
-;   (GtkAccelGroupFindFunc findfunc)
-;   (GPointer data)))
-
-(define-func gtk_accel_group_from_accel_closure
-  GtkAccelGroup
-  ((GClosure closure)))
-
-(define-func gtk_accelerator_parse
-  none
-  ((string accel)
-   ((ret uint) key)
-   ((ret GdkModifierType) modifier)))
-
-(define-func gtk_accelerator_name
-  string
-  ((uint key)
-   (GdkModifierType modifier)))
-
-(define-func gtk_accelerator_get_label
-  string
-  ((uint key)
-   (GdkModifierType modifier)))
-
-(define-func gtk_accelerator_get_default_mod_mask
-  uint
-  ())
-
-(define-func gtk_accelerator_set_default_mod_mask
-  none
-  ((GdkModifierType modifier)))
-
-;; XXX need support for GtkAccelGroupEntry
-(define-func gtk_accel_group_query
-  none
-  ((GtkAccelGroup group)
-   (uint key)
-   (GdkModifierType modifier)
-   ((ret uint) entries)))
 
 ;; GtkStyle
 
@@ -4826,160 +4723,6 @@
    ((ret int) y)
    ((ret GtkOrientation) orientation)))
 
-;; GtkAboutDialog
-
-(define-object GtkAboutDialog (GtkDialog))
-
-(define-func gtk_about_dialog_new
-  GtkWidget
-  ())
-
-(define-func gtk_about_dialog_get_program_name
-  static_string
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_program_name
-  none
-  ((GtkAboutDialog dialog)
-   (string name)))
-
-(define-func gtk_about_dialog_get_version
-  static_string
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_version
-  none
-  ((GtkAboutDialog dialog)
-   (string version)))
-
-(define-func gtk_about_dialog_get_copyright
-  static_string
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_copyright
-  none
-  ((GtkAboutDialog dialog)
-   (string copyright)))
-
-(define-func gtk_about_dialog_get_comments
-  static_string
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_comments
-  none
-  ((GtkAboutDialog dialog)
-   (string comments)))
-
-(define-func gtk_about_dialog_get_license
-  static_string
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_license
-  none
-  ((GtkAboutDialog dialog)
-   (string license)))
-
-(define-func gtk_about_dialog_get_wrap_license
-  bool
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_wrap_license
-  none
-  ((GtkAboutDialog dialog)
-   (bool seting)))
-
-(define-func gtk_about_dialog_get_website
-  static_string
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_website
-  none
-  ((GtkAboutDialog dialog)
-   (string website)))
-
-(define-func gtk_about_dialog_get_website_label
-  static_string
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_website_label
-  none
-  ((GtkAboutDialog dialog)
-   (string websitelabel)))
-
-(define-func gtk_about_dialog_set_authors
-  none
-  ((GtkAboutDialog dialog)
-   ((tvec string in) authors)))
-
-(define-func gtk_about_dialog_set_documenters
-  none
-  ((GtkAboutDialog dialog)
-   ((tvec string in) documenters)))
-
-(define-func gtk_about_dialog_set_artists
-  none
-  ((GtkAboutDialog dialog)
-   ((tvec string in) artists)))
-
-(define-func gtk_about_dialog_get_translator_credits
-  static_string
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_translator_credits
-  none
-  ((GtkAboutDialog dialog)
-   (string translatorcredits)))
-
-(define-func gtk_about_dialog_get_logo
-  GdkPixbuf
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_logo
-  none
-  ((GtkAboutDialog dialog)
-   (GdkPixbuf logo)))
-
-(define-func gtk_about_dialog_get_logo_icon_name
-  static_string
-  ((GtkAboutDialog dialog)))
-
-(define-func gtk_about_dialog_set_logo_icon_name
-  none
-  ((GtkAboutDialog dialog)
-   (string logo)))
-
-;; GtkAccelLabel
-
-(define-object GtkAccelLabel (GtkLabel))
-
-(define-func gtk_accel_label_new
-  GtkWidget
-  ((string label)))
-
-(define-func gtk_accel_label_get_accel_widget
-  GtkWidget
-  ((GtkAccelLabel label)))
-
-(define-func gtk_accel_label_set_accel_widget
-  none
-  ((GtkAccelLabel label)
-   (GtkWidget widget)))
-
-(define-func gtk_accel_label_get_accel_width
-  uint
-  ((GtkAccelLabel label)))
-
-(define-func gtk_accel_label_set_accel_closure
-  none
-  ((GtkAccelLabel label)
-   (GClosure closure)))
-
-(define-func gtk_accel_label_refetch
-  bool
-  ((GtkAccelLabel label)))
-
-;; GtkAccelLabel
-
 ;; GtkAction
 
 (define-object GtkAction (GtkObject))
@@ -5274,6 +5017,12 @@
 (include "gtkbuilder.defs")
 (include "gtkuimanager.defs")
 (include "gtkfilechooser.defs")
+
+(include "widgets/aboutdialog")
+
+(include "widgets/accelgroup")
+(include "widgets/accellabel")
+(include "widgets/accelmap")
 
 (include "widgets/button")
 (include "widgets/togglebutton")
