@@ -1,0 +1,29 @@
+;; GtkAccelLabel
+
+(define-object GtkAccelLabel (GtkLabel))
+
+(define-func gtk_accel_label_new
+  GtkWidget
+  ((string label)))
+
+(define-func gtk_accel_label_get_accel_widget
+  GtkWidget
+  ((GtkAccelLabel label)))
+
+(define-func gtk_accel_label_set_accel_widget
+  none
+  ((GtkAccelLabel label)
+   (GtkWidget widget)))
+
+(define-func gtk_accel_label_get_accel_width
+  uint
+  ((GtkAccelLabel label)))
+
+(define-func gtk_accel_label_set_accel_closure
+  none
+  ((GtkAccelLabel label)
+   (GClosure closure)))
+
+(define-func gtk_accel_label_refetch
+  bool
+  ((GtkAccelLabel label)))
