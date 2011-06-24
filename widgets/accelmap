@@ -1,0 +1,66 @@
+;; GtkAccelMap
+
+(define-object GtkAccelMap (GObject))
+
+(define-boxed GtkAccelMapForeach
+  ((GPointer data)
+   (string path)
+   (int key)
+   (GdkModifierType mod)
+   (bool changed)))
+
+(define-func gtk_accel_map_add_entry
+  none
+  ((string path)
+   (int key)
+   (GdkModifierType mod)))
+
+(define-func gtk_accel_map_lookup_entry
+  bool
+  ((string path)
+   (GtkAccelKey key)))
+
+(define-func gtk_accel_map_change_entry
+  bool
+  ((string path)
+   (int key)
+   (GdkModifierType mod)
+   (bool replace)))
+
+(define-func gtk_accel_map_load
+  none
+  ((string filename)))
+
+(define-func gtk_accel_map_save
+  none
+  ((string filename)))
+
+(define-func gtk_accel_map_foreach
+  none
+  ((GPointer data)
+   (GtkAccelMapForeach foreach)))
+
+(define-func gtk_accel_map_load_fd
+  none
+  ((int fd)))
+
+(define-func gtk_accel_map_save_fd
+  none
+  ((int fd)))
+
+(define-func gtk_accel_map_lock_path
+  none
+  ((string path)))
+
+(define-func gtk_accel_map_unlock_path
+  none
+  ((string path)))
+
+(define-func gtk_accel_map_add_filter
+  none
+  ((string pattern)))
+
+(define-func gtk_accel_map_foreach_unfiltered
+  none
+  ((GPointer data)
+   (GtkAccelMapForeach foreach)))
