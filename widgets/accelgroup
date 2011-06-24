@@ -1,0 +1,123 @@
+;; GtkAccelGroup
+
+(define-object GtkAccelGroup (GObject))
+
+(define-boxed GtkAccelKey
+  ((int accel_key)
+   (GdkModifierType type)
+   (int accel_flags)))
+
+(define-boxed GtkAccelGroupEntry
+  ((GtkAccelKey key)
+   (GClosure closure)
+   (int path)))
+
+(define-boxed GtkAccelGroupFindFunc
+  ((GtkAccelKey key)
+   (GClosure closure)
+   (GPointer data)))
+
+(define-func gtk_accel_group_new
+  GtkAccelGroup
+  ())
+
+(define-func gtk_accel_group_get_is_locked
+  bool
+ ((GtkAccelGroup group)))
+
+(define-func gtk_accel_group_get_modifier_mask
+  GdkModifierType
+  ((GtkAccelGroup group)))
+
+(define-func gtk_accel_group_lock
+  none
+  ((GtkAccelGroup group)))
+
+(define-func gtk_accel_group_unlock
+  none
+  ((GtkAccelGroup group)))
+
+(define-func gtk_accel_group_connect
+  none
+  ((GtkAccelGroup group)
+   (uint accel_key)
+   (GdkModifierType modifier)
+   (GtkAccelFlags flags)
+   (GClosure closure)))
+
+(define-func gtk_accel_group_connect_by_path
+  none
+  ((GtkAccelGroup group)
+   (string path)
+   (GClosure closure)))
+
+(define-func gtk_accel_group_disconnect
+  bool
+  ((GtkAccelGroup group)
+   (GClosure closure)))
+
+(define-func gtk_accel_group_disconnect_key
+  bool
+  ((GtkAccelGroup group)
+   (uint key)
+   (GdkModifierType modifier)))
+
+(define-func gtk_accel_group_activate
+  bool
+  ((GtkAccelGroup group)
+   (GQuark quark)
+   (GObject acceleratable)
+   (uint key)
+   (GdkModifierType modifier)))
+
+(define-func gtk_accel_groups_activate
+  bool
+  ((GObject object)
+   (uint key)
+   (GdkModifierType modifier)))
+
+(define-func gtk_accel_groups_from_object
+  (slist string)
+  ((GObject object)))
+
+(define-func gtk_accel_group_find
+  GtkAccelKey
+  ((GtkAccelGroup group)
+   (GtkAccelGroupFindFunc findfunc)
+   (GPointer data)))
+
+(define-func gtk_accel_group_from_accel_closure
+  GtkAccelGroup
+  ((GClosure closure)))
+
+(define-func gtk_accelerator_parse
+  none
+  ((string accel)
+   ((ret uint) key)
+   ((ret GdkModifierType) modifier)))
+
+(define-func gtk_accelerator_name
+  string
+  ((uint key)
+   (GdkModifierType modifier)))
+
+(define-func gtk_accelerator_get_label
+  string
+  ((uint key)
+   (GdkModifierType modifier)))
+
+(define-func gtk_accelerator_get_default_mod_mask
+  uint
+  ())
+
+(define-func gtk_accelerator_set_default_mod_mask
+  none
+  ((GdkModifierType modifier)))
+
+;; XXX need support for GtkAccelGroupEntry
+(define-func gtk_accel_group_query
+  none
+  ((GtkAccelGroup group)
+   (uint key)
+   (GdkModifierType modifier)
+   ((ret uint) entries)))
