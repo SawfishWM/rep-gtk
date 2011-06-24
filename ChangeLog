@@ -23,6 +23,10 @@
 	- gtk_accel_map_add_filter
 	- gtk_accel_map_foreach_unfiltered
 
+	* widgets/expander: updated to 2.24 API:
+			    added:
+	- gtk_expander_set_label_fill 
+	- gtk_expander_get_label_fill 
 
 2011-06-17  Christopher Roy Bratusek <nano@tuxfamily.org>
 	* gtktree.defs: added:
