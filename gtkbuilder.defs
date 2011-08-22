@@ -10,7 +10,7 @@
   (int)
   ((GtkBuilder builder)
    (string filename))
-  (gerror-arg t))
+   (gerror-arg nil))
 
 (define-func gtk_builder_get_object 
   (GObject)

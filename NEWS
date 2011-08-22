@@ -1,3 +1,90 @@
+0.90.7:
+
+* re-arranged tree (all new widget-definitons in widgets/<widget>)
+* minimum GTK+ bumped to 2.24
+* minimum GDK bumped to 2.23
+* New API wrapped:
+
+GtkAccelGroup
+  - gtk_accel_group_get_is_locked
+  - gtk_accel_group_get_modifier_mask
+  - GtkAccelKey
+  - GtkAccelGroupEntry
+
+GtkAccelMap:
+  - gtk_accel_map_add_entry
+  - gtk_accel_map_lookup_entry
+  - gtk_accel_map_change_entry
+  - gtk_accel_map_load
+  - gtk_accel_map_save
+  - gtk_accel_map_foreach
+  - gtk_accel_map_load_fd
+  - gtk_accel_map_save_fd
+  - gtk_accel_map_lock_path
+  - gtk_accel_map_unlock_path
+  - gtk_accel_map_add_filter
+  - gtk_accel_map_foreach_unfiltered
+
+GtkExpander:
+  - gtk_expander_set_label_fill 
+  - gtk_expander_get_label_fill
+
+GtkComboBox:
+  - gtk_combo_box_new_with_entry
+  - gtk_combo_box_new_with_model_and_entry
+  - gtk_combo_box_popup
+  - gtk_combo_box_popdown
+  - gtk_combo_box_set_button_sensitivity
+  - gtk_combo_box_get_button_sensitivity
+  - gtk_combo_box_get_has_entry
+  - gtk_combo_box_get_entry_text_column
+  - gtk_combo_box_set_entry_text_column
+  - gtk_combo_box_set_row_separator_func
+  - gtk_combo_box_get_row_separator_func
+
+GtkComboBoxText:
+  - added completely
+
+GtkScale:
+  - gtk_scale_add_mark
+  - gtk_scale_clear_marks
+
+GtkRC:
+  - gtk_rc_parse_string
+
+GdkPixbuf:
+  - gdk_pixbuf_new_from_file_at_size
+  - gdk_pixbuf_new_from_file_at_scale
+
+GtkImage:
+  - gtk_image_clear
+
+* Fixed wrapped API:
+
+GtkFileChooser:
+  - gtk_file_chooser_set_filename
+  - gtk_file_chooser_select_filename
+
+* Deprecated API no longer wrapped:
+
+GtkComboBox
+  - gtk_combo_box_get_active_text
+  - gtk_combo_box_remove_text
+  - gtk_combo_box_append_text
+  - gtk_combo_box_insert_text
+  - gtk_combo_box_prepend_text
+
+GtkComboBoxEntry:
+  - removed completely
+
+GtkButton
+  - gtk_button_pressed
+  - gtk_button_released
+  - gtk_button_enter
+  - gtk_button_leave
+  - gtk_file_chooser_button_new_with_backend
+  
+
 0.90.6:
 
 * bump minimum librep to 0.92.0
