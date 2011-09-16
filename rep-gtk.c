@@ -1122,6 +1122,7 @@ sgtk_type_to_rep (GType t)
   return sgtk_uint_to_rep (t);
 }
 
+/*
 int
 sgtk_valid_segment (repv obj)
 {
@@ -1129,6 +1130,8 @@ sgtk_valid_segment (repv obj)
     && sgtk_valid_point (rep_CAR (obj))
     && sgtk_valid_point (rep_CDR (obj));
 }
+
+*/
 
 GdkSegment
 sgtk_rep_to_segment (repv obj)
