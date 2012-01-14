@@ -2,13 +2,14 @@ Name: rep-gtk
 Version: @version@
 Release: 1%{?dist}
 Summary: GTK+ binding for librep Lisp environment
-Requires: librep >= @REP_MIN_VER@, gtk2 >= @GTK_MIN_VER@
 License: GPLv2+
 Group: Development/Languages
-Source0: http://download.tuxfamily.org/sawfish/%{name}/%{name}-%{version}.tar.bz2
+Source0: http://download.tuxfamily.org/librep/%{name}/%{name}-%{version}.tar.bz2
 URL: http://sawfish.wikia.com/
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires: librep-devel, glib2-devel, cairo-devel, gtk2-devel
+BuildRequires: gtk2-devel
+BuildRequires: librep-devel >= @REP_MIN_VER@
+Requires: librep >= @REP_MIN_VER@
 
 %description
 This is a binding of GTK+ for the librep Lisp interpreter. It is based
@@ -18,7 +19,7 @@ to 0.17), with a new glue-code generator.
 %package devel
 Summary: Development files for rep-gtk
 Group: Development/Languages
-Requires: %{name} = %{version}, pkgconfig
+Requires: %{name} = %{version}-%{release}, pkgconfig
 
 %description devel
 Link libraries and C header files for librep development.
@@ -31,27 +32,43 @@ Link libraries and C header files for librep development.
 make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+rm -rf %{buildroot}
+make install DESTDIR=%{buildroot}
+find %{buildroot}%{_libdir} -name \*.la -exec rm '{}' \;
 
 %clean
-rm -rf $RPM_BUILD_ROOT
-
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
+rm -rf %{buildroot}
 
 %files
-%defattr (-,root,root,-)
-%doc examples/* NEWS README* TODO gtk.defs gdk.defs
-%{_libdir}/rep/%{_host}/gui
+%doc NEWS README* TODO COPYING
+%{_libdir}/rep/*
 
 %files devel
-%defattr (-,root,root,-)
 %{_includedir}/rep-gtk/
 %{_libdir}/pkgconfig/rep-gtk.pc
 
 %changelog
+* Mon Aug 22 2011 Kim B. Heino <b@bbbs.net> - 0.90.7-1
+- Update to 0.90.7
+
+* Sun Jul 31 2011 Kim B. Heino <b@bbbs.net> - 0.90.6-2
+- Update BR and R versions
+
+* Sat Jul 30 2011 Kim B. Heino <b@bbbs.net> - 0.90.6-1
+- Update to 0.90.6
+
+* Wed Apr 20 2011 Kim B. Heino <b@bbbs.net> - 0.90.5-4
+- don't use %%{_host} which can be modified by configure on non-x86 arches
+
+* Wed Apr 13 2011 Kim B. Heino <b@bbbs.net> - 0.90.5-3
+- Fix files list, remove post/postun
+
+* Fri Apr  1 2011 Kim B. Heino <b@bbbs.net> - 0.90.5-2
+- Fix dynamic loading
+
+* Thu Mar 31 2011 Kim B. Heino <b@bbbs.net> - 0.90.5-1
+- Update to 0.90.5
+
 * Sat Sep 25 2010 Kim B. Heino <b@bbbs.net> - 0.90.4-1
 - fix doc-files, url, misc fixes
 
