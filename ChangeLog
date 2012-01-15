@@ -1,3 +1,6 @@
+2012-01-14  Christopher Roy Bratusek <nano@tuxfamily.org>
+	* rep-gtk.spec: sync with Fedora [Kim B. Heino]
+
 2011-06-24  Christopher Roy Bratusek <nano@tuxfamily.org>
 	* widgets/aboutdialog: moved GtkAboutDialog here (no change)
 
