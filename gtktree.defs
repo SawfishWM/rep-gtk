@@ -249,11 +249,12 @@
   ((GtkTreeModel model)
    (GtkTreeIter iter)))
 
-(define-func gtk_tree_model_get_valist
-  none
-  ((GtkTreeModel model)
-   (GtkTreeIter iter)
-   (string valist)))
+;; XXX not working on ARM
+;(define-func gtk_tree_model_get_valist
+;  none
+;  ((GtkTreeModel model)
+;   (GtkTreeIter iter)
+;   (string valist)))
 
 ;; XXX not working
 ;(define-func gtk_tree_model_foreach
