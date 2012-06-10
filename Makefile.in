@@ -82,7 +82,7 @@ installdirs : $(top_srcdir)/mkinstalldirs
 		$(DESTDIR)$(includedir)/rep-gtk
 
 uninstall :
-	$(rep_DL_UNINSTALL) $(DESTDIR)$(installdir)/$(OUT)
+	$(rep_DL_UNINSTALL) -f $(DESTDIR)$(installdir)/gui/$(OUT)
 	rm -f $(DESTDIR)$(libdir)/pkgconfig/rep-gtk.pc
 	rm -rf $(DESTDIR)$(includedir)/rep-gtk
 

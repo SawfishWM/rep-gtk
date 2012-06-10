@@ -1,3 +1,12 @@
+0.90.8.1:
+
+* fixed bug that prevented uninstallation of rep-gtk
+
+0.90.8:
+
+* fixed building on ARM
+* synced spec file [Kim B. Heino]
+
 0.90.7:
 
 * re-arranged tree (all new widget-definitons in widgets/<widget>)
