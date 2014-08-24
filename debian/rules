@@ -1,34 +1,33 @@
 #!/usr/bin/make -f
+DH_VERBOSE = 1
 
-export DH_VERBOSE=1
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/default.mk
 
-CFLAGS += -Wall -g
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
+	export DEB_CFLAGS_MAINT_APPEND = -Wall -pedantic -g -fno-strict-aliasing -O0
 else
-	CFLAGS += -O2
+	export DEB_CFLAGS_MAINT_APPEND = -Wall -pedantic -g -fno-strict-aliasing -O2
 endif
-
 
 %:
 	dh $@ --with autotools-dev --with autoreconf
 
 override_dh_auto_clean:
-	-$(MAKE) debclean
+	-$(MAKE) gitclean
 
 override_dh_auto_configure:
-	env CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" dh_auto_configure
+	dh_auto_configure -- $(shell dpkg-buildflags --export=configure) 
 
 override_dh_auto_install:
 	dh_auto_install
 	dh_install
 
-override_dh_installdocs:
-	dh_installdocs -A README README.gtk-defs README.guile-gtk
-
 override_dh_installchangelogs:
-	dh_installchangelogs -prep-gtk NEWS
+	dh_installchangelogs NEWS
 
 override_dh_installexamples:
-	dh_installexamples -prep-gtk examples/*
+	dh_installexamples examples/*

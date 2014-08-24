@@ -1,5 +1,11 @@
+rep-gtk (3:0.98.2-1nano) unstable; urgency=low
+
+  * New upstream bugfix release
+
+ -- Christopher Roy Bratusek <nano@jpberlin.de>  Sun, 24 Aug 2014 20:33:30 +0200
+
 rep-gtk (3:0.98.1-1nano) unstable; urgency=low
 
-  * New upstream stable release
+  * New upstream bugfix release
 
  -- Christopher Roy Bratusek <nano@tuxfamily.org>  Sun, 10 Jun 2012 09:32:27 +0200
