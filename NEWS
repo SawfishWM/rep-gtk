@@ -1,3 +1,9 @@
+0.90.8.2:
+
+* improved debian packaging scripts
+* fixed address of FSF in COPYING
+* update supplied autotools stuff
+
 0.90.8.1:
 
 * fixed bug that prevented uninstallation of rep-gtk
