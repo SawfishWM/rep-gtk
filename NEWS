@@ -1,3 +1,13 @@
+0.90.8.3:
+
+* update config.sub and config.guess to 2015-08-20
+* remove debclean and gitclean Makefile rules, improve distclean rule
+* fixup libtool version check in autogen.sh
+* Debian code review:
+  - rename configure.in to configure.ac
+  - fix several typos
+  - fix address of FSF
+
 0.90.8.2:
 
 * improved debian packaging scripts
