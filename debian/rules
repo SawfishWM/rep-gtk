@@ -17,7 +17,7 @@ endif
 	dh $@ --with autotools-dev --with autoreconf
 
 override_dh_auto_clean:
-	-$(MAKE) gitclean
+	-$(MAKE) distclean
 
 override_dh_auto_configure:
 	dh_auto_configure -- $(shell dpkg-buildflags --export=configure) 
