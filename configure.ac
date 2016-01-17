@@ -1,0 +1,157 @@
+dnl  Process this file with autoconf to produce a configure script.
+dnl  Copyright (C) 1998 John Harper <john@dcs.warwick.ac.uk>
+dnl  $Id: configure.in,v 1.44 2003/08/02 05:36:24 jsh Exp $
+dnl
+dnl  This file is part of rep-gtk.
+dnl
+dnl  rep-gtk is free software; you can redistribute it and/or modify it
+dnl  under the terms of the GNU General Public License as published by
+dnl  the Free Software Foundation; either version 2, or (at your option)
+dnl  any later version.
+dnl
+dnl  rep-gtk is distributed in the hope that it will be useful, but
+dnl  WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+dnl  GNU General Public License for more details.
+dnl
+dnl  You should have received a copy of the GNU General Public License
+dnl  along with Jade; see the file COPYING.  If not, write to
+dnl  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+
+m4_pattern_allow
+
+AC_REVISION($Revision: 1.44 $)
+AC_INIT(rep-gtk.h)
+
+AC_CONFIG_HEADER(config.h)
+AC_CONFIG_MACRO_DIR([m4])
+
+AC_SUBST(datarootdir)
+
+AM_PROG_LIBTOOL
+
+dnl Release versioning info
+version="0.90.8.3"
+
+dnl Find the system type; this isn't crucial
+AC_CANONICAL_HOST
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_GCC_TRADITIONAL
+AC_PROG_LIBTOOL
+
+dnl Check for librep
+REP_MIN_VER="0.90.5"
+
+PKG_CHECK_MODULES(LIBREP, librep >= $REP_MIN_VER
+		  ,REP_EXECDIR="`pkg-config --variable=repcommonexecdir librep`"
+		  REP_CFLAGS="`pkg-config --cflags librep`"
+		  ,AC_MSG_ERROR([can not locate librep >= $REP_MIN_VER]))
+
+dnl Check for glib
+GLIB_MIN_VER="2.6"
+
+PKG_CHECK_MODULES(GLIB, glib-2.0 >= $GLIB_MIN_VER)
+
+dnl Check for GTK
+GTK_MIN_VER="2.24.0"
+GDK_MIN_VER="2.23.0"
+pc_libs=""
+
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= $GTK_MIN_VER
+		  ,pc_libs="${pc_libs} gtk+-2.0"
+		  ,AC_MSG_ERROR([can not locate gtk+ >= $GTK_MIN_VER]))
+
+PKG_CHECK_MODULES(GDK_PIXBUF, gdk-pixbuf-2.0 >= $GDK_MIN_VER
+		  ,pc_libs="${pc_libs} gdk-pixbuf-2.0"
+		  ,AC_MSG_ERROR([can not locate gdk-pixbuf >= $GDK_MIN_VER]))
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_SIZE_T
+
+dnl locale checks
+AC_CHECK_FUNCS(setlocale)
+AC_CHECK_HEADERS(locale.h)
+
+dnl Nonstandard exported symbols
+AC_SUBST(version)
+AC_SUBST(pc_libs)
+AC_SUBST(repexecdir)
+AC_SUBST(CPPFLAGS)
+AC_SUBST(CFLAGS)
+AC_SUBST(DEVELOPMENT_CFLAGS)
+AC_SUBST(LIBS)
+AC_SUBST(REP_EXECDIR)
+AC_SUBST(REP_CFLAGS)
+AC_SUBST(REP_MIN_VER)
+AC_SUBST(GTK_MIN_VER)
+AC_SUBST(GLIB_MIN_VER)
+
+AC_DEFINE_UNQUOTED([REP_GTK_VERSION], "${version}", [Version of rep-gtk]) 
+
+OUT="gtk-2/gtk.la"
+AC_SUBST(OUT)
+
+AC_CONFIG_FILES([
+Makefile
+rep-gtk.pc
+rep-gtk.spec
+rep-gtk.ebuild
+])
+
+AC_OUTPUT
+
+mv rep-gtk.ebuild rep-gtk-$version.ebuild
+
+REP_VERSION="`pkg-config --modversion librep`"
+GLIB_VERSION="`pkg-config --modversion glib-2.0`"
+
+if $PKG_CONFIG --exists cairo; then
+	CAIRO_VERSION="`pkg-config --modversion cairo`"
+fi
+
+GTK_VERSION="`pkg-config --modversion gtk+-2.0`"
+
+echo "
+  == == == == == == == == == == == == ==
+  
+  rep-gtk:	$version
+  
+  == == == == == == == == == == == == ==
+  
+  prefix:	$prefix
+  exec_prefix:	$exec_prefix
+  libdir:	$libdir
+  
+  == == == == == == == == == == == == ==
+  
+  compiler:	$CC
+  cflags:	$CFLAGS $DEVELOPMENT_CFLAGS
+  preprocessor:	$CPP
+  cppflags:	$CPPFLAGS
+  ldflags:	$LDFLAGS
+  makeflags:	$MAKEFLAGS
+
+  == == == == == == == == == == == == ==
+  
+  rep:		$REP_VERSION
+  glib:		$GLIB_VERSION"
+
+if $PKG_CONFIG --exists cairo; then
+	echo "  cairo:	$CAIRO_VERSION"
+fi
+echo "  gtk+:		$GTK_VERSION
+ 
+  == == == == == == == == == == == == ==
+"
+
+dnl Local variables:
+dnl major-mode: sh-mode
+dnl End:
