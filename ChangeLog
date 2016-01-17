@@ -1286,7 +1286,7 @@
 		- bump gtk req to 2.6
 		- bump glib req to 2.6
 		- bump glade req to 2.4
-		- print usefull things at the end
+		- print useful things at the end
 		- added --enable-paranoia option
 			(compile with paranoia CFLAGS)
 

@@ -7,7 +7,7 @@ applications. It can optionally integrate with GNOME via the Gnome-guile
 module.
 
 Guile-gtk was started by Marius Vollmer <mvo@zagadka.ping.de> and is
-currently mantained by Ariel Rios<jarios@usa.net> and other intrepid Guile
+currently maintained by Ariel Rios<jarios@usa.net> and other intrepid Guile
 hackers around the world.
 
 Guile-gtk is free software licensed under the GPL.
@@ -20,7 +20,7 @@ or in one of the mirrors:
     http://erin.linuxbox.com/guile-gtk/       		(USA)
     http://linux.cem.itesm.mx/~jarios/guile-gtk/        (MEXICO)
 
-You can also get at the most recent development sources thru the Gnome
+You can also get at the most recent development sources through the Gnome
 CVS repository.  Guile-gtk is contained in the gnome-guile module.
 See www.gnome.org for details.
 
@@ -92,14 +92,14 @@ Gtk Versions
 
 There are two lines of Gtk versions in active development, modeled
 after the Linux kernel scheme, I think.  One is the stable branch that
-will maintain binary compatability, and the other is the development
+will maintain binary compatibility, and the other is the development
 branch, where new features are tried out.  The stable branch has
 version numbers like 1.2.x; the development branch is labeled 1.3.x
-and the absolutely latest version is made available thru CVS.
+and the absolutely latest version is made available through CVS.
 
 Guile-gtk can be built for both gtk-1.2 and gtk-1.3.  It is possible
 to have these two versions of guile-gtk installed and in use
-simultanously, but the sources can only be configured for one of them
+simultaneously, but the sources can only be configured for one of them
 at any one time.  That is, when you want to switch between Gtk
 versions, be sure to make distclean and re-configure.
 
@@ -422,7 +422,7 @@ The available variations are:
 
 These composite types are also intended to be used for
 call-by-reference arguments.  Neither Scheme nor C really has these
-call-by-reference arguments, so guile-gtk wont either.  In C, you
+call-by-reference arguments, so guile-gtk won't either.  In C, you
 would pass a pointer to the desired object; in Scheme you use a
 one-element list or a vector of length one.  For guile-gtk, these
 types are modelled with a `fvec' composite type of length one and mode
