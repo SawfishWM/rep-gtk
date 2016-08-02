@@ -1,3 +1,7 @@
+0.90.8.4:
+
+* update rep-gtk.spec.in [Allan Duncan]
+
 0.90.8.3:
 
 * update config.sub and config.guess to 2015-08-20

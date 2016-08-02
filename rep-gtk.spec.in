@@ -1,12 +1,12 @@
 Name: rep-gtk
 Version: @version@
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: GTK+ binding for librep Lisp environment
 License: GPLv2+
 Group: Development/Languages
-Source0: http://download.tuxfamily.org/librep/%{name}/%{name}-%{version}.tar.bz2
+Source0: http://download.tuxfamily.org/librep/%{name}/%{name}_%{version}.tar.bz2
 URL: http://sawfish.wikia.com/
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot: %{_tmppath}/%{name}_%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: gtk2-devel
 BuildRequires: librep-devel >= @REP_MIN_VER@
 Requires: librep >= @REP_MIN_VER@
@@ -25,9 +25,10 @@ Requires: %{name} = %{version}-%{release}, pkgconfig
 Link libraries and C header files for librep development.
 
 %prep
-%setup -q
+%setup -q -n %{name}_%{version}
 
 %build
+autogen.sh --nocfg
 %configure
 make %{?_smp_mflags}
 
@@ -48,6 +49,10 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/rep-gtk.pc
 
 %changelog
+* Mon Aug  1 2016 Allan Duncan <sawfish@lists.tuxfamily.org> - 0.90.8.3-2
+- Altered tar file name to use '_' instead of older '-'
+- Included "autogen.sh" as prelim to "configure" for %prep
+
 * Mon Aug 22 2011 Kim B. Heino <b@bbbs.net> - 0.90.7-1
 - Update to 0.90.7
 
