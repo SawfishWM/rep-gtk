@@ -1,3 +1,9 @@
+rep-gtk (3:0.90.8.2-2nano) unstable; urgency=low
+
+  * rebuild for dependencies
+
+ -- Christopher Roy Bratusek <nano@jpberlin.de>  Sat, 22 Feb 2020 21:51:30 +0100
+
 rep-gtk (3:0.90.8.2-1nano) unstable; urgency=low
 
   * New upstream bugfix release
