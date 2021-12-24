@@ -52,16 +52,16 @@ gtk-2/gtk.la : $(OBJS)
 
 # shut up warnings for generated code
 gdk-glue.lo : gdk-glue.c
-	$(rep_LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
+	$(LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
 
 gdk-pixbuf-glue.lo : gdk-pixbuf-glue.c
-	$(rep_LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
+	$(LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
 
 glib-glue.lo : glib-glue.c
-	$(rep_LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
+	$(LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
 
 gtk-glue.lo : gtk-glue.c
-	$(rep_LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
+	$(LIBTOOL) --mode=compile --tag=CC $(CC) -c $(CPPFLAGS) $(CFLAGS) -w $<
 
 .PRECIOUS:  %-glue.c
 
