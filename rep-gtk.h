@@ -341,6 +341,13 @@ void gtk_color_selection_set_color_interp (GtkColorSelection *sel, GdkColor *col
 GdkColor *gtk_color_selection_get_color_interp (GtkColorSelection *sel);
 char *gtk_color_button_get_color_interp (GtkColorButton *button);
 extern void gtk_widget_draw_interp (GtkWidget *widget);
+void gtk_status_icon_popup_menu(GtkStatusIcon *status_icon,
+				GtkMenu *menu,
+				guint button,
+				guint32 activate_time);
+gboolean gtk_status_icon_get_geometry_interp(GtkStatusIcon *status_icon,
+					     gint *x, gint *y,
+					     GtkOrientation *orientation);
 
 GtkTextIter *gtk_text_iter_new (void);
 repv sgtk_gtk_widget_get_allocation (GtkWidget *w);
