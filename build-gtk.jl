@@ -508,6 +508,7 @@
       (@ "  static int done;\n  if (!done)\n    {\n")
       (@ "      done = 1;\n")
       (mapc (lambda (func)
+	      (@ "      extern void %s (void);\n" func)
 	      (@ "      %s ();\n" func)) other-inits)
       (when (or gtk-enums gtk-string-enums gtk-flags gtk-boxed gtk-objects)
 	(@ "      sgtk_register_type_infos (_type_infos);\n"))
