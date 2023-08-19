@@ -845,7 +845,7 @@
 (define-func gtk_list_store_reorder
   none
   ((GtkListStore store)
-   (int order)))
+   ((fvec int -1 in) order)))
 
 (define-func gtk_list_store_swap
   none
@@ -1103,8 +1103,8 @@
    (int y)
    (GtkTreePath path)
    (GtkTreeViewColumn column)
-   (int cell_x)
-   (int cell_y)))
+   ((ret int) cell_x)
+   ((ret int) cell_y)))
 
 (define-func gtk_tree_view_get_cell_area
   none
